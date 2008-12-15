@@ -1,10 +1,30 @@
-log4j.rootCategory=info, console
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<Encoding>UTF-8</Encoding>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</layout>
+	</appender>
 
-log4j.appender.console=org.apache.log4j.ConsoleAppender
-log4j.appender.console.layout=org.apache.log4j.PatternLayout
-log4j.appender.console.layout.ConversionPattern=%-4r [%t] %-5p %c %x - %m%n
+	<appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>../logs/cas-web.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>myselfproject.%d{yyyy-MM-dd}.log</FileNamePattern>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</layout>
+	</appender>
 
-log4j.logger.org.jmesa=debug
-log4j.logger.org.jmesaweb=debug
-log4j.logger.org.hibernate.SQL=debug
-#log4j.category.org.hibernate.type=debug
+ 	<logger name="org">
+		<level value="INFO" />
+	</logger>
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="stdout" />
+		<appender-ref ref="logfile" />
+	</root>
+
+</configuration>
