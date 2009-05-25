@@ -79,14 +79,14 @@ public class MockNodeValidator {
     /**
      * 克隆一个新的Node对象（未执行深度克隆）
      */
-	// public static SOAPMessage cloneNode(SOAPMessage originalNode) {
-	// SOAPMessage newNode = new SOAPMessage();
-	//
-	// newNode.setName(originalNode.getMessageId());
-	// newNode.setWsdl(originalNode.getXmlData()getWsdl());
-	// newNode.setResult(originalNode.getResult());
-	// newNode.setDependencies(originalNode.getDependencies());
-	//
-	// return newNode;
-	// }
+	 public static SOAPMessage cloneNode(SOAPMessage originalNode) {
+	 SOAPMessage newNode = new SOAPMessage();
+	
+//	 newNode.setName(originalNode.getMessageId());
+//	 newNode.setWsdl(originalNode.getXmlData()getWsdl());
+//	 newNode.setResult(originalNode.getResult());
+//	 newNode.setDependencies(originalNode.getDependencies());
+	
+	 return newNode;
+	 }
 }

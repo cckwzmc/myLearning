@@ -19,7 +19,6 @@
 	<description>
      learning
     </description>
-
 	<repositories>
 		<!-- for jaxb-impl -->
 		<repository>
@@ -29,6 +28,16 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+				<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
