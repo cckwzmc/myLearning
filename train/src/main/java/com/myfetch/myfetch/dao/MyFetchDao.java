@@ -1,6 +1,5 @@
 package com.myfetch.myfetch.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyFetchDao extends JdbcBaseDao {
@@ -11,9 +10,10 @@ public class MyFetchDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 	//book cover url
+	//isfetch是否立即采集
 	@SuppressWarnings("unchecked")
 	public List getBookList(){
-		String sql="select t.bookid,t.url,t.finishstatus,t.booktype,t.bookstatus,t.lasterarticle,t.picurl,t.desc,t.chinesenum,t.author,t.keyword,t. where from booklisturls t";
+		String sql="select t.bookid,t.url,t.finishstatus,t.booktype,t.bookstatus,t.lasterarticle,t.picurl,t.desc,t.chinesenum,t.author,t.keyword,t.isfetch where from booklisturls t";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 	//book table list
