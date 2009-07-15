@@ -7,7 +7,7 @@ public class MyFetchDao extends JdbcBaseDao {
 
 	@SuppressWarnings("unchecked")
 	public List getUrlList(){
-		String sql="select t.id,t.url,t.status,t.type,t.fromsitename where from fetchurls t";
+		String sql="select t.id,t.url,t.status,t.type,t.fromsitename,t.lasterarticle where from fetchurls t";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 	//book cover url
