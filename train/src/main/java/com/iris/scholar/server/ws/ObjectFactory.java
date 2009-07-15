@@ -30,83 +30,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link WriteErrorInfoResponse }
+     * Create an instance of {@link GetSearchStr }
      * 
      */
-    public WriteErrorInfoResponse createWriteErrorInfoResponse() {
-        return new WriteErrorInfoResponse();
-    }
-
-    /**
-     * Create an instance of {@link WriteData }
-     * 
-     */
-    public WriteData createWriteData() {
-        return new WriteData();
-    }
-
-    /**
-     * Create an instance of {@link GetRecordsResponse }
-     * 
-     */
-    public GetRecordsResponse createGetRecordsResponse() {
-        return new GetRecordsResponse();
-    }
-
-    /**
-     * Create an instance of {@link UpLoadOverResponse }
-     * 
-     */
-    public UpLoadOverResponse createUpLoadOverResponse() {
-        return new UpLoadOverResponse();
-    }
-
-    /**
-     * Create an instance of {@link WriteErrorInfo }
-     * 
-     */
-    public WriteErrorInfo createWriteErrorInfo() {
-        return new WriteErrorInfo();
-    }
-
-    /**
-     * Create an instance of {@link WriteDataResponse }
-     * 
-     */
-    public WriteDataResponse createWriteDataResponse() {
-        return new WriteDataResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetSearchInfo }
-     * 
-     */
-    public GetSearchInfo createGetSearchInfo() {
-        return new GetSearchInfo();
-    }
-
-    /**
-     * Create an instance of {@link GetRecordsNumResponse }
-     * 
-     */
-    public GetRecordsNumResponse createGetRecordsNumResponse() {
-        return new GetRecordsNumResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetRecords }
-     * 
-     */
-    public GetRecords createGetRecords() {
-        return new GetRecords();
-    }
-
-    /**
-     * Create an instance of {@link GetSearchInfoResponse }
-     * 
-     */
-    public GetSearchInfoResponse createGetSearchInfoResponse() {
-        return new GetSearchInfoResponse();
+    public GetSearchStr createGetSearchStr() {
+        return new GetSearchStr();
     }
 
     /**
@@ -118,11 +46,75 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetSearchStr }
+     * Create an instance of {@link GetRecords }
      * 
      */
-    public GetSearchStr createGetSearchStr() {
-        return new GetSearchStr();
+    public GetRecords createGetRecords() {
+        return new GetRecords();
+    }
+
+    /**
+     * Create an instance of {@link WriteData }
+     * 
+     */
+    public WriteData createWriteData() {
+        return new WriteData();
+    }
+
+    /**
+     * Create an instance of {@link WriteErrorInfoResponse }
+     * 
+     */
+    public WriteErrorInfoResponse createWriteErrorInfoResponse() {
+        return new WriteErrorInfoResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetSearchInfoResponse }
+     * 
+     */
+    public GetSearchInfoResponse createGetSearchInfoResponse() {
+        return new GetSearchInfoResponse();
+    }
+
+    /**
+     * Create an instance of {@link WriteErrorInfo }
+     * 
+     */
+    public WriteErrorInfo createWriteErrorInfo() {
+        return new WriteErrorInfo();
+    }
+
+    /**
+     * Create an instance of {@link UpLoadOverResponse }
+     * 
+     */
+    public UpLoadOverResponse createUpLoadOverResponse() {
+        return new UpLoadOverResponse();
+    }
+
+    /**
+     * Create an instance of {@link WriteDataResponse }
+     * 
+     */
+    public WriteDataResponse createWriteDataResponse() {
+        return new WriteDataResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetRecordsNumResponse }
+     * 
+     */
+    public GetRecordsNumResponse createGetRecordsNumResponse() {
+        return new GetRecordsNumResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetSearchStrResponse }
+     * 
+     */
+    public GetSearchStrResponse createGetSearchStrResponse() {
+        return new GetSearchStrResponse();
     }
 
     /**
@@ -134,11 +126,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetSearchStrResponse }
+     * Create an instance of {@link GetRecordsResponse }
      * 
      */
-    public GetSearchStrResponse createGetSearchStrResponse() {
-        return new GetSearchStrResponse();
+    public GetRecordsResponse createGetRecordsResponse() {
+        return new GetRecordsResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetSearchInfo }
+     * 
+     */
+    public GetSearchInfo createGetSearchInfo() {
+        return new GetSearchInfo();
     }
 
 }

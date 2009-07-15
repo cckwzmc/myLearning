@@ -17,6 +17,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.springframework.security.util.EncryptionUtils;
 
 import com.iris.scholar.server.ws.IScholarFetchServicePortType;
 
@@ -36,30 +37,30 @@ public class HelloWorldClient extends Thread {
 		String str=null;
 		java.io.File files=new File("D:\\hgd\\ISI");
 		File[] list=files.listFiles();
-		String[] fielStr = new String[] { "d:\\ISIWebOfScience74522009_00000001.xml" ,"d:\\ISIWebOfScience74522009_00000002.xml","d:\\ISIWebOfScience74522009_00000003.xml"};
+		String[] fielStr = new String[] { "d:\\ChinaJournal13562005_00000284_5232.xml"};
 		FileReader file;
 		try {
 			Map dupMap=new HashMap();
 			StringBuffer outStr=new StringBuffer();
 			int dupInt=0;
 //			FileWriter outFile=new FileWriter("D:\\dup_"+System.currentTimeMillis()+".xml");
-			for (int i = 0; i < list.length; i++) {
-				if(list[i].isDirectory()){
-					File[] dirFiles=list[i].listFiles();
-					String path=list[i].getName();
-					String[] paths=StringUtils.split(path, "_");
-					for (int j = 0; j < dirFiles.length; j++) {
-						StringBuffer filestr=new StringBuffer();
-						file = new FileReader(dirFiles[j]);
-						BufferedReader reader = new BufferedReader(file);
-						str = reader.readLine();
-						while (str != null) {
-							filestr.append(str);
-							str=reader.readLine();
-						}
-						service.writeData("bhiE8nYtLjU50OccQcYqBvSxYAiLbKrpFbt0LI0k10c=", NumberUtils.toInt(paths[0]), NumberUtils.toInt(paths[1]), NumberUtils.toInt(paths[2]), new String(Base64.encodeBase64(filestr.toString().getBytes())));
-					}
-				}
+//			for (int i = 0; i < list.length; i++) {
+//				if(list[i].isDirectory()){
+//					File[] dirFiles=list[i].listFiles();
+//					String path=list[i].getName();
+//					String[] paths=StringUtils.split(path, "_");
+//					for (int j = 0; j < dirFiles.length; j++) {
+//						StringBuffer filestr=new StringBuffer();
+//						file = new FileReader(dirFiles[j]);
+//						BufferedReader reader = new BufferedReader(file);
+//						str = reader.readLine();
+//						while (str != null) {
+//							filestr.append(str);
+//							str=reader.readLine();
+//						}
+//						service.writeData("bhiE8nYtLjU50OccQcYqBvSxYAiLbKrpFbt0LI0k10c=", NumberUtils.toInt(paths[0]), NumberUtils.toInt(paths[1]), NumberUtils.toInt(paths[2]), new String(Base64.encodeBase64(filestr.toString().getBytes())));
+//					}
+//				}
 				
 //				file = new FileReader(list[i]);
 //				BufferedReader reader = new BufferedReader(file);
@@ -95,7 +96,7 @@ public class HelloWorldClient extends Thread {
 //						dupMap.put(key, "");
 //					}
 //				}
-			}	
+//			}	
 //			System.out.println("==============="+dupInt);
 //			outFile.write(outStr.toString());
 //			outFile.flush();
@@ -112,24 +113,28 @@ public class HelloWorldClient extends Thread {
 //				int retint=service.writeData("bhiE8nYtLjU50OccQcYqBvSxYAiLbKrpFbt0LI0k10c=", 1976, 2008, 1, EncryptionUtils.byteArrayToString(Base64.encodeBase64(filestr.toString().getBytes())));
 //				System.out.println("message====================="+i+"==" + retint);
 //			}
-//			for (int i = 0; i < fielStr.length; i++) {
-//				StringBuffer filestr=new StringBuffer();
-//				file = new FileReader(fielStr[i]);
-//				BufferedReader reader = new BufferedReader(file);
-//				str = reader.readLine();
-//				while (str != null) {
-//					filestr.append(str);
-//					str=reader.readLine();
-//				}
-//				int retint=service.writeData("bhiE8nYtLjU50OccQcYqBvSxYAiLbKrpFbt0LI0k10c=", 1976, 2008, 1, EncryptionUtils.byteArrayToString(Base64.encodeBase64(filestr.toString().getBytes())));
-//				System.out.println("message====================="+i+"==" + retint);
-//			}
-			int number=0;
-			while(number<1){
-				number=service.getRecordsNum("bhiE8nYtLjU50OccQcYqBvSxYAiLbKrpFbt0LI0k10c=",1976, 2008, 1);
-				System.out.println("getrecodes number ===="+number);	
-				sleep(3000);
+			for (int i = 0; i < fielStr.length; i++) {
+				StringBuffer filestr=new StringBuffer();
+				file = new FileReader(fielStr[i]);
+				BufferedReader reader = new BufferedReader(file);
+				str = reader.readLine();
+				while (str != null) {
+					filestr.append(str);
+					str=reader.readLine();
+				}
+			//	int retint=service.writeData("bhiE8nYtLjU50OccQcYqBvSxYAiLbKrpFbt0LI0k10c=", 1976, 2008, 1, EncryptionUtils.byteArrayToString(Base64.encodeBase64(filestr.toString().getBytes())));
+			//	System.out.println("message====================="+i+"==" + retint);
 			}
+//			int number=0;
+//			int i=0;
+//			while(i<100){
+				String xml=service.getSearchInfo("bhiE8nYtLjUVR8zyNeQWv0wLNqdxaVuK79SAwJYSNLs=",1356);
+				System.out.println("getrecodes number :===="+xml);	
+//				i++;
+//				sleep(3000);
+//			}
+				System.out.println(EncryptionUtils.byteArrayToString(Base64.decodeBase64(xml.getBytes())));
+				System.out.println(EncryptionUtils.byteArrayToString(Base64.decodeBase64("PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHNlYXJjaGluZm8+PHNlYXJjaHN0cj48c2VhcmNocGFyYW0+PGRiaWQ+NDwvZGJpZD48ZGJkc2NyPkNoaW5hSm91cm5hbDwvZGJkc2NyPjx5ZWFyPjIwMDg8L3llYXI+PHllYXJkYXRhbnVtPjA8L3llYXJkYXRhbnVtPjxzZWFyY2hzdHI+KOWNleS9jSXlk4jlsJTmu6jlt6XkuJrlpKflraYpIGFuZCDlubQ9MjAwODwvc2VhcmNoc3RyPjwvc2VhcmNocGFyYW0+PC9zZWFyY2hzdHI+PHBhcmFtaW5mbz48UFJPQ05VTT41PC9QUk9DTlVNPjxTRUFSQ0hUSU1FPjU8L1NFQVJDSFRJTUU+PFBST0NUSU1FPjg8L1BST0NUSU1FPjxJTlRFUlZBTD4yMDwvSU5URVJWQUw+PC9wYXJhbWluZm8+PC9zZWFyY2hpbmZvPg==".getBytes())));
 			
 			/*
 				file = new FileReader(fielStr[0]);
