@@ -12,6 +12,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -74,15 +75,24 @@ public class XMLUtils {
 		String retstr="";
 		return retstr;
 	}
-	public static List<String> getXmlFileName(){
+	public static List<String> getXmlFileName(String sitename){
 		List<String> list=new ArrayList<String>();
 		File files=new File(XMLPATH);
 //		if(files.isDirectory()){
 			File[] filelist=files.listFiles();
 			for (int i = 0; i < filelist.length; i++) {
+				String[] names=StringUtils.split(sitename,",");
 				if(!filelist[i].isDirectory())
 				{
-					list.add(filelist[i].getAbsolutePath());
+					boolean flag=false;
+					for (int j = 0; j < names.length; j++) {
+						if(StringUtils.contains(filelist[i].getName(), "listrul_"+names[j]+".xml")){
+							flag=true;
+						}
+					}
+					if(flag){
+						list.add(filelist[i].getAbsolutePath());
+					}
 				}	
 			}
 //		}else{
@@ -101,9 +111,29 @@ public class XMLUtils {
 		return retStr;
 	}
 	public static void main(String[] args) {
-		parseSiteList(getDocumentXml(getXmlFileName().get(0)));
+//		parseSiteList(getDocumentXml(getXmlFileName().get(0)));
 //		System.out.println(parseSiteList(getDocumentXml(getXmlFileName().get(0))));
-//		String type="<tr> <td class=\"even\" align=\"center\">游戏</td>";
-//		System.out.println(convertXml(type));
+		//书籍类别
+		String type="<td class=\"odd\"> [<a href=\"[*]\" class=\"sideA\" target=\"_blank\">[args1]</a>]</td>";
+		System.out.println(convertXml(type));
+		//书籍url
+		type="<td class=\"oddf\"><a href=\"[args1]\" target=\"_blank\">[*]</a>";
+		System.out.println(convertXml(type));
+		//最新章节
+		type="<td class=\"even\"><a href=\"[*]target=\"_blank\">[args1]</a></td>";
+		System.out.println(convertXml(type));
+		//书籍是否完结
+		type="<td class=\"even\" align=\"center\">[args1]</td>";
+		System.out.println(convertXml(type));
+		/**
+		 * 章节列表地址
+		 */
+		type="<a title=\"[*]%\" href=\"[args1]\" target=\"_blank\"><IMG  src=\"/images/dian.gif\"[*]border=0></a>";
+		System.out.println(convertXml(type));
+		type="<span class=\"hottextx\">内容简介：</span>[args1]</td>";
+		System.out.println(convertXml(type));
+		//缩略图
+		type="<img src=\"[args1]\" alt[*]vspace=\"5\" />";
+		System.out.println(convertXml(type));
 	}
 }

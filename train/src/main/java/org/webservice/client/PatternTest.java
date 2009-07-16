@@ -3,17 +3,17 @@ package org.webservice.client;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.oro.text.regex.MalformedPatternException;
-
 public class PatternTest {
-	public static void main(String[] args) throws MalformedPatternException {
-		String teststr = "asfdas\n\td\rf<tr> <td class=\"even\" align=\"center\">武侠</td> <td class=\"odd\"><a href=\"http://www.junzitang.com/files/article/info/41/41997.htm\">风流三界</a></td> <td class=\"even\"><a href=\"http://www.junzitang.com/files/article/html/41/41997/3369913.html\" target=\"_blank\">正文 第一百四十四章 王</a></td> <td class=\"odd\"><a href=\"http://www.junzitang.com/userinfo.php?id=311782\" target=\"_blank\">超级殳彳</a></td> <td class=\"even\">1081174</td> <td class=\"odd\" align=\"center\">09-07-16</td> <td class=\"even\" align=\"center\">连载</td> </tr>asfsafd";
+	public static void main(String[] args) {
+		String teststr = "<td class=\"odd\"> [<a href=\"http://www.aishuzhe.com/novelsort1/0/1.html\" class=\"sideA\" target=\"_blank\">玄幻魔法</a>]</td>";
 		// Pattern p = null;
 		// PatternCompiler complier = new Perl5Compiler();
 		// p = complier.compile(\".*?</a>([^<b>]*)<b>.*?",
 		// Perl5Compiler.CASE_INSENSITIVE_MASK);
 		// PatternMatcher matcher = new Perl5Matcher();
-		String regex=".*?<td class=\"odd\"><a href=\"([^<]*)\">.*</a></td>.*?";
+//		String regex=".*?<td class=\"odd\"><a href=\"([^<]*)\">.*</a></td>.*?";
+//		String regex=".*?<td class=\"odd\"> \\[<a href=\".*\" class=\"sideA\" target=\"_blank\">([^<]*)</a>\\]</td>.*?";
+		String regex=".*?<td class=\"odd\"> \\[<a href=\".*\" class=\"sideA\" target=\"_blank\">([^<]*)</a>\\]</td>.*?";
 //		String regex=".*?<tr> <td class=\"even\" align=\"center\">([^</]*)</td>.*?";
 //				.*?<tr> <td class="even" align="center">([^</td>]*)</td>.*?
 		Pattern pt = Pattern.compile(regex);

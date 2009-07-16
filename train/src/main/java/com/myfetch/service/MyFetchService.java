@@ -65,8 +65,8 @@ public class MyFetchService {
 		return retList;
 	}
 	
-	public void disposeBookList(){
-		List<String> list=XMLUtils.getXmlFileName();
+	public void disposeBookList(String files){
+		List<String> list=XMLUtils.getXmlFileName(files);
 		for (String filename:list) {
 			Map<String,String> map =XMLUtils.parseSiteList(XMLUtils.getDocumentXml(filename));
 			String html=HttpHtmlService.getHtmlContent(map.get("burl"));

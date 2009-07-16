@@ -55,7 +55,7 @@ public class ParseHtml {
 				typeList.add(matcher.group(1));
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		
 		pt = Pattern.compile(bookURLEx);
@@ -65,7 +65,7 @@ public class ParseHtml {
 				urlList.add(matcher.group(1));
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		
 		pt = Pattern.compile(bookStatusEx);
@@ -75,7 +75,7 @@ public class ParseHtml {
 				statusList.add(matcher.group(1));
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		
 		pt = Pattern.compile(bookLastEx);
@@ -85,7 +85,7 @@ public class ParseHtml {
 				lastList.add(matcher.group(1));
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		for (int i=0;typeList!=null&&i<typeList.size();i++) {
 			Map<String,String> m=new HashMap<String, String>();
@@ -118,6 +118,7 @@ public class ParseHtml {
 //			exclude="<[^a-zA-Z]"+exclude;
 //		}	
 //		exclude=StringUtils.replace(exclude, "/", "[^a-zA-Z]");
+		
 		if (StringUtils.contains(str, "[args1]")) {
 			str = StringUtils.replace(str, "[args1]", "([^<]*)");
 		}
