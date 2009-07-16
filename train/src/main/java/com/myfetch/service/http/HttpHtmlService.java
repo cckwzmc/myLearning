@@ -20,7 +20,7 @@ import com.myfetch.util.StringEncoding;
 
 public class HttpHtmlService {
 
-	public String getHtmlContent(String url) {
+	public static String getHtmlContent(String url) {
 		String html = "";
 		/* 1 生成 HttpClinet 对象并设置参数 */
 		HttpClient httpClient = new HttpClient();
@@ -31,7 +31,7 @@ public class HttpHtmlService {
 		/* 2 生成 GetMethod 对象并设置参数 */
 		GetMethod getMethod = new GetMethod(url);
 		// 设置 get 请求超时为 5 秒
-		getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 20000);
+		getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 30000);
 		// 设置请求重试处理，用的是默认的重试处理：请求三次
 		getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
 				new DefaultHttpMethodRetryHandler());
@@ -59,7 +59,7 @@ public class HttpHtmlService {
 			// 读取为 InputStream，在网页内容数据量大时候推荐使用(没有解决乱码问题)
 			 InputStream response = getMethod.getResponseBodyAsStream();//
 			// this.inputStream2String(response);
-			 html=this.inputStream2String(response);
+			 html=inputStream2String(response);
 			 return html;
 
 		} catch (HttpException e) {
@@ -76,7 +76,7 @@ public class HttpHtmlService {
 		return html;
 	}
 
-	public String inputStream2String(InputStream is) {
+	public static String inputStream2String(InputStream is) {
 		String ret = "";
 
 		try {

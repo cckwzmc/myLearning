@@ -8,8 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.myfetch.myfetch.dao.MyFetchDao;
+import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.parse.ParseHtml;
+import com.myfetch.util.XMLUtils;
 
 public class MyFetchService {
 	MyFetchDao dao=null;
@@ -60,5 +65,22 @@ public class MyFetchService {
 		return retList;
 	}
 	
-	
+	public void disposeBookList(){
+		List<String> list=XMLUtils.getXmlFileName();
+		for (String filename:list) {
+			Map<String,String> map =XMLUtils.parseSiteList(XMLUtils.getDocumentXml(filename));
+			String html=HttpHtmlService.getHtmlContent(map.get("burl"));
+			List<Map<String,String>> bMap=ParseHtml.parseSiteInfo(html, map);
+			for (Map<String,String> map2: bMap) {
+				this.dao.saveBookUrl(map2.get("bookurl"),map2.get("status"),map2.get("type"),null, map2.get("lastarc"));	
+			}
+			
+		}
+		
+	}
+	public void testDao(){
+		this.dao.getBookList();
+	}
+	public static void main(String[] args) {
+	}
 }
