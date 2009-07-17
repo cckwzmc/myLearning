@@ -62,6 +62,55 @@ public class XMLUtils {
 		}
 		return retMap;
 	}
+	public static Map<String, String> parseConverXml(Document doc) {
+		if(doc==null){
+			System.out.println("documnt is null!!");
+			return null;
+		}
+		Map<String,String> retMap=new HashMap<String, String>();
+		Node node=doc.selectSingleNode("//data/bookinfo");
+		Element e=(Element)node;
+		List eList=e.elements();
+		for (Iterator iterator = eList.iterator(); iterator.hasNext();) {
+			Element el = (Element)iterator.next();
+			logger.info(el.getName()+"::"+el.getText());
+			retMap.put(el.getName(), el.getText());
+		}
+		return retMap;
+	}
+	public static Map<String, String> parseChapterXml(Document doc) {
+		if(doc==null){
+			System.out.println("documnt is null!!");
+			return null;
+		}
+		Map<String,String> retMap=new HashMap<String, String>();
+		Node node=doc.selectSingleNode("//data/chapterlistinfo");
+		Element e=(Element)node;
+		List eList=e.elements();
+		for (Iterator iterator = eList.iterator(); iterator.hasNext();) {
+			Element el = (Element)iterator.next();
+			logger.info(el.getName()+"::"+el.getText());
+			retMap.put(el.getName(), el.getText());
+		}
+		return retMap;
+	}
+	
+	public static Map<String, String> parseContentXml(Document doc) {
+		if(doc==null){
+			System.out.println("documnt is null!!");
+			return null;
+		}
+		Map<String,String> retMap=new HashMap<String, String>();
+		Node node=doc.selectSingleNode("//data/chaptercontent");
+		Element e=(Element)node;
+		List eList=e.elements();
+		for (Iterator iterator = eList.iterator(); iterator.hasNext();) {
+			Element el = (Element)iterator.next();
+			logger.info(el.getName()+"::"+el.getText());
+			retMap.put(el.getName(), el.getText());
+		}
+		return retMap;
+	}
 	public static String parseCoverInfo(){
 		String retstr="";
 		return retstr;
@@ -135,5 +184,16 @@ public class XMLUtils {
 		//缩略图
 		type="<img src=\"[args1]\" alt[*]vspace=\"5\" />";
 		System.out.println(convertXml(type));
+		//章节名称
+		type="<td class=\"ccss\"><div class=\"dccss\"><a href=\"[args1]\" alt=[*]>[args2]</a></div></td>";
+		System.out.println(convertXml(type));
+		type="<div id=\"content\">";
+		System.out.println(convertXml(type));
+		type="<script type=\"text/javascript\" src=\"/ad/3.js\"></script>";
+		System.out.println(convertXml(type));
 	}
+
+
+
+
 }

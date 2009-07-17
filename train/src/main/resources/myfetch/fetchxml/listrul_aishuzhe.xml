@@ -29,7 +29,7 @@
 	<!-- 书名 -->
 	<bookname>&lt;h1&gt;[args1]&lt;/h1&gt;</bookname>
 	<!-- 作者 -->
-	<author>&lt;/h1&gt;&nbsp;&nbsp;作者：[args1]&lt;/td&gt;</author>
+	<author>&lt;/h1&gt;[*]作者：[args1]&lt;/td&gt;</author>
 	<!-- 字数 -->
 	<chinesenum>&lt;td width=&quot;15%&quot;&gt;全文长度：[args1]字&lt;/td&gt;</chinesenum>
 	<!-- 书籍章节地址列表地址 -->
@@ -39,11 +39,21 @@
 </bookinfo>
 <chapterlistinfo>
 	<partname></partname>
-	<chaptername></chaptername>
-	<chaptercontenturl></chaptercontenturl>
+	<chaptername>&lt;td class=&quot;ccss&quot;&gt;&lt;div class=&quot;dccss&quot;&gt;&lt;a href=&quot;[args1]&quot; alt=[*]&gt;[args2]&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;</chaptername>
+	<chaptercontenturl>&lt;td class=&quot;ccss&quot;&gt;&lt;div class=&quot;dccss&quot;&gt;&lt;a href=&quot;[args1]&quot; alt=[*]&gt;[args2]&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;</chaptercontenturl>
+	<!-- add在前面添加 replace 替换 local 在当前url中调整 -->
+	<modurltype>local</modurltype>
+	<addurl></addurl>
+	<replacesourc></replacesourc>
+	<replacede></replacede>
 </chapterlistinfo>
 <chaptercontent>
 	<title></title>
+	<!--1 开始  结束匹配，，2正则表达式 -->
+	<fetchtype>1</fetchtype>
+	<contentstart>&lt;div id=&quot;content&quot;&gt;</contentstart>
+	<contentend>&lt;script type=&quot;text/javascript&quot; src=&quot;/ad/3.js&quot;&gt;&lt;/script&gt;</contentend>
 	<contentbody></contentbody>
+	<replaceword>君子堂,空|www.aishuzhe.com,空|爱书者,空|aishuzhe,空|aishuzhe.com,空</replaceword>
 </chaptercontent>
 </data>

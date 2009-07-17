@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class PatternTest {
 	public static void main(String[] args) {
-		String teststr = "<td class=\"odd\"> [<a href=\"http://www.aishuzhe.com/novelsort1/0/1.html\" class=\"sideA\" target=\"_blank\">玄幻魔法</a>]</td>";
+		String teststr = "<div class>aaaaa<br/>aaaa<br/><script type=\"text/javascript\">";
 		// Pattern p = null;
 		// PatternCompiler complier = new Perl5Compiler();
 		// p = complier.compile(\".*?</a>([^<b>]*)<b>.*?",
@@ -13,8 +13,10 @@ public class PatternTest {
 		// PatternMatcher matcher = new Perl5Matcher();
 //		String regex=".*?<td class=\"odd\"><a href=\"([^<]*)\">.*</a></td>.*?";
 //		String regex=".*?<td class=\"odd\"> \\[<a href=\".*\" class=\"sideA\" target=\"_blank\">([^<]*)</a>\\]</td>.*?";
-		String regex=".*?<td class=\"odd\"> \\[<a href=\".*\" class=\"sideA\" target=\"_blank\">([^<]*)</a>\\]</td>.*?";
+//		String regex=".*?<td class=\"odd\"> \\[<a href=\".*\" class=\"sideA\" target=\"_blank\">([^<]*)</a>\\]</td>.*?";
 //		String regex=".*?<tr> <td class=\"even\" align=\"center\">([^</]*)</td>.*?";
+//		String regex=".*?<img src=\"([^<]*)\" alt.*vspace=\"5\" />.*?";
+		String regex=".*?<div class>([$<^<script]*)<script type=\"text/javascript\">.*?";
 //				.*?<tr> <td class="even" align="center">([^</td>]*)</td>.*?
 		Pattern pt = Pattern.compile(regex);
 		Matcher matcher = pt.matcher(teststr);

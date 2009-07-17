@@ -22,7 +22,10 @@ public class MasterMain {
 			Properties pro=PropertiesLoaderUtils.loadAllProperties("myfetch/fetchxml/fetchSite.properties");
 			MyFetchService service = (MyFetchService) context
 			.getBean("myfetchService");
-			service.disposeBookList((String)pro.get("sitename"));
+			//service.disposeBookList((String)pro.get("sitename"));
+//			service.disposeBookConver(pro.getProperty("bookconversite"));
+			service.disposeBookChapter((String)pro.getProperty("chaptersite"));
+			service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
