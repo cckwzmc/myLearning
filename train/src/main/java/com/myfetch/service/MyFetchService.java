@@ -7,9 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.myfetch.myfetch.dao.MyFetchDao;
 import com.myfetch.service.http.HttpHtmlService;
@@ -34,7 +33,7 @@ public class MyFetchService {
 	public List unFetchList(){
 		List list=this.dao.getUrlList();
 		List retList=new ArrayList();
-		if(org.apache.commons.collections.CollectionUtils.isNotEmpty(list)){
+		if(CollectionUtils.isNotEmpty(list)){
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				if("0".equals(ObjectUtils.toString(map.get("status")))||"".equals(ObjectUtils.toString(map.get("status")))){
