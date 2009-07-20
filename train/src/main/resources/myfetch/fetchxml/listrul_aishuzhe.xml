@@ -26,6 +26,11 @@
 	<litpic>&lt;img src=&quot;[args1]&quot; alt[*]vspace=&quot;5&quot; /&gt;</litpic>
 	<!-- 简介 -->
 	<bookdesc>&lt;span class=&quot;hottextx&quot;&gt;内容简介：&lt;/span&gt;[args1]&lt;/td&gt;</bookdesc>
+	<!--1 开始  结束匹配，，2正则表达式 -->
+	<bookdescfetchtype>1</bookdescfetchtype>
+	<bookdescstart>&lt;span class=&quot;hottextx&quot;&gt;内容简介：&lt;/span&gt;</bookdescstart>
+	<bookdescend>&lt;/td&gt;</bookdescend>
+	<replaceword>君子堂,空|www.aishuzhe.com,www.rentimm.net|爱书者,空|aishuzhe.com,rentimm.net|www.junzitang.com,www.rentimm.net|junzitang.com,rentimm.net</replaceword>
 	<!-- 书名 -->
 	<bookname>&lt;h1&gt;[args1]&lt;/h1&gt;</bookname>
 	<!-- 作者 -->
@@ -54,6 +59,6 @@
 	<contentstart>&lt;div id=&quot;content&quot;&gt;</contentstart>
 	<contentend>&lt;script type=&quot;text/javascript&quot; src=&quot;/ad/3.js&quot;&gt;&lt;/script&gt;</contentend>
 	<contentbody></contentbody>
-	<replaceword>君子堂,空|www.aishuzhe.com,空|爱书者,空|aishuzhe,空|aishuzhe.com,空</replaceword>
+	<replaceword>君子堂,空|www.aishuzhe.com,www.rentimm.net|爱书者,空|aishuzhe.com,rentimm.net|www.junzitang.com,www.rentimm.net|junzitang.com,rentimm.net</replaceword>
 </chaptercontent>
 </data>

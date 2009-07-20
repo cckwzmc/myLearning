@@ -3,9 +3,11 @@ package org.webservice.client;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 public class PatternTest {
 	public static void main(String[] args) {
-		String teststr = "<div class>aaaaa<br/>aaaa<br/><script type=\"text/javascript\">";
+		String teststr = "<div class>aaaaa<br/>www.AiShuzhe.comaaaa<br/><script type=\"text/javascript\">";
 		// Pattern p = null;
 		// PatternCompiler complier = new Perl5Compiler();
 		// p = complier.compile(\".*?</a>([^<b>]*)<b>.*?",
@@ -16,6 +18,7 @@ public class PatternTest {
 //		String regex=".*?<td class=\"odd\"> \\[<a href=\".*\" class=\"sideA\" target=\"_blank\">([^<]*)</a>\\]</td>.*?";
 //		String regex=".*?<tr> <td class=\"even\" align=\"center\">([^</]*)</td>.*?";
 //		String regex=".*?<img src=\"([^<]*)\" alt.*vspace=\"5\" />.*?";
+		System.out.println(StringUtils.replace(teststr,"(?i)aishuzhe.com", "rentimm.net"));
 		String regex=".*?<div class>([$<^<script]*)<script type=\"text/javascript\">.*?";
 //				.*?<tr> <td class="even" align="center">([^</td>]*)</td>.*?
 		Pattern pt = Pattern.compile(regex);
@@ -23,6 +26,15 @@ public class PatternTest {
 		while(matcher.find()){
 			System.out.println(matcher.groupCount()+matcher.group(1));
 		}
+		String   oldString   =   "abCde123Abc";  
+        String   newString   =   oldString.replaceAll("(?i)abc",   "ABC");  
+        System.out.println(newString);  
+         
+        newString   =   oldString.replaceAll("a(?i)bc",   "ABC");  
+        System.out.println(newString);  
+         
+        newString   =   oldString.replaceAll("a((?i)b)c",   "ABC");  
+        System.out.println(newString);       
 //		boolean b = matcher.matches(teststr, p);
 
 		//		

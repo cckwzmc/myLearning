@@ -151,6 +151,11 @@ public class ParseHtml {
 		String chinesenumEx = convertRegex(map.get("chinesenum"));
 		String chapterlisturlEx = convertRegex(map.get("chapterlisturl"));
 		String keywordEx = convertRegex(map.get("keyword"));
+		String bookdescfetchtype=map.get("bookdescfetchtype");
+		String bookdescstart=map.get("bookdescstart");
+		String bookdescend=map.get("bookdescend");
+		String replaceWord=map.get("replaceword");
+		String[] rep=StringUtils.split(replaceWord,"|");
 
 		Map<String, String> bookconver = new HashMap<String, String>();
 		Pattern pt = Pattern.compile(litpicEx);
@@ -162,17 +167,35 @@ public class ParseHtml {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		pt = Pattern.compile(bookdescEx);
-		matcher = pt.matcher(html);
-		try {
-			while (matcher.find()) {
-				bookconver.put("bookdesc", matcher.group(1));
+		if("1".equals(bookdescfetchtype)){
+			try {
+				String descReset=StringUtils.substring(html,StringUtils.indexOf(html, bookdescstart)+bookdescstart.length());
+				int end=StringUtils.indexOf(descReset, bookdescend);
+				String content=StringUtils.substring(descReset, 0, end);
+				//处理一下包含、、、域名、、站点名的
+				if(rep.length>0){
+					for (int i = 0; i < rep.length; i++) {
+						String[] word=StringUtils.split(rep[i], ",");
+						if(word.length==2){
+							content.replaceAll("(?i)"+word[0], StringUtils.equals(word[1], "空")?"":word[1]);
+						}
+					}
+				}
+				bookconver.put("bookdesc",content);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		}else if("2".equals(bookdescfetchtype)){
+			pt = Pattern.compile(bookdescEx);
+			matcher = pt.matcher(html);
+			try {
+				while (matcher.find()) {
+					bookconver.put("bookdesc", matcher.group(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 		pt = Pattern.compile(booknameEx);
 		matcher = pt.matcher(html);
 		try {
@@ -243,6 +266,10 @@ public class ParseHtml {
 				while (matcher.find()) {
 					Map<String, String> chapterList = new HashMap<String, String>();
 					String modrul = matcher.group(1);
+					StringUtils.replace(modrul, "&nbsp;", "");
+					if("".equals(modrul.trim())){
+						continue;
+					}
 					// chapterList.put("chaptercontenturl", modrul);
 					chapterList.put("chaptername", matcher.group(2));
 					if ("local".equals(modurltypeEx.trim())) {
@@ -293,14 +320,14 @@ public class ParseHtml {
 		if (StringUtils.isNotBlank(fetchTypeEx) && "1".equals(fetchTypeEx)) {
 			try {
 				int start=StringUtils.indexOf(html, startEx)+startEx.length();
-				int end=StringUtils.indexOf(html, endEx)-endEx.length();
+				int end=StringUtils.indexOf(html, endEx);
 				String content=StringUtils.substring(html, start, end);
 				//处理一下包含、、、域名、、站点名的
 				if(rep.length>0){
 					for (int i = 0; i < rep.length; i++) {
 						String[] word=StringUtils.split(rep[i], ",");
 						if(word.length==2){
-							StringUtils.replace(content, word[0], StringUtils.equals(word[1], "空")?"":word[1]);
+							content.replaceAll("(?i)"+word[0], StringUtils.equals(word[1], "空")?"":word[1]);
 						}
 					}
 				}
