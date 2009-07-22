@@ -210,7 +210,11 @@ public class XMLUtils {
 //		type="<script type=\"text/javascript\" src=\"/ad/3.js\"></script>";
 //		System.out.println(convertXml(type));
 //		type="<TD noWrap align=middle><A class=ahui12[*]>[args1]</a></TD>####<TD align=left><A class=ahui12 href=\"[args1]\"><font color=\"#006699\">[*]</font></a></TD>####<TD align=left><A class=ahui12[*]><font color=\"#006699\">[args1]</font></a></TD>####<TD align=left><A class=ahuang12[*]href=\"/html/book/[*]\">[args1]</a></TD>####<TD align=middle><FONT color=blue>[args1]</FONT></TD>";
-		type="<TR bgColor=#ffffff height=24>[*]<TD align=left>100</TD>[*]<TD noWrap align=middle><A class=ahui12[*]>[arg1]</a></TD>[*]<TD align=left><A class=ahui12[*]href=\"[arg1]\"><font color=\"#006699\">[arg1]</font></a></TD>[*]<TD align=left><A class=ahuang12[*]>[arg1]</a></TD>[*]<TD align=middle><A class=ahui12[*]<TD align=middle><FONT color=blue>[arg1]</FONT></TD>[*]</TR>";
+//		type="<TR bgColor=#ffffff height=24>[*]<TD align=left>100</TD>[*]<TD noWrap align=middle><A class=ahui12[*]>[arg1]</a></TD>[*]<TD align=left><A class=ahui12[*]href=\"[arg1]\"><font color=\"#006699\">[arg1]</font></a></TD>[*]<TD align=left><A class=ahuang12[*]>[arg1]</a></TD>[*]<TD align=middle><A class=ahui12[*]<TD align=middle><FONT color=blue>[arg1]</FONT></TD>[*]</TR>";
+//		System.out.println(convertXml(type));
+//		type="<td height=\"22\" align=\"center\">[[*]玄幻魔法</a>]</td>##<td align=\"left\">[*]目录</a>]&nbsp;<a href=\"[args1]\">[*]</a></td>##<td align=\"left\">[*]目录</a>]&nbsp;<a href=\"[*]\">[args1]</a></td>##<td align=\"center\"><a href=\"/[*].aspx\">[args1]</a></td>##<td align=\"left\"><a href=\"/Html/Book/[*]\" target=\"_blank\">[args1]</a></td>##<td align=\"center\"><font color=blue>[args1]</font></td>";
+//		System.out.println(convertXml(type));
+		type="<img src=\"/[args1]\" width=\"120\" height=\"150\">";
 		System.out.println(convertXml(type));
 	}
 

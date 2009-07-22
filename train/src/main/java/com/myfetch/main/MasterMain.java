@@ -18,8 +18,8 @@ public class MasterMain {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("myfetch/fetchxml/fetchSite.properties");
 			MyFetchService service = (MyFetchService) context.getBean("myfetchService");
 			// service.disposeBookMap("aishuzhe");
-			 service.disposeBookList((String)pro.get("sitename"));
-			// service.disposeBookConver(pro.getProperty("bookconversite"));
+//			 service.disposeBookList((String)pro.get("sitename"));
+			 service.disposeBookConver(pro.getProperty("bookconversite"));
 //			service.disposeBookChapter((String) pro.getProperty("chaptersite"));
 			// service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
 			// service.saveDataToDedecms(pro.getProperty("miscsite"));
