@@ -28,7 +28,7 @@
 		<replacebookurlsource>/Article</replacebookurlsource>
 		<replacebookurldesc>http://www.zuilu.com/Article</replacebookurldesc>
 		<patternType>1</patternType>
-		<pagestr>&lt;TR bgColor=#ffffff height=24&gt;[*]&lt;TD align=left&gt;100&lt;/TD&gt;[*]&lt;TD noWrap align=middle&gt;&lt;A class=ahui12[*]&gt;[args1]&lt;/a&gt;&lt;/TD&gt;[*]&lt;TD align=left&gt;&lt;A class=ahui12[*]href=&quot;[args1]&quot;&gt;&lt;font color=&quot;#006699&quot;&gt;[args1]&lt;/font&gt;&lt;/a&gt;&lt;/TD&gt;[*]&lt;TD align=left&gt;&lt;A class=ahuang12[*]&gt;[args1]&lt;/a&gt;&lt;/TD&gt;[*]&lt;TD align=middle&gt;&lt;A class=ahui12[*]&lt;TD align=middle&gt;&lt;FONT color=blue&gt;[args1]&lt;/FONT&gt;&lt;/TD&gt;[*]&lt;/TR&gt;</pagestr>
+		<pagestr>&lt;TR bgColor=#ffffff height=24&gt;[*]&lt;TD align=left&gt;100&lt;/TD&gt;[*]&lt;TD noWrap align=middle&gt;&lt;A class=ahui12[*]&gt;[args1]&lt;/a&gt;&lt;/TD&gt;[*]&lt;TD align=left&gt;&lt;A class=ahui12[*]href=&quot;[args1]&quot;&gt;&lt;font color=&quot;#006699&quot;&gt;[args1]&lt;/font&gt;&lt;/a&gt;&lt;/TD&gt;[*]&lt;TD align=left&gt;&lt;A class=ahuang12[*]&gt;[args1]&lt;/a&gt;&lt;/TD&gt;[*]&lt;TD align=middle&gt;&lt;A class=ahui12[*]&lt;TD align=middle&gt;&lt;FONT color=blue&gt;[args1]&lt;/FONT&gt;&lt;/TD&gt;</pagestr>
 	</siteinfo>
 <bookinfo>
 	<!-- 缩略图 -->

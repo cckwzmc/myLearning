@@ -22,8 +22,8 @@ public class PatternTest {
 		System.out.println(StringUtils.replace(teststr,"(?i)aishuzhe.com", "rentimm.net"));
 		String regex=".*?<div class>([$<^<script]*)<script type=\"text/javascript\">.*?";
 //				.*?<tr> <td class="even" align="center">([^</td>]*)</td>.*?
-		regex=".*?<TD align=left><A class=ahui12                   href=\"([^<]*)\"><font color=\"#006699\">.*?";
-//		regex=".*?<TR bgColor=#ffffff height=24>.*<TD align=left>100</TD>.*<TD noWrap align=middle><A class=ahui12.*>([^<]*)</a></TD>.*<TD align=left><A class=ahui12.*href=\"([^<]*)\"><font color=\"#006699\">([^<]*)</font></a></TD>.*<TD align=left><A class=ahuang12.*>([^<]*)</a></TD>.*<TD align=middle><A class=ahui12.*<TD align=middle><FONT color=blue>([^<]*)</FONT></TD>.*</TR>.*?";
+//		regex=".*?<TD align=left><A class=ahui12                   href=\"([^<]*)\"><font color=\"#006699\">.*?";
+		regex=".*?<TR bgColor=#ffffff height=24>.*<TD align=left>100</TD>.*<TD noWrap align=middle><A class=ahui12.*>([^<]*)</a></TD>.*<TD align=left><A class=ahui12.*href=\"([^<]*)\"><font color=\"#006699\">([^<]*)</font></a></TD>.*<TD align=left><A class=ahuang12.*>([^<]*)</a></TD>.*<TD align=middle><A class=ahui12.*<TD align=middle><FONT color=blue>([^<]*)</FONT></TD>                				</TR>.*?";
 		Pattern pt = Pattern.compile(regex);
 		Matcher matcher = pt.matcher(teststr);
 		while(matcher.find()){
