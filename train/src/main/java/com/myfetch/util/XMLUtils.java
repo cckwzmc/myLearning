@@ -46,6 +46,24 @@ public class XMLUtils {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public static Map<String,String> parseBookTypeList(Document doc){
+		if(doc==null){
+			System.out.println("documnt is null!!");
+			return null;
+		}
+		Map<String,String> retMap=new HashMap<String, String>();
+		Node node=doc.selectSingleNode("//data/booktypemap");
+		Element e=(Element)node;
+		List eList=e.elements();
+		for (Iterator iterator = eList.iterator(); iterator.hasNext();) {
+			Element el = (Element)iterator.next();
+			logger.info(el.getName()+"::"+el.getText());
+			retMap.put(el.getName(), el.getText());
+		}
+		return retMap;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public static Map<String,String> parseSiteList(Document doc){
 		if(doc==null){
 			System.out.println("documnt is null!!");
@@ -164,32 +182,35 @@ public class XMLUtils {
 //		System.out.println(parseSiteList(getDocumentXml(getXmlFileName().get(0))));
 		//书籍类别
 		String type="<td class=\"odd\"> [<a href=\"[*]\" class=\"sideA\" target=\"_blank\">[args1]</a>]</td>";
-		System.out.println(convertXml(type));
-		//书籍url
-		type="<td class=\"oddf\"><a href=\"[args1]\" target=\"_blank\">[*]</a>";
-		System.out.println(convertXml(type));
-		//最新章节
-		type="<td class=\"even\"><a href=\"[*]target=\"_blank\">[args1]</a></td>";
-		System.out.println(convertXml(type));
-		//书籍是否完结
-		type="<td class=\"even\" align=\"center\">[args1]</td>";
-		System.out.println(convertXml(type));
-		/**
-		 * 章节列表地址
-		 */
-		type="<a title=\"[*]%\" href=\"[args1]\" target=\"_blank\"><IMG  src=\"/images/dian.gif\"[*]border=0></a>";
-		System.out.println(convertXml(type));
-		type="<span class=\"hottextx\">内容简介：</span>[args1]</td>";
-		System.out.println(convertXml(type));
-		//缩略图
-		type="<img src=\"[args1]\" alt[*]vspace=\"5\" />";
-		System.out.println(convertXml(type));
-		//章节名称
-		type="<td class=\"ccss\"><div class=\"dccss\"><a href=\"[args1]\" alt=[*]>[args2]</a></div></td>";
-		System.out.println(convertXml(type));
-		type="<div id=\"content\">";
-		System.out.println(convertXml(type));
-		type="<script type=\"text/javascript\" src=\"/ad/3.js\"></script>";
+//		System.out.println(convertXml(type));
+//		//书籍url
+//		type="<td class=\"oddf\"><a href=\"[args1]\" target=\"_blank\">[*]</a>";
+//		System.out.println(convertXml(type));
+//		//最新章节
+//		type="<td class=\"even\"><a href=\"[*]target=\"_blank\">[args1]</a></td>";
+//		System.out.println(convertXml(type));
+//		//书籍是否完结
+//		type="<td class=\"even\" align=\"center\">[args1]</td>";
+//		System.out.println(convertXml(type));
+//		/**
+//		 * 章节列表地址
+//		 */
+//		type="<a title=\"[*]%\" href=\"[args1]\" target=\"_blank\"><IMG  src=\"/images/dian.gif\"[*]border=0></a>";
+//		System.out.println(convertXml(type));
+//		type="<span class=\"hottextx\">内容简介：</span>[args1]</td>";
+//		System.out.println(convertXml(type));
+//		//缩略图
+//		type="<img src=\"[args1]\" alt[*]vspace=\"5\" />";
+//		System.out.println(convertXml(type));
+//		//章节名称
+//		type="<td class=\"ccss\"><div class=\"dccss\"><a href=\"[args1]\" alt=[*]>[args2]</a></div></td>";
+//		System.out.println(convertXml(type));
+//		type="<div id=\"content\">";
+//		System.out.println(convertXml(type));
+//		type="<script type=\"text/javascript\" src=\"/ad/3.js\"></script>";
+//		System.out.println(convertXml(type));
+//		type="<TD noWrap align=middle><A class=ahui12[*]>[args1]</a></TD>####<TD align=left><A class=ahui12 href=\"[args1]\"><font color=\"#006699\">[*]</font></a></TD>####<TD align=left><A class=ahui12[*]><font color=\"#006699\">[args1]</font></a></TD>####<TD align=left><A class=ahuang12[*]href=\"/html/book/[*]\">[args1]</a></TD>####<TD align=middle><FONT color=blue>[args1]</FONT></TD>";
+		type="<TR bgColor=#ffffff height=24>[*]<TD align=left>100</TD>[*]<TD noWrap align=middle><A class=ahui12[*]>[arg1]</a></TD>[*]<TD align=left><A class=ahui12[*]href=\"[arg1]\"><font color=\"#006699\">[arg1]</font></a></TD>[*]<TD align=left><A class=ahuang12[*]>[arg1]</a></TD>[*]<TD align=middle><A class=ahui12[*]<TD align=middle><FONT color=blue>[arg1]</FONT></TD>[*]</TR>";
 		System.out.println(convertXml(type));
 	}
 

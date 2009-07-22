@@ -7,7 +7,8 @@ import org.apache.commons.lang.StringUtils;
 
 public class PatternTest {
 	public static void main(String[] args) {
-		String teststr = "<div class>aaaaa<br/>www.AiShuzhe.comaaaa<br/><script type=\"text/javascript\">";
+		String teststr = "<TR bgColor=#ffffff height=24>                <TD align=left>100</TD>                <TD noWrap align=middle><A class=ahui12                   href=\"/Article/2/134.html\">玄幻</a></TD>                <TD align=left><A class=ahui12                   href=\"/Article/154172.html\"><font color=\"#006699\">奇迹公子在异界</font></a></TD>                <TD align=left><A class=ahuang12                  href=\"/html/book/130/154172/4217346.shtm\">第二卷 魔法学院  第三十二章 魔法新概念</a></TD>                <TD align=middle>5月6日</TD>                <TD align=middle><A class=ahui12                   href=\"/Author/WB/154172.html\">依然</a></TD>                <TD align=middle><FONT color=blue>完结</FONT></TD>                				</TR>	";
+		teststr+="<TR bgColor=#ffffff height=24>                <TD align=left>1</TD>                <TD noWrap align=middle><A class=ahui12                   href=\"/Article/2/340.html\">测试1</a></TD>                <TD align=left><A class=ahui12                   href=\"/Article/151136.html\"><font color=\"#006699\">斗罗大陆</font></a></TD>                <TD align=left><A class=ahuang12                  href=\"/html/book/130/151136/4354833.shtm\">第二十五集 单属宗族 第一百八十九章 唐门五堂</a></TD>                <TD align=middle>7月22日</TD>                <TD align=middle><A class=ahui12                   href=\"/Author/WB/151136.html\">唐家三少</a></TD>                <TD align=middle><FONT color=blue>连载</FONT></TD>                				</TR>";
 		// Pattern p = null;
 		// PatternCompiler complier = new Perl5Compiler();
 		// p = complier.compile(\".*?</a>([^<b>]*)<b>.*?",
@@ -21,20 +22,15 @@ public class PatternTest {
 		System.out.println(StringUtils.replace(teststr,"(?i)aishuzhe.com", "rentimm.net"));
 		String regex=".*?<div class>([$<^<script]*)<script type=\"text/javascript\">.*?";
 //				.*?<tr> <td class="even" align="center">([^</td>]*)</td>.*?
+		regex=".*?<TD align=left><A class=ahui12                   href=\"([^<]*)\"><font color=\"#006699\">.*?";
+//		regex=".*?<TR bgColor=#ffffff height=24>.*<TD align=left>100</TD>.*<TD noWrap align=middle><A class=ahui12.*>([^<]*)</a></TD>.*<TD align=left><A class=ahui12.*href=\"([^<]*)\"><font color=\"#006699\">([^<]*)</font></a></TD>.*<TD align=left><A class=ahuang12.*>([^<]*)</a></TD>.*<TD align=middle><A class=ahui12.*<TD align=middle><FONT color=blue>([^<]*)</FONT></TD>.*</TR>.*?";
 		Pattern pt = Pattern.compile(regex);
 		Matcher matcher = pt.matcher(teststr);
 		while(matcher.find()){
-			System.out.println(matcher.groupCount()+matcher.group(1));
+			for (int i = 0; i < matcher.groupCount(); i++) {
+				System.out.println(matcher.group(i+1));
+			}
 		}
-		String   oldString   =   "abCde123Abc";  
-        String   newString   =   oldString.replaceAll("(?i)abc",   "ABC");  
-        System.out.println(newString);  
-         
-        newString   =   oldString.replaceAll("a(?i)bc",   "ABC");  
-        System.out.println(newString);  
-         
-        newString   =   oldString.replaceAll("a((?i)b)c",   "ABC");  
-        System.out.println(newString);       
 //		boolean b = matcher.matches(teststr, p);
 
 		//		

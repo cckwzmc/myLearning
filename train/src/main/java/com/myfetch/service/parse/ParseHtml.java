@@ -42,59 +42,103 @@ public class ParseHtml {
 		String bookLastEx = convertRegex(map.get("lastarc"));
 		String bookStatusEx = convertRegex(map.get("status"));
 		String bookTypeEx = convertRegex(map.get("type"));
-		String pageBlockStart;
-		String pageBlockEnd;
-		List<String> typeList = new ArrayList<String>();
-		List<String> urlList = new ArrayList<String>();
-		List<String> statusList = new ArrayList<String>();
-		List<String> lastList = new ArrayList<String>();
-
-		Pattern pt = Pattern.compile(bookTypeEx);
-		Matcher matcher = pt.matcher(html);
-		try {
-			while (matcher.find()) {
-				typeList.add(matcher.group(1));
+		String bookNameEx = convertRegex(map.get("bookname"));
+		String patterstrEx= convertRegex(map.get("pagestr"));
+		String replacebookurlsource=ObjectUtils.toString(map.get("replacebookurlsource"));
+		String replacebookurldesc=ObjectUtils.toString(map.get("replacebookurldesc"));
+		String patternType=ObjectUtils.toString(map.get("patternType"));
+//		html=StringUtils.replace(html, "\n","");
+		if("1".equals(patternType))
+		{
+			Pattern pt = Pattern.compile(patterstrEx);
+			Matcher matcher = pt.matcher(html);
+			try {
+				while (matcher.find()) {
+					Map<String, String> m = new HashMap<String, String>();
+					String url=matcher.group(2);
+					if(!"".equals(replacebookurlsource)){
+						url=StringUtils.replace(url, replacebookurlsource,replacebookurldesc);
+					}
+					m.put("type", matcher.group(1));
+					m.put("bookurl",url);
+					m.put("lastarc", matcher.group(4));
+					m.put("status", matcher.group(5));
+					m.put("bookname", matcher.group(3));
+					bookInfoList.add(m);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		pt = Pattern.compile(bookURLEx);
-		matcher = pt.matcher(html);
-		try {
-			while (matcher.find()) {
-				urlList.add(matcher.group(1));
+		}else{
+			String pageBlockStart;
+			String pageBlockEnd;
+			List<String> typeList = new ArrayList<String>();
+			List<String> urlList = new ArrayList<String>();
+			List<String> statusList = new ArrayList<String>();
+			List<String> lastList = new ArrayList<String>();
+			List<String> booknameList = new ArrayList<String>();
+			System.out.println(html);
+			Pattern pt = Pattern.compile(bookTypeEx);
+			Matcher matcher = pt.matcher(html);
+			try {
+				while (matcher.find()) {
+					typeList.add(matcher.group(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		pt = Pattern.compile(bookStatusEx);
-		matcher = pt.matcher(html);
-		try {
-			while (matcher.find()) {
-				statusList.add(matcher.group(1));
+	
+			pt = Pattern.compile(bookURLEx);
+			matcher = pt.matcher(html);
+			try {
+				while (matcher.find()) {
+					String url=matcher.group(1);
+					if(!"".equals(replacebookurlsource)){
+						url=StringUtils.replace(url, replacebookurlsource,replacebookurldesc);
+					}
+					urlList.add(url);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		pt = Pattern.compile(bookLastEx);
-		matcher = pt.matcher(html);
-		try {
-			while (matcher.find()) {
-				lastList.add(matcher.group(1));
+			pt = Pattern.compile(bookNameEx);
+			matcher = pt.matcher(html);
+			try {
+				while (matcher.find()) {
+					booknameList.add(matcher.group(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		for (int i = 0; typeList != null && i < typeList.size(); i++) {
-			Map<String, String> m = new HashMap<String, String>();
-			m.put("type", typeList.get(i));
-			m.put("bookurl", urlList.get(i));
-			m.put("lastarc", lastList.get(i));
-			m.put("status", statusList.get(i));
-			bookInfoList.add(m);
+	
+			pt = Pattern.compile(bookStatusEx);
+			matcher = pt.matcher(html);
+			try {
+				while (matcher.find()) {
+					statusList.add(matcher.group(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	
+			pt = Pattern.compile(bookLastEx);
+			matcher = pt.matcher(html);
+			try {
+				while (matcher.find()) {
+					lastList.add(matcher.group(1));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			for (int i = 0; typeList != null && i < typeList.size(); i++) {
+				Map<String, String> m = new HashMap<String, String>();
+				m.put("type", typeList.get(i));
+				m.put("bookurl", urlList.get(i));
+				m.put("lastarc", lastList.get(i));
+				m.put("status", statusList.get(i));
+				m.put("bookname", booknameList.get(i));
+				bookInfoList.add(m);
+			}
 		}
 		return bookInfoList;
 	}

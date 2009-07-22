@@ -1,5 +1,6 @@
 package com.myfetch.myfetch.dao;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +21,11 @@ public class MyFetchDao extends JdbcBaseDao {
 
 	// book cover url
 	// isfetch是否立即采集
-	@SuppressWarnings("unchecked")
-	public List getBookList() {
-		String sql = "select t.bookid,t.url,t.finishstatus,t.booktype,t.bookstatus,t.lasterarticle,t.picurl,t.desc,t.chinesenum,t.author,t.keyword,t.isfetch  from booklisturls t";
-		return this.getJdbcTemplate().queryForList(sql);
-	}
+//	@SuppressWarnings("unchecked")
+//	public List getBookList() {
+//		String sql = "select t.bookid,t.url,t.finishstatus,t.booktype,t.bookstatus,t.lasterarticle,t.picurl,t.desc,t.chinesenum,t.author,t.keyword,t.isfetch  from booklisturls t";
+//		return this.getJdbcTemplate().queryForList(sql);
+//	}
 
 	// book table list
 	/**
@@ -54,8 +55,12 @@ public class MyFetchDao extends JdbcBaseDao {
 	}
 
 	public void saveChapterInfo(String chaptername, String chapterurl, Integer bookid) {
-		String sql = "insert into fetchchapterurls (`bookid`,`chaptername`,`chapterurl`,`isfetch`) values (?,?,?,?)";
-		this.getJdbcTemplate().update(sql, new Object[] { bookid, chaptername, chapterurl, "0" });
+		try {
+			String sql = "insert into fetchchapterurls (`bookid`,`chaptername`,`chapterurl`,`isfetch`,`fetchdate`) values (?,?,?,?,NOW())";
+			this.getJdbcTemplate().update(sql, new Object[] { bookid, chaptername, chapterurl, "0" });
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
 	}
 
 	public void saveChapterListHtml(Integer bookid, String html) {
@@ -63,11 +68,14 @@ public class MyFetchDao extends JdbcBaseDao {
 		this.getJdbcTemplate().update(sql, new Object[] { bookid, html });
 	}
 
-	public List getContentList() {
+	public List getFetchchapterurlsList() {
 		String sql = "select t.bookid,t.id,isfetch,chapterurl  from fetchchapterurls t";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
-
+	public List getFetchchapterurlsListByBookid(Integer bookid) {
+		String sql = "select t.bookid,t.id,isfetch,chapterurl  from fetchchapterurls t where t.bookid=? order by id desc";
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{bookid});
+	}
 	public void saveContentInfo(Integer bookid, String id, String content, String title) {
 		String sql = "insert into fetchchaptercontent (`bookid`,`chapterid`,`body`,`title`) values (?,?,?,?)";
 		this.getJdbcTemplate().update(sql, new Object[] { bookid, id, content, title });
@@ -140,19 +148,20 @@ public class MyFetchDao extends JdbcBaseDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List getFetchArcListByBookId(Integer bookid) {
-		String sql=" select chaptername,body from fetchchaptercontent t left join fetchchapterurls t1" +
-				" on t.chapterid=t1.id where t.bookid=?  and isfetch=0";
-		return this.getJdbcTemplate().queryForList(sql,new Object[]{bookid});
+		String sql = " select chaptername,body,t1.id from fetchchaptercontent t left join fetchchapterurls t1" + " on t.chapterid=t1.id where t.bookid=?  and isfetch=0";
+		return this.getJdbcTemplate().queryForList(sql, new Object[] { bookid });
 	}
+
 	/**
 	 * 只取章节名称
+	 * 
 	 * @param bookid
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public List getFetchTableListByBookId(Integer bookid) {
-		String sql=" select id,bookid,chaptername from fetchchapterurls where bookid=? and isfetch=0";
-		return this.getJdbcTemplate().queryForList(sql,new Object[]{bookid});
+		String sql = " select id,bookid,chaptername from fetchchapterurls where bookid=? and isfetch=0";
+		return this.getJdbcTemplate().queryForList(sql, new Object[] { bookid });
 	}
 
 	/**
@@ -215,8 +224,9 @@ public class MyFetchDao extends JdbcBaseDao {
 				+ " VALUES (?,?,0,?,?,1, " + "'1','0','0','0', ?,'','',?," + " '',?,?,?, '1','0',?," + "?,'',null,?,?)";
 		this.getJdbcTemplate().update(
 				sql,
-				new Object[] { arcid, typeid, time, flag, ObjectUtils.toString(bookInfo.get("bookname")), ObjectUtils.toString(bookInfo.get("author")), ObjectUtils.toString(bookInfo.get("litpic")), time, time, StringUtils.substring(StringUtils.replace(StringUtils.replace(ObjectUtils.toString(bookInfo.get("bookdesc")),"&nbsp;",""),"<br/>",""), 0, 254),
-						ObjectUtils.toString(bookInfo.get("keyword")), ObjectUtils.toString(bookInfo.get("chinesenum")), ObjectUtils.toString(bookInfo.get("lasterarticle")) });
+				new Object[] { arcid, typeid, time, flag, ObjectUtils.toString(bookInfo.get("bookname")), ObjectUtils.toString(bookInfo.get("author")), ObjectUtils.toString(bookInfo.get("litpic")), time, time,
+						StringUtils.substring(StringUtils.replace(StringUtils.replace(ObjectUtils.toString(bookInfo.get("bookdesc")), "&nbsp;", ""), "<br/>", ""), 0, 254), ObjectUtils.toString(bookInfo.get("keyword")), ObjectUtils.toString(bookInfo.get("chinesenum")),
+						ObjectUtils.toString(bookInfo.get("lasterarticle")) });
 
 		sql = "insert into dede_arctiny (id,typeid,typeid2,arcrank,channel,senddate,sortrank,mid)" + " values (?,?,0,0,1,?,?,1)";
 		this.getJdbcTemplate().update(sql, new Object[] { arcid, typeid, time, time });
@@ -230,11 +240,12 @@ public class MyFetchDao extends JdbcBaseDao {
 	 * 
 	 * @param typeid
 	 * @param bookid
-	 * @param bookInfo 只有body 和chaptername 字段
+	 * @param bookInfo
+	 *            只有body 和chaptername 字段
 	 * @param converId
 	 */
 	@SuppressWarnings("unchecked")
-	public void saveArticleForDede(Integer typeid, Integer bookid, Map arcInfo, Map bookInfo,Integer converId,Boolean addLastId) {
+	public void saveArticleForDede(Integer typeid, Integer bookid, Map arcInfo, Map bookInfo, Integer converId, Boolean addLastId) {
 		String sql = "select max(id) from dede_arctiny";
 		Integer arcid = this.getJdbcTemplate().queryForInt(sql);
 		arcid += 1;
@@ -242,22 +253,74 @@ public class MyFetchDao extends JdbcBaseDao {
 		String flag = "x";
 		String time = StringUtils.substring(ObjectUtils.toString(lTime), 0, ObjectUtils.toString(lTime).length() - 3);
 
-		sql = "insert into dede_archives(id,typeid,typeid2,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle,"
-			+ " color,writer,source,litpic,pubdate,senddate,mid, " 
-			+ "notpost,description,keywords,filename,isbookpage,chinesenum,lasterarticle) "
-			+ " VALUES (?,?,0,?,?,1, " + "'1','0','0','0', ?,'','',?," + " '',?,?,?, '1','0',?," + "?,'',?,?,?)";
+		sql = "insert into dede_archives(id,typeid,typeid2,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle," + " color,writer,source,litpic,pubdate,senddate,mid, " + "notpost,description,keywords,filename,isbookpage,chinesenum,lasterarticle) "
+				+ " VALUES (?,?,0,?,?,1, " + "'1','0','0','0', ?,'','',?," + " '',?,?,?, '1','0',?," + "?,'',?,?,?)";
 		this.getJdbcTemplate().update(
 				sql,
-				new Object[] {arcid, typeid, time, flag, ObjectUtils.toString(bookInfo.get("chaptername")), ObjectUtils.toString(arcInfo.get("author")), ObjectUtils.toString(arcInfo.get("litpic")), time, time, StringUtils.substring(StringUtils.replace(StringUtils.replace(ObjectUtils.toString(arcInfo.get("bookdesc")),"&nbsp;",""),"<br/>",""), 0, 254),
-						ObjectUtils.toString(arcInfo.get("keyword")),converId, null, null });
+				new Object[] { arcid, typeid, time, flag, ObjectUtils.toString(bookInfo.get("chaptername")), ObjectUtils.toString(arcInfo.get("author")), ObjectUtils.toString(arcInfo.get("litpic")), time, time,
+						StringUtils.substring(StringUtils.replace(StringUtils.replace(ObjectUtils.toString(arcInfo.get("bookdesc")), "&nbsp;", ""), "<br/>", ""), 0, 254), ObjectUtils.toString(arcInfo.get("keyword")), converId, null, null });
 		sql = "insert into dede_arctiny (id,typeid,typeid2,arcrank,channel,senddate,sortrank,mid)" + " values (?,?,0,0,1,?,?,1)";
-		this.getJdbcTemplate().update(sql, new Object[] {arcid, typeid, time, time });
+		this.getJdbcTemplate().update(sql, new Object[] { arcid, typeid, time, time });
 		sql = "insert into dede_addonarticle (aid,typeid,body) values (?,?,?)";
-		this.getJdbcTemplate().update(sql, new Object[] {arcid, typeid, ObjectUtils.toString(bookInfo.get("body")) });
-		if(addLastId){
-			sql="update dede_archives set lasterartid=? where id=?";
-			this.getJdbcTemplate().update(sql,new Object[]{arcid,converId});
+		this.getJdbcTemplate().update(sql, new Object[] { arcid, typeid, ObjectUtils.toString(bookInfo.get("body")) });
+		if (addLastId) {
+			sql = "update dede_archives set lasterartid=? where id=?";
+			this.getJdbcTemplate().update(sql, new Object[] { arcid, converId });
 		}
 	}
 
+	public void saveBookType(String bookname, String type, String bookurl) {
+		try {
+			String sql = "insert into fetchbookmap(bookname,type,bookurl) values(?,?,?)";
+			this.getJdbcTemplate().update(sql, new Object[] { bookname, type, bookurl });
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
+
+	public String getBookTypeByName(String bookname) {
+		String sql = "select type from fetchbookmap t where lower(t.bookname)=?";
+		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { bookname.toLowerCase() });
+		if (CollectionUtils.isNotEmpty(list)) {
+			if (list.size() > 1) {
+				return "";
+			}
+			return ObjectUtils.toString(((Map) list.get(0)).get("type"));
+		}
+		return "";
+	}
+
+	public int getFetchurlsLastUpdate(String lastarcName, String url) {
+		String sql = "select count(*) c from fetchurls t where t.url=? and lasterarticle=?";
+		return this.getJdbcTemplate().queryForInt(sql, new Object[] { url, lastarcName });
+	}
+
+	public int getFetchurlsUrl(String url) {
+		String sql = "select count(*) c from fetchurls t where t.url=?";
+		return this.getJdbcTemplate().queryForInt(sql, new Object[] { url });
+	}
+
+	public int getFetchbookconverUrl(String url) {
+		String sql = "select count(*) c from fetchbookconver t where t.booklisturl=?";
+		return this.getJdbcTemplate().queryForInt(sql, new Object[] { url });
+	}
+
+	public void updateFetch(Integer id) {
+		String sql="update fetchchapterurls set isfetch=1 where id=?";
+		this.getJdbcTemplate().update(sql, new Object[]{id});
+	}
+
+	public List getFetchchapterurlsByBookid(int int1) {
+		String sql="select * from fetchchapterurls t where t.bookid=?";
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{int1});
+	}
+
+	public String getFetchBookMap(String bookname) {
+		String sql="select type from fetchbookmap t where t.bookname=?";
+		List list=this.getJdbcTemplate().queryForList(sql,new Object[]{bookname});
+		if(CollectionUtils.isNotEmpty(list)){
+			return (String) ((Map)list.get(0)).get("type");
+		}
+		return "";
+	}
 }
