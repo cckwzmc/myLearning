@@ -13,8 +13,8 @@
 			<status>&lt;td align=&quot;center&quot;&gt;&lt;font color=blue&gt;[args1]&lt;/font&gt;&lt;/td&gt;|&lt;td align=&quot;center&quot;&gt;&lt;font color=red&gt;[args1]&lt;/font&gt;&lt;/td&gt;</status>
 			<bookurl>&lt;td align=&quot;left&quot;&gt;[*]目录&lt;/a&gt;]&amp;nbsp;&lt;a href=&quot;[args1]&quot;&gt;[*]&lt;/a&gt;&lt;/td&gt;</bookurl>
 			<bookname>&lt;td align=&quot;left&quot;&gt;[*]目录&lt;/a&gt;]&amp;nbsp;&lt;a href=&quot;[*]&quot;&gt;[args1]&lt;/a&gt;&lt;/td&gt;</bookname>
-			<replacebookurlsource>/Html</replacebookurlsource>
-			<replacebookurldesc>http://www.sdxsw.com/Html</replacebookurldesc>
+			<replacebookurlsource>/Book</replacebookurlsource>
+			<replacebookurldesc>http://www.sdxsw.com/Book</replacebookurldesc>
 			<replacesrc1>font color=red</replacesrc1>
 			<replacedesc1>font color=blue</replacedesc1>
 			<!--  page list block -->
@@ -34,7 +34,7 @@
 	<bookdescfetchtype>1</bookdescfetchtype>
 	<bookdescstart>&lt;span class=&quot;comment&quot;&gt;</bookdescstart>
 	<bookdescend>&lt;/span&gt;</bookdescend>
-	<replaceword>君子堂,空|www.aishuzhe.com,www.rentimm.net|爱书者,空|aishuzhe.com,rentimm.net|www.junzitang.com,www.rentimm.net|junzitang.com,rentimm.net</replaceword>
+	<replaceword>手打网,91中文|www.sdxsw.com,www.91zw.cn|手打团,91中文|sdxsw.com,91zw.cn</replaceword>
 	<!-- 书名 -->
 	<bookname>&lt;span class=&quot;booktitle&quot;&gt;[args1]&lt;/span&gt;</bookname>
 	<type>valign=&quot;middle&quot;&gt;类别：&lt;a href=&quot;/Book[*]&quot;>[args1]&lt;/a&gt;[*]作者：</type>
@@ -50,14 +50,16 @@
 	<replacedesc2>http://www.sdxsw.com/Html</replacedesc2>
 	<replacesrc1>/UploadPhoto</replacesrc1>
 	<replacedesc1>http://www.sdxsw.com/UploadPhoto</replacedesc1>
-	<urls>http://www.sdxsw.com/Book/3641.aspx</urls>
+	<urls></urls>
 </bookinfo>
 <chapterlistinfo>
 	<partname></partname>
-	<chaptername>&lt;td class=&quot;ccss&quot;&gt;&lt;div class=&quot;dccss&quot;&gt;&lt;a href=&quot;[args1]&quot; alt=[*]&gt;[args2]&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;</chaptername>
-	<chaptercontenturl>&lt;td class=&quot;ccss&quot;&gt;&lt;div class=&quot;dccss&quot;&gt;&lt;a href=&quot;[args1]&quot; alt=[*]&gt;[args2]&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;</chaptercontenturl>
-	<!-- add在前面添加 replace 替换 local 在当前url中调整 -->
+	<chaptername> href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptername>
+	<chaptercontenturl> href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptercontenturl>
+	<!-- add在前面添加    /// replace 替换//// local 在当前url中调整 -->
 	<modurltype>local</modurltype>
+	<!-- 是否生成动态URL地址  1是  0否 -->
+	<isgendongtaiurl>0</isgendongtaiurl>
 	<addurl></addurl>
 	<replacesourc></replacesourc>
 	<replacede></replacede>
@@ -66,9 +68,9 @@
 	<title></title>
 	<!--1 开始  结束匹配，，2正则表达式 -->
 	<fetchtype>1</fetchtype>
-	<contentstart>&lt;div id=&quot;content&quot;&gt;</contentstart>
-	<contentend>&lt;script type=&quot;text/javascript&quot; src=&quot;/ad/3.js&quot;&gt;&lt;/script&gt;</contentend>
+	<contentstart>&lt;script type=&quot;text/javascript&quot; src=&quot;/js/gonggao.js&quot;&gt;&lt;/script&gt;</contentstart>
+	<contentend>&lt;div class=&quot;shouda&quot;&gt;</contentend>
 	<contentbody></contentbody>
-	<replaceword>君子堂,空|www.aishuzhe.com,www.rentimm.net|爱书者,空|aishuzhe.com,rentimm.net|www.junzitang.com,www.rentimm.net|junzitang.com,rentimm.net</replaceword>
+	<replaceword>手打网,91中文|www.sdxsw.com,www.91zw.cn|手打团,91中文|sdxsw.com,91zw.cn</replaceword>
 </chaptercontent>
 </data>

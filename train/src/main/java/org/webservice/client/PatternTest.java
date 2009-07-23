@@ -10,6 +10,8 @@ public class PatternTest {
 		String teststr = "<TR bgColor=#ffffff height=24>                <TD align=left>100</TD>                <TD noWrap align=middle><A class=ahui12                   href=\"/Article/2/134.html\">玄幻</a></TD>                <TD align=left><A class=ahui12                   href=\"/Article/154172.html\"><font color=\"#006699\">奇迹公子在异界</font></a></TD>                <TD align=left><A class=ahuang12                  href=\"/html/book/130/154172/4217346.shtm\">第二卷 魔法学院  第三十二章 魔法新概念</a></TD>                <TD align=middle>5月6日</TD>                <TD align=middle><A class=ahui12                   href=\"/Author/WB/154172.html\">依然</a></TD>                <TD align=middle><FONT color=blue>完结</FONT></TD>                				</TR>	";
 		teststr+="<TR bgColor=#ffffff height=24>                <TD align=left>1</TD>                <TD noWrap align=middle><A class=ahui12                   href=\"/Article/2/340.html\">测试1</a></TD>                <TD align=left><A class=ahui12                   href=\"/Article/151136.html\"><font color=\"#006699\">斗罗大陆</font></a></TD>                <TD align=left><A class=ahuang12                  href=\"/html/book/130/151136/4354833.shtm\">第二十五集 单属宗族 第一百八十九章 唐门五堂</a></TD>                <TD align=middle>7月22日</TD>                <TD align=middle><A class=ahui12                   href=\"/Author/WB/151136.html\">唐家三少</a></TD>                <TD align=middle><FONT color=blue>连载</FONT></TD>                				</TR>";
 		teststr+="<td height=\"22\" align=\"center\">[<a href=\"/Book/LN48.aspx\">玄幻魔法</a>]</td><td align=\"left\">[<a href=\"/Html/Book/48/3641/List.htm\" target=\"_blank\">目录</a>]&nbsp;<a href=\"/Book/3641.aspx\">斗破苍穹</a></td><td align=\"left\"><a href=\"/Html/Book/48/3641/1140742.htm\" target=\"_blank\">正文&nbsp;第一百九十九章 探测</a></td><td align=\"center\"><a href=\"/WB3641.aspx\">天蚕土豆</a></td><td align=\"center\">7月22日&nbsp;</td><td align=\"center\"><a href=\"/down/down.asp?id=3641\" target=\"_blank\">TXT</a></td><td align=\"center\"><font color=blue>连载</font></td><td align=\"center\">29550</td>";
+		teststr="<td width=\"25%\" height=\"24\"><div align=\"left\"><a title=\"更新时间:2009-1-7 14:02:00 更新字数:2312\" href=\"619328.htm\" target=\"_blank\">第二十四章 第一次套现</a></div></td><td width=\"25%\" height=\"24\"><div align=\"left\"><a title=\"更新时间:2009-1-7 14:02:00 更新字数:2150\" href=\"619325.htm\" target=\"_blank\">第二十一章 无价可估</a></div></td><td width=\"25%\" height=\"24\"><div align=\"left\"><a title=\"更新时间:2009-1-7 14:02:00更新字数:2349\" href=\"619326.htm\" target=\"_blank\">第二十二章 猪栏的理想</a></div></td><td width=\"25%\" height=\"24\"><div align=\"left\"><a title=\"更新时间:2009-1-7 14:02:00 更新字数:2437\" href=\"619327.htm\" target=\"_blank\">第二十三章 远客来访</a></div></td>" +
+				"";
 		// Pattern p = null;
 		// PatternCompiler complier = new Perl5Compiler();
 		// p = complier.compile(\".*?</a>([^<b>]*)<b>.*?",
@@ -24,14 +26,15 @@ public class PatternTest {
 		String regex=".*?<div class>([$<^<script]*)<script type=\"text/javascript\">.*?";
 //				.*?<tr> <td class="even" align="center">([^</td>]*)</td>.*?
 //		regex=".*?<TD align=left><A class=ahui12                   href=\"([^<]*)\"><font color=\"#006699\">.*?";
-//		regex=".*?<TR bgColor=#ffffff height=24>.*<TD align=left>100</TD>.*<TD noWrap align=middle><A class=ahui12.*>([^<]*)</a></TD>.*<TD align=left><A class=ahui12.*href=\"([^<]*)\"><font color=\"#006699\">([^<]*)</font></a></TD>.*<TD align=left><A class=ahuang12.*>([^<]*)</a></TD>.*<TD align=middle><A class=ahui12.*<TD align=middle><FONT color=blue>([^<]*)</FONT></TD>                				</TR>.*?";
-		regex=".*?<td height=\"22\" align=\"center\">.*\">([^<]*)</a>]</td>.*?";
+		regex=".*?<TR bgColor=#ffffff height=24>.*<TD align=left>100</TD>.*<TD noWrap align=middle><A class=ahui12.*>([^<]*)</a></TD>.*<TD align=left><A class=ahui12.*href=\".*\"><font color=\"#006699\">.*</font></a></TD>.*<TD align=left><A class=ahuang12.*>.*</a></TD>.*<TD align=middle><A class=ahui12.*<TD align=middle><FONT color=blue>.*</FONT></TD>                				</TR>.*?";
+		regex=".*?href=\"([^<]*)\" target=\"_blank\">([^<]*)</a></div></td>.*? ";
 		Pattern pt = Pattern.compile(regex);
 		Matcher matcher = pt.matcher(teststr);
 		while(matcher.find()){
-			for (int i = 0; i < matcher.groupCount(); i++) {
-				System.out.println(matcher.group(i+1));
-			}
+			//System.out.println(matcher.groupCount());
+			//for (int i = 0; i < matcher.groupCount(); i++) {
+				System.out.println(matcher.group(1));
+			//}
 		}
 //		boolean b = matcher.matches(teststr, p);
 

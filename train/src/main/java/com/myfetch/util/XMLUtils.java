@@ -216,6 +216,8 @@ public class XMLUtils {
 //		System.out.println(convertXml(type));
 		type="<img src=\"/[args1]\" width=\"120\" height=\"150\">";
 		System.out.println(convertXml(type));
+		type="<a title=\"更新时间[*]\" href=\"[args1]\" target=\"_blank\">[args2]</a>";
+		System.out.println(convertXml(type));
 	}
 
 

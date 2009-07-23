@@ -330,6 +330,7 @@ public class ParseHtml {
 		String addurlEx = convertRegex(map.get("addurl"));
 		String replacesourcEx = convertRegex(map.get("replacesourc"));
 		String replacedeEx = convertRegex(map.get("replacede"));
+		String isgendongtaiurl=map.get("isgendongtaiurl");
 		Pattern pt = null;
 		Matcher matcher = null;
 		if (StringUtils.equals(chaptercontenturlEx, chapternameEx)) {
@@ -340,14 +341,24 @@ public class ParseHtml {
 					Map<String, String> chapterList = new HashMap<String, String>();
 					String modrul = matcher.group(1);
 					StringUtils.replace(modrul, "&nbsp;", "");
-					if ("".equals(modrul.trim())) {
+					if ("".equals(modrul.trim())||(!StringUtils.contains(modrul,".htm")&&!StringUtils.contains(modrul,".asp")&&!StringUtils.contains(modrul,".jsp"))&&!StringUtils.contains(modrul,".php")) {
 						continue;
 					}
 					// chapterList.put("chaptercontenturl", modrul);
 					chapterList.put("chaptername", matcher.group(2));
 					if ("local".equals(modurltypeEx.trim())) {
-						String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
-						chapterList.put("chaptercontenturl", addurl + modrul);
+						if("1".equals(isgendongtaiurl)){
+							String bookid="",chapterid="";
+							String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/"));
+							bookid=StringUtils.substring(addurl, addurl.lastIndexOf("/")+1);
+							chapterid=StringUtils.substring(modrul, modrul.lastIndexOf("/")==-1?0:modrul.lastIndexOf("/"),modrul.lastIndexOf("."));
+							
+							//TODO 还未完成
+							addurl=StringUtils.substring(addurl, 0,addurl.lastIndexOf("/")+1)+bookid+"";
+						}else{
+							String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
+							chapterList.put("chaptercontenturl", addurl + modrul);
+						}
 					} else {
 						String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
 						chapterList.put("chaptercontenturl", addurl + modrul);
