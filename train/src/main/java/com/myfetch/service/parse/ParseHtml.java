@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,6 @@ public class ParseHtml {
 
 	/**
 	 * 读取xml文件，文件格式为 <sitename></sitename> <listurl></listurl>
-	 * 
 	 * @return
 	 */
 	public String getFetchUrls() {
@@ -50,7 +50,8 @@ public class ParseHtml {
 		// html=StringUtils.replace(html, "\n","");
 		// html的整体替换
 		if (!"".equals(replacesrc1)) {
-			html = StringUtils.replace(html, replacesrc1, replacedesc1);
+			html = html.replaceAll(replacesrc1, replacedesc1);
+			logger.info(html);
 		}
 		if ("1".equals(patternType)) {
 			Pattern pt = Pattern.compile(patterstrEx);
@@ -207,14 +208,24 @@ public class ParseHtml {
 		String replacedesc1 = ObjectUtils.toString(map.get("replacedesc1"));
 		String replacesrc2 = ObjectUtils.toString(map.get("replacesrc2"));
 		String replacedesc2 = ObjectUtils.toString(map.get("replacedesc2"));
+		String replacesrc3 = ObjectUtils.toString(map.get("replacesrc3"));
+		String replacedesc3 = ObjectUtils.toString(map.get("replacedesc3"));
+		String replacesrc4 = ObjectUtils.toString(map.get("replacesrc4"));
+		String replacedesc4 = ObjectUtils.toString(map.get("replacedesc4"));
 		Map<String, String> bookconver = new HashMap<String, String>();
 		// html的整体替换
 		if (!"".equals(replacesrc1)) {
-			html = StringUtils.replace(html, replacesrc1, replacedesc1);
-			
+			html = html.replaceAll(replacesrc1, replacedesc1);
+
 		}
 		if (!"".equals(replacesrc2)) {
-			html = StringUtils.replace(html, replacesrc2, replacedesc2);
+			html = html.replaceAll(replacesrc2, replacedesc2);
+		}
+		if (!"".equals(replacesrc3)) {
+			html = html.replaceAll(replacesrc3, replacedesc3);
+		}
+		if (!"".equals(replacesrc4)) {
+			html = html.replaceAll(replacesrc4, replacedesc4);
 		}
 		System.out.println(html);
 		Pattern pt = Pattern.compile(litpicEx);
@@ -321,52 +332,63 @@ public class ParseHtml {
 		return converInfoList;
 	}
 
+	/**
+	 * 详细解释请看XML文件
+	 * @param html
+	 * @param map
+	 * @param fetchurl
+	 * @return
+	 */
 	public static List<Map<String, String>> parseChapterList(String html, Map<String, String> map, String fetchurl) {
 		List<Map<String, String>> chapterInfoList = new ArrayList<Map<String, String>>();
-		String partnameEx = convertRegex(map.get("partname"));
+		String columnnameEx = convertRegex(map.get("columnname"));
 		String chapternameEx = convertRegex(map.get("chaptername"));
 		String chaptercontenturlEx = convertRegex(map.get("chaptercontenturl"));
 		String modurltypeEx = map.get("modurltype");
 		String addurlEx = convertRegex(map.get("addurl"));
 		String replacesourcEx = convertRegex(map.get("replacesourc"));
 		String replacedeEx = convertRegex(map.get("replacede"));
-		String isgendongtaiurl=map.get("isgendongtaiurl");
+		// 是否采用动态地址采集
+		String isgendongtaiurl = ObjectUtils.toString(map.get("isgendongtaiurl"));
+		// 是否采集分卷 1：采集分卷，0：不采集分卷
+		String iscolumn = ObjectUtils.toString(map.get("iscolumn"));
+		String columnContent="";
 		Pattern pt = null;
 		Matcher matcher = null;
 		if (StringUtils.equals(chaptercontenturlEx, chapternameEx)) {
-			pt = Pattern.compile(chaptercontenturlEx);
-			matcher = pt.matcher(html);
-			try {
+			if ("1".equals(iscolumn)) {
+				pt = Pattern.compile(columnnameEx);
+				matcher = pt.matcher(html);
+				Integer[] at=new Integer[20];
+				int i=0;
 				while (matcher.find()) {
-					Map<String, String> chapterList = new HashMap<String, String>();
-					String modrul = matcher.group(1);
-					StringUtils.replace(modrul, "&nbsp;", "");
-					if ("".equals(modrul.trim())||(!StringUtils.contains(modrul,".htm")&&!StringUtils.contains(modrul,".asp")&&!StringUtils.contains(modrul,".jsp"))&&!StringUtils.contains(modrul,".php")) {
-						continue;
-					}
-					// chapterList.put("chaptercontenturl", modrul);
-					chapterList.put("chaptername", matcher.group(2));
-					if ("local".equals(modurltypeEx.trim())) {
-						if("1".equals(isgendongtaiurl)){
-							String bookid="",chapterid="";
-							String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/"));
-							bookid=StringUtils.substring(addurl, addurl.lastIndexOf("/")+1);
-							chapterid=StringUtils.substring(modrul, modrul.lastIndexOf("/")==-1?0:modrul.lastIndexOf("/"),modrul.lastIndexOf("."));
-							
-							//TODO 还未完成
-							addurl=StringUtils.substring(addurl, 0,addurl.lastIndexOf("/")+1)+bookid+"";
-						}else{
-							String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
-							chapterList.put("chaptercontenturl", addurl + modrul);
-						}
-					} else {
-						String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
-						chapterList.put("chaptercontenturl", addurl + modrul);
-					}
-					chapterInfoList.add(chapterList);
+					Map<String, String> columnMap = new HashMap<String, String>();
+					columnMap.put("uuid", );
+					columnMap.put("columnname", ObjectUtils.toString(matcher.group(1)));
+					at[i]=matcher.end();
+					i++;
+					chapterInfoList.add(columnMap);
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+				if(CollectionUtils.isEmpty(chapterInfoList)){
+					at=null;
+				}
+				if(at!=null&&at[0]>0){
+					//如果at!=null
+					for (int j = 1; j < at.length; j++) {
+						if(at[j]>0){
+							columnContent=StringUtils.substring(html, at[j-1], at[j]);
+							parseChapterColumnList(columnContent, fetchurl, chapterInfoList, chaptercontenturlEx, modurltypeEx, isgendongtaiurl);
+						}else{
+							columnContent=StringUtils.substring(html, at[j-1]);
+							parseChapterColumnList(columnContent, fetchurl, chapterInfoList, chaptercontenturlEx, modurltypeEx, isgendongtaiurl);
+							break;
+						}
+					}
+				}else{
+					parseChapterColumnList(html, fetchurl, chapterInfoList, chaptercontenturlEx, modurltypeEx, isgendongtaiurl);
+				}
+			} else {
+				parseChapterColumnList(html, fetchurl, chapterInfoList, chaptercontenturlEx, modurltypeEx, isgendongtaiurl);
 			}
 		} else {
 
@@ -384,6 +406,48 @@ public class ParseHtml {
 		//		
 
 		return chapterInfoList;
+	}
+
+	private static void parseChapterColumnList(String html, String fetchurl, List<Map<String, String>> chapterInfoList, String chaptercontenturlEx, String modurltypeEx, String isgendongtaiurl) {
+		Pattern pt;
+		Matcher matcher;
+		pt = Pattern.compile(chaptercontenturlEx);
+		matcher = pt.matcher(html);
+		try {
+			while (matcher.find()) {
+				Map<String, String> chapterList = new HashMap<String, String>();
+				String modrul = matcher.group(1);
+				StringUtils.replace(modrul, "&nbsp;", "");
+				if ("".equals(modrul.trim()) || (!StringUtils.contains(modrul, ".htm") && !StringUtils.contains(modrul, ".asp") && !StringUtils.contains(modrul, ".jsp")) && !StringUtils.contains(modrul, ".php")) {
+					continue;
+				}
+				// chapterList.put("chaptercontenturl", modrul);
+				chapterList.put("chaptername", matcher.group(2));
+				if ("local".equals(modurltypeEx.trim())) {
+					// TODO 使用动态地址采集目前未完成
+					if ("1".equals(isgendongtaiurl)) {
+						String bookid = "", chapterid = "";
+						String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/"));
+						bookid = StringUtils.substring(addurl, addurl.lastIndexOf("/") + 1);
+						chapterid = StringUtils.substring(modrul, modrul.lastIndexOf("/") == -1 ? 0 : modrul.lastIndexOf("/"), modrul.lastIndexOf("."));
+
+						// TODO 还未完成
+						addurl = StringUtils.substring(addurl, 0, addurl.lastIndexOf("/") + 1) + bookid + "";
+					} else {
+
+						String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
+						chapterList.put("chaptercontenturl", addurl + modrul);
+					}
+				} else {
+
+					String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
+					chapterList.put("chaptercontenturl", addurl + modrul);
+				}
+				chapterInfoList.add(chapterList);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static List<Map<String, String>> parseChapterContent(String html, Map<String, String> map) {

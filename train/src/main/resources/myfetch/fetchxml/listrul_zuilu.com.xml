@@ -7,19 +7,20 @@
 			<!-- url list block  -->
 			<liststart></liststart>
 			<listend></listend>
-			<type>&lt;TD noWrap align=middle&gt;&lt;A class=ahui12[*]&gt;[args1]&lt;/a&gt;&lt;/TD&gt;</type>
+			<type>&lt;TD noWrap align=middle&gt;&lt;A class=ahui12[^>]*&gt;[args1]&lt;/a&gt;&lt;/TD&gt;</type>
 			<burl>http://www.zuilu.com/Book/ShowBookTop.aspx?id=2</burl>
-			<lastarc>&lt;TD align=left&gt;&lt;A class=ahuang12[*]href=&quot;/html/book/[*]&quot;&gt;[args1]&lt;/a&gt;&lt;/TD&gt;</lastarc>
+			<lastarc>&lt;TD align=left&gt;&lt;A class=ahuang12[^>]*&gt;[args1]&lt;/a&gt;&lt;/TD&gt;</lastarc>
 			<status>&lt;TD align=middle&gt;&lt;FONT color=blue&gt;[args1]&lt;/FONT&gt;&lt;/TD&gt;</status>
-			<bookurl>&lt;TD align=left&gt;&lt;A class=ahui12[*]href=&quot;[args1]&quot;&gt;&lt;font color=&quot;#006699&quot;&gt;[*]&lt;/font&gt;&lt;/a&gt;&lt;/TD&gt;</bookurl>
+			<bookurl>&lt;TD align=left&gt;&lt;A class=ahui12[^>]*href=&quot;[args1]&quot;&gt;&lt;font color=&quot;#006699&quot;&gt;[^>]*&lt;/font&gt;&lt;/a&gt;&lt;/TD&gt;</bookurl>
 			<replacebookurlsource>/Article</replacebookurlsource>
 			<replacebookurldesc>http://www.zuilu.com/Article</replacebookurldesc>
-			<bookname>&lt;TD align=left&gt;&lt;A class=ahui12[*]&gt;&lt;font color=&quot;#006699&quot;&gt;[args1]&lt;/font&gt;&lt;/a&gt;&lt;/TD&gt;</bookname>
-			
+			<bookname>&lt;TD align=left&gt;&lt;A class=ahui12[^>]*&gt;&lt;font color=&quot;#006699&quot;&gt;[args1]&lt;/font&gt;&lt;/a&gt;&lt;/TD&gt;</bookname>
+			<replacesrc1>\n</replacesrc1>
+			<replacedesc1></replacedesc1>
 			
 			<pageblockstart>&lt;div class=&quot;pagelink&quot; id=&quot;pagelink&quot;&gt;</pageblockstart>
 			<pageblockend>&lt;/div&gt;</pageblockend>
-	
+			
 		
 		
 		<!-- 1: 上一页123456 下一页 的分页方式-->
@@ -33,27 +34,37 @@
 	</siteinfo>
 <bookinfo>
 	<!-- 缩略图 -->
-	<litpic>&lt;img src=&quot;[args1]&quot; alt[*]vspace=&quot;5&quot; /&gt;</litpic>
+	<litpic>&lt;img src=&quot;[args1]&quot; height=&quot;125&quot; width=&quot;100&quot;</litpic>
 	<!-- 简介 -->
 	<bookdesc>&lt;span class=&quot;hottextx&quot;&gt;内容简介：&lt;/span&gt;[args1]&lt;/td&gt;</bookdesc>
 	<!--1 开始  结束匹配，，2正则表达式 -->
 	<bookdescfetchtype>1</bookdescfetchtype>
-	<bookdescstart>&lt;span class=&quot;hottextx&quot;&gt;内容简介：&lt;/span&gt;</bookdescstart>
-	<bookdescend>&lt;/td&gt;</bookdescend>
-	<replaceword>君子堂,空|www.aishuzhe.com,www.rentimm.net|爱书者,空|aishuzhe.com,rentimm.net|www.junzitang.com,www.rentimm.net|junzitang.com,rentimm.net</replaceword>
+	<bookdescstart>内容简介〗&lt;/STRONG&gt;&lt;BR&gt;</bookdescstart>
+	<bookdescend>&lt;/TD&gt;</bookdescend>
+	<replaceword>醉露,91中文|www.zuilu.com,www.91zw.cn|醉露书院,91中文|zuilu.com,91zw.net</replaceword>
 	<!-- 书名 -->
-	<bookname>&lt;h1&gt;[args1]&lt;/h1&gt;</bookname>
+	<bookname>&lt;DIV class=tuhuangchu18[^>]*&gt;[args1]&lt;/DIV&gt;</bookname>
 	<!-- 作者 -->
-	<author>&lt;/h1&gt;[*]作者：[args1]&lt;/td&gt;</author>
+	<author>作者： ([^\s]*).{25}点击：</author>
 	<!-- 字数 -->
 	<chinesenum>&lt;td width=&quot;15%&quot;&gt;全文长度：[args1]字&lt;/td&gt;</chinesenum>
 	<!-- 书籍章节地址列表地址 -->
-	<chapterlisturl>&lt;a title=&quot;[*]&quot; href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;&lt;IMG  src=&quot;/images/dian.gif&quot;[*]border=0&gt;&lt;/a&gt;</chapterlisturl>
+	<chapterlisturl>&lt;A class=white12[^h]*href="[args1]"&gt;&lt;font color="#FFFFFF"&gt;点击阅读&lt;/font&gt;</chapterlisturl>
 	<!-- 关键字 -->
 	<keyword></keyword>
+	<replacesrc2>/Html</replacesrc2>
+	<replacedesc2>http://www.zuilu.com/Html</replacedesc2>
+	<replacesrc1>/UploadPhoto</replacesrc1>
+	<replacedesc1>http://www.zuilu.com/UploadPhoto</replacedesc1>
+	<replacesrc3>\n</replacesrc3>
+	<replacedesc3></replacedesc3>
+	<replacesrc4>/html</replacesrc4>
+	<replacedesc4>http://www.zuilu.com/html</replacedesc4>
 </bookinfo>
 <chapterlistinfo>
-	<partname></partname>
+	<!-- 分卷 分部  采集分卷   1：采集分卷，0：不采集分卷 -->
+	<iscolumn>1</iscolumn>
+	<columnname></columnname>
 	<chaptername>&lt;td class=&quot;ccss&quot;&gt;&lt;div class=&quot;dccss&quot;&gt;&lt;a href=&quot;[args1]&quot; alt=[*]&gt;[args2]&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;</chaptername>
 	<chaptercontenturl>&lt;td class=&quot;ccss&quot;&gt;&lt;div class=&quot;dccss&quot;&gt;&lt;a href=&quot;[args1]&quot; alt=[*]&gt;[args2]&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;</chaptercontenturl>
 	<!-- add在前面添加 replace 替换 local 在当前url中调整 -->
@@ -69,6 +80,6 @@
 	<contentstart>&lt;div id=&quot;content&quot;&gt;</contentstart>
 	<contentend>&lt;script type=&quot;text/javascript&quot; src=&quot;/ad/3.js&quot;&gt;&lt;/script&gt;</contentend>
 	<contentbody></contentbody>
-	<replaceword>君子堂,空|www.aishuzhe.com,www.rentimm.net|爱书者,空|aishuzhe.com,rentimm.net|www.junzitang.com,www.rentimm.net|junzitang.com,rentimm.net</replaceword>
+	<replaceword>醉露,91中文|www.zuilu.com,www.91zw.cn|醉露书院,91中文|zuilu.com,91zw.net</replaceword>
 </chaptercontent>
 </data>

@@ -12,6 +12,8 @@ public class PatternTest {
 		teststr+="<td height=\"22\" align=\"center\">[<a href=\"/Book/LN48.aspx\">玄幻魔法</a>]</td><td align=\"left\">[<a href=\"/Html/Book/48/3641/List.htm\" target=\"_blank\">目录</a>]&nbsp;<a href=\"/Book/3641.aspx\">斗破苍穹</a></td><td align=\"left\"><a href=\"/Html/Book/48/3641/1140742.htm\" target=\"_blank\">正文&nbsp;第一百九十九章 探测</a></td><td align=\"center\"><a href=\"/WB3641.aspx\">天蚕土豆</a></td><td align=\"center\">7月22日&nbsp;</td><td align=\"center\"><a href=\"/down/down.asp?id=3641\" target=\"_blank\">TXT</a></td><td align=\"center\"><font color=blue>连载</font></td><td align=\"center\">29550</td>";
 		teststr="<td width=\"25%\" height=\"24\"><div align=\"left\"><a title=\"更新时间:2009-1-7 14:02:00 更新字数:2312\" href=\"619328.htm\" target=\"_blank\">第二十四章 第一次套现</a></div></td><td width=\"25%\" height=\"24\"><div align=\"left\"><a title=\"更新时间:2009-1-7 14:02:00 更新字数:2150\" href=\"619325.htm\" target=\"_blank\">第二十一章 无价可估</a></div></td><td width=\"25%\" height=\"24\"><div align=\"left\"><a title=\"更新时间:2009-1-7 14:02:00更新字数:2349\" href=\"619326.htm\" target=\"_blank\">第二十二章 猪栏的理想</a></div></td><td width=\"25%\" height=\"24\"><div align=\"left\"><a title=\"更新时间:2009-1-7 14:02:00 更新字数:2437\" href=\"619327.htm\" target=\"_blank\">第二十三章 远客来访</a></div></td>" +
 				"";
+		teststr="<TR bgColor=#ffffff height=24>                <TD align=left>1</TD>                <TD noWrap align=middle><A class=ahui12                   href=\"/Article/2/340.html\">测试1</a></TD>                <TD align=left><A class=ahui12                   href=\"/Article/151136.html\"><font color=\"#006699\">斗罗大陆</font></a></TD>                <TD align=left><A class=ahuang12                  href=\"/html/book/130/151136/4354833.shtm\">第二十五集 单属宗族 第一百八十九章 唐门五堂</a></TD>                <TD align=middle>7月22日</TD>                <TD align=middle><A class=ahui12                   href=\"/Author/WB/151136.html\">唐家三少</a></TD>                <TD align=middle><FONT color=blue>连载</FONT></TD>                				</TR>";
+		teststr="类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：";
 		// Pattern p = null;
 		// PatternCompiler complier = new Perl5Compiler();
 		// p = complier.compile(\".*?</a>([^<b>]*)<b>.*?",
@@ -28,16 +30,19 @@ public class PatternTest {
 //		regex=".*?<TD align=left><A class=ahui12                   href=\"([^<]*)\"><font color=\"#006699\">.*?";
 		regex=".*?<TR bgColor=#ffffff height=24>.*<TD align=left>100</TD>.*<TD noWrap align=middle><A class=ahui12.*>([^<]*)</a></TD>.*<TD align=left><A class=ahui12.*href=\".*\"><font color=\"#006699\">.*</font></a></TD>.*<TD align=left><A class=ahuang12.*>.*</a></TD>.*<TD align=middle><A class=ahui12.*<TD align=middle><FONT color=blue>.*</FONT></TD>                				</TR>.*?";
 		regex=".*?href=\"([^<]*)\" target=\"_blank\">([^<]*)</a></div></td>.*? ";
+		regex=".*?<TD noWrap align=middle><A class=ahui12                   href=\"[^\"]*\">([^<]*)</a></TD>.*?";
+		regex=".*?<TD align=left><A class=ahui12                   href=\"([^<]*)\"><font color=\"#006699\">[^<]*</font></a></TD>.*?";
+		regex=".*?作者： ([^\\s]*).{25}点击：.*?";
 		Pattern pt = Pattern.compile(regex);
 		Matcher matcher = pt.matcher(teststr);
 		while(matcher.find()){
 			//System.out.println(matcher.groupCount());
 			//for (int i = 0; i < matcher.groupCount(); i++) {
-				System.out.println(matcher.group(1));
+				System.out.println(matcher.group(1)+"   "+matcher.end());
 			//}
 		}
 //		boolean b = matcher.matches(teststr, p);
-
+//类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：
 		//		
 		// org.apache.oro.text.regex.Pattern pattern = null;
 		// Pattern matcher =Pattern;// new
@@ -68,6 +73,7 @@ public class PatternTest {
 //			System.out.println(matcher.groupCount()+matcher.group(1));
 //		}
 		// containsPatternTest();
+//		System.out.println(StringUtils.replace());
 	}
 
 	/**

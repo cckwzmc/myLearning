@@ -44,9 +44,12 @@ public class MyFetchDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
-	public void saveBookUrl(String url, String status, String type, String fromsitename, String lasterarticle) {
-		String sql = "insert into fetchurls (url,status,type,fromsitename,lasterarticle ) values (?,?,?,?,?)";
-		this.getJdbcTemplate().update(sql, new Object[] { url, status, type, fromsitename, lasterarticle });
+	public int saveBookUrl(String url, String status, String type, String fromsitename, String lasterarticle,String bookname) {
+		String sql ="select max(id) from fetchurls";
+		int id=this.getJdbcTemplate().queryForInt(sql)+1;
+		sql="insert into fetchurls (id,url,status,type,fromsitename,lasterarticle,bookname ) values (?,?,?,?,?,?,?)";
+		this.getJdbcTemplate().update(sql, new Object[] { id,url, status, type, fromsitename, lasterarticle ,bookname});
+		return id;
 	}
 
 	public void saveConverInfo(String bookListUrl, String litpic, String chinesenum, String bookdesc, String author, String bookname, String keyword, Integer bookid) {
@@ -322,5 +325,12 @@ public class MyFetchDao extends JdbcBaseDao {
 			return (String) ((Map)list.get(0)).get("type");
 		}
 		return "";
+	}
+	public int saveBookColumn(Integer bookid,String url,String name){
+		String sql="select max(id) id from fetchbookcolumn t ";
+		int id=this.getJdbcTemplate().queryForInt(sql)+1;
+		sql="insert into fetchbookcolumn (id,bookid,url,columnname) values(?,?,?,?)";
+		this.getJdbcTemplate().update(sql,new Object[]{id,bookid,url,name});
+		return id;
 	}
 }

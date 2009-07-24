@@ -19,9 +19,9 @@ public class MasterMain {
 			MyFetchService service = (MyFetchService) context.getBean("myfetchService");
 			// service.disposeBookMap("aishuzhe");
 //			service.disposeBookList((String) pro.get("sitename"));
-			// service.disposeBookConver(pro.getProperty("bookconversite"));
+			 service.disposeBookConver(pro.getProperty("bookconversite"));
 //			 service.disposeBookChapter((String) pro.getProperty("chaptersite"));
-			 service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
+//			 service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
 			// service.saveDataToDedecms(pro.getProperty("miscsite"));
 		} catch (IOException e) {
 			e.printStackTrace();

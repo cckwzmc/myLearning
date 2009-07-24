@@ -114,11 +114,11 @@ public class MyFetchService {
 				List<Map<String, String>> bMap = ParseHtml.parseSiteInfo(html, map);
 				for (Map<String, String> map2 : bMap) {
 					if (this.dao.getFetchurlsUrl(map2.get("bookurl")) == 0) {
-						String type = this.dao.getFetchBookMap(map2.get("type"));
-						if ("".equals(type)) {
-							type = map2.get("type");
+						String type=this.dao.getBookTypeByName(map2.get("bookname"));
+						if("".equals(type)){
+							type=map2.get("type");
 						}
-						this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, null, map2.get("lastarc"));
+						this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, filename, map2.get("lastarc"),map2.get("bookname"));
 					} else {
 						logger.info("该书的地址已经存在" + map2.get("bookurl"));
 					}
@@ -162,7 +162,8 @@ public class MyFetchService {
 
 	/**
 	 * file，name bookconversite 参考aishuzhe.xml 加上直接采集书籍URL
-	 * 
+	 * 不建议直接采集书籍封面
+	 * 这样会采集不到是否连载，最后更新章节等
 	 * @param files
 	 */
 	@SuppressWarnings("unchecked")
@@ -170,16 +171,17 @@ public class MyFetchService {
 		List<String> list = XMLUtils.getXmlFileName(files);
 		for (String filename : list) {
 			Map<String, String> map = XMLUtils.parseConverXml(XMLUtils.getDocumentXml(filename));
-			if (!"".equals(map.get("urls"))) {
+			if (!"".equals(ObjectUtils.toString(map.get("urls")))) {
 				String[] urls = StringUtils.split(map.get("urls"), "|");
 				for (int i = 0; i < urls.length; i++) {
+					int id=this.dao.saveBookUrl(urls[i],null,null, filename, null,null);
 					String html = HttpHtmlService.getHtmlContent(urls[i]);
 					logger.info("开始抓取封面地址为：" + urls[i]);
 					List<Map<String, String>> converMap = ParseHtml.parseBookConverInfo(html, map);
 					for (Map<String, String> map2 : converMap) {
 						if (this.dao.getFetchbookconverUrl(map2.get("chapterlisturl")) == 0) {
 							this.dao.saveConverInfo(ObjectUtils.toString(map2.get("chapterlisturl")), ObjectUtils.toString(map2.get("litpic")), ObjectUtils.toString(map2.get("chinesenum")), ObjectUtils.toString(map2.get("bookdesc")), ObjectUtils.toString(map2.get("author")),
-									ObjectUtils.toString(map2.get("bookname")), ObjectUtils.toString(map2.get("keyword")),0);
+									ObjectUtils.toString(map2.get("bookname")), ObjectUtils.toString(map2.get("keyword")),id);
 						} else {
 							logger.info("该封面地址列表地址已存在:;" + map2.get("chapterlisturl"));
 						}
@@ -244,9 +246,12 @@ public class MyFetchService {
 							}
 						}
 					} else {
-
 						for (Map<String, String> map2 : chapterurls) {
-							this.dao.saveChapterInfo(map2.get("chaptername"), map2.get("chaptercontenturl"), NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
+							if(!StringUtils.equals("",map2.get("columnname"))){
+								this.dao.saveFetchBookColumn(map2.get("columnname"),NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
+							}else if(map2.size()>2){
+								this.dao.saveChapterInfo(map2.get("chaptername"), map2.get("chaptercontenturl"), NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
+							}
 						}
 					}
 				}
