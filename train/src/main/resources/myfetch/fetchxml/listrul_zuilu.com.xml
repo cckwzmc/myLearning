@@ -47,7 +47,7 @@
 	<!-- 作者 -->
 	<author>作者： ([^\s]*).{25}点击：</author>
 	<!-- 字数 -->
-	<chinesenum>&lt;td width=&quot;15%&quot;&gt;全文长度：[args1]字&lt;/td&gt;</chinesenum>
+	<chinesenum></chinesenum>
 	<!-- 书籍章节地址列表地址 -->
 	<chapterlisturl>&lt;A class=white12[^h]*href="[args1]"&gt;&lt;font color="#FFFFFF"&gt;点击阅读&lt;/font&gt;</chapterlisturl>
 	<!-- 关键字 -->
@@ -64,7 +64,7 @@
 <chapterlistinfo>
 	<!-- 分卷 分部  采集分卷   1：采集分卷，0：不采集分卷 -->
 	<iscolumn>1</iscolumn>
-	<columnname></columnname>
+	<columnname>&lt;div id=&quot;NclassTitle&quot;&gt;([^\s])[^&lt;]*&lt;/div&gt;</columnname>
 	<chaptername>&lt;td class=&quot;ccss&quot;&gt;&lt;div class=&quot;dccss&quot;&gt;&lt;a href=&quot;[args1]&quot; alt=[*]&gt;[args2]&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;</chaptername>
 	<chaptercontenturl>&lt;td class=&quot;ccss&quot;&gt;&lt;div class=&quot;dccss&quot;&gt;&lt;a href=&quot;[args1]&quot; alt=[*]&gt;[args2]&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;</chaptercontenturl>
 	<!-- add在前面添加 replace 替换 local 在当前url中调整 -->

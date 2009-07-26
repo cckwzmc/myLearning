@@ -53,9 +53,10 @@
 	<urls></urls>
 </bookinfo>
 <chapterlistinfo>
-	<partname></partname>
-	<chaptername> href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptername>
-	<chaptercontenturl> href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptercontenturl>
+	<iscolumn>1</iscolumn>
+	<columnname>&lt;div align=&quot;center&quot;&gt;&lt;span class=&quot;style3&quot;&gt;[args1]&lt;/span&gt;&lt;/div&gt;</columnname>
+	<chaptername>title=&quot;更新时间[^h]* href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptername>
+	<chaptercontenturl>title=&quot;更新时间[^h]* href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptercontenturl>
 	<!-- add在前面添加    /// replace 替换//// local 在当前url中调整 -->
 	<modurltype>local</modurltype>
 	<!-- 是否生成动态URL地址  1是  0否 -->

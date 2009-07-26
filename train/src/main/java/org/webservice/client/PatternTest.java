@@ -14,6 +14,7 @@ public class PatternTest {
 				"";
 		teststr="<TR bgColor=#ffffff height=24>                <TD align=left>1</TD>                <TD noWrap align=middle><A class=ahui12                   href=\"/Article/2/340.html\">测试1</a></TD>                <TD align=left><A class=ahui12                   href=\"/Article/151136.html\"><font color=\"#006699\">斗罗大陆</font></a></TD>                <TD align=left><A class=ahuang12                  href=\"/html/book/130/151136/4354833.shtm\">第二十五集 单属宗族 第一百八十九章 唐门五堂</a></TD>                <TD align=middle>7月22日</TD>                <TD align=middle><A class=ahui12                   href=\"/Author/WB/151136.html\">唐家三少</a></TD>                <TD align=middle><FONT color=blue>连载</FONT></TD>                				</TR>";
 		teststr="类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：";
+		teststr="<div id=\"NclassTitle\">序&nbsp;&nbsp;【<a href=\"/Book/B153962N271220.html\">分卷阅读</a>】</div><div id=\"NclassTitle\">网络原创&nbsp;&nbsp;【<a href=\"/Book/B153962N271220.html\">分卷阅读</a>】</div><div id=\"NclassTitle\">FFFFF&nbsp;&nbsp;【<a href=\"/Book/B153962N271220.html\">分卷阅读</a>】</div>";
 		// Pattern p = null;
 		// PatternCompiler complier = new Perl5Compiler();
 		// p = complier.compile(\".*?</a>([^<b>]*)<b>.*?",
@@ -33,6 +34,7 @@ public class PatternTest {
 		regex=".*?<TD noWrap align=middle><A class=ahui12                   href=\"[^\"]*\">([^<]*)</a></TD>.*?";
 		regex=".*?<TD align=left><A class=ahui12                   href=\"([^<]*)\"><font color=\"#006699\">[^<]*</font></a></TD>.*?";
 		regex=".*?作者： ([^\\s]*).{25}点击：.*?";
+		regex=".*?<div id=\"NclassTitle\">([^\\s]*).*?</div>.*?";
 		Pattern pt = Pattern.compile(regex);
 		Matcher matcher = pt.matcher(teststr);
 		while(matcher.find()){

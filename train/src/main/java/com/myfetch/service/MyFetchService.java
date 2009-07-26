@@ -3,6 +3,7 @@ package com.myfetch.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class MyFetchService {
 
 	/**
 	 * 未采集完成列表 staus==0表示未完成 status==1表示完成
-	 * 
+	 * badbook =1的书籍不要采集，可能是收费书籍
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -46,8 +47,10 @@ public class MyFetchService {
 		if (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
-				if ("0".equals(ObjectUtils.toString(map.get("isfetch"))) || "".equals(ObjectUtils.toString(map.get("isfetch")))) {
-					retList.add(map);
+				if("0".equals(ObjectUtils.toString(map.get("badbook")))){
+					if ("0".equals(ObjectUtils.toString(map.get("isfetch"))) || "".equals(ObjectUtils.toString(map.get("isfetch")))) {
+						retList.add(map);
+					}
 				}
 			}
 		}
@@ -164,6 +167,7 @@ public class MyFetchService {
 	 * file，name bookconversite 参考aishuzhe.xml 加上直接采集书籍URL
 	 * 不建议直接采集书籍封面
 	 * 这样会采集不到是否连载，最后更新章节等
+	 * 实在要使用封面直接采集建议可以在数据库配置
 	 * @param files
 	 */
 	@SuppressWarnings("unchecked")
@@ -226,7 +230,7 @@ public class MyFetchService {
 					String html = HttpHtmlService.getHtmlContent(ObjectUtils.toString(bMap.get("booklisturl")));
 					logger.info("开始抓取书籍章节列表地址为：" + bMap.get("booklisturl"));
 					// 如果已经抓取过得处理
-
+					//TODO 这里更行抓取有问题
 					List<Map<String, String>> chapterurls = ParseHtml.parseChapterList(html, map, ObjectUtils.toString(bMap.get("booklisturl")));
 					if (CollectionUtils.isNotEmpty(this.dao.getFetchchapterurlsByBookid(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid")))))) {
 						List lastList = this.dao.getFetchchapterurlsListByBookid(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
@@ -240,17 +244,30 @@ public class MyFetchService {
 
 							if (flag) {
 								logger.info("新增书籍章节地址:;" + map2.get("chaptercontenturl"));
-								this.dao.saveChapterInfo(map2.get("chaptername"), map2.get("chaptercontenturl"), NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
+//								this.dao.saveChapterInfo(map2.get("chaptername"), map2.get("chaptercontenturl"), NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
 							} else {
 								logger.info("该列表地址书籍章节已存在:;" + map2.get("chaptercontenturl"));
 							}
 						}
 					} else {
+						Integer columnId=-1;
+						Integer bookid=-1;
+						Map<String,Integer> mapColumnId=new HashMap<String, Integer>();
 						for (Map<String, String> map2 : chapterurls) {
-							if(!StringUtils.equals("",map2.get("columnname"))){
-								this.dao.saveFetchBookColumn(map2.get("columnname"),NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
-							}else if(map2.size()>2){
-								this.dao.saveChapterInfo(map2.get("chaptername"), map2.get("chaptercontenturl"), NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
+							//TODO 涉及到更新章节的时候这里要注意查重
+							if(!StringUtils.equals("",ObjectUtils.toString(map2.get("columnname")))){
+								columnId=this.dao.saveFetchBookColumn(map2.get("columnname"),NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
+								mapColumnId.put(map2.get("uuid"), columnId);
+							}else {
+								Integer columnid=0;
+								if(columnId>0){
+									columnid=mapColumnId.get(map2.get("uuid"));
+									bookid=NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid")));
+								}else{
+									bookid=NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid")));
+									columnid=-1;
+								}
+								this.dao.saveChapterInfo(map2.get("chaptername"), map2.get("chaptercontenturl"), bookid,columnid);
 							}
 						}
 					}
@@ -339,7 +356,7 @@ public class MyFetchService {
 			if (!"".equals(filename)) {
 				String dir = DateUtils.getDate();
 				String fileName = StringUtils.substring(filename, filename.lastIndexOf("/") + 1);
-				String savePath = this.bootPath + "\\" + dir;
+				String savePath = bootPath + "\\" + dir;
 				File filepath = new File(savePath);
 				if (!filepath.exists()) {
 					filepath.mkdirs();
@@ -349,10 +366,29 @@ public class MyFetchService {
 				if (filepath.exists()) {
 					filepath.delete();
 				}
-				HttpResourceUtils.saveToFile(filename, savePath);
-				map.put("litpic", "/uploads/" + dir + "/" + fileName);
+				int retDown=HttpResourceUtils.saveToFile(filename, savePath);
+				if(retDown==1)
+				{
+					map.put("litpic", "/uploads/" + dir + "/" + fileName);
+				}else{
+					map.put("litpic", "/uploads/noImage.gif");
+				}
 			}
-			Integer parentArcId = this.dao.saveConverForDede(typeid, bookid, map);
+			int retPublish=this.dao.getIntPublishBook(bookid);
+			Integer parentArcId =0;
+			if(retPublish==0){
+				parentArcId = this.dao.saveConverForDede(typeid, bookid, map);
+			}else{
+				if("".equals(ObjectUtils.toString(bookBasic.get("bookname")))){
+					logger.info("要求注意的地方"+ObjectUtils.toString(bookBasic.get("url"))+"发布失败!!!!");
+					continue;
+				}
+				parentArcId=this.dao.getPublishBookIdByBookId(ObjectUtils.toString(bookBasic.get("bookname")),typeid);
+				if(parentArcId<1){
+					logger.info("要求注意的地方"+ObjectUtils.toString(bookBasic.get("url"))+"发布失败!!!!");
+					continue;
+				}
+			}
 			// 保存图片
 
 			// 保存章节
@@ -360,6 +396,7 @@ public class MyFetchService {
 			List arcList = this.dao.getFetchArcListByBookId(bookid);
 			// List tableList = this.dao.getFetchTableListByBookId(bookid);
 			int i = 0;
+			
 			for (Iterator iterator2 = arcList.iterator(); iterator2.hasNext();) {
 				Map arcMap = (Map) iterator2.next();
 				// for (Iterator iterator3 = tableList.iterator();

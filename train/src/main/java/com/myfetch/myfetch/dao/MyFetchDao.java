@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.attribute.standard.NumberUp;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import com.myfetch.service.MyFetchService;
 
@@ -33,7 +36,7 @@ public class MyFetchDao extends JdbcBaseDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List getCoverList() {
-		String sql = "select `id`,`bookid`,`bookname`,`booklisturl`,`chinesenum`,`bookdesc`,`isfetch`,`keyword`,`author`  from fetchbookconver t";
+		String sql = "select `id`,`bookid`,`bookname`,`booklisturl`,`chinesenum`,`bookdesc`,`isfetch`,`keyword`,`author`  from fetchbookconver t order by id;";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
@@ -57,10 +60,10 @@ public class MyFetchDao extends JdbcBaseDao {
 		this.getJdbcTemplate().update(sql, new Object[] { bookid, bookname, bookListUrl, litpic, chinesenum, bookdesc, "0", keyword, author });
 	}
 
-	public void saveChapterInfo(String chaptername, String chapterurl, Integer bookid) {
+	public void saveChapterInfo(String chaptername, String chapterurl, Integer bookid,Integer columnid) {
 		try {
-			String sql = "insert into fetchchapterurls (`bookid`,`chaptername`,`chapterurl`,`isfetch`,`fetchdate`) values (?,?,?,?,NOW())";
-			this.getJdbcTemplate().update(sql, new Object[] { bookid, chaptername, chapterurl, "0" });
+			String sql = "insert into fetchchapterurls (`bookid`,`chaptername`,`chapterurl`,`isfetch`,`fetchdate`,`columnid`) values (?,?,?,?,NOW(),?)";
+			this.getJdbcTemplate().update(sql, new Object[] { bookid, chaptername, chapterurl, "0" ,columnid});
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -100,22 +103,14 @@ public class MyFetchDao extends JdbcBaseDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List getSiteData() {
-		String sql = "select t.id,t.lasterarticle,t.type,t.url from fetchurls t where t.isdatatocms=0";
+		String sql = "select t.id,t.lasterarticle,t.type,t.url,t.bookname from fetchurls t where t.isfetch=0";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
-	// @SuppressWarnings("unchecked")
-	// public Map getConverDataById(Integer id){
-	// String
-	// sql="select t.id,f.type,f.status,t.bookid,f.lasterarticle,t.bookname,t.chinesenum,t.bookdesc,t.keyword,t.author from fetchbookconver t left join fetchurls f on t.bookid=f.id where "
-	// +
-	// " t.bookid=?";
-	// List list=this.getJdbcTemplate().queryForList(sql,new Object[]{id});
-	// if(CollectionUtils.isNotEmpty(list)){
-	// return (Map)list.get(0);
-	// }
-	// return null;
-	// }
+	public int getIntPublishBook(int bookid){
+		String sql="select count(*) from fetchchapterurls t where t.bookid=? and t.isfetch=1";
+		return this.getJdbcTemplate().queryForInt(sql,new Object[]{bookid});
+	}
 	/**
 	 * 抓取类别与cms类别的对应
 	 * 
@@ -228,7 +223,7 @@ public class MyFetchDao extends JdbcBaseDao {
 		this.getJdbcTemplate().update(
 				sql,
 				new Object[] { arcid, typeid, time, flag, ObjectUtils.toString(bookInfo.get("bookname")), ObjectUtils.toString(bookInfo.get("author")), ObjectUtils.toString(bookInfo.get("litpic")), time, time,
-						StringUtils.substring(StringUtils.replace(StringUtils.replace(ObjectUtils.toString(bookInfo.get("bookdesc")), "&nbsp;", ""), "<br/>", ""), 0, 254), ObjectUtils.toString(bookInfo.get("keyword")), ObjectUtils.toString(bookInfo.get("chinesenum")),
+						StringUtils.substring(StringUtils.replace(StringUtils.replace(ObjectUtils.toString(bookInfo.get("bookdesc")), "&nbsp;", ""), "<br/>", ""), 0, 254), ObjectUtils.toString(bookInfo.get("keyword")), NumberUtils.toInt(ObjectUtils.toString(bookInfo.get("chinesenum"))),
 						ObjectUtils.toString(bookInfo.get("lasterarticle")) });
 
 		sql = "insert into dede_arctiny (id,typeid,typeid2,arcrank,channel,senddate,sortrank,mid)" + " values (?,?,0,0,1,?,?,1)";
@@ -313,9 +308,16 @@ public class MyFetchDao extends JdbcBaseDao {
 		this.getJdbcTemplate().update(sql, new Object[]{id});
 	}
 
-	public List getFetchchapterurlsByBookid(int int1) {
-		String sql="select * from fetchchapterurls t where t.bookid=?";
-		return this.getJdbcTemplate().queryForList(sql,new Object[]{int1});
+	public List getFetchchapterurlsByBookid(int bookid) {
+//		String sql="select count(*) from fetchbookcolumn t where t.bookid=?";
+//		int existColumn=this.getJdbcTemplate().queryForInt(sql,new Object[]{bookid});
+//		if(existColumn>0){
+//			sql="select ft.bookid,t.chapterurl,ft.id columnid from fetchchapterurls t left join fetchbookcolumn ft on t.bookid=ft.bookid where ft.bookid=?";	
+//		}else{
+			String sql="select t.* from fetchchapterurls t where t.bookid=?";
+//		}
+		
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{bookid});
 	}
 
 	public String getFetchBookMap(String bookname) {
@@ -326,11 +328,21 @@ public class MyFetchDao extends JdbcBaseDao {
 		}
 		return "";
 	}
-	public int saveBookColumn(Integer bookid,String url,String name){
+
+	public int saveFetchBookColumn(String columnName, int bookid) {
 		String sql="select max(id) id from fetchbookcolumn t ";
 		int id=this.getJdbcTemplate().queryForInt(sql)+1;
-		sql="insert into fetchbookcolumn (id,bookid,url,columnname) values(?,?,?,?)";
-		this.getJdbcTemplate().update(sql,new Object[]{id,bookid,url,name});
+		sql="insert into fetchbookcolumn (id,bookid,url,columnname) values(?,?,null,?)";
+		this.getJdbcTemplate().update(sql,new Object[]{id,bookid,columnName});
 		return id;
+	}
+
+	public Integer getPublishBookIdByBookId(String bookname,Integer typeid) {
+		String sql="select id from dede_archives t where t.title=? and t.typeid=? and (t.isbookpage='' or t.isbookpage is null)";
+		List list = this.getJdbcTemplate().queryForList(sql,new Object[]{bookname,typeid});
+		if(CollectionUtils.isEmpty(list)){
+			return 0;
+		}
+		return (Integer)((Map)list.get(0)).get("id");
 	}
 }
