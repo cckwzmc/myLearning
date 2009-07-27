@@ -47,11 +47,11 @@ public class MyFetchDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
-	public int saveBookUrl(String url, String status, String type, String fromsitename, String lasterarticle,String bookname) {
+	public int saveBookUrl(String url, String status, String type, String fromsitename, String lasterarticle,String bookname,String isfetch) {
 		String sql ="select max(id) from fetchurls";
 		int id=this.getJdbcTemplate().queryForInt(sql)+1;
-		sql="insert into fetchurls (id,url,status,type,fromsitename,lasterarticle,bookname ) values (?,?,?,?,?,?,?)";
-		this.getJdbcTemplate().update(sql, new Object[] { id,url, status, type, fromsitename, lasterarticle ,bookname});
+		sql="insert into fetchurls (id,url,status,type,fromsitename,lasterarticle,bookname,isfetch) values (?,?,?,?,?,?,?,?)";
+		this.getJdbcTemplate().update(sql, new Object[] { id,url, status, type, fromsitename, lasterarticle ,bookname,isfetch});
 		return id;
 	}
 
@@ -344,5 +344,10 @@ public class MyFetchDao extends JdbcBaseDao {
 			return 0;
 		}
 		return (Integer)((Map)list.get(0)).get("id");
+	}
+
+	public int getFetchUrlsByBookName(String bookname) {
+		String sql="select count(*) from fetchurls t where t.bookname=?";
+		return this.getJdbcTemplate().queryForInt(sql,new Object[]{bookname});
 	}
 }

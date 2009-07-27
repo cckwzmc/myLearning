@@ -83,16 +83,20 @@ public class ParseHtml {
 			List<String> lastList = new ArrayList<String>();
 			List<String> booknameList = new ArrayList<String>();
 
-			Pattern pt = Pattern.compile(bookTypeEx);
-			Matcher matcher = pt.matcher(html);
-			try {
-				while (matcher.find()) {
-					typeList.add(matcher.group(1));
+			Pattern pt = null;
+			Matcher matcher = null;
+			if(!"".equals(ObjectUtils.toString(map.get("type"))))
+			{
+				pt=Pattern.compile(bookTypeEx);
+				matcher=pt.matcher(html);
+				try {
+					while (matcher.find()) {
+						typeList.add(matcher.group(1));
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+			}	
 			pt = Pattern.compile(bookURLEx);
 			matcher = pt.matcher(html);
 			try {
@@ -135,9 +139,12 @@ public class ParseHtml {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			for (int i = 0; typeList != null && i < typeList.size(); i++) {
+			for (int i = 0; urlList != null && i < urlList.size(); i++) {
 				Map<String, String> m = new HashMap<String, String>();
-				m.put("type", typeList.get(i));
+				if(!"".equals(ObjectUtils.toString(map.get("type"))))
+				{
+					m.put("type", typeList.get(i));
+				}
 				m.put("bookurl", urlList.get(i));
 				m.put("lastarc", lastList.get(i));
 				m.put("status", statusList.get(i));

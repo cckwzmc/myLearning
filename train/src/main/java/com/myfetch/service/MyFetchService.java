@@ -117,11 +117,21 @@ public class MyFetchService {
 				List<Map<String, String>> bMap = ParseHtml.parseSiteInfo(html, map);
 				for (Map<String, String> map2 : bMap) {
 					if (this.dao.getFetchurlsUrl(map2.get("bookurl")) == 0) {
-						String type=this.dao.getBookTypeByName(map2.get("bookname"));
-						if("".equals(type)){
-							type=map2.get("type");
+						int booknameCount=this.dao.getFetchUrlsByBookName(map2.get("bookname"));
+						if(booknameCount>0){
+							String type=this.dao.getBookTypeByName(map2.get("bookname"));
+							if("".equals(type)){
+								type=map2.get("type");
+							}
+							this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, filename, map2.get("lastarc"),map2.get("bookname"),"1");
+							logger.info("有重名的书籍存在请手工确认是否需要继续采集"+map2.get("bookname")+" /////  "+map2.get("bookurl"));
+						}else{
+							String type=this.dao.getBookTypeByName(map2.get("bookname"));
+							if("".equals(type)){
+								type=map2.get("type");
+							}
+							this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, filename, map2.get("lastarc"),map2.get("bookname"),"0");
 						}
-						this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, filename, map2.get("lastarc"),map2.get("bookname"));
 					} else {
 						logger.info("该书的地址已经存在" + map2.get("bookurl"));
 					}
@@ -178,7 +188,7 @@ public class MyFetchService {
 			if (!"".equals(ObjectUtils.toString(map.get("urls")))) {
 				String[] urls = StringUtils.split(map.get("urls"), "|");
 				for (int i = 0; i < urls.length; i++) {
-					int id=this.dao.saveBookUrl(urls[i],null,null, filename, null,null);
+					int id=this.dao.saveBookUrl(urls[i],null,null, filename, null,null,"0");
 					String html = HttpHtmlService.getHtmlContent(urls[i]);
 					logger.info("开始抓取封面地址为：" + urls[i]);
 					List<Map<String, String>> converMap = ParseHtml.parseBookConverInfo(html, map);

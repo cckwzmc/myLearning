@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<booktypemap>
+		<url>http://www.aishuzhe.com/booktopweekvisit/0/1,290.htm</url>
+	</booktypemap>
+	<siteinfo>
+			<!-- url list block  -->
+			<liststart></liststart>
+			<listend></listend>
+			<type></type>
+			<burl>http://baishuku.com/booksinfotopallvote/0/1.htm</burl>
+			<lastarc>&lt;td class=&quot;even&quot;&gt;&lt;a href=&quot;[*]target=&quot;_blank&quot;&gt;[args1]&lt;/a&gt;&lt;/td&gt;</lastarc>
+			<status>&lt;td class=&quot;even&quot; align=&quot;center&quot;&gt;[args1]&lt;/td&gt;</status>
+			<bookurl>&lt;td class=&quot;odd&quot;&gt;&lt;a href=&quot;[args1]&quot;&gt;[^&lt;]*&lt;/a&gt;&lt;/td&gt;</bookurl>
+			<bookname>&lt;td class=&quot;odd&quot;&gt;&lt;a href=&quot;[^&lt;]*&quot;&gt;[args1]&lt;/a&gt;&lt;/td&gt;</bookname>
+			<replacebookurlsource></replacebookurlsource>
+			<replacebookurldesc></replacebookurldesc>
+			<replacesrc1></replacesrc1>
+			<replacedesc1></replacedesc1>
+			<!--  page list block -->
+			<pageblockstart>&lt;div class=&quot;pagelink&quot; id=&quot;pagelink&quot;&gt;</pageblockstart>
+			<pageblockend>&lt;/div&gt;</pageblockend>
+	
+		 <!-- 1: 上一页123456 下一页 的分页方式-->
+		<!-- 2: 上一页下一页 的分页方式-->
+
+	</siteinfo>
+<bookinfo>
+	<!-- 缩略图 -->
+	<litpic>&lt;img src=&quot;[args1]&quot; width=&quot;120&quot; height=&quot;150&quot;&gt;</litpic>
+	<!-- 简介 -->
+	<bookdesc>&lt;span class=&quot;hottextx&quot;&gt;内容简介：&lt;/span&gt;[args1]&lt;/td&gt;</bookdesc>
+	<!--1 开始  结束匹配，，2正则表达式 -->
+	<bookdescfetchtype>1</bookdescfetchtype>
+	<bookdescstart>&lt;span class=&quot;comment&quot;&gt;</bookdescstart>
+	<bookdescend>&lt;/span&gt;</bookdescend>
+	<replaceword>手打网,91中文|www.sdxsw.com,www.91zw.cn|手打团,91中文|sdxsw.com,91zw.cn</replaceword>
+	<!-- 书名 -->
+	<bookname>&lt;span class=&quot;booktitle&quot;&gt;[args1]&lt;/span&gt;</bookname>
+	<type>valign=&quot;middle&quot;&gt;类别：&lt;a href=&quot;/Book[*]&quot;>[args1]&lt;/a&gt;[*]作者：</type>
+	<!-- 作者 -->
+	<author>&lt;/span&gt;[*]作者：[*]&gt;[args1]&lt;/a&gt;</author>
+	<!-- 字数 -->
+	<chinesenum></chinesenum>
+	<!-- 书籍章节地址列表地址 -->
+	<chapterlisturl>&lt;a href=&quot;[args1]&quot;&gt;&lt;img src=&quot;[*]read.gif&quot;</chapterlisturl>
+	<!-- 关键字 -->
+	<keyword></keyword>
+	<replacesrc2>/Html</replacesrc2>
+	<replacedesc2>http://www.sdxsw.com/Html</replacedesc2>
+	<replacesrc1>/UploadPhoto</replacesrc1>
+	<replacedesc1>http://www.sdxsw.com/UploadPhoto</replacedesc1>
+	<urls></urls>
+</bookinfo>
+<chapterlistinfo>
+	<iscolumn>1</iscolumn>
+	<columnname>&lt;div align=&quot;center&quot;&gt;&lt;span class=&quot;style3&quot;&gt;[args1]&lt;/span&gt;&lt;/div&gt;</columnname>
+	<chaptername>title=&quot;更新时间[^h]* href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptername>
+	<chaptercontenturl>title=&quot;更新时间[^h]* href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptercontenturl>
+	<!-- add在前面添加    /// replace 替换//// local 在当前url中调整 -->
+	<modurltype>local</modurltype>
+	<!-- 是否生成动态URL地址  1是  0否 -->
+	<isgendongtaiurl>0</isgendongtaiurl>
+	<addurl></addurl>
+	<replacesourc></replacesourc>
+	<replacede></replacede>
+</chapterlistinfo>
+<chaptercontent>
+	<title></title>
+	<!--1 开始  结束匹配，，2正则表达式 -->
+	<fetchtype>1</fetchtype>
+	<contentstart>&lt;script type=&quot;text/javascript&quot; src=&quot;/js/gonggao.js&quot;&gt;&lt;/script&gt;</contentstart>
+	<contentend>&lt;div class=&quot;shouda&quot;&gt;</contentend>
+	<contentbody></contentbody>
+	<replaceword>手打网,91中文|www.sdxsw.com,www.91zw.cn|手打团,91中文|sdxsw.com,91zw.cn</replaceword>
+</chaptercontent>
+</data>
