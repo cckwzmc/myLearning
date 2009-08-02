@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
+import com.myfetch.service.http.HttpHtmlService;
+
 public class Test {
 
 	public final static boolean DEBUG = true;// 调试用
@@ -17,6 +19,19 @@ public class Test {
 	private Vector vFileList = new Vector();// 下载后的保存文件名列表
 
 	public static void main(String[] args) {
+		testRemotePublisher();
+	}
+	
+	public static void testRemotePublisher(){
+		String url="http://www.txt.com/dede/login_publisher.php";
+		String html=HttpHtmlService.getHtmlContent(url);
+		System.out.println(html);
+		url="http://www.rentimm.com/include/vdimgck.php";
+		html=HttpHtmlService.getHtmlContent(url);
+		System.out.println(html);
+	}
+	
+	public static void downRemoteFile(){
 		System.out.println("http://ddd/dd/ss/ddd".substring(0,
 				"http://ddd/dd/ss/ddd".lastIndexOf("/")));
 		Calendar calendar=Calendar.getInstance();
@@ -24,7 +39,7 @@ public class Test {
 		System.out.println(year);
 		System.out.println((new Date()).getTime());
 		try {
-			saveToFile("http://www.aishuzhe.com/files/article/image/0/334/334s.jpg", "D:\\334s.jpg");
+			saveToFile("http://media.twango.com/m1/original/0111/ce3ba22c5a4443d3ad75ee26c1af45ca.jpg", "D:\\334s.jpg");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -6,10 +6,10 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver">
 		</property>
-		<property name="url" value="jdbc:mysql://localhost/dede_xiaoshuo?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=UTF-8">
+		<property name="url" value="jdbc:mysql://localhost/dede_xiaoshuo?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=GBK">
 		</property>
 		<property name="username" value="root"></property>
-		<property name="password" value="mysql"></property>
+		<property name="password" value="123456"></property>
 	</bean>
 	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
