@@ -142,58 +142,39 @@
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
 			<version>1.1.1</version>
-		</dependency><!--
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
+		</dependency>
+		<!--
+			<dependency> <groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>${cxf.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
+			<version>${cxf.version}</version> <exclusions> <exclusion>
+			<artifactId>spring-core</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> </exclusions>
+			</dependency> <dependency> <groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
-			<version>${cxf.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		 Jetty is needed if you're using the CXFServlet 
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
+			<version>${cxf.version}</version> <exclusions> <exclusion>
+			<artifactId>spring-core</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> </exclusions>
+			</dependency> Jetty is needed if you're using the CXFServlet
+			<dependency> <groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http-jetty</artifactId>
-			<version>${cxf.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		--><dependency>
+			<version>${cxf.version}</version> <exclusions> <exclusion>
+			<artifactId>spring-core</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> </exclusions>
+			</dependency>
+		-->
+		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.1</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-xjc-dv</artifactId>
-			<version>2.2</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		--><dependency>
+		<!--
+			<dependency> <groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-xjc-dv</artifactId> <version>2.2</version>
+			<exclusions> <exclusion> <artifactId>spring-core</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> </exclusions>
+			</dependency>
+		-->
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<version>2.0.4</version>
@@ -207,13 +188,13 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
-		</dependency>
+		</dependency><!--
 		<dependency>
 			<groupId>nekohtml</groupId>
 			<artifactId>nekohtml</artifactId>
 			<version>1.9.6.2</version>
 		</dependency>
-		<dependency>
+		--><dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>0.9.1.2</version>
@@ -232,13 +213,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>2.5.6</version>
-		</dependency><!--
-		<dependency>
-			<groupId>org.apache.ant</groupId>
-			<artifactId>ant-apache-oro</artifactId>
-			<version>1.7.1</version>
 		</dependency>
-		--><dependency>
+		<!--
+			<dependency> <groupId>org.apache.ant</groupId>
+			<artifactId>ant-apache-oro</artifactId> <version>1.7.1</version>
+			</dependency>
+		-->
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
@@ -258,25 +239,46 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.1</version>
 		</dependency>
+		<!--
+			<dependency> <groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId> <version>4.0-beta2</version>
+			</dependency>
+		-->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.0-beta2</version>
+			<version>4.0-alpha3</version>
 		</dependency>
+		<!--
+			<dependency> <groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId> <version>4.0.1</version>
+			</dependency>
+		-->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
-			<version>4.0.1</version>
+			<version>4.0-beta1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<version>4.0-beta2</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.james</groupId>
 			<artifactId>apache-mime4j</artifactId>
 			<version>0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xerces</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.nekohtml</groupId>
+			<artifactId>nekohtml</artifactId>
+			<version>1.9.12</version>
 		</dependency>
 	</dependencies>
 </project>   
