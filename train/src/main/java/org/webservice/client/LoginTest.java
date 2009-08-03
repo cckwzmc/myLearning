@@ -41,7 +41,7 @@ public class LoginTest {
 	public static void main(String[] args) {
 		try {
 			login(new WebClient());
-			testIgnoredTags();
+//			testIgnoredTags();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,12 +63,7 @@ public class LoginTest {
 		String makeHomepage = "http://www.txt.cn/dede/makehtml_homepage.php";
 		content = readInputStream(client.doGet(makeHomepage, ""));
 		logger.info("makehomepage " + content);
-		XMLParserConfiguration xparser = new HTMLConfiguration();
-		XMLInputSource source = new XMLInputSource(null, "", null, new StringReader(content), "UTF-8");
-		xparser.parse(source);
-
 		DOMParser parser = new DOMParser();
-		InputStream is = new ByteArrayInputStream(content.getBytes());
 		// 设置网页的默认编码
 		parser.setProperty("http://cyberneko.org/html/properties/default-encoding", "gb2312");
 		/*
@@ -76,13 +71,13 @@ public class LoginTest {
 		 * namespace processing.
 		 */
 		parser.setFeature("http://xml.org/sax/features/namespaces", false);
-		parser.parse(content);
+		parser.parse(new InputSource(new StringReader(content)));
 		Document doc = parser.getDocument();
 		Node myNode = doc.getElementById("position");
 		logger.info(myNode + "");
 		DOMFragmentParser fragParser = new DOMFragmentParser();
 		DocumentFragment node = new HTMLDocumentImpl().createDocumentFragment();
-		is = new ByteArrayInputStream(content.getBytes());
+		InputStream is = new ByteArrayInputStream(content.getBytes());
 		try {
 			fragParser.parse(new InputSource(is), node);
 		} catch (IOException e) {
