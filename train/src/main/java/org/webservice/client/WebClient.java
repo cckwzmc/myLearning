@@ -18,6 +18,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.UrlEncodedFormEntity;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.HttpProtocolParams;
@@ -142,4 +143,15 @@ public class WebClient {
 		return content;
 	}
 
+	public void closeConnection(String httpRoute){
+		if(this.client!=null){
+			HttpHost host=new HttpHost(httpRoute);
+			HttpRoute route=new HttpRoute(host);
+			try {
+				this.client.getConnectionManager().releaseConnection(client.getConnectionManager().getConnection(route));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	} 
 }

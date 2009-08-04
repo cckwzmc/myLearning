@@ -15,7 +15,11 @@ public class MasterMain {
 		// getcontent.parseContent("");
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/myfetch/ApplicationContext-database.xml", "classpath:/myfetch/applicationContext-dao.xml", "classpath:/myfetch/applicationContext-service.xml" });
 		try {
-			Properties pro = PropertiesLoaderUtils.loadAllProperties("myfetch/fetchxml/fetchSite.properties");
+			Properties pro = PropertiesLoaderUtils.loadAllProperties("myfetch/publisher/publisherUrl.properties");
+			System.setProperties(pro);
+			pro.clear();
+			pro = PropertiesLoaderUtils.loadAllProperties("myfetch/fetchxml/fetchSite.properties");
+			
 			MyFetchService service = (MyFetchService) context.getBean("myfetchService");
 //			service.disposeBookMap("aishuzhe");
 			
@@ -24,7 +28,8 @@ public class MasterMain {
 //			service.disposeBookConver(pro.getProperty("bookconversite"));
 //			 service.disposeBookChapter((String) pro.getProperty("chaptersite"));
 //			 service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
-//			 service.saveDataToDedecms(pro.getProperty("miscsite"));
+			 service.saveDataToDedecms(pro.getProperty("miscsite"));
+			//发布完成自动发布
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

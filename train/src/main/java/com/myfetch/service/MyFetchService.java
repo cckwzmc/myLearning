@@ -19,6 +19,7 @@ import com.myfetch.service.http.HttpHtmlService;
 import com.myfetch.service.parse.ParseHtml;
 import com.myfetch.util.DateUtils;
 import com.myfetch.util.HttpResourceUtils;
+import com.myfetch.util.ServiceUtils;
 import com.myfetch.util.XMLUtils;
 
 public class MyFetchService {
@@ -342,12 +343,20 @@ public class MyFetchService {
 
 	/**
 	 * 数据转移到dedecms数据库
-	 * 
+	 * 同时自动发布采集数据
+	 * 发布顺序为:
+	 * 1、封面部署
+	 * 2、文档部署
+	 * 3、目录部署
+	 * 4、列表部署
+	 * 5、首页部署
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
 	public void saveDataToDedecms(String sitePattern) throws IOException {
-
+		//清理之前的发布缓存
+		ServiceUtils.clearPublisherFile();
+		
 		List list = this.dao.getSiteData();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 
