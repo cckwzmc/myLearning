@@ -35,7 +35,7 @@ import org.apache.http.protocol.HTTP;
 public class WebClient {
 	private DefaultHttpClient client;
 	private String currentURL = null;
-	private static Logger log = Logger.getLogger(WebClient.class.getName());
+//	private static Logger log = Logger.getLogger(WebClient.class.getName());
 
 	public WebClient() {
 		client = new DefaultHttpClient();
@@ -124,7 +124,7 @@ public class WebClient {
 	 * @return the InputStream that contains the content
 	 */
 	public InputStream doPost(String url, NameValuePair[] data, String referer) throws HttpException, IOException, InterruptedException, URISyntaxException {
-		log.info("POST " + url);
+//		log.info("POST " + url);
 		// client.getConnectionManager().closeIdleConnections(0, TimeUnit.MILLISECONDS);
 		HttpPost post = new HttpPost(url);
 		setHeaders(post, referer);

@@ -15,7 +15,6 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.slf4j.LoggerFactory;
 
-import com.myfetch.service.MyFetchService;
 import com.myfetch.util.ChangeCharset;
 import com.myfetch.util.Encoding;
 import com.myfetch.util.StringEncoding;

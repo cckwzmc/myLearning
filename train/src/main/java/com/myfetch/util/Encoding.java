@@ -8,7 +8,6 @@ public class Encoding {
 		this.name = name;
 		this.encoding = encoding;
 	}
-
 	public String getName() {
 		return name;
 	}

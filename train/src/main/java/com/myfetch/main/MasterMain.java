@@ -30,6 +30,9 @@ public class MasterMain {
 //			 service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
 			 service.saveDataToDedecms(pro.getProperty("miscsite"));
 			//发布完成自动发布
+			 pro.clear();
+			 pro = PropertiesLoaderUtils.loadAllProperties("myfetch/publisher/publisherUrl.properties");
+			 service.dedePublisher(pro);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

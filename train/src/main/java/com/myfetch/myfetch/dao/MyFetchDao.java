@@ -103,7 +103,7 @@ public class MyFetchDao extends JdbcBaseDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List getSiteData() {
-		String sql = "select t.id,t.lasterarticle,t.type,t.url,t.bookname from fetchurls t where t.isfetch=0";
+		String sql = "select t.id,t.lasterarticle,t.type,t.url,t.bookname,t.status from fetchurls t where t.isfetch=0";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
@@ -241,9 +241,10 @@ public class MyFetchDao extends JdbcBaseDao {
 	 * @param bookInfo
 	 *            只有body 和chaptername 字段
 	 * @param converId
+	 * @return TODO
 	 */
 	@SuppressWarnings("unchecked")
-	public void saveArticleForDede(Integer typeid, Integer bookid, Map arcInfo, Map bookInfo, Integer converId, Boolean addLastId) {
+	public Integer saveArticleForDede(Integer typeid, Integer bookid, Map arcInfo, Map bookInfo, Integer converId, Boolean addLastId) {
 		String sql = "select max(id) from dede_arctiny";
 		Integer arcid = this.getJdbcTemplate().queryForInt(sql);
 		arcid += 1;
@@ -265,6 +266,7 @@ public class MyFetchDao extends JdbcBaseDao {
 			sql = "update dede_archives set lasterartid=? where id=?";
 			this.getJdbcTemplate().update(sql, new Object[] { arcid, converId });
 		}
+		return arcid;
 	}
 
 	public void saveBookType(String bookname, String type, String bookurl) {
@@ -303,7 +305,7 @@ public class MyFetchDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForInt(sql, new Object[] { url });
 	}
 
-	public void updateFetch(Integer id) {
+	public void updateFetchChapterUrls(Integer id) {
 		String sql="update fetchchapterurls set isfetch=1 where id=?";
 		this.getJdbcTemplate().update(sql, new Object[]{id});
 	}
@@ -349,5 +351,10 @@ public class MyFetchDao extends JdbcBaseDao {
 	public int getFetchUrlsByBookName(String bookname) {
 		String sql="select count(*) from fetchurls t where t.bookname=?";
 		return this.getJdbcTemplate().queryForInt(sql,new Object[]{bookname});
+	}
+	
+	public void updateFetchUrls(Integer bookid) {
+		String sql="update fetchurls set isfetch=2 where id=?";
+		this.getJdbcTemplate().update(sql,new Object[]{bookid});
 	}
 }

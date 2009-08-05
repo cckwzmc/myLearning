@@ -7,17 +7,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.webservice.client.WebClient;
 
 import com.myfetch.myfetch.dao.MyFetchDao;
 import com.myfetch.service.http.HttpHtmlService;
 import com.myfetch.service.parse.ParseHtml;
 import com.myfetch.util.DateUtils;
+import com.myfetch.util.DedePublisherUtils;
 import com.myfetch.util.HttpResourceUtils;
 import com.myfetch.util.ServiceUtils;
 import com.myfetch.util.XMLUtils;
@@ -343,33 +347,31 @@ public class MyFetchService {
 
 	/**
 	 * 数据转移到dedecms数据库
-	 * 同时自动发布采集数据
-	 * 发布顺序为:
-	 * 1、封面部署
-	 * 2、文档部署
-	 * 3、目录部署
-	 * 4、列表部署
-	 * 5、首页部署
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
 	public void saveDataToDedecms(String sitePattern) throws IOException {
-		//清理之前的发布缓存
-		ServiceUtils.clearPublisherFile();
 		
 		List list = this.dao.getSiteData();
+		int minArcId=0;
+		Map<String,String> typeMap=new HashMap<String, String>();
+		Map<String,String> bookMap=new HashMap<String, String>();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-
 			Map bookBasic = (Map) iterator.next();
 			if (!StringUtils.contains(ObjectUtils.toString(bookBasic.get("url")), sitePattern)) {
 				continue;
 			}
 			Integer bookid = NumberUtils.toInt(ObjectUtils.toString(bookBasic.get("id")));
-			// 保存小说基本信息
+			
 			Integer typeid = this.dao.getTypeidByfetchId(ObjectUtils.toString(bookBasic.get("type")));
+			//保存发布TYPEID
+			if(!typeMap.containsKey(ObjectUtils.toString(typeid))){
+				typeMap.put(ObjectUtils.toString(typeid), ObjectUtils.toString(typeid));
+			}
+			
+			// 保存小说基本信息
 			Map map = this.dao.getBookInfoById(bookid);
-			// String litpic=ObjectUtils.toString(map.get("litpic"));
-
+			
 			logger.info("开始转移抓取数据，书名为：：" + ObjectUtils.toString(map.get("bookname")));
 			String filename = ObjectUtils.toString(map.get("litpic"));
 			if (!"".equals(filename)) {
@@ -393,6 +395,7 @@ public class MyFetchService {
 					map.put("litpic", "/uploads/noImage.gif");
 				}
 			}
+			//是否有需要更新的章节
 			int retPublish=this.dao.getIntPublishBook(bookid);
 			Integer parentArcId =0;
 			if(retPublish==0){
@@ -408,39 +411,53 @@ public class MyFetchService {
 					continue;
 				}
 			}
-			// 保存图片
-
-			// 保存章节
-			// 抓取的章节列表
+			//保存目录、封面发布信息
+			if(parentArcId>0&&!bookMap.containsKey(ObjectUtils.toString(parentArcId)))
+			{
+				bookMap.put(ObjectUtils.toString(parentArcId), ObjectUtils.toString(parentArcId));
+			}
+			// 保存章节   抓取的章节列表
 			List arcList = this.dao.getFetchArcListByBookId(bookid);
-			// List tableList = this.dao.getFetchTableListByBookId(bookid);
 			int i = 0;
 			
 			for (Iterator iterator2 = arcList.iterator(); iterator2.hasNext();) {
 				Map arcMap = (Map) iterator2.next();
-				// for (Iterator iterator3 = tableList.iterator();
-				// iterator3.hasNext();) {
-				// Map tableMap = (Map) iterator3.next();
-				// Integer
-				// arcCid=NumberUtils.toInt(ObjectUtils.toString(arcMap.get("chapterid")));
-				// Integer
-				// arcTid=NumberUtils.toInt(ObjectUtils.toString(tableMap.get("id")));
-				// if(arcCid>0&&arcTid>0&&arcCid==arcTid)
-				// {
-				// Map articleMap=new HashMap();
-				// articleMap.put("body",arcMap.get("body"));
-				// articleMap.put("chaptername", tableMap.get("chaptername"));
 				i++;
 				boolean isAddLastId = false;
 				if (arcList.size() == i) {
 					isAddLastId = true;
 				}
-				this.dao.saveArticleForDede(typeid, bookid, map, arcMap, parentArcId, isAddLastId);
-				this.dao.updateFetch((Integer) arcMap.get("id"));
-				// }
-				// }
+				Integer arcId=this.dao.saveArticleForDede(typeid, bookid, map, arcMap, parentArcId, isAddLastId);
+				//保存章节内容 发布信息（只保存最小值）
+				if(minArcId==0){
+					minArcId=arcId;
+				}else if(arcId<minArcId){
+					minArcId=arcId;
+				}
+				this.dao.updateFetchChapterUrls((Integer) arcMap.get("id"));
+			}
+			//更新完结书籍的抓取状态
+			boolean isOver=false;
+			String status = ObjectUtils.toString(bookBasic.get("status"));
+			if (!"".equals(status)) {
+				for (int j = 0; j < MyFetchService.bookstatus.length; i++) {
+					String[] st = StringUtils.split(MyFetchService.bookstatus[i], ",");
+					if (st.length == 2) {
+						if (StringUtils.equals(status.trim(), st[0])) {
+							if (!"".equals(st[1])&&"w".equals(st[1])) {
+								isOver=true;
+								break;
+							}
+						}
+					}
+				}
+			}
+			if(isOver){
+				this.dao.updateFetchUrls(bookid);
 			}
 		}
+		//把需要发布的内容写入文件
+		ServiceUtils.writePublish(typeMap,bookMap,minArcId);
 	}
 
 	public Boolean isHaveLastUpdate(String lastarcName, String url) {
@@ -449,5 +466,49 @@ public class MyFetchService {
 	}
 
 	public void testDao() {
+	}
+
+	/**
+	 * 同时自动发布采集数据
+	 * 发布顺序为:
+	 * 1、文档部署
+	 * 2、目录部署
+	 * 3、封面部署
+	 * 4、列表部署
+	 * 5、首页部署
+	 * @param pro
+	 */
+	public void dedePublisher(Properties pro) {
+		try {
+			Properties prop = PropertiesLoaderUtils.loadAllProperties("myfetch/publisher/publisher.properties");
+			String typeIds=prop.getProperty("typeids");
+			String bookIds=prop.getProperty("bookids");
+			String minArcId=prop.getProperty("minarcid").trim();
+			WebClient client=new WebClient();
+			if(!"".equals(minArcId)){
+				DedePublisherUtils.publishArchives(client, prop, minArcId);
+			}
+			String[] typeid=StringUtils.split(typeIds,",");
+			String[] bookid=StringUtils.split(bookIds,",");
+			for (int i = 0; i < bookid.length; i++) {
+				if(!"".equals(bookid[i])){
+					DedePublisherUtils.publishTable(client, prop, bookid[i]);
+				}
+			}
+			for (int i = 0; i < bookid.length; i++) {
+				if(!"".equals(bookid[i])){
+					DedePublisherUtils.publishPage(client, prop, bookid[i]);
+				}
+			}
+			for (int i = 0; i < typeid.length; i++) {
+				if(!"".equals(typeid[i])){
+					DedePublisherUtils.publishList(client, prop, typeid[i]);
+				}
+			}
+			DedePublisherUtils.publishHomePage(client, prop);
+		} catch (IOException e) {
+			logger.error("发布数据失败:"+e.getMessage());
+		}
+		
 	}
 }
