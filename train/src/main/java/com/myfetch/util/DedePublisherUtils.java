@@ -25,7 +25,11 @@ public class DedePublisherUtils {
 	private static final String DIRECTSTR = "如果你的浏览器没反应，请点击这里...";
 	private static final String REGEX = ".*?<a href='([^<]*)'>.*?";
 	private static final NameValuePair nullData[]={new BasicNameValuePair("null", "")};
+	private static String DEFAULTCHAR="UTF-8";
 	public static String login(WebClient client, Properties pro) {
+		if(!"".equals(pro.getProperty("defaultChar"))){
+			DEFAULTCHAR=pro.getProperty("defaultChar");
+		}
 		BasicClientCookie cookie = new BasicClientCookie("", "");
 		client.getHttpClient().getCookieStore().addCookie(cookie);
 		String loginPageUrl = pro.getProperty("loginPage");
@@ -135,11 +139,11 @@ public class DedePublisherUtils {
 		String content="";
 		String okStr = "完成所有创建任务";
 		String updateCachePage = pro.getProperty("makeArchivesPage");
-		NameValuePair cacheData[] = { new BasicNameValuePair("pagesize", "50"),new BasicNameValuePair("endid", "0"),new BasicNameValuePair("typeid", "0"), new BasicNameValuePair("startid", ObjectUtils.toString(minArcId)) };
+		NameValuePair cacheData[] = { new BasicNameValuePair("pagesize", "20"),new BasicNameValuePair("endid", "0"),new BasicNameValuePair("typeid", "0"), new BasicNameValuePair("startid", ObjectUtils.toString(minArcId)) };
 		try {
 			int i = 0;
 			while (true && i < 10009) {
-				if(StringUtils.contains(updateCachePage, "startid"))
+				if(StringUtils.contains(updateCachePage, "startdd"))
 				{
 					content = readInputStream(client.doPost(updateCachePage, nullData, ""));
 				}else{
@@ -314,7 +318,7 @@ public class DedePublisherUtils {
 	 *             if reading the inputstream fails
 	 */
 	protected static String readInputStream(InputStream is) throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+		BufferedReader in = new BufferedReader(new InputStreamReader(is, DEFAULTCHAR));
 		StringBuffer buffer = new StringBuffer();
 		String line;
 		while ((line = in.readLine()) != null) {

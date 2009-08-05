@@ -34,7 +34,7 @@
 	<bookdescfetchtype>1</bookdescfetchtype>
 	<bookdescstart>&lt;span class=&quot;comment&quot;&gt;</bookdescstart>
 	<bookdescend>&lt;/span&gt;</bookdescend>
-	<replaceword>手打网,91中文|www.sdxsw.com,www.91zw.cn|手打团,91中文|sdxsw.com,91zw.cn</replaceword>
+	<replaceword>百书库,91中文|baishuku.com,www.91zw.cn</replaceword>
 	<!-- 书名 -->
 	<bookname>&lt;span class=&quot;booktitle&quot;&gt;[args1]&lt;/span&gt;</bookname>
 	<type>valign=&quot;middle&quot;&gt;类别：&lt;a href=&quot;/Book[*]&quot;>[args1]&lt;/a&gt;[*]作者：</type>

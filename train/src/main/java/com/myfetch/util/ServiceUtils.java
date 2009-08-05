@@ -112,13 +112,10 @@ public class ServiceUtils {
 
 	public static void main(String[] args) {
 		try {
-			Properties pro = PropertiesLoaderUtils.loadAllProperties("myfetch/publisher/publisherUrl.properties");
-			System.setProperties(pro);
-			System.out.println(System.getProperty("updateCachePage"));
 			Map<String, String> map=new HashMap<String, String>();
 			map.put("123", "123");
 			writePublish(map,map,123);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		clearPublisherFile();

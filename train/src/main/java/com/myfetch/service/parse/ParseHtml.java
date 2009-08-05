@@ -52,7 +52,6 @@ public class ParseHtml {
 		// html的整体替换
 		if (!"".equals(replacesrc1)) {
 			html = html.replaceAll(replacesrc1, replacedesc1);
-			logger.info(html);
 		}
 		if ("1".equals(patternType)) {
 			Pattern pt = Pattern.compile(patterstrEx);

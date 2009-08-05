@@ -1,11 +1,8 @@
 package com.myfetch.myfetch.dao;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.print.attribute.standard.NumberUp;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -18,7 +15,7 @@ public class MyFetchDao extends JdbcBaseDao {
 
 	@SuppressWarnings("unchecked")
 	public List getUrlList() {
-		String sql = "select t.id,t.url,t.status,t.type,t.fromsitename,t.lasterarticle,t.isfetch  from fetchurls t";
+		String sql = "select t.id,t.url,t.status,t.type,t.fromsitename,t.lasterarticle,t.isfetch,t.badfetch  from fetchurls t";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
