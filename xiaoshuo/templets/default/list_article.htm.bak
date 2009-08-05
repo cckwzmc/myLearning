@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<script src="{dede:global.cfg_cmspath/}/images/js/cn_conver_py.js"></script> 
+<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+</head>
+<body >
+{dede:include filename="head.htm"/}
+<!-- /header -->
+
+<div class="list_channel-nav w960 center clear">
+		<span class="place" style="float:left;">
+			<strong>当前位置:</strong> {dede:field name='position'/}
+		</span><!-- /place -->          
+		<span class="back">
+			<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
+		</span>
+</div><!-- /channel-nav -->
+<!--本类推荐内容-->
+<div class="w960 center clear mt1">
+	<!--本类推荐书目-->
+	<div class="pleftindex">
+    <div class="commend">
+      <dl class="tbox">
+        <dt><strong>本类推荐</strong></dt>
+        <dd>
+          <ul class="d2 ico2">
+           {dede:arclist flag='c' titlelen=42 row=6  bookpage='YES'}
+          	<li><a href="[field:arcurl/]">[field:title/]</a>
+                        </li>{/dede:arclist}
+          </ul>
+        </dd>
+      </dl>
+    </div>
+		</div>
+		<!--推荐-->
+		<div class="piglist-right">
+				<dl class="tbox">
+						<dt><strong>本类强力推荐</strong></dt>
+            <dd>
+				   <ul class="e4">						
+						{dede:arclist titlelen='20'  flag='h' col='3'  row='3' bookpage='YES'}
+						 <li>                           
+						 <table width="100%">
+							<tr>
+								<td  width="12%" align="center"><a href="[field:arcurl /]"><img src="[field:litpic/]" border=0></a></td>
+								<td  align="left" valign="top" style="padding-left:8px;"><a style="color:#004D00;
+text-decoration:none;font-size:14px;font-weight:bold;" href="[field:arcurl/]">[field:title/]</a> <br/><font color='#009900'>作者：[field:writer/]</font><br/><p>&nbsp;&nbsp;&nbsp;&nbsp;[field:description function='cn_substr(@me,180)'/]...</p></td>
+							</tr>
+						 </table>				
+						</li>
+					  {/dede:arclist}
+				   </ul>
+		        </dd>
+		      </dl>
+		</div>		
+</div>
+<div class="w960 center clear">
+	<script src="/ad/listadmid.js"></script>
+</div>
+
+<!--本类书目列表（分页）-->
+<div class="w960 center clear">
+		<!--本类排行榜-->
+	<div class="pleftindex">
+    <div class="commend mt1">
+      <dl class="tbox">
+        <dt><strong>本类周排行榜</strong></dt>
+        <dd>
+			<ul class="d2 ico2">
+           {dede:arclist flag='c' titlelen=42 row=6  bookpage='YES'}
+          	<li><a href="[field:arcurl/]">[field:title/]</a>
+
+            </li>{/dede:arclist}
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="commend mt1">
+      <dl class="tbox">
+        <dt><strong>本类月排行榜</strong></dt>
+        <dd>
+          <ul class="d2 ico2">
+           {dede:arclist flag='c' titlelen=42 row=6  bookpage='YES'}
+          	<li><a href="[field:arcurl/]">[field:title/]</a>
+       
+            </li>{/dede:arclist}
+          </ul>
+        </dd>
+      </dl>
+    </div>    
+		</div>
+		<!--推荐-->
+		<div class="piglist-right">
+				<table width="792px;" align="center" style="margin-top: 10px;" class="grid"> 
+				<tbody><tr align="center"> <th width="20%">文章名称</th> 
+				<th width="40%">最新章节</th> <th width="15%">作者</th> 
+				<th width="9%">总点击</th> 
+				<th width="10%">更新</th> <th width="6%">状态</th>
+				 </tr>
+				 
+					{dede:list pagesize='80' bookpage='LIST' orderby=click}
+					<tr>
+						<td width="20%">&nbsp;<a href="[field:arcurl/]" >[field:title/]</a></td> 
+						<td width="40%">&nbsp;<a href="javascript:getLastArcUrl('[field:typename/]','[field:id/]','[field:lasterartid/]');">[field:lasterarticle/]</td>
+						<td width="15%">&nbsp;[field:writer/]</td> 
+						<td width="9%">&nbsp;[field:click/]</td> 
+						<td width="10%">&nbsp;[field:pubdate function="MyDate('m-d',@me)"/]</td> 
+						<td width="6%">&nbsp;连载</td>
+					</tr>		
+						{/dede:list}
+					</tbody>
+				</table> 
+				<table width="792px;" align="center" style="margin-top: 2px;"> 
+					<tr>
+						<td align="right">
+							<div class="dede_pages" style="float:right;">
+								<ul class="pagelist">
+					             {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
+								</ul>
+							</div><!-- /pages -->
+						</td>	
+					</tr>
+				</table>
+		</div>
+</div>
+
+
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
+
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field.keywords/}" />
+<meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templeturl/}/style/article.css" rel="stylesheet" media="screen" type="text/css" />
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+function CheckLogin(){
+	var taget_obj = document.getElementById('_ajax_feedback');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("{dede:global.cfg_cmsurl/}/member/ajax_feedback.php");
+	DedeXHTTP = null;
+}
+function checkSubmit(){
+	if(document.feedback.msg.value!='') document.feedback.submit();
+	else alert("评论内容不能为空！");
+}
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("{dede:field name='phpurl'/}/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+	DedeXHTTP = null;
+}
+function postDigg(ftype,aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	var saveid = GetCookie('diggid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==aid && hasid) continue;
+			else {
+				if(saveids[i]==aid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return; }
+		else saveid += ','+aid;
+		SetCookie('diggid',saveid,1);
+	}
+	else
+	{
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	var url = "{dede:global.cfg_phpurl/}/digg_ajax.php?action="+ftype+"&id="+aid;
+	myajax.SendGet2(url);
+	DedeXHTTP = null;
+}
+function getDigg(aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("{dede:global.cfg_phpurl/}/digg_ajax.php?id="+aid);
+	DedeXHTTP = null;
+}
+
+-->
+</script>
+</head>
+<body class="articleview">
+{dede:include filename="head.htm"/}
+<!-- /header -->
+
+<div class="channel-nav w960 center clear">
+	<ul>
+              {dede:channel type='self' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
+          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
+         
+	</ul>
+	<span class="back">
+		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
+	</span>
+</div><!-- /channel-nav -->
+<div class="colors2 sidebar" id="main">
+<!-- /header -->
+<div id="breadCrumb"><strong>当前位置:</strong> {dede:field name='position'/}</div>
+<div id="guild"><a href="http://www.98xiaoshuo.com/">穿越小说网</a> <a href="../">书籍介绍</a> <a href="../">章节目录</a> <a target="_blank" href="http://www.98xiaoshuo.com/plus/search.php?kwtype=0&amp;keyword=冒牌大英雄">加入书架</a> <a href="/plus/stow.php?aid=28339">收藏本书</a> <a title="收藏到QQ书签" href="javascript:window.open('http://shuqian.qq.com/post?from=3&amp;title='+encodeURIComponent(document.title)+'&amp;uri='+encodeURIComponent(document.location.href)+'&amp;jumpback=2&amp;noui=1','favit','width=930,height=470,left=50,top=50,toolbar=no,menubar=no,location=no,scrollbars=yes,status=yes,resizable=yes');void(0)">QQ书签</a> <a title="添加到百度搜藏" href="javascript:window.open('http://cang.baidu.com/do/add?it='+encodeURIComponent(document.title.substring(0,76))+'&amp;iu='+encodeURIComponent(location.href)+'&amp;fr=ien#nw=1','_blank','scrollbars=no,width=600,height=450,left=75,top=20,status=no,resizable=yes'); void 0">百度搜藏</a> <a title="添加到雅虎收藏" onclick="window.open('http://myweb.cn.yahoo.com/popadd.html?url='+encodeURIComponent(document.location.href)+'&amp;title='+encodeURIComponent(document.title), 'Yahoo','scrollbars=yes,width=780,height=550,left=80,top=80,status=yes,resizable=yes');" href="#">雅虎收藏</a> <a name="StranLink">繁體中文</a></div>
+<div id="shop">
+  <div class="mode"><span>选择背景颜色：</span>
+    <script language="javascript">SelectColors();</script><a class="color_1" onclick="javascript:ChangeMode('colors1');" href="javascript:void(0);">color1</a><a class="color_2" onclick="javascript:ChangeMode('colors2');" href="javascript:void(0);">color2</a><a class="color_3" onclick="javascript:ChangeMode('colors3');" href="javascript:void(0);">color3</a><a class="color_4" onclick="javascript:ChangeMode('colors4');" href="javascript:void(0);">color4</a><a class="color_5" onclick="javascript:ChangeMode('colors5');" href="javascript:void(0);">color5</a><a class="color_6" onclick="javascript:ChangeMode('colors6');" href="javascript:void(0);">color6</a><a class="color_7" onclick="javascript:ChangeMode('colors7');" href="javascript:void(0);">color7</a><a class="color_8" onclick="javascript:ChangeMode('colors8');" href="javascript:void(0);">color8</a>
+    <span>??选择字体大小：</span> <a href="javascript:void(0);" onclick="javascript:ChangeFont('fonts_big');" class="font_1">font1</a> <a href="javascript:void(0);" onclick="javascript:ChangeFont('fonts_mesne');" class="font_2">font2</a> <a href="javascript:void(0);" onclick="javascript:ChangeFont('fonts_small');" class="font_3">font3</a></div>
+  <div class="status">
+    <script language="javascript">Gundong();</script>鼠标双击滚屏
+  </div>
+</div>
+<script language="javascript">GetFont();</script><div class="fonts_small" id="content">
+
+<h1>第69章 友谊</h1>
+<script language="javascript" src="/plus/ad_js.php?aid=2"/>
+<div class="cont">
+
+<p>　　好看的小说尽在 九八小说网 www.98xiaoshuo.com
+　　战斗进入尾声。A2舰队残存的战舰，已经无法再继续抵抗下去了，他们开始四散逃离。不过，能够顺利脱离战斗，并摆脱查克纳战舰追击的，最终只有不超过百分之五的战舰，而且大部分，都是启动速度极快，转向灵活，不被优先打击的驱逐舰和巡洋舰。</p>
+<p>
+　　星空中，苏斯战舰星零四散，查克纳战舰，则以四艘为一个编组，围追堵截。双方战舰那一排排灯火通明的舷窗里，氛围各不相同，一边是愁云惨雾，另一边，则是欢声震天。</p>
+<p>
+　　这一仗，能够从极端恶劣的局面下，取得这样的战果，已经超出了所有人的想象。</p>
+<p>
+　　这不得不说，是一次辉煌的胜利。如果再加上在战斗中成功布置陆泽成长阵的话，这个胜利的定义，应该上升到伟大。</p>
+<p>
+　　并不是每一个查克纳官兵，都知道这场战役的指挥者是谁。在战斗中，所有的命令都是由舰长和作战部通过指挥系统下达的。随着战斗进入尾声，随着作战参谋们开始对战局复盘，并对同伴津津乐道，关于指挥者的消息已经传得沸沸扬扬了。</p>
+<p>
+　　就在所有人都在为斐扬舰队的行径破口大骂，都在为匪军指挥官的出现导致的戏剧性的转折而庆幸的时候，大家忽然看见，十余艘从未见过其型号，几乎快要散架的破烂战舰，自烟湖星云中，风驰电掣地冲了出来。</p>
+<p>
+　　人们把脸贴在舷窗上，瞪大了眼睛----这群家伙是谁？</p>
+<p>
+　　是混得极其悲惨的海盗，是某支破产的商团舰队，还是开着战舰行乞的星际乞丐？这些战舰，是从哪个废船回收场直接开出来的？能飞到这个前不粘村后不着店的星域，他们得历经多少磨难？下一秒，这帮家伙，会不会就在自己的眼前散架？</p>
+<p>
+　　一串串的疑问，刚刚浮现在查克纳人的脑海中，他们就看见了这支舰队的信号。</p>
+<p>
+　　查克纳信号兵。一头就撞在了中控台电脑上.........上帝，这些破烂战舰，就是匪军舰队!</p>
+<p>
+　　所有人都张大了嘴，目光呆滞。</p>
+<p>
+　　就是他们袭击了苏斯运输舰队。帮助我们赢得了战斗？</p>
+<p>
+　　许多查克纳女兵地眼睛。当时就湿润了。</p>
+<p>
+　　尽管现在地1201舰队刚刚经历了一场生死劫难。损失了超过百分之四十地舰艇。每艘战舰都伤痕累累。可是。和这些能用衣衫褴褛面黄肌瘦来形容地匪军战舰一比。查克纳战舰。简直就是顿顿吃大白馒头夹卤肉地土财主！</p>
+<p>
+　　有了这种心理。接下来。匪军地一切举动。在查克纳人地眼里。都是合理地了。</p>
+<p>
+　　只见这些如狼似虎地战舰。以极快地速度加入了对苏斯残余舰队地围剿。战舰一边包抄围堵。一边接近已经投降或者失去了动力地苏斯战舰。两三辆太空机甲。这帮家伙就敢砸人家地舱门............看起来。他们地确是穷怕了。</p>
+<p>
+　　谢谢.........太谢谢了。一艘匪军地破烂武装商船。在派出四辆机甲。猛砸一艘苏斯巡洋舰地舱门时。向一旁戒备地查克纳战舰不断地发送着信号。</p>
+<p>
+　　多可怜。查克纳女兵眼睛红红的，恨不得拍着这些匪军的肩膀，跟他们说，慢点吃，没人跟你们抢。</p>
+<p>
+　　不过。这句话，终究没有说出口。倒不是隔着太空，拍不着这群叫花子地肩膀，实在是因为，这帮家伙的动作太快了........就算查克纳人想抢，也没办法抢！</p>
+<p>
+　　D24空域，一艘苏斯巡洋舰，眼看就要逃脱查克纳战舰的追击了。就在苏斯人禁不住欢呼雀跃，查克纳人沮丧地摔帽子的时候。忽然间，一艘匪军巡洋舰和一艘匪军的武装商船，斜斜地从一边冲了出来。加入了围追堵截的行列之中。</p>
+<p>
+　　没有谁把这两艘破烂战舰放在眼里。查克纳人哀叹匪军战舰选择的路线和角度不对，苏斯人则耻笑这两艘破烂战舰癞蛤蟆想吃天鹅肉。</p>
+<p>
+　　可是，几十秒后，一追一逃的两艘战舰上的所有人，都只剩下了目瞪口呆地表情。</p>
+<p>
+　　在战舰左侧舷窗外，两艘匪军战舰，就如同两个燃烧着最后生命的乞丐。越跑越快。他们先超越了查克纳战舰。然后一左一右逼近了苏斯战舰。</p>
+<p>
+　　生锈的舰壳，晃晃悠悠的推进器。如同破布般残缺不全的外挂装甲..........抓狂的苏斯人，甚至能隔着无法传递声音的太空，听见这两艘破烂战舰身体上发出的嘎吱声。尽管他们每一秒钟都在诅咒这两艘战舰散架。可是，这两艘战舰烂是烂得一塌糊涂，却偏偏距离他们越来越近。</p>
+<p>
+　　查克纳人全都傻了。他们看着破烂战舰接近苏斯战舰。喃喃地喊着上帝。</p>
+<p>
+　　当扑棱着翅膀的漂亮天鹅，被两只癞蛤蟆追上，并拖倒在地，轮了个半死地时候。苏斯舰长宣布投降。</p>
+<p>
+　　他认命了。他无法想象，这样两艘破船，能够追上自己的高速巡洋舰，需要的是一种多么忘我，多么执着的精神。他怎么想也想不明白。</p>
+<p>
+　　这样的情形，发生在绿洲空域的每一个角落。</p>
+<p>
+　　匪军战舰四处出击，能插上一脚的地方，都有他们破烂的身影。</p>
+<p>
+　　当最后的追击战结束，寥寥无几地几艘苏斯战舰幸运地逃离这片恐怖地星域时，十几艘破烂战舰，已经又不要命又不要脸地将绝大部分的战利品扒拉进了怀里。信号灯四处闪着，跟查克纳战舰打着招呼：谢谢，实在太谢谢了。查克纳万岁！</p>
+<p>
+　　查克纳人只能看着。对于这救命恩人地举动，他们一点异议都没有。只不过，有些呆滞罢了。许多查克纳战士甚至怀疑，当初在面对A1舰队的时候，如果这支舰队冲出来，是不是只需要往苏斯舰群中丢一块骨头，就能解决一切问题。</p>
+<p>
+　　扫尾工作进行的无比顺利，在查克纳舰队的旁观甚至协助下。匪军大获丰收。</p>
+<p>
+　　四艘苏斯战列舰，五艘苏斯巡洋舰，两艘苏斯驱逐舰，几乎是完好无损地落到了匪军的手中。还有几艘大小不一的战舰，虽然损伤严重，可是。许多部件都可以拆卸使用。最让胖子兴奋的是，在星云中，他们找到的一艘名为帕尔斯号的斐扬独角兽级战列舰！</p>
+<p>
+　　这艘战列舰，在被发现地时候，处于一支苏斯机甲小队的控制之中。舰艇里的斐扬人，不是乘救生艇逃离战舰，就是被屠杀一空。当苏斯机甲小队在一群如狼似虎的匪军机甲战士面前迅速崩溃以后，这艘几乎是全新的独角兽级战列舰，就这么平白便宜了匪军。星云深处的AR-1862星系。</p>
+<p>
+　　圣光号战列舰和查克纳浩渺号航母地伸缩式通道缓缓对接到一起。随着压力平衡表的绿灯亮起。自动舱门打开，胖子挺胸收腹，大步流星地领着方香及一干匪军军官走进通道。</p>
+<p>
+　　通道尽头的浩渺号航母圆形集合厅里。三百名查克纳官兵身穿挺拔华丽的白色海军仪仗队制服，手持查克纳共和式步枪，整齐地排列成三行仪仗队列。在他们的另一侧，120舰队各舰的舰长，在马歇尔少将和张鹏程中将的率领下，静静地等候着。</p>
+<p>
+　　当航母舱门打开，匪军军官出现在自动门口时，仪仗队指挥官挺胸抬头，用他那经过训练的嘹亮嗓子。高声喊道：敬礼！</p>
+<p>
+　　仪仗队指挥官的声音，在大厅里回荡着。没有音乐，没有热情地握手问候，庄重肃穆中，包括张鹏程在内的所有查克纳人，刷地一声，同时并腿立正，举掌齐额。</p>
+<p>
+　　就在胖子和方香，以及身后的匪军军官还有些愣神地时候。一男一女两位查克纳礼仪官已经以正步迎了上来，在两人的胸前，佩戴上了一枚查克纳十二集团舰队的军官号牌。</p>
+<p>
+　　从今往后，二位将军，就是我十二集团舰队的终生名誉指挥官。张鹏程的声音，铿锵有力：但有所命，万死不辞！</p>
+<p>
+　　气氛虽然凝重，可是，匪军军官们。却只觉得一股热血直冲脑际！</p>
+<p>
+　　所有人都知道查克纳人的民族习气。他们崇敬英雄。一诺千金。</p>
+<p>
+　　作为人类世界的第三大国和唯一一个以移民星球为国家民族名字，从未被彻底征服攻陷的国家。查克纳人的傲气。是刻在骨子里地！</p>
+<p>
+　　他们强大的军事力量和综合国力，是包括两大超级大国在内的任何一个国家，都不敢轻易招惹的。他们天性温和含蓄，却在骨子里，有一种桀骜不驯。所有人都拿这第三大国没有办法。他们既不可能迫使他们屈服，也很难得到他们的认同。</p>
+<p>
+　　而此刻，张鹏程的话，和在场所有查克纳军官们的举动，都表明，他们已经将匪军看做了他们当中的一员！这是查克纳人的认同。即便是黑斯廷斯亲临，也未必能得到地认同。</p>
+<p>
+　　惊愕中，方香扭头向胖子看去，却见那一张胖脸，已经笑成了一朵花。</p>
+<p>
+　　方香抿了抿嘴唇，她知道，匪军已经获得了查克纳十二集团舰队的尊敬，赢得了张鹏程的友谊。这也意味着，至少在马尔斯自由航道，未来的查克纳将和匪军站在一起。无论费斯切拉和卡罗莱娜向对匪军做什么，他们首先要面对的，都是查克纳人。</p>
+<p>
+　　看那胖子的笑容，显然，正在暗自得意。</p>
+<p>
+　　眼见张鹏程大步迎上来，胖子急忙立正敬礼，然后豪爽地张开双臂，和张鹏程拥抱在一起，场面感人肺腑.........</p>
+<p>
+　　那艘斐扬战列舰，你准备怎么处理？张鹏程小声地问道。</p>
+<p>
+　　我的！胖子眼睛一瞪，伪装立刻抛到了九霄云外。</p>
+<p>
+　　那你答应的三七开.......张鹏程眉心一跳，狠狠地拍着胖子的背。</p>
+<p>
+　　我没答应！胖子哪里肯吃亏，拳头在张鹏程背上擂得咚咚直响，咬牙切齿道：都是我地！老家伙你敢抢，我跟你拼命！</p>
+<p>
+　　张鹏程哈哈大笑，擂了胖子一拳。这个毫不顾忌脸面，为自己地部队多吃多占的指挥官，远比他认识地那些所谓正直无私的指挥官。更投他的脾气。</p>
+<p>
+　　只要这胖子拿十二集团舰队当自己人，就算他名义上地上级卡罗莱娜，也无法干扰他的决定，更不可能让他出卖十二集团舰队。</p>
+<p>
+　　这样的盟友，才是最可靠的盟友！</p>
+<p>
+　　胖子也笑，笑得很憨厚。努力向张鹏程展示着自己直来直去的嘴脸。</p>
+<p>
+　　斐扬B15舰队的所做所为。让胖子完全可以想象以后玛尔斯自由航道，三方微妙地关系。</p>
+<p>
+　　查克纳和斐扬两国，不会因为萨蒙的个人行为交恶，更不可能因此影响战略大局。这次回玛尔斯，无论张鹏程是质问也好，责难也罢，卡罗莱娜和萨蒙，只怕早已经找好了说辞。</p>
+<p>
+　　张鹏程能做的，不过是将事件递交给查克纳军部。向联合指挥部施压。可那样，十二集团舰队能得到的交代，不过是斐扬共和国对萨蒙的处理。怎么处理。大家也还说不清楚。依照斐扬共和国一项的强势和逻辑，他们的人，自然由他们自己审理。即便是送上了军事法庭，面对斐扬共和国自己的法官，恐怕，萨蒙更像是一个英雄。</p>
+<p>
+　　隔阂是无法抹去的，仗，却还要打下去。苏斯吃了这么大一个亏，不拼命找回场面来。他们也就不是苏斯人了。为了大局，查克纳军部肯定不会悍然公开录像资料，造成斐盟内部地内讧，而黑斯廷斯，也肯定要对查克纳做私下的补偿。</p>
+<p>
+　　只要查克纳人在玛尔斯的话语权提升，自己，在卡罗莱娜麾下，自然日子也就过地滋润一点。</p>
+<p>
+　　对了。张鹏程放开胖子，毫不顾忌身旁的两军军官。问道：既然你跟我们舰队回玛尔斯，到了玛尔斯，你帮我揍萨蒙么？</p>
+<p>
+　　帮！胖子大义凌然斩钉截铁：猴子偷桃还是童子拜观音，你说！</p>
+<p>
+　　苏斯萨勒加方面军驻萨勒加蓝石星基地里，一片忙碌。</p>
+<p>
+　　战舰，在络绎不绝地起降着。港口长桥上，一辆辆货运机甲，正在将各种各样的物资，装进战舰的舱室里。一群群的士兵。在不远处的操场上训练着。维修船坞里。几艘被拆掉外壳，露出米黄色内层的战舰上面。爬满了密密麻麻的维修工。数十支巨大的机械臂，在平台两侧来回旋转着，对战舰进行维修。</p>
+<p>
+　　气氛，显得有些压抑。</p>
+<p>
+　　士兵们在各自工作地间隙，都会有意无意地看看港口透明的开合式穹顶外的星空。</p>
+<p>
+　　消息，已经传了回来，并迅速在基地里蔓延开。高级军官们铁青着脸不开口，低层军官和普通士兵们，就只能靠一点点从不同渠道流传来的消息，推测事实真相。</p>
+<p>
+　　具体是怎么回事，谁也说不清楚，大家能肯定的是，这次A舰队和A2舰队，吃了一个大大的败仗。据说，还是在查克纳1201舰队一开始就损失了近百分之三十兵力的情况下被人家给翻盘的。A舰队还算好，A2舰队，却近乎全军覆没。就连舰队指挥官杜克中将，也连同他的航母一起，葬身于太空之中。</p>
+<p>
+　　这已经是很耻辱地了。可战士们隐约还听说，还有一件更让人无法启齿的耻辱。以至于得到消息时正在开会的乌里扬诺夫上将掀了会议桌，格尔什科夫上将，更是砸了整间办公室。消息是真是假，谁也说不清楚，可基地里的不对劲，大家却都感觉得到。</p>
+<p>
+　　战备级别，已经提升到了橙色一级，留守在基地里的战舰，都被命令取消一切休假，集合待命。原本早就应该抵达的运输舰队没有出现。一直严格控制消耗的物资仓库。却忽然间全部打开，里面的武器物资如同流水一般不断地往战舰上送。五十个大型配件仓库，二十个军火库和十二个能量库，已经快被搬运一空了。</p>
+<p>
+　　还有，平日里还算有修养的高级军官们，现在也是一个个面沉如水。仿佛个个地身体里面，都塞满了炸药，稍有一点火星，立刻就会爆发出来。已经有好几个倒霉蛋，不知道怎么触到了他们地霉头，而被处以鞭刑了。</p>
+<p>
+　　这一切，都从侧面间接地证实了传言的真实性。</p>
+<p>
+　　拥有六只A级舰队地萨勒加方面军，在这一仗当中，就损失了一支半舰队。更丢掉了运载着无数武器装备。舰艇零件，压缩能量块，机甲和新式设备的运输舰队！</p>
+<p>
+　　格尔什科夫的作战计划。遭遇了惨痛的失败。用一位对古中国文学颇有研究的士兵私下里的形容就是，这一次，格尔什科夫是赔了夫人又折兵。</p>
+<p>
+　　当然，这位卖笼学问地士兵，也没落个什么好下场。一位中校寻了个霉头，给了他整整二十鞭。恐怕今后的一个月时间里，这位士兵，都直能躺在医院的床上看他的古文小说了。</p>
+<p>
+　　时间，在沉闷的空气和繁忙的工作中不知不觉的溜走。</p>
+<p>
+　　当港口穹顶。在呜呜的轰鸣声中开启的时候，一直议论纷纷地苏斯士兵们，终于停下了他们无休止的猜测。</p>
+<p>
+　　他们瞪大了眼睛，惊骇地看着港口入口的星空。</p>
+<p>
+　　高高地星空中，橄榄大小的战舰，正呈蛇形队列，陆续经过港口外的太空防御炮塔。没有一艘是完整的。如同一群缺胳膊断腿的伤病，这些战舰，拖着满身伤痕的躯体。缓缓进入港</p>
+<p>
+　　港口士兵的目光，随着战舰的滑过而来回转动。</p>
+<p>
+　　在他们面前，一艘巡洋舰的舰首，被开了一个大洞，主炮已经扭曲变形，大洞里，一位战死士兵地躯体，被死死地卡住。这个部位显然已经被密封门封闭了，所以。这血肉模糊的躯体。就这么晃荡在所有人的眼前。另一艘战列舰的整个舰桥已经被炸掉了一半。舰体内部的残垣断壁，就这么裸露着。断裂的钢铁构架。金属甲板和管线上面，还残留着爆炸的痕迹。</p>
+<p>
+　　随着一艘艘破损严重的战舰从眼前经过，港口士兵的嘴越张越大。聚集地人群，也越来越多。一种莫名的惊骇，在这些苏斯士兵的心理萌芽----一支被伏击的查克纳舰队，竟然能够将两支苏斯A级舰队打成这样，他们的战斗力，应该有多么恐怖？！</p>
+<p>
+　　A2舰队已经没了。A1舰队也基本丧失了战斗力。只剩下四支A级舰队和两支B级舰队，却要应付三支查克纳A级舰队和一支斐扬B级舰队。这样的仗，还打得赢么？</p>
+<p>
+　　几个小时之后，残存的战舰，终于在A3舰队的护卫下，全部进入了港口。</p>
+<p>
+　　维修船坞，顿时被塞得满满的。维修工作，几乎在这些战舰抵达地同时，就被提上了工作日程。所有地维修工都被要求加班，船坞里的灯，整夜整夜地亮着，机械的轰鸣声，搬运机甲和运输车队的声音，不绝于耳。</p>
+<p>
+　　维修人员在加班忙碌，普通士兵侧在营房里辗转反侧。</p>
+<p>
+　　聚集了数十万人的基地里，竟然很少有人声。除了机械的轰鸣外，就只有夜里冷清的通道，那昏暗的灯光映出营房拐角的影子。</p>
+<p>
+　　也不知道什么时候，一个消息，开始在基地里流传。</p>
+<p>
+　　听到这个消息的每一个士兵，都在惊骇中，陷入了更深的沉默。</p>
+<p>
+　　A1舰队的指挥官布伦里奇和前田阳太，已经被投入了监狱。正是他们的失误，导致了这次战役的失利。而让所有人都不能接受的是，A2舰队没有任何机会投入战斗。他们的全军覆没，竟然是因为敌人在与A1舰队作战的同时，布下了陆泽成长阵！</p>
+<p>
+　　在太空中，两支舰队激烈绞杀的时候，竟然让敌人形成陆泽成长阵，对己方的增援部队实施毁灭性的打击.........难怪乌里扬诺夫直接掀了桌子，难怪格尔什科夫砸了整间办公室！可以想象，苏皇和军部在听到这个消息之后，将是何等的震怒。</p>
+<p>
+　　要不了几天，整个苏斯，都将成为全宇宙的笑柄！</p>
+<p>
+　　嘲笑苏斯的，不仅仅是斐盟，甚至，还有驻扎在蓝石星东半球的杰彭人！多少年来，将苏斯锁在东部星域的，除了查克纳以外，又何尝少得了杰彭这个敌友不明的国家。即便同属西约，可是，两个国家的明争暗斗，从来就没有停止过。</p>
+<p>
+　　而现在，杰彭人似乎已经有了更好的借口留在蓝石星。在这个苏斯掌握的星域里，横插一脚。</p>
+<p>
+　　苏斯萨勒加方面军，已经没有别的选择了。</p>
+<p>
+　　乌里扬诺夫的命令已经下达。这一次，将由格尔什科夫亲临前线指挥，四支A级舰队和两支B级舰队全面出动。只有击败斐盟，彻底攻占玛尔斯自由港，才能将这次失利带给苏斯的耻辱，减轻到最小。</p>
+<p>
+　　用格尔什科夫的话来说，这一战，是死战！
+　　.
+　　您可能还喜欢看《斗罗大陆》最快的更新尽在 九八小说网 www.98xiaoshuo.com</p>
+    
+<br/>
+<li><strong>穿越小说网推荐阅读:</strong></li>
+<li><a href="/chenergoudeyaonierensheng/">陈二狗的妖孽人生</a></li>
+<li><a href="/yijiejiusishengong/">异界九死神功</a></li>
+<li><a href="/douluodalu/">斗罗大陆</a></li>
+<li><a href="/changshengjie/">长生界</a></li>
+<li><a href="/panlong/">盘龙</a></li>
+<li><a href="/yanqingxiaoshuo/henchunhenaimei/">很纯很暧昧</a></li>
+<li><a href="/shishangdiyihunluan/">史上第一混乱</a></li>
+<li><a href="/tianwang/">天王</a></li>
+<li><a href="/xiaoxingji/">逍行纪</a></li>
+
+</div>
+<script language="javascript" src="/plus/ad_js.php?aid=3"/>
+<div id="thumb"><a target="_blank" href="/plus/recommend.php?aid=28339">推荐本书</a><a href="/maopaidayingxiong/28240/">上一章</a><a href="">目 录</a><a href="/maopaidayingxiong/28340/">下一章</a><a target="_blank" href="/plus/stow.php?aid=28339">加入书签</a></div>
+<div style="text-align: center;" id="Commenddiv">
+  <input type="button" onclick="javascript:SetHome(this,document.URL);" value="没看完？设置本页为首页" name="curl1" id="curl1"/>
+  ????
+  <input type="button" onclick="javascript:copyToClipBoard_qq()" value="复制本书地址，传给QQ/MSN上的好友" name="curl2" id="curl2"/>
+  <script language="javascript">
+<!--
+function copyToClipBoard_qq() 
+{
+  var clipBoardContent='';
+  clipBoardContent=top.window.document.title+"\r\n"+top.window.location.href;
+  window.clipboardData.setData("Text",clipBoardContent);
+  alert('您已经成功复制本页地址!');
+}
+
+//-->
+</script>
+  <br/>
+</div>
+<div id="tips">温馨提示：方向键左右(← →)前后翻页，上下(↑ ↓)上下滚用， 回车键:返回目录</div>
+</div>
+<div align="center">重要声明：小说“冒牌大英雄”所有的文字、目录、评论、图片等，均由网友发表或上传并维护或来自搜索引擎结果，属个人行为，与本站立场无关。<br/>
+  阅读更多小说最新章节请返回<a href="http://www.98xiaoshuo.com">穿越小说</a>网首页，本站永久地址：www.98xiaoshuo.com<br/>
+  Copyright ? 2005-2009 <a href="http://www.98xiaoshuo.com">穿越小说网</a> All rights reserved. <br/>
+</div>
+</div>
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
+
+</body>
+</html>
