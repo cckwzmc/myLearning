@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<buildpath>
-	<buildpathentry excluding="xiaoshuo/book/|xiaoshuo/html/|xiaoshuo/install/|xiaoshuo/special/|xiaoshuo/templets/|xiaoshuo/uploads/" kind="src" path=""/>
-	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-</buildpath>
