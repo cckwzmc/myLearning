@@ -27,40 +27,43 @@
 	</siteinfo>
 <bookinfo>
 	<!-- 缩略图 -->
-	<litpic>&lt;img src=&quot;[args1]&quot; width=&quot;120&quot; height=&quot;150&quot;&gt;</litpic>
+	<litpic>&lt;img src=&quot;[args1]&quot; border[*]vspace=&quot;5&quot; /&gt;</litpic>
 	<!-- 简介 -->
-	<bookdesc>&lt;span class=&quot;hottextx&quot;&gt;内容简介：&lt;/span&gt;[args1]&lt;/td&gt;</bookdesc>
+	<bookdesc>&lt;span class=&quot;hottextx&quot;&gt;内容摘要：&lt;/span&gt;[args1]&lt;/td&gt;</bookdesc>
 	<!--1 开始  结束匹配，，2正则表达式 -->
 	<bookdescfetchtype>1</bookdescfetchtype>
-	<bookdescstart>&lt;span class=&quot;comment&quot;&gt;</bookdescstart>
-	<bookdescend>&lt;/span&gt;</bookdescend>
-	<replaceword>百书库,91中文|baishuku.com,www.91zw.cn</replaceword>
+	<bookdescstart>内容摘要：&lt;/span&gt;</bookdescstart>
+	<bookdescend>&lt;span&gt;</bookdescend>
+	<replaceword>百书库,91中文|www.baishuku.com,www.91zw.cn|baishuku.com,www.91zw.cn</replaceword>
+	
 	<!-- 书名 -->
-	<bookname>&lt;span class=&quot;booktitle&quot;&gt;[args1]&lt;/span&gt;</bookname>
-	<type>valign=&quot;middle&quot;&gt;类别：&lt;a href=&quot;/Book[*]&quot;>[args1]&lt;/a&gt;[*]作者：</type>
+	<bookname>&lt;span class=&quot;booktitle&quot;&gt;《[args1]》&lt;/span&gt;</bookname>
+	<type></type>
 	<!-- 作者 -->
-	<author>&lt;/span&gt;[*]作者：[*]&gt;[args1]&lt;/a&gt;</author>
+	<author>作[*]者：[args1]&lt;/td&gt;</author>
 	<!-- 字数 -->
-	<chinesenum></chinesenum>
+	<chinesenum>&lt;td width=&quot;25%&quot;&gt;全文长度：[args1]字&lt;/td&gt;</chinesenum>
 	<!-- 书籍章节地址列表地址 -->
-	<chapterlisturl>&lt;a href=&quot;[args1]&quot;&gt;&lt;img src=&quot;[*]read.gif&quot;</chapterlisturl>
+	<chapterlisturl>&lt;td align=&quot;center&quot;&gt;&lt;a href="[args1]" title=&quot;点击阅读&quot;&gt;点击阅读&lt;/a&gt;&lt;/td&gt;</chapterlisturl>
 	<!-- 关键字 -->
 	<keyword></keyword>
-	<replacesrc2>/Html</replacesrc2>
-	<replacedesc2>http://www.sdxsw.com/Html</replacedesc2>
-	<replacesrc1>/UploadPhoto</replacesrc1>
-	<replacedesc1>http://www.sdxsw.com/UploadPhoto</replacedesc1>
+	<replacesrc2></replacesrc2>
+	<replacedesc2></replacedesc2>
+	<replacesrc1></replacesrc1>
+	<replacedesc1></replacedesc1>
 	<urls></urls>
 </bookinfo>
 <chapterlistinfo>
 	<iscolumn>1</iscolumn>
-	<columnname>&lt;div align=&quot;center&quot;&gt;&lt;span class=&quot;style3&quot;&gt;[args1]&lt;/span&gt;&lt;/div&gt;</columnname>
+	<columnname>&lt;td colspan=&quot;4&quot; class=&quot;vcss&quot;&gt;[args1]&lt;/td&gt;</columnname>
 	<chaptername>title=&quot;更新时间[^h]* href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptername>
 	<chaptercontenturl>title=&quot;更新时间[^h]* href=&quot;[args1]&quot; target=&quot;_blank&quot;&gt;[args2]&lt;/a&gt;</chaptercontenturl>
 	<!-- add在前面添加    /// replace 替换//// local 在当前url中调整 -->
 	<modurltype>local</modurltype>
 	<!-- 是否生成动态URL地址  1是  0否 -->
-	<isgendongtaiurl>0</isgendongtaiurl>
+	<isgendongtaiurl>1</isgendongtaiurl>
+	<!-- 动态地址模版 {1}书籍id,{2}章节id -->
+	<urltmp>http://baishuku.com/modules/article/reader.php?aid=[1]&cid=[2]</urltmp>
 	<addurl></addurl>
 	<replacesourc></replacesourc>
 	<replacede></replacede>
