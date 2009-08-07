@@ -370,11 +370,28 @@ public class ParseHtml {
 		String addurlEx = convertRegex(map.get("addurl"));
 		String replacesourcEx = convertRegex(map.get("replacesourc"));
 		String replacedeEx = convertRegex(map.get("replacede"));
+		//是否采用起止处理html
+		
+		String listfetchtype=ObjectUtils.toString(map.get("listfetchtype"));
+		String liststart=ObjectUtils.toString(map.get("liststart"));
+		String listend=ObjectUtils.toString(map.get("listend"));
 		// 是否采用动态地址采集
 		String isgendongtaiurl = ObjectUtils.toString(map.get("isgendongtaiurl"));
 		// 是否采集分卷 1：采集分卷，0：不采集分卷
 		String iscolumn = ObjectUtils.toString(map.get("iscolumn"));
 		String urltmp = ObjectUtils.toString(map.get("urltmp"));
+		if("1".equals(listfetchtype)){
+			int lstart=StringUtils.indexOf(html, liststart)+liststart.length();
+			int lend=-1;
+			if(!"".equals(listend.trim())){
+				lend=StringUtils.indexOf(html, listend);
+			}
+			if(lend==-1){
+				html=StringUtils.substring(html, lstart);
+			}else{
+				html=StringUtils.substring(html, lstart, lend);
+			}
+		}
 		String columnContent = "";
 		Pattern pt = null;
 		Matcher matcher = null;
@@ -417,11 +434,13 @@ public class ParseHtml {
 				parseChapterColumnList(html, fetchurl, chapterInfoList, chaptercontenturlEx, modurltypeEx, isgendongtaiurl, "","","");
 			}
 		} else {
+			logger.info(html);
 			if (!"".equals(urltmp)) {
 				// 取书籍id
-				int start = StringUtils.lastIndexOf(fetchurl, "/") + 1;
-				int end = StringUtils.lastIndexOf(fetchurl, ".");
-				String aid = StringUtils.substring(fetchurl, start, end);
+				int start = StringUtils.lastIndexOf(fetchurl, "/");
+				String temp=StringUtils.substring(fetchurl, 0, start);
+				start = StringUtils.lastIndexOf(temp, "/") + 1;
+				String aid = StringUtils.substring(temp, start);
 				if ("1".equals(iscolumn)) {
 					pt = Pattern.compile(columnnameEx);
 					matcher = pt.matcher(html);
@@ -491,6 +510,7 @@ public class ParseHtml {
 		pt = Pattern.compile(chaptercontenturlEx);
 		matcher = pt.matcher(html);
 		try {
+			logger.info(html);
 			while (matcher.find()) {
 				Map<String, String> chapterMap = new HashMap<String, String>();
 				String modrul = matcher.group(1);
