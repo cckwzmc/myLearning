@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -18,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class HttpHtmlService {
 	private static final org.slf4j.Logger logger = LoggerFactory
 	.getLogger(HttpHtmlService.class);
-	public static String getHtmlContent(String url) {
+	public static String getHtmlContent(String url,String charset,List<org.apache.http.cookie.Cookie> listC) {
 		String html = "";
 		/* 1 生成 HttpClinet 对象并设置参�?*/
 		HttpClient httpClient = new HttpClient();
@@ -28,12 +32,30 @@ public class HttpHtmlService {
 
 		/* 2 生成 GetMethod 对象并设置参�?*/
 		GetMethod getMethod = new GetMethod(url);
+		getMethod.setFollowRedirects(true);  
+		getMethod.getParams().setParameter(HttpMethodParams.SINGLE_COOKIE_HEADER, true);  
 		// 设置 get 请求超时�?5 �?
 		getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 60000);
 		// 设置请求重试处理，用的是默认的重试处理：请求三次
 		getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
 				new DefaultHttpMethodRetryHandler());
-
+		if(CollectionUtils.isNotEmpty(listC))
+		{
+			for (Iterator iterator = listC.iterator(); iterator.hasNext();) {
+				org.apache.http.cookie.Cookie cookie = (org.apache.http.cookie.Cookie) iterator.next();
+				if("SPHPSESSID".equalsIgnoreCase(cookie.getName()))
+				{
+					getMethod.setRequestHeader("Cookie", "SPHPSESSID=" + cookie.getValue());
+				}	
+				if("sessionid".equalsIgnoreCase(cookie.getName())){
+					getMethod.setRequestHeader("Cookie", "SessionID=" + cookie.getValue());
+				}
+				if("domain".equalsIgnoreCase(cookie.getName())){
+					getMethod.setRequestHeader("Cookie", "domain=" +"sina.com.cn");
+				}
+			}
+			
+		}	
 		/* 3 执行 HTTP GET 请求 */
 		try {
 			int statusCode = httpClient.executeMethod(getMethod);
@@ -47,7 +69,7 @@ public class HttpHtmlService {
 			// HTTP响应头部信息，这里简单打�?
 			Header[] headers = getMethod.getResponseHeaders();
 			for (Header h : headers)
-				System.out.println(h.getName() + " " + h.getValue());
+				logger.info(h.getName() + " " + h.getValue());
 			// 读取 HTTP 响应内容，这里简单打印网页内�?
 //			byte[] responseBody = getMethod.getResponseBody();// 读取为字节数�?
 //			this.convertToGBK(new String(responseBody));
@@ -57,7 +79,7 @@ public class HttpHtmlService {
 			// 读取�?InputStream，在网页内容数据量大时�?推荐使用(没有解决乱码问题)
 			 InputStream response = getMethod.getResponseBodyAsStream();//
 			// this.inputStream2String(response);
-			 html=inputStream2String(response);
+			 html=inputStream2String(response,charset);
 			 return html;
 
 		} catch (HttpException e) {
@@ -74,12 +96,12 @@ public class HttpHtmlService {
 		return html;
 	}
 
-	public static String inputStream2String(InputStream is) {
+	public static String inputStream2String(InputStream is,String charset) {
 		String ret = "";
 
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(is,
-					"GB2312"));
+					charset));
 
 			String tempbf="";
 			StringBuffer html = new StringBuffer(100);
