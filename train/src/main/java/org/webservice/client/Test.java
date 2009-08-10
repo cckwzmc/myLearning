@@ -5,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import com.myfetch.service.http.HttpHtmlService;
@@ -19,7 +21,14 @@ public class Test {
 	private Vector vFileList = new Vector();// 下载后的保存文件名列表
 
 	public static void main(String[] args) {
-		testRemotePublisher();
+//		testRemotePublisher();
+		List list=new ArrayList();
+		list.add("1");
+		int i=0;
+		for(i=0;i<list.size();i++){
+			
+		}
+		System.out.println(i+"  "+  list.size());
 	}
 	
 	public static void testRemotePublisher(){

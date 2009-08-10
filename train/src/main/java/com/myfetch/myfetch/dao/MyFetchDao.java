@@ -328,11 +328,20 @@ public class MyFetchDao extends JdbcBaseDao {
 		return "";
 	}
 
+	@SuppressWarnings("unchecked")
 	public int saveFetchBookColumn(String columnName, int bookid) {
-		String sql="select max(id) id from fetchbookcolumn t ";
-		int id=this.getJdbcTemplate().queryForInt(sql)+1;
-		sql="insert into fetchbookcolumn (id,bookid,url,columnname) values(?,?,null,?)";
-		this.getJdbcTemplate().update(sql,new Object[]{id,bookid,columnName});
+		String sql="select id from  fetchbookcolumn t where t.bookid=? and t.columnname=? ";
+		int id=0;
+		List list=this.getJdbcTemplate().queryForList(sql,new Object[]{bookid,columnName});
+		if(CollectionUtils.isNotEmpty(list))
+		{
+			id=NumberUtils.toInt(ObjectUtils.toString(((Map)list.get(0)).get("id")));
+		}else{
+			sql="select max(id) id from fetchbookcolumn t ";
+			id=this.getJdbcTemplate().queryForInt(sql)+1;
+			sql="insert into fetchbookcolumn (id,bookid,url,columnname) values(?,?,null,?)";
+			this.getJdbcTemplate().update(sql,new Object[]{id,bookid,columnName});
+		}
 		return id;
 	}
 

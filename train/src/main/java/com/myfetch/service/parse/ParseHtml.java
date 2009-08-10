@@ -509,12 +509,13 @@ public class ParseHtml {
 		Matcher matcher;
 		pt = Pattern.compile(chaptercontenturlEx);
 		matcher = pt.matcher(html);
+		String dUrl="";
 		try {
 			logger.info(html);
 			while (matcher.find()) {
 				Map<String, String> chapterMap = new HashMap<String, String>();
 				String modrul = matcher.group(1);
-				StringUtils.replace(modrul, "&nbsp;", "");
+				modrul=StringUtils.replace(modrul, "&nbsp;", "");
 				if ("".equals(modrul.trim()) || (!StringUtils.contains(modrul, ".htm") && !StringUtils.contains(modrul, ".asp") && !StringUtils.contains(modrul, ".jsp")) && !StringUtils.contains(modrul, ".php")) {
 					continue;
 				}
@@ -538,10 +539,10 @@ public class ParseHtml {
 							cid=StringUtils.substring(modrul, start+1, end);
 						}
 						if(!"".equals(urltmp)){
-							urltmp=StringUtils.replace(urltmp, "[1]", aid);
-							urltmp=StringUtils.replace(urltmp, "[2]", cid);
+							dUrl=StringUtils.replace(urltmp, "[1]", aid);
+							dUrl=StringUtils.replace(dUrl, "[2]", cid);
 						}
-						chapterMap.put("chaptercontenturl", urltmp);
+						chapterMap.put("chaptercontenturl", dUrl);
 					} else {
 						String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
 						chapterMap.put("chaptercontenturl", addurl + modrul);
