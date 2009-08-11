@@ -35,7 +35,12 @@ public class CommonsServiceDao extends JdbcBaseDao{
 	}
 
 	public void saveFailPublish(Integer publishId, String result) {
-		String sql="insert into publish_log(fail_cause,publish_id) values(?,?)";
-		this.getJdbcTemplate().update(sql, new Object[]{result,publishId});
+		String sql="insert into blog_publisher_log(blogId,failnum,faildesc) values(?,0,?)";
+		this.getJdbcTemplate().update(sql, new Object[]{publishId,result});
+	}
+	@SuppressWarnings("unchecked")
+	public List getFailPublishById(Integer publishId) {
+		String sql="select blogId,failnum,faildesc from blog_publisher_log t where t.blogId=?";
+		return this.getJdbcTemplate().queryForList(sql, new Object[]{publishId});
 	}
 }

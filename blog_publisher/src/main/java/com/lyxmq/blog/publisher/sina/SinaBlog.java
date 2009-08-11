@@ -75,10 +75,10 @@ public class SinaBlog {
 				String result="";
 				Map map = (Map) iterator.next();
 				if("".equals(tempUsername)){
-					loginSina(getWebClient());
+					loginSina(getWebClient(),ObjectUtils.toString(map.get("username")),ObjectUtils.toString(map.get("password")));
 				}else if(!StringUtils.equals(tempUsername,ObjectUtils.toString(map.get("username")))){
-					logoutSina(getWebClient());
-					loginSina(getWebClient());
+//					logoutSina(getWebClient());
+					loginSina(getWebClient(),ObjectUtils.toString(map.get("username")),ObjectUtils.toString(map.get("password")));
 				}	
 				tempUsername=ObjectUtils.toString(map.get("username"));
 				try {
@@ -103,16 +103,16 @@ public class SinaBlog {
 		}
 	}
 
-	private void logoutSina(WebClient webClient2) {
+	private void logoutSina(WebClient webClient) {
 		
 	}
 
 
-	private void loginSina(WebClient client) {
+	private void loginSina(WebClient client,String username,String password) {
 		BasicClientCookie cookie = new BasicClientCookie("", "");
 		client.getHttpClient().getCookieStore().addCookie(cookie);
 		String loginPageUrl = "http://my.blog.sina.com.cn/login.php?url=%2F";
-		NameValuePair data[] = { new BasicNameValuePair("loginname", "artmm@sina.com"), new BasicNameValuePair("passwd", "yb654321"), new BasicNameValuePair("checkwd", ""), new BasicNameValuePair("logintype", "1"), new BasicNameValuePair("login.x", "0"),
+		NameValuePair data[] = { new BasicNameValuePair("loginname", username), new BasicNameValuePair("passwd", password), new BasicNameValuePair("checkwd", ""), new BasicNameValuePair("logintype", "1"), new BasicNameValuePair("login.x", "0"),
 				new BasicNameValuePair("login.y", "0")
 
 		};
@@ -164,18 +164,19 @@ public class SinaBlog {
 
 	public static void main(String[] args) {
 		WebClient client = new WebClient();
-		getInstance().loginSina(client);
-		try {
-			getInstance().publishBlog(client,null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (HttpException e) {
-			e.printStackTrace();
-		}
+		getInstance().loginSina(client,"artmm@sina.com","yb654321");
+		getInstance().loginSina(client,"artmm@sina.com","yb654321");
+//		try {
+//			getInstance().publishBlog(client,null);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (URISyntaxException e) {
+//			e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		} catch (HttpException e) {
+//			e.printStackTrace();
+//		}
 	}
 }
 /**

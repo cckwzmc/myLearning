@@ -1,7 +1,6 @@
 package com.lyxmq.blog.publisher;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.StringReader;
 
 import org.cyberneko.html.parsers.DOMParser;
@@ -39,7 +38,7 @@ public class Demo {
 	public static void main(String[] args) throws Exception {
 		// 生成html parser
 		DOMParser parser = new DOMParser();
-		String html=HttpHtmlService.getHtmlContent("http://www.sina.com.cn");
+		String html=HttpHtmlService.getHtmlContent("http://www.sina.com.cn","UTF8");
 		// 设置网页的默认编码
 		parser.setProperty("http://cyberneko.org/html/properties/default-encoding", "gb2312");
 		// input file
@@ -47,7 +46,7 @@ public class Demo {
 		parser.parse(new InputSource(in));
 		Document doc = parser.getDocument();
 		// 获得body节点，以此为根，计算其文本内容
-		Node body = doc.getElementById("PartF");
+		NodeList input = doc.getElementsByTagName("input");
 		System.out.println(body.getNodeType()+" "+doc.getTextContent());
 	}
 }
