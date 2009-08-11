@@ -22,8 +22,8 @@ public class MasterMain {
 //
 //			service.disposeBookList((String) pro.get("sitename"));
 //			service.disposeBookConver(pro.getProperty("bookconversite"));
-			service.disposeBookChapter((String) pro.getProperty("chaptersite"));
-//			service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
+//			service.disposeBookChapter((String) pro.getProperty("chaptersite"));
+			service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
 //			service.saveDataToDedecms(pro.getProperty("miscsite"));
 			// 发布完成自动发布
 //			pro.clear();
@@ -32,6 +32,5 @@ public class MasterMain {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

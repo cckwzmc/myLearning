@@ -569,6 +569,7 @@ public class ParseHtml {
 		String bodyEx = convertRegex(map.get("contentbody"));
 		String titleEx = convertRegex(map.get("title"));
 		String replaceWord = map.get("replaceword");
+		String fetchtypeend=ObjectUtils.toString(map.get("fetchtypeend"));
 		String[] rep = StringUtils.split(replaceWord, "|");
 		Pattern pt = null;
 		Matcher matcher = null;
@@ -576,7 +577,16 @@ public class ParseHtml {
 		if (StringUtils.isNotBlank(fetchTypeEx) && "1".equals(fetchTypeEx)) {
 			try {
 				int start = StringUtils.indexOf(html, startEx) + startEx.length();
-				int end = StringUtils.indexOf(html, endEx);
+				int end=0;
+				if("2".equals(fetchtypeend)){
+					pt = Pattern.compile(endEx);
+					matcher = pt.matcher(html);
+					while(matcher.find()){
+						end=matcher.start();
+					}
+				}else{
+					end = StringUtils.indexOf(html, endEx);
+				}
 				String content = StringUtils.substring(html, start, end);
 				// 处理一下包含、、、域名、、站点名的
 				if (rep.length > 0) {
