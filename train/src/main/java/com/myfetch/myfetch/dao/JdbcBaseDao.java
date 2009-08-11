@@ -1,8 +1,5 @@
 package com.myfetch.myfetch.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
