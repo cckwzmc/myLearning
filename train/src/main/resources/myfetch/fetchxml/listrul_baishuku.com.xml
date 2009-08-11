@@ -78,9 +78,10 @@
 	<title></title>
 	<!--1 开始  结束匹配，，2正则表达式 -->
 	<fetchtype>1</fetchtype>
-	<contentstart>&lt;script type=&quot;text/javascript&quot; src=&quot;/js/gonggao.js&quot;&gt;&lt;/script&gt;</contentstart>
-	<contentend>&lt;div class=&quot;shouda&quot;&gt;</contentend>
+	<contentstart>&lt;div id=&quot;content&quot;&gt;</contentstart>
+	<fetchtypeend>2</fetchtypeend>
+	<contentend>&lt;a href=&quot;http://baishuku.com[^&lt;]*最新章节</contentend>
 	<contentbody></contentbody>
-	<replaceword>手打网,91中文|www.sdxsw.com,www.91zw.cn|手打团,91中文|sdxsw.com,91zw.cn</replaceword>
+	<replaceword>百书库,91中文|www.baishuku.com,www.91zw.cn|baishuku.com,www.91zw.cn</replaceword>
 </chaptercontent>
 </data>
