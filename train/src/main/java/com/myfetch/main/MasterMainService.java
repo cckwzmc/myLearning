@@ -9,7 +9,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.myfetch.service.MyFetchService;
 
-public class MasterMain {
+public class MasterMainService {
 	public static void main(String[] args) {
 		// ParseHtml getcontent=new ParseHtml();
 		// getcontent.parseContent("");
