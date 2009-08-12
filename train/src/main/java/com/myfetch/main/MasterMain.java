@@ -9,7 +9,9 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.myfetch.service.MyFetchService;
 
-public class MasterMainService {
+public class MasterMain {
+	private static final long serialVersionUID = 584405640646965392L;
+	
 	public static void main(String[] args) {
 		// ParseHtml getcontent=new ParseHtml();
 		// getcontent.parseContent("");
