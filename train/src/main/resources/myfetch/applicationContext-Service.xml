@@ -5,4 +5,5 @@
 	<bean id="myfetchService" class="com.myfetch.service.MyFetchService" scope="prototype">
 		<property name="dao" ref="myfetchDao"/>
 	</bean>
+	
 </beans>	

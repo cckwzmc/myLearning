@@ -92,8 +92,8 @@ public class LoginTest {
 		long time = System.currentTimeMillis();
 		BasicClientCookie cookie = new BasicClientCookie("", "");
 		client.getHttpClient().getCookieStore().addCookie(cookie);
-		String loginPageUrl = "http://www.txt.cn/dede/login_publisher.php";
-		NameValuePair data[] = { new BasicNameValuePair("userid", "admin"), new BasicNameValuePair("pwd", "admin"), new BasicNameValuePair("adminstyle", "newdedecms"), new BasicNameValuePair("dopost", "login") };
+		String loginPageUrl = "http://my.blog.sina.com.cn/login.php?url=%2F";
+		NameValuePair data[] = { new BasicNameValuePair("loginname", "artmm@sina.com"), new BasicNameValuePair("passwd", "yb654321")};
 		String content = readInputStream(client.doPost(loginPageUrl, data, ""));
 		logger.info("content ::: :" + content);
 		loginPageUrl = "http://www.txt.cn/dede/index.php";

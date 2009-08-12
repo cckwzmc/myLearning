@@ -48,7 +48,7 @@ public class Test {
 		System.out.println(year);
 		System.out.println((new Date()).getTime());
 		try {
-			saveToFile("http://media.twango.com/m1/original/0111/ce3ba22c5a4443d3ad75ee26c1af45ca.jpg", "D:\\334s.jpg");
+			saveToFile("http://www.taozui.org/Files/200905271257116657.jpg", "D:\\200905271257116657.jpg");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
