@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -16,6 +17,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.lyxmq.blog.publisher.dao.CommonsServiceDao;
 import com.lyxmq.blog.publisher.utils.HtmlParseUtils;
@@ -29,7 +31,21 @@ public class SinaBlog {
 	private static final String sinaCharset = "UTF8";
 	private static SinaBlog sina = null;
 	private static WebClient webClient = null;
-
+	private Properties sinaPro=null;
+	public Properties getSinaPro() {
+		if(sinaPro==null){
+			Properties pro=null;
+			try {
+				pro = PropertiesLoaderUtils.loadAllProperties("blogsiteconfig/sina_publisher.properties");
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+			}
+			return pro;
+		}else {
+			return sinaPro;
+		}
+	}
+	
 	public WebClient getWebClient() {
 		if(webClient==null){
 			return new WebClient();
@@ -77,7 +93,7 @@ public class SinaBlog {
 				if("".equals(tempUsername)){
 					loginSina(getWebClient(),ObjectUtils.toString(map.get("username")),ObjectUtils.toString(map.get("password")));
 				}else if(!StringUtils.equals(tempUsername,ObjectUtils.toString(map.get("username")))){
-//					logoutSina(getWebClient());
+					logoutSina(getWebClient());
 					loginSina(getWebClient(),ObjectUtils.toString(map.get("username")),ObjectUtils.toString(map.get("password")));
 				}	
 				tempUsername=ObjectUtils.toString(map.get("username"));
@@ -104,14 +120,25 @@ public class SinaBlog {
 	}
 
 	private void logoutSina(WebClient webClient) {
-		
+		String loginoutPageUrl = this.getSinaPro().getProperty("login_page_url");
+		try {
+			webClient.doGet(loginoutPageUrl, "");
+		} catch (URISyntaxException e) {
+			logger.error("退出sina blog 失败" + e.getMessage());
+		} catch (InterruptedException e) {
+			logger.error("退出sina blog 失败" + e.getMessage());
+		} catch (HttpException e) {
+			logger.error("退出sina blog 失败" + e.getMessage());
+		} catch (IOException e) {
+			logger.error("退出sina blog 失败" + e.getMessage());
+		}
 	}
 
 
 	private void loginSina(WebClient client,String username,String password) {
 		BasicClientCookie cookie = new BasicClientCookie("", "");
 		client.getHttpClient().getCookieStore().addCookie(cookie);
-		String loginPageUrl = "http://my.blog.sina.com.cn/login.php?url=%2F";
+		String loginPageUrl = this.getSinaPro().getProperty("login_page_url");
 		NameValuePair data[] = { new BasicNameValuePair("loginname", username), new BasicNameValuePair("passwd", password), new BasicNameValuePair("checkwd", ""), new BasicNameValuePair("logintype", "1"), new BasicNameValuePair("login.x", "0"),
 				new BasicNameValuePair("login.y", "0")
 
@@ -133,8 +160,8 @@ public class SinaBlog {
 
 	@SuppressWarnings("unchecked")
 	private String publishBlog(WebClient client,Map dataMap) throws IOException, URISyntaxException, InterruptedException, HttpException {
-		String postPageUrl = "http://control.blog.sina.com.cn/admin/article/article_post.php";
-		String pubBlogPage = "http://control.blog.sina.com.cn/admin/article/article_add.php";
+		String postPageUrl = this.getSinaPro().getProperty("article_blog_action");
+		String pubBlogPage = this.getSinaPro().getProperty("article_blog_post");
 		String publishHtml = PublisherUtils.readInputStream(client.doGet(pubBlogPage, ""), sinaCharset);
 		NameValuePair[] data = HtmlParseUtils.getElementsPostData(publishHtml, sinaCharset);
 		data = initSinaBlogData(data);
