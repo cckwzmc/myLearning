@@ -37,6 +37,7 @@ public class DedePublisherUtils {
 		String content = "";
 		try {
 			content = readInputStream(client.doPost(loginPageUrl, data, ""));
+			logger.info(content);
 		} catch (IOException e) {
 			logger.error("登录DEDECMS错误" + e.getMessage());
 		} catch (HttpException e) {

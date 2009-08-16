@@ -434,7 +434,6 @@ public class ParseHtml {
 				parseChapterColumnList(html, fetchurl, chapterInfoList, chaptercontenturlEx, modurltypeEx, isgendongtaiurl, "","","");
 			}
 		} else {
-			logger.info(html);
 			if (!"".equals(urltmp)) {
 				// 取书籍id
 				int start = StringUtils.lastIndexOf(fetchurl, "/");
@@ -511,7 +510,6 @@ public class ParseHtml {
 		matcher = pt.matcher(html);
 		String dUrl="";
 		try {
-			logger.info(html);
 			while (matcher.find()) {
 				Map<String, String> chapterMap = new HashMap<String, String>();
 				String modrul = matcher.group(1);

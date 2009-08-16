@@ -370,10 +370,6 @@ public class MyFetchService {
 				if(map==null||"".equals(ObjectUtils.toString(map.get("bookname")))){
 					continue;
 				}
-				if("终极传承".equals(ObjectUtils.toString(map.get("bookname")))){
-					logger.info("");
-				}
-				
 				logger.info("开始转移抓取数据，书名为：：" + ObjectUtils.toString(map.get("bookname")));
 				
 				// 是否有需要更新的章节
@@ -484,7 +480,7 @@ public class MyFetchService {
 	}
 
 	/**
-	 * 同时自动发布采集数据 发布顺序为: 1、文档部署 2、目录部署 3、封面部署 4、列表部署 5、首页部署
+	 * 同时自动发布采集数据 发布顺序为:1、更新缓存 2、文档部署 3、目录部署 4、封面部署 5、列表部署 6、首页部署
 	 * 
 	 * @param pro
 	 */
@@ -496,6 +492,7 @@ public class MyFetchService {
 			String minArcId = prop.getProperty("minarcid").trim();
 			WebClient client = new WebClient();
 			DedePublisherUtils.login(client, pro);
+			DedePublisherUtils.updateDedeCache(client, pro);
 			if (!"".equals(minArcId)&&!"-1".equals(minArcId)) {
 				DedePublisherUtils.publishArchives(client, pro, minArcId);
 			}

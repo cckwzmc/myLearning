@@ -16,7 +16,7 @@ public class MasterMainServiceJob {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("myfetch/fetchxml/fetchSite.properties");
 			MyFetchService service = (MyFetchService) context.getBean("myfetchService");
 			MyFetchService.bootPath = pro.getProperty("imgDownloadDir");
-			service.disposeBookMap("aishuzhe");
+//			service.disposeBookMap("aishuzhe");
 			//
 			service.disposeBookList((String) pro.get("sitename"));
 			service.disposeBookConver(pro.getProperty("bookconversite"));
@@ -39,17 +39,17 @@ public class MasterMainServiceJob {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("myfetch/fetchxml/fetchSite.properties");
 			MyFetchService service = (MyFetchService) context.getBean("myfetchService");
 			MyFetchService.bootPath = pro.getProperty("imgDownloadDir");
-			service.disposeBookMap("aishuzhe.com");
+//			service.disposeBookMap("aishuzhe.com");
 			//
-//			service.disposeBookList((String) pro.get("sitename"));
-//			service.disposeBookConver(pro.getProperty("bookconversite"));
-//			service.disposeBookChapter((String) pro.getProperty("chaptersite"));
-//			service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
-//			service.saveDataToDedecms(pro.getProperty("miscsite"));
+			service.disposeBookList((String) pro.get("sitename"));
+			service.disposeBookConver(pro.getProperty("bookconversite"));
+			service.disposeBookChapter((String) pro.getProperty("chaptersite"));
+			service.disposeChapterContent(pro.getProperty("chaptercontentsite"));
+			service.saveDataToDedecms(pro.getProperty("miscsite"));
 //			// 发布完成自动发布
-//			pro.clear();
-//			pro = PropertiesLoaderUtils.loadAllProperties("myfetch/publisher/publisherUrl.properties");
-//			service.dedePublisher(pro);
+			pro.clear();
+			pro = PropertiesLoaderUtils.loadAllProperties("myfetch/publisher/publisherUrl.properties");
+			service.dedePublisher(pro);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

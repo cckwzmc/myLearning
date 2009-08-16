@@ -16,6 +16,7 @@ public class PatternTest {
 		teststr="类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：";
 		teststr="<div id=\"NclassTitle\">序&nbsp;&nbsp;【<a href=\"/Book/B153962N271220.html\">分卷阅读</a>】</div><div id=\"NclassTitle\">网络原创&nbsp;&nbsp;【<a href=\"/Book/B153962N271220.html\">分卷阅读</a>】</div><div id=\"NclassTitle\">FFFFF&nbsp;&nbsp;【<a href=\"/Book/B153962N271220.html\">分卷阅读</a>】</div>";
 		teststr="<td class=\"ccss\"><a href=\"7081911.html\" title=\"第九章 象甲功\">第九章 象甲功</a></td><td class=\"ccss\"><a href=\"7081911.html\" title=\"第九章 象甲功\">第九章 象甲功</a></td><td class=\"ccss\"><a href=\"7081911.html\" title=\"第九章 象甲功\">第九章 象甲功</a></td><td class=\"ccss\"><a href=\"7081911.html\" title=\"第九章 象甲功\">第九章 象甲功</a></td><td class=\"ccss\"><a href=\"70817.html\" title=\"第九章 象甲功\">第九章 </a></td>";
+		teststr="<tr>    <td class=\"odd\"><a href=\"http://baishuku.com/booksinfoinfo/6/6479.htm\">巫颂</a></td>    <td class=\"even\"><a href=\"http://baishuku.com/html/6/6479/index.html\" target=\"_blank\">正文 第三章 相遇</a></td>    <td class=\"odd\"><a href=\"http://baishuku.com/userinfo.php?id=205\" target=\"_blank\">血红</a></td>	<td class=\"even\">2111K</td>    <td class=\"odd\" align=\"center\">09-06-08</td>    <td class=\"even\" align=\"center\">完成</td>  </tr>";
 		// Pattern p = null;
 		// PatternCompiler complier = new Perl5Compiler();
 		// p = complier.compile(\".*?</a>([^<b>]*)<b>.*?",
@@ -37,6 +38,7 @@ public class PatternTest {
 		regex=".*?作者： ([^\\s]*).{25}点击：.*?";
 		regex=".*?<div id=\"NclassTitle\">([^\\s]*).*?</div>.*?";
 		regex=".*?<td class=\"ccss\">[^<]*<a href=\"([^<]*)\" title=[^\\<]*>([^<]*)</a>.*?";
+		regex=".*?<td class=\"odd\"><a href=\"([^\\u003F<]*)\">[^<]*</a></td>.*?";
 		Pattern pt = Pattern.compile(regex);
 		Matcher matcher = pt.matcher(teststr);
 		while(matcher.find()){
