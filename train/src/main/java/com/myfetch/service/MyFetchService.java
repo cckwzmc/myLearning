@@ -126,14 +126,20 @@ public class MyFetchService {
 						if (booknameCount > 0) {
 							String type = this.dao.getBookTypeByName(map2.get("bookname"));
 							if ("".equals(type)) {
-								type = map2.get("type");
+								type = ObjectUtils.toString(map2.get("type"));
+							}
+							if("".equals(type)){
+								type="0";
 							}
 							this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, filename, map2.get("lastarc"), map2.get("bookname"), "1");
 							logger.info("有重名的书籍存在请手工确认是否需要继续采集" + map2.get("bookname") + " /////  " + map2.get("bookurl"));
 						} else {
 							String type = this.dao.getBookTypeByName(map2.get("bookname"));
 							if ("".equals(type)) {
-								type = map2.get("type");
+								type = ObjectUtils.toString(map2.get("type"));
+							}
+							if("".equals(type)){
+								type="0";
 							}
 							this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, filename, map2.get("lastarc"), map2.get("bookname"), "0");
 						}

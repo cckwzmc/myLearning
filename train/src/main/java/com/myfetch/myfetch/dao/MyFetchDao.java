@@ -45,11 +45,16 @@ public class MyFetchDao extends JdbcBaseDao {
 	}
 
 	public int saveBookUrl(String url, String status, String type, String fromsitename, String lasterarticle,String bookname,String isfetch) {
-		String sql ="select max(id) from fetchurls";
-		int id=this.getJdbcTemplate().queryForInt(sql)+1;
-		sql="insert into fetchurls (id,url,status,type,fromsitename,lasterarticle,bookname,isfetch) values (?,?,?,?,?,?,?,?)";
-		this.getJdbcTemplate().update(sql, new Object[] { id,url, status, type, fromsitename, lasterarticle ,bookname,isfetch});
-		return id;
+		try{
+			String sql ="select max(id) from fetchurls";
+			int id=this.getJdbcTemplate().queryForInt(sql)+1;
+			sql="insert into fetchurls (id,url,status,type,fromsitename,lasterarticle,bookname,isfetch) values (?,?,?,?,?,?,?,?)";
+			this.getJdbcTemplate().update(sql, new Object[] { id,url, status, type, fromsitename, lasterarticle ,bookname,isfetch});
+			return id;
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return -1;
 	}
 
 	public void saveConverInfo(String bookListUrl, String litpic, String chinesenum, String bookdesc, String author, String bookname, String keyword, Integer bookid) {
