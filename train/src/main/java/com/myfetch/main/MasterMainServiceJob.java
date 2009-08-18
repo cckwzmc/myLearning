@@ -46,9 +46,9 @@ public class MasterMainServiceJob {
 				service.saveDataToDedecms(pro.getProperty("miscsite"));
 			}
 //			// 发布完成自动发布
-			pro.clear();
 			if("1".equals(ObjectUtils.toString(pro.getProperty("isrundede"))))
 			{
+				pro.clear();
 				pro = PropertiesLoaderUtils.loadAllProperties("myfetch/publisher/publisherUrl.properties");
 				service.dedePublisher(pro);
 			}
@@ -96,9 +96,9 @@ public class MasterMainServiceJob {
 				service.saveDataToDedecms(pro.getProperty("miscsite"));
 			}
 //			// 发布完成自动发布
-			pro.clear();
 			if("1".equals(ObjectUtils.toString(pro.getProperty("isrundede"))))
 			{
+				pro.clear();
 				pro = PropertiesLoaderUtils.loadAllProperties("myfetch/publisher/publisherUrl.properties");
 				service.dedePublisher(pro);
 			}

@@ -124,7 +124,7 @@ public class MyFetchDao extends JdbcBaseDao {
 		String sql = "select typeid from fetchtypemap t where t.fetchtype=?";
 		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { typeName });
 		if(CollectionUtils.isNotEmpty(list)){
-			NumberUtils.toInt(ObjectUtils.toString(((Map)list.get(0)).get("typeid")));
+			return NumberUtils.toInt(ObjectUtils.toString(((Map)list.get(0)).get("typeid")));
 		}
 		return -1;
 	}
