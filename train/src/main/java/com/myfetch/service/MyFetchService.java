@@ -313,6 +313,7 @@ public class MyFetchService {
 					logger.info("开始抓取内容地址为：" + bMap.get("chapterurl"));
 					for (Map<String, String> map2 : contentList) {
 						this.dao.saveContentInfo(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))), ObjectUtils.toString(bMap.get("id")), map2.get("contentbody"), map2.get("title"));
+						this.dao.updateIsFetchFetchChapterUrls(NumberUtils.toInt(ObjectUtils.toString(bMap.get("id"))));
 					}
 				}
 			}
@@ -333,7 +334,20 @@ public class MyFetchService {
 		}
 		return retList;
 	}
-
+	@SuppressWarnings("unchecked")
+	private List getUnMoveContentList() {
+		List list = this.dao.getFetchchapterurlsList();
+		List retList = new ArrayList();
+		if (org.apache.commons.collections.CollectionUtils.isNotEmpty(list)) {
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map map = (Map) iterator.next();
+				if ("0".equals(ObjectUtils.toString(map.get("ismove")))) {
+					retList.add(map);
+				}
+			}
+		}
+		return retList;
+	}
 	@SuppressWarnings("unchecked")
 	private List getContentList() {
 		List list = this.dao.getFetchchapterurlsList();
@@ -359,6 +373,7 @@ public class MyFetchService {
 		int minArcId = -1;
 		Map<String, String> typeMap = new HashMap<String, String>();
 		Map<String, String> bookMap = new HashMap<String, String>();
+		List arcList=new ArrayList();
 		try {
 			List list = this.dao.getSiteData();
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
@@ -369,7 +384,9 @@ public class MyFetchService {
 				Integer bookid = NumberUtils.toInt(ObjectUtils.toString(bookBasic.get("id")));
 
 				Integer typeid = this.dao.getTypeidByfetchId(ObjectUtils.toString(bookBasic.get("type")));
-				
+				if(typeid.intValue()==-1){
+					continue;
+				}
 
 				// 保存小说基本信息
 				Map map = this.dao.getBookInfoById(bookid);
@@ -397,32 +414,36 @@ public class MyFetchService {
 				}
 				
 				// 保存章节 抓取的章节列表
-				List arcList = this.dao.getFetchArcListByBookId(bookid);
+				
+				arcList = this.dao.getFetchArcListByBookId(bookid);
+				int bookCount=this.dao.getFetchArcCountByBookId(bookid);
 				int i = 0;
-
-				for (Iterator iterator2 = arcList.iterator(); iterator2.hasNext();) {
-					Map arcMap = (Map) iterator2.next();
-					i++;
-					boolean isAddLastId = false;
-					if (arcList.size() == i) {
-						isAddLastId = true;
+				while(CollectionUtils.isNotEmpty(arcList)){
+					for (Iterator iterator2 = arcList.iterator(); iterator2.hasNext();) {
+						Map arcMap = (Map) iterator2.next();
+						i++;
+						boolean isAddLastId = false;
+						if (bookCount == i) {
+							isAddLastId = true;
+						}
+						Integer arcId = this.dao.saveArticleForDede(typeid, bookid, map, arcMap, parentArcId, isAddLastId);
+						// 保存章节内容 发布信息（只保存最小值）
+						if (minArcId == 0) {
+							minArcId = arcId;
+						} else if (arcId < minArcId) {
+							minArcId = arcId;
+						}
+						// 保存目录、封面发布信息
+						if (parentArcId > 0 && !bookMap.containsKey(ObjectUtils.toString(parentArcId))) {
+							bookMap.put(ObjectUtils.toString(parentArcId), ObjectUtils.toString(parentArcId));
+						}
+						// 保存发布TYPEID
+						if (!typeMap.containsKey(ObjectUtils.toString(typeid))) {
+							typeMap.put(ObjectUtils.toString(typeid), ObjectUtils.toString(typeid));
+						}
+						this.dao.updateIsMoveFetchChapterUrls((Integer) arcMap.get("id"));
 					}
-					Integer arcId = this.dao.saveArticleForDede(typeid, bookid, map, arcMap, parentArcId, isAddLastId);
-					// 保存章节内容 发布信息（只保存最小值）
-					if (minArcId == 0) {
-						minArcId = arcId;
-					} else if (arcId < minArcId) {
-						minArcId = arcId;
-					}
-					// 保存目录、封面发布信息
-					if (parentArcId > 0 && !bookMap.containsKey(ObjectUtils.toString(parentArcId))) {
-						bookMap.put(ObjectUtils.toString(parentArcId), ObjectUtils.toString(parentArcId));
-					}
-					// 保存发布TYPEID
-					if (!typeMap.containsKey(ObjectUtils.toString(typeid))) {
-						typeMap.put(ObjectUtils.toString(typeid), ObjectUtils.toString(typeid));
-					}
-					this.dao.updateFetchChapterUrls((Integer) arcMap.get("id"));
+					arcList = this.dao.getFetchArcListByBookId(bookid);
 				}
 				// 更新完结书籍的抓取状态
 				boolean isOver = false;
@@ -443,11 +464,14 @@ public class MyFetchService {
 				if (isOver) {
 					this.dao.updateFetchUrls(bookid);
 				}
+				arcList=null;
+				System.gc();
 			}
 			// 把需要发布的内容写入文件
 
 		} catch (Exception e) {
 			logger.error("转移数据失败：" + e.getMessage());
+			e.printStackTrace();
 		}
 		ServiceUtils.writePublish(typeMap, bookMap, minArcId);
 	}

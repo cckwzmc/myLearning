@@ -110,7 +110,7 @@ public class MyFetchDao extends JdbcBaseDao {
 	}
 
 	public int getIntPublishBook(int bookid){
-		String sql="select count(*) from fetchchapterurls t where t.bookid=? and t.isfetch=1";
+		String sql="select count(*) from fetchchapterurls t where t.bookid=? and t.ismove=1";
 		return this.getJdbcTemplate().queryForInt(sql,new Object[]{bookid});
 	}
 	/**
@@ -119,9 +119,14 @@ public class MyFetchDao extends JdbcBaseDao {
 	 * @param typeName
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public int getTypeidByfetchId(String typeName) {
 		String sql = "select typeid from fetchtypemap t where t.fetchtype=?";
-		return this.getJdbcTemplate().queryForInt(sql, new Object[] { typeName });
+		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { typeName });
+		if(CollectionUtils.isNotEmpty(list)){
+			NumberUtils.toInt(ObjectUtils.toString(((Map)list.get(0)).get("typeid")));
+		}
+		return -1;
 	}
 
 	/**
@@ -148,10 +153,19 @@ public class MyFetchDao extends JdbcBaseDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List getFetchArcListByBookId(Integer bookid) {
-		String sql = " select chaptername,body,t1.id from fetchchaptercontent t left join fetchchapterurls t1" + " on t.chapterid=t1.id where t.bookid=?  and isfetch=0";
+		String sql = "select chaptername,body,t1.id from fetchchaptercontent t left join fetchchapterurls t1  on t.chapterid=t1.id where t.bookid=?  and t1.ismove=0 order by t1.id limit 0,100";
 		return this.getJdbcTemplate().queryForList(sql, new Object[] { bookid });
 	}
-
+	/**
+	 * 从抓取的内容中查询章节信息
+	 * 
+	 * @param bookid
+	 * @return
+	 */
+	public int getFetchArcCountByBookId(Integer bookid) {
+		String sql = "select count(t1.id) from fetchchaptercontent t left join fetchchapterurls t1  on t.chapterid=t1.id where t.bookid=?  and t1.ismove=0";
+		return this.getJdbcTemplate().queryForInt(sql, new Object[] { bookid });
+	}
 	/**
 	 * 只取章节名称
 	 * 
@@ -243,7 +257,7 @@ public class MyFetchDao extends JdbcBaseDao {
 	 * @param bookInfo
 	 *            只有body 和chaptername 字段
 	 * @param converId
-	 * @return TODO
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public Integer saveArticleForDede(Integer typeid, Integer bookid, Map arcInfo, Map bookInfo, Integer converId, Boolean addLastId) {
@@ -307,11 +321,14 @@ public class MyFetchDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForInt(sql, new Object[] { url });
 	}
 
-	public void updateFetchChapterUrls(Integer id) {
+	public void updateIsFetchFetchChapterUrls(Integer id) {
 		String sql="update fetchchapterurls set isfetch=1 where id=?";
 		this.getJdbcTemplate().update(sql, new Object[]{id});
 	}
-
+	public void updateIsMoveFetchChapterUrls(Integer id) {
+		String sql="update fetchchapterurls set ismove=1 where id=?";
+		this.getJdbcTemplate().update(sql, new Object[]{id});
+	}
 	public List getFetchchapterurlsByBookid(int bookid) {
 //		String sql="select count(*) from fetchbookcolumn t where t.bookid=?";
 //		int existColumn=this.getJdbcTemplate().queryForInt(sql,new Object[]{bookid});
