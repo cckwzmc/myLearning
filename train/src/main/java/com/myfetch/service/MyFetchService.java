@@ -428,7 +428,7 @@ public class MyFetchService {
 						}
 						Integer arcId = this.dao.saveArticleForDede(typeid, bookid, map, arcMap, parentArcId, isAddLastId);
 						// 保存章节内容 发布信息（只保存最小值）
-						if (minArcId == 0) {
+						if (minArcId == -1) {
 							minArcId = arcId;
 						} else if (arcId < minArcId) {
 							minArcId = arcId;
