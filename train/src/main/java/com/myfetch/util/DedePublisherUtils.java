@@ -223,14 +223,14 @@ public class DedePublisherUtils {
 		return content;
 	}
 
-	public static String publishPage(WebClient client, Properties pro,String typeid) {
+	public static String publishPage(WebClient client, Properties pro,String arcid) {
 		String content="";
 		String okStr = "完成所有创建任务";
 		String updateCachePage = pro.getProperty("makePagePage");
-		NameValuePair data[] = { new BasicNameValuePair("xstype", "page"),new BasicNameValuePair("pagesize", "20"),new BasicNameValuePair("typeid", typeid),new BasicNameValuePair("startid", "0"),new BasicNameValuePair("endid", "0")};
+		NameValuePair data[] = { new BasicNameValuePair("xstype", "page"),new BasicNameValuePair("pagesize", "20"),new BasicNameValuePair("typeid", "0"),new BasicNameValuePair("startid", arcid),new BasicNameValuePair("endid", arcid)};
 		try {
 			int i = 0;
-			while (true && i < 10009) {
+			while (true && i < 200) {
 				if(StringUtils.contains(updateCachePage, "pagesize")){
 					content = readInputStream(client.doPost(updateCachePage, nullData, ""));
 				}else{
@@ -273,7 +273,7 @@ public class DedePublisherUtils {
 		NameValuePair data[] = { new BasicNameValuePair("xstype", "table"),new BasicNameValuePair("pagesize", "50"),new BasicNameValuePair("upnext", "1"),new BasicNameValuePair("typeid", typeid)};
 		try {
 			int i = 0;
-			while (true && i < 10009) {
+			while (true && i < 200) {
 				if(StringUtils.contains(updateCachePage, "pagesize")){
 					content = readInputStream(client.doPost(updateCachePage, nullData, ""));
 				}else{
