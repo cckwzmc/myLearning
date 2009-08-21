@@ -33,8 +33,8 @@
 	<!--1 开始  结束匹配，，2正则表达式 -->
 	<bookdescfetchtype>1</bookdescfetchtype>
 	<bookdescstart>内容摘要：&lt;/span&gt;</bookdescstart>
-	<bookdescend>&lt;span&gt;</bookdescend>
-	<replaceword>百书库,91中文|www.baishuku.com,www.91zw.cn|baishuku.com,www.91zw.cn</replaceword>
+	<bookdescend>&lt;span</bookdescend>
+	<replaceword>百书库,91中文|www.baishuku.com,www.91zw.cn|baishuku.com,www.91zw.cn|&lt;label id=&quot;lblMatchBookInfo&quot;&gt;&lt;/label&gt;,空|lblMatchBookInfo,空</replaceword>
 	
 	<!-- 书名 -->
 	<bookname>&lt;span class=&quot;booktitle&quot;&gt;《[args1]》&lt;/span&gt;</bookname>
@@ -79,8 +79,8 @@
 	<!--1 开始  结束匹配，，2正则表达式 -->
 	<fetchtype>1</fetchtype>
 	<contentstart>&lt;div id=&quot;content&quot;&gt;</contentstart>
-	<fetchtypeend>2</fetchtypeend>
-	<contentend>&lt;a href=&quot;http://baishuku.com[^&lt;]*最新章节</contentend>
+	<fetchtypeend>1</fetchtypeend>
+	<contentend>&lt;a href=&quot;http://baishuku.com</contentend>
 	<contentbody></contentbody>
 	<replaceword>百书库,91中文|www.baishuku.com,www.91zw.cn|baishuku.com,www.91zw.cn</replaceword>
 </chaptercontent>

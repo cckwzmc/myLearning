@@ -258,9 +258,7 @@ public class MyFetchService {
 						for (Map<String, String> map2 : chapterurls) {
 							if (StringUtils.equals(map2.get("chaptercontenturl"), lastarc)) {
 								flag = true;
-
 							}
-
 							if (flag) {
 								logger.info("新增书籍章节地址:;" + map2.get("chaptercontenturl"));
 								// this.dao.saveChapterInfo(map2.get("chaptername"), map2.get("chaptercontenturl"), NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
