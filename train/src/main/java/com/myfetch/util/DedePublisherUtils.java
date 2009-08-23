@@ -205,11 +205,12 @@ public class DedePublisherUtils {
 						}
 					}
 				} 
+				logger.info(content);
 				if (StringUtils.contains(content, okStr)) {
 					break;
 				}
 				i++;
-				logger.info(content);
+			
 			}
 		} catch (IOException e) {
 			logger.error("生成列表DEDECMS错误" + e.getMessage());
@@ -251,8 +252,9 @@ public class DedePublisherUtils {
 				if (StringUtils.contains(content, okStr)) {
 					break;
 				}
-				i++;
 				logger.info(content);
+				i++;
+				
 			}
 		} catch (IOException e) {
 			logger.error("生成封面DEDECMS错误" + e.getMessage());
@@ -291,11 +293,12 @@ public class DedePublisherUtils {
 						}
 					}
 				} 
+				logger.info(content);
 				if (StringUtils.contains(content, okStr)) {
 					break;
 				}
 				i++;
-				logger.info(content);
+				
 			}
 		} catch (IOException e) {
 			logger.error("生成目录DEDECMS错误" + e.getMessage());

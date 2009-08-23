@@ -395,7 +395,7 @@ public class ParseHtml {
 		String columnContent = "";
 		Pattern pt = null;
 		Matcher matcher = null;
-		if (!"1".equals(isgendongtaiurl) && StringUtils.equals(chaptercontenturlEx, chapternameEx)) {
+		if ("0".equals(isgendongtaiurl) && StringUtils.equals(chaptercontenturlEx, chapternameEx)) {
 			if ("1".equals(iscolumn)) {
 				pt = Pattern.compile(columnnameEx);
 				matcher = pt.matcher(html);
@@ -496,19 +496,18 @@ public class ParseHtml {
 				Map<String, String> chapterMap = new HashMap<String, String>();
 				String modrul = matcher.group(1);
 				modrul=StringUtils.replace(modrul, "&nbsp;", "");
-				if ("".equals(modrul.trim()) || (!StringUtils.contains(modrul, ".htm") && !StringUtils.contains(modrul, ".asp") && !StringUtils.contains(modrul, ".jsp")) && !StringUtils.contains(modrul, ".php")) {
+				if ("".equals(modrul.trim()) || (!StringUtils.contains(modrul, ".html")&&!StringUtils.contains(modrul, ".shtml")&&!StringUtils.contains(modrul, ".htm") && !StringUtils.contains(modrul, ".asp") && !StringUtils.contains(modrul, ".jsp")) && !StringUtils.contains(modrul, ".php")) {
 					continue;
 				}
-				// chapterList.put("chaptercontenturl", modrul);
 				chapterMap.put("chaptername", matcher.group(2));
 				if ("local".equals(modurltypeEx.trim())) {
-					// TODO 使用动态地址采集目前未完成
-					if ("1".equals(isgendongtaiurl)) {
-//						String bookid = "", chapterid = "";
-//						String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/"));
-//						bookid = StringUtils.substring(addurl, addurl.lastIndexOf("/") + 1);
-//						chapterid = StringUtils.substring(modrul, modrul.lastIndexOf("/") == -1 ? 0 : modrul.lastIndexOf("/"), modrul.lastIndexOf("."));
-//						addurl = StringUtils.substring(addurl, 0, addurl.lastIndexOf("/") + 1) + bookid + "";
+					if ("1".equals(isgendongtaiurl)||"2".equals(isgendongtaiurl)) {
+						//暂时默认列表URL的方式都是最后的
+						String staticUrl="";
+						if("2".equals(isgendongtaiurl)){
+							modrul=modrul.replace("#", "");
+							staticUrl="###"+StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1)+modrul;
+						}
 						int start=StringUtils.lastIndexOf(modrul, "/");
 						int end=StringUtils.lastIndexOf(modrul, ".");
 						String cid="";
@@ -522,7 +521,7 @@ public class ParseHtml {
 							dUrl=StringUtils.replace(urltmp, "[1]", aid);
 							dUrl=StringUtils.replace(dUrl, "[2]", cid);
 						}
-						chapterMap.put("chaptercontenturl", dUrl);
+						chapterMap.put("chaptercontenturl", dUrl+staticUrl);
 					} else {
 						String addurl = StringUtils.substring(fetchurl, 0, fetchurl.lastIndexOf("/") + 1);
 						chapterMap.put("chaptercontenturl", addurl + modrul);
@@ -568,7 +567,7 @@ public class ParseHtml {
 				}else{
 					end = StringUtils.indexOf(html, endEx);
 				}
-				String content = StringUtils.substring(html, 0, end);
+				String content=StringUtils.substring(html, 0,end);
 				// 处理一下包含、、、域名、、站点名的
 				if (rep.length > 0) {
 					for (int i = 0; i < rep.length; i++) {

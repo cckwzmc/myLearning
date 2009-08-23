@@ -81,7 +81,7 @@ public class MyFetchDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 	public List getFetchchapterurlsListByBookid(Integer bookid) {
-		String sql = "select t.bookid,t.id,isfetch,chapterurl  from fetchchapterurls t where t.bookid=? order by id desc";
+		String sql = "select t.bookid,t.id,isfetch,chapterurl  from fetchchapterurls t where t.bookid=? order by id desc limit 0,2";
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{bookid});
 	}
 	public void saveContentInfo(Integer bookid, String id, String content, String title) {
