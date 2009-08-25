@@ -58,8 +58,12 @@ public class MyFetchDao extends JdbcBaseDao {
 	}
 
 	public void saveConverInfo(String bookListUrl, String litpic, String chinesenum, String bookdesc, String author, String bookname, String keyword, Integer bookid) {
+		try {
 		String sql = "insert into fetchbookconver (bookid,bookname,booklisturl,litpic,chinesenum,bookdesc,isfetch,keyword,author) values (?,?,?,?,?,?,?,?,?)";
 		this.getJdbcTemplate().update(sql, new Object[] { bookid, bookname, bookListUrl, litpic, chinesenum, bookdesc, "0", keyword, author });
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
 	}
 
 	public void saveChapterInfo(String chaptername, String chapterurl, Integer bookid,Integer columnid) {
@@ -279,8 +283,10 @@ public class MyFetchDao extends JdbcBaseDao {
 		sql = "insert into dede_addonarticle (aid,typeid,body) values (?,?,?)";
 		this.getJdbcTemplate().update(sql, new Object[] { arcid, typeid, ObjectUtils.toString(bookInfo.get("body")) });
 		if (addLastId) {
-			sql = "update dede_archives set lasterartid=? where id=?";
-			this.getJdbcTemplate().update(sql, new Object[] { arcid, converId });
+			sql = "update dede_archives set lasterartid=?,lasterarticle=?,sortrank=?,pubdate=? where id=?";
+			this.getJdbcTemplate().update(sql, new Object[] { arcid,ObjectUtils.toString(bookInfo.get("chaptername")), time,time,converId });
+			sql="update dede_arctiny set sortrank=? where id=?";
+			this.getJdbcTemplate().update(sql,new Object[]{time,converId});
 		}
 		return arcid;
 	}

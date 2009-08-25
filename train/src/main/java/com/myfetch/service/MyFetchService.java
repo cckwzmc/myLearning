@@ -202,7 +202,7 @@ public class MyFetchService {
 					logger.info("开始抓取封面地址为：" + urls[i]);
 					List<Map<String, String>> converMap = ParseHtml.parseBookConverInfo(html, map);
 					for (Map<String, String> map2 : converMap) {
-						if (this.dao.getFetchbookconverUrl(map2.get("chapterlisturl")) == 0) {
+						if (!"".equals(map2.get("chapterlisturl"))&&this.dao.getFetchbookconverUrl(map2.get("chapterlisturl")) == 0) {
 							this.dao.saveConverInfo(ObjectUtils.toString(map2.get("chapterlisturl")), ObjectUtils.toString(map2.get("litpic")), ObjectUtils.toString(map2.get("chinesenum")), ObjectUtils.toString(map2.get("bookdesc")), ObjectUtils.toString(map2.get("author")),
 									ObjectUtils.toString(map2.get("bookname")), ObjectUtils.toString(map2.get("keyword")), id);
 						} else {
@@ -224,7 +224,7 @@ public class MyFetchService {
 						logger.info("开始抓取封面地址为：" + bMap.get("url"));
 						List<Map<String, String>> converMap = ParseHtml.parseBookConverInfo(html, map);
 						for (Map<String, String> map2 : converMap) {
-							if (this.dao.getFetchbookconverUrl(map2.get("chapterlisturl")) == 0) {
+							if (!"".equals(map2.get("chapterlisturl"))&&this.dao.getFetchbookconverUrl(map2.get("chapterlisturl")) == 0) {
 								this.dao.saveConverInfo(ObjectUtils.toString(map2.get("chapterlisturl")), ObjectUtils.toString(map2.get("litpic")), ObjectUtils.toString(map2.get("chinesenum")), ObjectUtils.toString(map2.get("bookdesc")), ObjectUtils.toString(map2.get("author")),
 										ObjectUtils.toString(map2.get("bookname")), ObjectUtils.toString(map2.get("keyword")), NumberUtils.toInt(ObjectUtils.toString(bMap.get("id"))));
 							} else {
@@ -273,6 +273,9 @@ public class MyFetchService {
 								mapColumnId.put(map2.get("uuid"), columnId);
 							}
 							String curls = ObjectUtils.toString(map2.get("chaptercontenturl"));
+							if ("".equals(curls)&&StringUtils.equals("", ObjectUtils.toString(map2.get("columnname")))) {
+								continue;
+							}
 							if (StringUtils.equals(curls, lastarc)) {
 								flag = true;
 								continue;
@@ -306,6 +309,9 @@ public class MyFetchService {
 						Map<String, Integer> mapColumnId = new HashMap<String, Integer>();
 						for (Map<String, String> map2 : chapterurls) {
 							// TODO 涉及到更新章节的时候这里要注意查重
+							if ("".equals(ObjectUtils.toString(map2.get("chaptercontenturl")))&&StringUtils.equals("", ObjectUtils.toString(map2.get("columnname")))) {
+								continue;
+							}
 							if (!StringUtils.equals("", ObjectUtils.toString(map2.get("columnname")))) {
 								columnId = this.dao.saveFetchBookColumn(map2.get("columnname"), NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
 								mapColumnId.put(map2.get("uuid"), columnId);
