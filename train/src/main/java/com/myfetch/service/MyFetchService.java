@@ -265,13 +265,12 @@ public class MyFetchService {
 								mapColumnId.put(map2.get("uuid"), columnId);
 							} 
 							String curls=ObjectUtils.toString(map2.get("chaptercontenturl"));
+							if (StringUtils.equals(curls, lastarc)) {
+								flag = true;
+								continue;
+							}
 							if(curls.contains("###")){
 								if (StringUtils.equals(curls.split("###")[0], lastarc)||StringUtils.equals(curls.split("###")[1], lastarc)) {
-									flag = true;
-									continue;
-								}
-							}else{
-								if (StringUtils.equals(curls, lastarc)) {
 									flag = true;
 									continue;
 								}
