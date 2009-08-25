@@ -385,4 +385,10 @@ public class MyFetchDao extends JdbcBaseDao {
 		String sql="update fetchurls set isfetch=2 where id=?";
 		this.getJdbcTemplate().update(sql,new Object[]{bookid});
 	}
+
+	@SuppressWarnings("unchecked")
+	public List getLimitContentList(String isfetch, String ismove, String files, int limit) {
+		String sql = "select t.bookid,t.id,isfetch,chapterurl  from fetchchapterurls t where isfetch=? and ismove=? and chapterurl like ? order by id limit 0,"+limit;
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{isfetch,ismove,"%"+files+"%"});
+	}
 }

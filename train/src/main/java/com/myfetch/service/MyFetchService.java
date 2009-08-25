@@ -128,7 +128,7 @@ public class MyFetchService {
 							if ("".equals(type)) {
 								type = ObjectUtils.toString(map2.get("type"));
 							}
-							if("".equals(type)){
+							if ("".equals(type)) {
 								type = this.dao.getBookTypeByName("空");
 							}
 							this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, filename, map2.get("lastarc"), map2.get("bookname"), "1");
@@ -138,7 +138,7 @@ public class MyFetchService {
 							if ("".equals(type)) {
 								type = ObjectUtils.toString(map2.get("type"));
 							}
-							if("".equals(type)){
+							if ("".equals(type)) {
 								type = this.dao.getBookTypeByName("空");
 							}
 							this.dao.saveBookUrl(map2.get("bookurl"), map2.get("status"), type, filename, map2.get("lastarc"), map2.get("bookname"), "0");
@@ -215,8 +215,12 @@ public class MyFetchService {
 				List bList = unFetchList();
 				for (Iterator iterator = bList.iterator(); iterator.hasNext();) {
 					Map bMap = (Map) iterator.next();
-					if (!"".equals(ObjectUtils.toString(bMap.get("url"))) && StringUtils.contains(ObjectUtils.toString(bMap.get("url")), files)) {
-						String html = HttpHtmlService.getHtmlContent(ObjectUtils.toString(bMap.get("url")));
+					String bookUrl = ObjectUtils.toString(bMap.get("url"));
+					if (!bookUrl.contains(files)) {
+						continue;
+					}
+					if (!"".equals(bookUrl) && StringUtils.contains(bookUrl, files)) {
+						String html = HttpHtmlService.getHtmlContent(bookUrl);
 						logger.info("开始抓取封面地址为：" + bMap.get("url"));
 						List<Map<String, String>> converMap = ParseHtml.parseBookConverInfo(html, map);
 						for (Map<String, String> map2 : converMap) {
@@ -245,14 +249,18 @@ public class MyFetchService {
 			List bList = this.getUnConverList();
 			for (Iterator iterator = bList.iterator(); iterator.hasNext();) {
 				Map bMap = (Map) iterator.next();
-				if (!"".equals(ObjectUtils.toString(bMap.get("booklisturl"))) && StringUtils.contains(ObjectUtils.toString(bMap.get("booklisturl")), files)) {
-					String html = HttpHtmlService.getHtmlContent(ObjectUtils.toString(bMap.get("booklisturl")));
+				String bookListUrl = ObjectUtils.toString(bMap.get("booklisturl"));
+				if (!bookListUrl.contains(files)) {
+					continue;
+				}
+				if (!"".equals(bookListUrl) && StringUtils.contains(bookListUrl, files)) {
+					String html = HttpHtmlService.getHtmlContent(bookListUrl);
 					logger.info("开始抓取书籍章节列表地址为：" + bMap.get("booklisturl"));
 					// 如果已经抓取过得处理
 					// TODO 这里更行抓取有问题
-					List<Map<String, String>> chapterurls = ParseHtml.parseChapterList(html, map, ObjectUtils.toString(bMap.get("booklisturl")));
+					List<Map<String, String>> chapterurls = ParseHtml.parseChapterList(html, map, bookListUrl);
 					if (CollectionUtils.isNotEmpty(this.dao.getFetchchapterurlsByBookid(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid")))))) {
-						
+
 						List lastList = this.dao.getFetchchapterurlsListByBookid(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
 						String lastarc = (String) ((Map) lastList.get(0)).get("chapterurl");
 						boolean flag = false;
@@ -263,14 +271,14 @@ public class MyFetchService {
 							if (!StringUtils.equals("", ObjectUtils.toString(map2.get("columnname")))) {
 								columnId = this.dao.saveFetchBookColumn(map2.get("columnname"), NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))));
 								mapColumnId.put(map2.get("uuid"), columnId);
-							} 
-							String curls=ObjectUtils.toString(map2.get("chaptercontenturl"));
+							}
+							String curls = ObjectUtils.toString(map2.get("chaptercontenturl"));
 							if (StringUtils.equals(curls, lastarc)) {
 								flag = true;
 								continue;
 							}
-							if(curls.contains("###")){
-								if (StringUtils.equals(curls.split("###")[0], lastarc)||StringUtils.equals(curls.split("###")[1], lastarc)) {
+							if (!flag && curls.contains("###")) {
+								if (StringUtils.equals(curls.split("###")[0], lastarc) || StringUtils.equals(curls.split("###")[1], lastarc)) {
 									flag = true;
 									continue;
 								}
@@ -287,7 +295,7 @@ public class MyFetchService {
 										columnid = -1;
 									}
 									this.dao.saveChapterInfo(map2.get("chaptername"), map2.get("chaptercontenturl"), bookid, columnid);
-								}	
+								}
 							} else {
 								logger.info("该列表地址书籍章节已存在:;" + map2.get("chaptercontenturl"));
 							}
@@ -328,27 +336,34 @@ public class MyFetchService {
 		List<String> list = XMLUtils.getXmlFileName(files);
 		for (String filename : list) {
 			Map<String, String> map = XMLUtils.parseContentXml(XMLUtils.getDocumentXml(filename));
-			List bList = this.getUnContentList();
-			for (Iterator iterator = bList.iterator(); iterator.hasNext();) {
-				Map bMap = (Map) iterator.next();
-				if (!"".equals(ObjectUtils.toString(bMap.get("chapterurl"))) && StringUtils.contains(ObjectUtils.toString(bMap.get("chapterurl")), files)) {
-					String contentUrl=ObjectUtils.toString(bMap.get("chapterurl"));
-					String fetchURL=contentUrl;
-					if(contentUrl.contains("###")){
-						fetchURL=contentUrl.split("###")[0];
+			List bList = this.dao.getLimitContentList("0", "0", files, 100);
+			while (CollectionUtils.isNotEmpty(bList)) {
+				for (Iterator iterator = bList.iterator(); iterator.hasNext();) {
+					Map bMap = (Map) iterator.next();
+					String chapterurl = ObjectUtils.toString(bMap.get("chapterurl"));
+					if (!chapterurl.contains(files)) {
+						continue;
 					}
-					String html = HttpHtmlService.getHtmlContent(fetchURL);
-					if(StringUtils.isBlank(html)&&contentUrl.contains("###")){
-						fetchURL=contentUrl.split("###")[1];
-						html = HttpHtmlService.getHtmlContent(fetchURL);
-					}
-					List<Map<String, String>> contentList = ParseHtml.parseChapterContent(html, map);
-					logger.info("开始抓取内容地址为：" + fetchURL);
-					for (Map<String, String> map2 : contentList) {
-						this.dao.saveContentInfo(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))), ObjectUtils.toString(bMap.get("id")), map2.get("contentbody"), map2.get("title"));
-						this.dao.updateIsFetchFetchChapterUrls(NumberUtils.toInt(ObjectUtils.toString(bMap.get("id"))));
+					if (!"".equals(chapterurl) && StringUtils.contains(chapterurl, files)) {
+						String contentUrl = chapterurl;
+						String fetchURL = contentUrl;
+						if (contentUrl.contains("###")) {
+							fetchURL = contentUrl.split("###")[0];
+						}
+						String html = HttpHtmlService.getHtmlContent(fetchURL);
+						if (StringUtils.isBlank(html) && contentUrl.contains("###")) {
+							fetchURL = contentUrl.split("###")[1];
+							html = HttpHtmlService.getHtmlContent(fetchURL);
+						}
+						List<Map<String, String>> contentList = ParseHtml.parseChapterContent(html, map);
+						logger.info("开始抓取内容地址为：" + fetchURL);
+						for (Map<String, String> map2 : contentList) {
+							this.dao.saveContentInfo(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))), ObjectUtils.toString(bMap.get("id")), map2.get("contentbody"), map2.get("title"));
+							this.dao.updateIsFetchFetchChapterUrls(NumberUtils.toInt(ObjectUtils.toString(bMap.get("id"))));
+						}
 					}
 				}
+				bList = this.dao.getLimitContentList("0", "0", files, 100);
 			}
 		}
 	}
@@ -367,6 +382,7 @@ public class MyFetchService {
 		}
 		return retList;
 	}
+
 	@SuppressWarnings("unchecked")
 	private List getUnMoveContentList() {
 		List list = this.dao.getFetchchapterurlsList();
@@ -381,6 +397,7 @@ public class MyFetchService {
 		}
 		return retList;
 	}
+
 	@SuppressWarnings("unchecked")
 	private List getContentList() {
 		List list = this.dao.getFetchchapterurlsList();
@@ -406,7 +423,7 @@ public class MyFetchService {
 		int minArcId = -1;
 		Map<String, String> typeMap = new HashMap<String, String>();
 		Map<String, String> bookMap = new HashMap<String, String>();
-		List arcList=new ArrayList();
+		List arcList = new ArrayList();
 		try {
 			List list = this.dao.getSiteData();
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
@@ -417,17 +434,17 @@ public class MyFetchService {
 				Integer bookid = NumberUtils.toInt(ObjectUtils.toString(bookBasic.get("id")));
 
 				Integer typeid = this.dao.getTypeidByfetchId(ObjectUtils.toString(bookBasic.get("type")));
-				if(typeid.intValue()==-1){
+				if (typeid.intValue() == -1) {
 					continue;
 				}
 
 				// 保存小说基本信息
 				Map map = this.dao.getBookInfoById(bookid);
-				if(map==null||"".equals(ObjectUtils.toString(map.get("bookname")))){
+				if (map == null || "".equals(ObjectUtils.toString(map.get("bookname")))) {
 					continue;
 				}
 				logger.info("开始转移抓取数据，书名为：：" + ObjectUtils.toString(map.get("bookname")));
-				
+
 				// 是否有需要更新的章节
 				int retPublish = this.dao.getIntPublishBook(bookid);
 				Integer parentArcId = 0;
@@ -445,13 +462,13 @@ public class MyFetchService {
 						continue;
 					}
 				}
-				
+
 				// 保存章节 抓取的章节列表
-				
+
 				arcList = this.dao.getFetchArcListByBookId(bookid);
-				int bookCount=this.dao.getFetchArcCountByBookId(bookid);
+				int bookCount = this.dao.getFetchArcCountByBookId(bookid);
 				int i = 0;
-				while(CollectionUtils.isNotEmpty(arcList)){
+				while (CollectionUtils.isNotEmpty(arcList)) {
 					for (Iterator iterator2 = arcList.iterator(); iterator2.hasNext();) {
 						Map arcMap = (Map) iterator2.next();
 						i++;
@@ -497,7 +514,7 @@ public class MyFetchService {
 				if (isOver) {
 					this.dao.updateFetchUrls(bookid);
 				}
-				arcList=null;
+				arcList = null;
 				System.gc();
 			}
 			// 把需要发布的内容写入文件
@@ -556,7 +573,7 @@ public class MyFetchService {
 			WebClient client = new WebClient();
 			DedePublisherUtils.login(client, pro);
 			DedePublisherUtils.updateDedeCache(client, pro);
-			if (!"".equals(minArcId)&&!"-1".equals(minArcId)) {
+			if (!"".equals(minArcId) && !"-1".equals(minArcId)) {
 				DedePublisherUtils.publishArchives(client, pro, minArcId);
 			}
 			String[] typeid = StringUtils.split(typeIds, ",");
