@@ -216,7 +216,7 @@ public class XMLUtils {
 //		System.out.println(convertXml(type));
 		type="<img src=\"/[args1]\" width=\"120\" height=\"150\">";
 		System.out.println(convertXml(type));
-		type="<a title=\"更新时间[*]\" href=\"[args1]\" target=\"_blank\">[args2]</a>";
+		type="(www.sdxsw.com)|http://www.sdxsw.com|http://bbs.sdxsw.com|http://wap.sdxsw.com|www.sdxsw.com|www.sdxsw.co|尽在sdxsw.com|手打小说，手打版小说，文字版小说，|s!d!x!s!w!.!c!o!m|欢迎您光临手打小说网，手机WAP站点已经开通，敬请访问：http://wap.sdxsw.com|sDxsw.com|sdxsw.com|手.打小.说.网|手.打.小.说.网|手打小说网|手.打小说网|s D x s w . c o m|最新手打小说，尽在|尽在|中文网|;移动书库|&lt;table width=\"((.|\\n)+?) cellpadding=\"0\"&gt;|&lt;DIV id=booktext((.|\\n)+?)align=\"left\"&gt;|&lt;div id=\"booktext\"((.|\\n)+?)align=\"left\"&gt;|&lt;div id=\"booktext\"((.|\\n)+?)padding-right:12\"&gt;|&lt;img src=\"((.|\\n)+?)border=\"0\" /&gt;|内容请见:[a-zA-z]+://[^\\s]*\\d|&lt;tr&gt;|&lt;/tr&gt;|&lt;td&gt;|&lt;/td&gt;|&lt;/div&gt;|&lt;/DIV&gt;|&lt;/table&gt;|&lt;div align=\"center\"&gt;&lt;IMG SRC=\"((.|\\n)+?)border=0&gt;&lt;/div&gt;|隆重向大家推荐|(w.w.w.s.d.x.s.w.com)|全文字阅读及下载|全文字小说阅读，尽在|WWW.nilongdao.com|翠微居首发：www.cuiweiju.com";
 		System.out.println(convertXml(type));
 	}
 
