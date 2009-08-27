@@ -194,6 +194,7 @@ public class MyFetchService {
 		List<String> list = XMLUtils.getXmlFileName(files);
 		for (String filename : list) {
 			Map<String, String> map = XMLUtils.parseConverXml(XMLUtils.getDocumentXml(filename));
+			//这种抓取方式还未完善不推荐使用
 			if (!"".equals(ObjectUtils.toString(map.get("urls")))) {
 				String[] urls = StringUtils.split(map.get("urls"), "|");
 				for (int i = 0; i < urls.length; i++) {
@@ -205,6 +206,7 @@ public class MyFetchService {
 						if (!"".equals(map2.get("chapterlisturl"))&&this.dao.getFetchbookconverUrl(map2.get("chapterlisturl")) == 0) {
 							this.dao.saveConverInfo(ObjectUtils.toString(map2.get("chapterlisturl")), ObjectUtils.toString(map2.get("litpic")), ObjectUtils.toString(map2.get("chinesenum")), ObjectUtils.toString(map2.get("bookdesc")), ObjectUtils.toString(map2.get("author")),
 									ObjectUtils.toString(map2.get("bookname")), ObjectUtils.toString(map2.get("keyword")), id);
+//							this.dao.updateFetchUrlsType(NumberUtils.toInt(ObjectUtils.toString(bMap.get("id"))),map2.get("type"));
 						} else {
 							logger.info("该封面地址列表地址已存在:;" + map2.get("chapterlisturl"));
 						}
@@ -227,6 +229,9 @@ public class MyFetchService {
 							if (!"".equals(map2.get("chapterlisturl"))&&this.dao.getFetchbookconverUrl(map2.get("chapterlisturl")) == 0) {
 								this.dao.saveConverInfo(ObjectUtils.toString(map2.get("chapterlisturl")), ObjectUtils.toString(map2.get("litpic")), ObjectUtils.toString(map2.get("chinesenum")), ObjectUtils.toString(map2.get("bookdesc")), ObjectUtils.toString(map2.get("author")),
 										ObjectUtils.toString(map2.get("bookname")), ObjectUtils.toString(map2.get("keyword")), NumberUtils.toInt(ObjectUtils.toString(bMap.get("id"))));
+								if(!"".equals(ObjectUtils.toString(map2.get("type")))){
+									this.dao.updateFetchUrlsType(NumberUtils.toInt(ObjectUtils.toString(bMap.get("id"))),map2.get("type"));
+								}
 							} else {
 								logger.info("该封面地址列表地址已存在:;" + map2.get("chapterlisturl"));
 							}

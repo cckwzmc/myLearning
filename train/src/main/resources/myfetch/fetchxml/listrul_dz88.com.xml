@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<siteinfo>
+			<!-- url list block  -->
+			<liststart></liststart>
+			<listend></listend>
+			<type></type>
+			<burl>http://www.dz88.com/sort3_0/0/1.html</burl>
+			<lastarc>&lt;td class=&quot;even&quot;&gt;&lt;a href=&quot;[*]target=&quot;_blank&quot;&gt;[args1]&lt;/a&gt;&lt;/td&gt;</lastarc>
+			<status>&lt;td class=&quot;even&quot; align=&quot;center&quot;&gt;[args1]&lt;/td&gt;</status>
+			<bookurl>&lt;td class=&quot;odd&quot;&gt;&lt;a href=&quot;([^\u003F&lt;]*)&quot;&gt;[^&lt;]*&lt;/a&gt;&lt;/td&gt;</bookurl>
+			<bookname>&lt;td class=&quot;odd&quot;&gt;&lt;a href=&quot;[^&lt;]*&quot;&gt;[args1]&lt;/a&gt;&lt;/td&gt;</bookname>
+			<replacebookurlsource></replacebookurlsource>
+			<replacebookurldesc></replacebookurldesc>
+			<replacesrc1></replacesrc1>
+			<replacedesc1></replacedesc1>
+			<!--  page list block -->
+			<pageblockstart>&lt;div class=&quot;pagelink&quot; id=&quot;pagelink&quot;&gt;</pageblockstart>
+			<pageblockend>&lt;/div&gt;</pageblockend>
+		 <!-- 1: 上一页123456 下一页 的分页方式-->
+		<!-- 2: 上一页下一页 的分页方式-->
+	</siteinfo>
+<bookinfo>
+	<!-- 缩略图 -->
+	<litpic>&lt;img src=&quot;[args1]&quot; border[*]vspace=&quot;5&quot; /&gt;</litpic>
+	<!-- 简介 -->
+	<bookdesc>&lt;span class=&quot;hottextx&quot;&gt;内容摘要：&lt;/span&gt;[args1]&lt;/td&gt;</bookdesc>
+	<!--1 开始  结束匹配，，2正则表达式 -->
+	<bookdescfetchtype>1</bookdescfetchtype>
+	<bookdescstart>内容简介：&lt;/span&gt;</bookdescstart>
+	<bookdescend>&lt;/td&gt;</bookdescend>
+	<replaceword>读者吧,91中文|www.dz88.com,www.91zw.cn|dz88.com,www.91zw.cn</replaceword>
+	
+	<!-- 书名 -->
+	<bookname>&lt;span style=&quot;font-size:16px; font-weight: bold; line-height: 150%&quot;&gt;[args1]&lt;/span&gt;</bookname>
+	<type>类[*]别：[args1]&lt;/td&gt;</type>
+	<!-- 作者 -->
+	<author>作[*]者：[args1]&lt;/td&gt;</author>
+	<!-- 字数 -->
+	<chinesenum>&lt;td width=&quot;25%&quot;&gt;全文长度：[args1]字&lt;/td&gt;</chinesenum>
+	<!-- 书籍章节地址列表地址 -->
+	<chapterlisturl>&lt;a class=&quot;btnlink&quot; href="[args1]"&gt;点击阅读&lt;/a&gt;</chapterlisturl>
+	<!-- 关键字 -->
+	<keyword></keyword>
+	<replacesrc2></replacesrc2>
+	<replacedesc2></replacedesc2>
+	<replacesrc1></replacesrc1>
+	<replacedesc1></replacedesc1>
+	<urls></urls>
+</bookinfo>
+<chapterlistinfo>
+
+	<!--1 开始  结束匹配，，2正则表达式 -->
+	<listfetchtype>1</listfetchtype>
+	<liststart>添加到雅虎收藏</liststart>
+	<listend></listend>
+	
+	<iscolumn>1</iscolumn>
+	<columnname>&lt;td colspan=&quot;4&quot; class=&quot;vcss&quot;&gt;[args1]&lt;/td&gt;</columnname>
+	<chaptername>&lt;td class=&quot;ccss&quot;&gt;[^&lt;]*&lt;a href=&quot;[args1]&quot;&gt;[args2]&lt;/a&gt;</chaptername>
+	<chaptercontenturl>&lt;td class=&quot;ccss&quot;&gt;[^&lt;]*&lt;a href=&quot;[args1]&quot;&gt;[args2]&lt;/a&gt;</chaptercontenturl>
+	<!-- add在前面添加    /// replace 替换//// local 在当前url中调整 目前暂时百书库 都认为是local -->
+	<modurltype>local</modurltype>
+	<!-- 是否生成动态URL地址  1是  0否  2动态地址+静态地址  格式为  :动态###静态-->
+	<isgendongtaiurl>0</isgendongtaiurl>
+	<!-- 动态地址模版 {1}书籍id,{2}章节id -->
+	<urltmp>http://baishuku.com/modules/article/reader.php?aid=[1]&amp;cid=[2]</urltmp>
+	<addurl></addurl>
+	<replacesourc></replacesourc>
+	<replacede></replacede>
+</chapterlistinfo>
+<chaptercontent>
+	<title></title>
+	<!--1 开始  结束匹配  方式，，2正则表达式  方式 -->
+	<fetchtype>1</fetchtype>
+	<contentstart>&lt;div id=&quot;content&quot;&gt;</contentstart>
+	<fetchtypeend>1</fetchtypeend>
+	<contentend>&lt;a href=&quot;index.html&quot;&gt;</contentend>
+	<contentbody></contentbody>
+	<replaceword>-[-&amp;nbsp;本篇由&amp;nbsp;读者吧&amp;nbsp;-&amp;nbsp;Www.Dz88.Com&amp;nbsp;首发转载&amp;nbsp;-]-,空|本篇章节由 *读者吧* - Ｄz88.Com 转载首发,空|( 本章由 读者吧 - <a href="HttP://" target="_blank">HttP://</a> 转载发布),空|读者吧,91中文|www.dz88.com,www.91zw.cn|dz88.com,91zw.cn|( 看文字手打小说就来 读者吧 www.dZ88.coM )</replaceword>
+</chaptercontent>
+</data>

@@ -568,6 +568,7 @@ public class ParseHtml {
 					end = StringUtils.indexOf(html, endEx);
 				}
 				String content=StringUtils.substring(html, 0,end);
+				content=StringUtils.replace(content, "|", "");
 				// 处理一下包含、、、域名、、站点名的
 				if (rep.length > 0) {
 					for (int i = 0; i < rep.length; i++) {

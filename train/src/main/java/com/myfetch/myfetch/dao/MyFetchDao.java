@@ -397,4 +397,9 @@ public class MyFetchDao extends JdbcBaseDao {
 		String sql = "select t.bookid,t.id,isfetch,chapterurl  from fetchchapterurls t where isfetch=? and ismove=? and chapterurl like ? order by id limit 0,"+limit;
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{isfetch,ismove,"%"+files+"%"});
 	}
+
+	public void updateFetchUrlsType(int bookid,String type) {
+		String sql="update fetchurls set type=? where id=? and (type='' or type is null)";
+		this.getJdbcTemplate().update(sql,new Object[]{type,bookid});
+	}
 }
