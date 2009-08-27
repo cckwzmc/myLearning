@@ -462,7 +462,7 @@ public class MyFetchService {
 						logger.info("要求注意的地方" + ObjectUtils.toString(bookBasic.get("url")) + "发布失败!!!!");
 						continue;
 					}
-					parentArcId = this.dao.getPublishBookIdByBookId(ObjectUtils.toString(bookBasic.get("bookname")), typeid);
+					parentArcId = this.dao.getPublishBookIdByBookId(ObjectUtils.toString(map.get("bookname")), typeid);
 					if (parentArcId < 1) {
 						logger.info("要求注意的地方" + ObjectUtils.toString(bookBasic.get("url")) + "发布失败!!!!");
 						continue;
