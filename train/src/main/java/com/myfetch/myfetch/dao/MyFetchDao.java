@@ -402,4 +402,13 @@ public class MyFetchDao extends JdbcBaseDao {
 		String sql="update fetchurls set type=? where id=? and (type='' or type is null)";
 		this.getJdbcTemplate().update(sql,new Object[]{type,bookid});
 	}
+
+	public Map getDedeArchivesPreIdByBookId(String bookid, String minArcId) {
+		String sql="select id from dede_archives t where t.isbookpage=? and t.id<? order by id desc limit 0,1";
+		List list=this.getJdbcTemplate().queryForList(sql,new Object[]{bookid,minArcId});
+		if(CollectionUtils.isNotEmpty(list)){
+			return (Map)list.get(0);
+		}
+		return null;
+	}
 }

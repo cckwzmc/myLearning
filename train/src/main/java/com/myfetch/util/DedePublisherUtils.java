@@ -118,11 +118,11 @@ public class DedePublisherUtils {
 						}
 					}
 				}
+				logger.info(content);
 				if (StringUtils.contains(content, okStr)) {
 					break;
 				}
 				i++;
-				logger.info(content);
 			}
 		} catch (IOException e) {
 			logger.error("更新缓存DEDECMS错误" + e.getMessage());
@@ -136,11 +136,11 @@ public class DedePublisherUtils {
 		return content;
 	}
 
-	public static String publishArchives(WebClient client, Properties pro,String minArcId) {
+	public static String publishArchives(WebClient client, Properties pro,String minArcId,String maxArcId) {
 		String content="";
 		String okStr = "完成所有创建任务";
 		String updateCachePage = pro.getProperty("makeArchivesPage");
-		NameValuePair cacheData[] = { new BasicNameValuePair("pagesize", "20"),new BasicNameValuePair("endid", "0"),new BasicNameValuePair("typeid", "0"), new BasicNameValuePair("startid", ObjectUtils.toString(minArcId)) };
+		NameValuePair cacheData[] = { new BasicNameValuePair("pagesize", "20"),new BasicNameValuePair("endid", maxArcId),new BasicNameValuePair("typeid", "0"), new BasicNameValuePair("startid", ObjectUtils.toString(minArcId)) };
 		try {
 			int i = 0;
 			while (true && i < 10009) {
@@ -162,11 +162,11 @@ public class DedePublisherUtils {
 						}
 					}
 				} 
+				logger.info(content);
 				if (StringUtils.contains(content, okStr)) {
 					break;
 				}
 				i++;
-				logger.info(content);
 			}
 		} catch (IOException e) {
 			logger.error("生成文档DEDECMS错误" + e.getMessage());
@@ -249,10 +249,10 @@ public class DedePublisherUtils {
 						}
 					}
 				} 
+				logger.info(content);
 				if (StringUtils.contains(content, okStr)) {
 					break;
 				}
-				logger.info(content);
 				i++;
 				
 			}
@@ -343,7 +343,7 @@ public class DedePublisherUtils {
 			logger.info(content);
 			content = updateDedeCache(client, pro);
 			logger.info(content);
-			content = publishArchives(client, pro, "1");
+			content = publishArchives(client, pro, "1","0");
 			logger.info(content);
 			content = publishTable(client, pro, "0");
 			logger.info(content);

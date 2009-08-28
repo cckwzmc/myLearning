@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -584,11 +585,20 @@ public class MyFetchService {
 			WebClient client = new WebClient();
 			DedePublisherUtils.login(client, pro);
 			DedePublisherUtils.updateDedeCache(client, pro);
-			if (!"".equals(minArcId) && !"-1".equals(minArcId)) {
-				DedePublisherUtils.publishArchives(client, pro, minArcId);
-			}
 			String[] typeid = StringUtils.split(typeIds, ",");
 			String[] bookid = StringUtils.split(bookIds, ",");
+			if (!"".equals(minArcId) && !"-1".equals(minArcId)) {
+				DedePublisherUtils.publishArchives(client, pro, minArcId,"0");
+			}
+			for (int i = 0; i < bookid.length; i++) {
+				if (!"".equals(bookid[i])) {
+					Map map=this.dao.getDedeArchivesPreIdByBookId(bookid[i],minArcId);
+					if(MapUtils.isNotEmpty(map)&&!"".equals(ObjectUtils.toString(map.get("id"))))
+					{
+						DedePublisherUtils.publishArchives(client, pro, ObjectUtils.toString(map.get("id")),ObjectUtils.toString(map.get("id")));
+					}	
+				}
+			}
 			for (int i = 0; i < bookid.length; i++) {
 				if (!"".equals(bookid[i])) {
 					DedePublisherUtils.publishTable(client, pro, bookid[i]);
