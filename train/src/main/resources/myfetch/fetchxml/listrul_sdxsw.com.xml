@@ -72,7 +72,6 @@
 	<!--1 开始  结束匹配，，2正则表达式 -->
 	<starttype>2</starttype>
 	<endtype>1</endtype>
-	
 	<contentstart>/js/gonggao.js[^>]*&gt;&lt;/script&gt;</contentstart>
 	<contentend>&lt;div class=&quot;shouda&quot;&gt;</contentend>
 	<contentbody></contentbody>

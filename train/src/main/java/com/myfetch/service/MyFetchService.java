@@ -623,7 +623,7 @@ public class MyFetchService {
 	public void disposeFetchId(String sitename) {
 		List<String> list = XMLUtils.getXmlFileName(sitename);
 		for (String filename : list) {
-			XMLUtils.genFetchId(java.util.UUID.fromString("fetch").toString(), XMLUtils.getDocumentXml(filename));
+			XMLUtils.genFetchId(java.util.UUID.randomUUID().toString(), filename);
 		}
 	}
 }

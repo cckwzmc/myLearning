@@ -33,14 +33,7 @@ public class MyFetchDao extends JdbcBaseDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List getCoverList() {
-		String sql = "select `id`,`bookid`,`bookname`,`booklisturl`,`chinesenum`,`bookdesc`,`isfetch`,`keyword`,`author`  from fetchbookconver t order by id;";
-		return this.getJdbcTemplate().queryForList(sql);
-	}
-
-	// book article list
-	@SuppressWarnings("unchecked")
-	public List getTableList() {
-		String sql = "select t.id,t.bookid,t.url,t.finishstatus,t.title,t.content,t.desc where from tablelisturls t";
+		String sql = "select t.*  from fetchbookconver t left join fetchurls t1 on t1.id=t.bookid where t1.isfetch=0 order by id desc";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
