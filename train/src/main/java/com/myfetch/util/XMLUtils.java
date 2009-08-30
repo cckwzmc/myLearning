@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +19,9 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.SAXWriter;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 public class XMLUtils {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(XMLUtils.class);
@@ -44,7 +47,25 @@ public class XMLUtils {
 		}
 		return doc;
 	}
-	
+	public static void genFetchId(String fromString,Document doc) {
+		if(doc==null){
+			System.out.println("documnt is null!!");
+			return;
+		}
+		Node node=doc.selectSingleNode("//data/fetchid");
+		Element e=(Element)node;
+		if("".equals(e.getStringValue())){
+			e.setText(fromString);
+			SAXWriter writer=new SAXWriter();
+			try {
+				writer.write(doc);
+			} catch (SAXException e1) {
+				logger.error(e1.getMessage());
+			}
+		}
+		
+	}
+
 	@SuppressWarnings("unchecked")
 	public static Map<String,String> parseBookTypeList(Document doc){
 		if(doc==null){
@@ -219,8 +240,5 @@ public class XMLUtils {
 		type="(www.sdxsw.com)|http://www.sdxsw.com|http://bbs.sdxsw.com|http://wap.sdxsw.com|www.sdxsw.com|www.sdxsw.co|尽在sdxsw.com|手打小说，手打版小说，文字版小说，|s!d!x!s!w!.!c!o!m|欢迎您光临手打小说网，手机WAP站点已经开通，敬请访问：http://wap.sdxsw.com|sDxsw.com|sdxsw.com|手.打小.说.网|手.打.小.说.网|手打小说网|手.打小说网|s D x s w . c o m|最新手打小说，尽在|尽在|中文网|;移动书库|&lt;table width=\"((.|\\n)+?) cellpadding=\"0\"&gt;|&lt;DIV id=booktext((.|\\n)+?)align=\"left\"&gt;|&lt;div id=\"booktext\"((.|\\n)+?)align=\"left\"&gt;|&lt;div id=\"booktext\"((.|\\n)+?)padding-right:12\"&gt;|&lt;img src=\"((.|\\n)+?)border=\"0\" /&gt;|内容请见:[a-zA-z]+://[^\\s]*\\d|&lt;tr&gt;|&lt;/tr&gt;|&lt;td&gt;|&lt;/td&gt;|&lt;/div&gt;|&lt;/DIV&gt;|&lt;/table&gt;|&lt;div align=\"center\"&gt;&lt;IMG SRC=\"((.|\\n)+?)border=0&gt;&lt;/div&gt;|隆重向大家推荐|(w.w.w.s.d.x.s.w.com)|全文字阅读及下载|全文字小说阅读，尽在|WWW.nilongdao.com|翠微居首发：www.cuiweiju.com";
 		System.out.println(convertXml(type));
 	}
-
-
-
 
 }

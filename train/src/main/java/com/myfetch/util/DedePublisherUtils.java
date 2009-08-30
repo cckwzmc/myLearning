@@ -164,6 +164,7 @@ public class DedePublisherUtils {
 				} 
 				logger.info(content);
 				if (StringUtils.contains(content, okStr)) {
+					logger.info(content);
 					break;
 				}
 				i++;
@@ -205,8 +206,9 @@ public class DedePublisherUtils {
 						}
 					}
 				} 
-				logger.info(content);
+				
 				if (StringUtils.contains(content, okStr)) {
+					logger.info(content);
 					break;
 				}
 				i++;
@@ -251,6 +253,7 @@ public class DedePublisherUtils {
 				} 
 				logger.info(content);
 				if (StringUtils.contains(content, okStr)) {
+					logger.info(content);
 					break;
 				}
 				i++;
@@ -293,8 +296,8 @@ public class DedePublisherUtils {
 						}
 					}
 				} 
-				logger.info(content);
 				if (StringUtils.contains(content, okStr)) {
+					logger.info(content);
 					break;
 				}
 				i++;

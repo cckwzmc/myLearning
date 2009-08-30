@@ -75,6 +75,7 @@ public class MasterMainServiceJob {
 			MyFetchService.bootPath = pro.getProperty("imgDownloadDir");
 //			service.disposeBookMap("aishuzhe.com");
 			//
+			service.disposeFetchId(pro.getProperty("sitename"));
 			if("1".equals(ObjectUtils.toString(pro.getProperty("isrunsite"))))
 			{
 				service.disposeBookList((String) pro.get("sitename"));
