@@ -17,6 +17,7 @@
     <prerequisites>
         <maven>2.0.9</maven>
     </prerequisites>
+	<dependencyManagement>
         <dependencies>
         	<dependency>
         <groupId>ch.qos.logback</groupId>
@@ -72,7 +73,20 @@
             <version>${spring.version}</version>
             <optional>true</optional>
         </dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+            <version>${dom4j.version}</version>
+            <optional>true</optional>
+        </dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+            <version>${jaxen.version}</version>
+            <optional>true</optional>
+        </dependency>
            </dependencies> 
+	</dependencyManagement>
         <properties>
         <!--	
         <dao.framework>hibernate</dao.framework>
@@ -160,6 +174,8 @@
         <spring.version>2.5.6</spring.version>
         <struts.version>2.1.2</struts.version>
         <velocity.version>1.4</velocity.version>
+		<dom4j.version>1.6.1</dom4j.version>
+		<jaxen.version>1.1.1</jaxen.version>
         <xfire.version>1.2.6</xfire.version>
     </properties>
 </project>
