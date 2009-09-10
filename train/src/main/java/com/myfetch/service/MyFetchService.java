@@ -626,4 +626,16 @@ public class MyFetchService {
 			XMLUtils.genFetchId(java.util.UUID.randomUUID().toString(), filename);
 		}
 	}
+	public void moveDataForTxt(String filePath){
+		List list=this.dao.getDedeArchives(0,100);
+		int i=100;
+		String filename="";
+		while(CollectionUtils.isNotEmpty(list)){
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map map = (Map) iterator.next();
+				
+			}
+			list=this.dao.getDedeArchives(i,i+=100);
+		}
+	}
 }
