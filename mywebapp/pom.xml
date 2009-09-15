@@ -26,9 +26,9 @@
 				<configuration>
 					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
 					<warSourceDirectory>src/main/webapp</warSourceDirectory>
-					<packagingExcludes>WEB-INF/lib/*.jar,WEB-INF/classes/**/jdbc/core/*.class
+					<!--<packagingExcludes>WEB-INF/lib/*.jar,WEB-INF/classes/**/jdbc/core/*.class
 					</packagingExcludes>
-					<outputDirectory>../publication</outputDirectory>
+					--><outputDirectory>../publication</outputDirectory>
 				</configuration>
 			</plugin>
 			<!-- compiler插件,设定JDK版本及编码 -->

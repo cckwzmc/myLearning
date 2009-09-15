@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
 
 @Entity
+@Table(name="user")
 public class User extends BaseObject implements Serializable,UserDetails{
 
 	private static final long serialVersionUID = 8249391781975748871L;
@@ -32,6 +34,13 @@ public class User extends BaseObject implements Serializable,UserDetails{
     private boolean enabled;
     private boolean accountExpired;
     private boolean accountLocked;
+    
+    public User(){
+    	
+    }
+    public User(final String userName){
+    	this.user_name=userName;
+    }
 	/* (non-Javadoc)
 	 * @see org.springframework.security.userdetails.UserDetails#getAuthorities()
 	 */
