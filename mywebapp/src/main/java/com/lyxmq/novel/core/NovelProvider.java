@@ -1,5 +1,9 @@
 package com.lyxmq.novel.core;
 
+import com.lyxmq.novel.exception.BootstrapException;
+
 public interface NovelProvider {
-	public bootstrap() throws 
+	public void bootstrap() throws BootstrapException;
+
+	public NovelModulCore getNovelModulCore();
 }
