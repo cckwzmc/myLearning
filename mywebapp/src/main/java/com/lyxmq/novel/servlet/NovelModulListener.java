@@ -1,4 +1,4 @@
-package com.lyxmq.novel.core;
+package com.lyxmq.novel.servlet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
