@@ -5,35 +5,64 @@
 	<display-name>xiaoshuo_module</display-name>
 	<!-- spring 配置  -->
 	<context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/applicationContext*.xml</param-value>
-    </context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/applicationContext*.xml</param-value>
+	</context-param>
+	<!-- Struts2 conifg -->
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+	</filter>
+    <!-- This is really strange, but for some reason it's needed to prevent
+        some problems with the file uploads not working intermittently -->
+    <filter>
+        <filter-name>struts2-cleanup</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
+    </filter>
 	<!-- Character Encoding filter -->
 	<filter>
-		<filter-name>encodingFilter</filter-name>
-		<filter-class>
-			org.springframework.web.filter.CharacterEncodingFilter
-		</filter-class>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>com.lyxmq.novel.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-	<!--Spring ApplicationContext 载入 -->
-	<listener>
-		<listener-class>
-			org.springframework.web.context.ContextLoaderListener
-		</listener-class>
-	</listener>
+	<filter>
+		<filter-name>LocaleFilter</filter-name>
+		<filter-class>com.lyxmq.novel.web.filter.LocaleFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Struts2 -->
+	<filter-mapping>
+		<filter-name>struts2-cleanup</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>LocaleFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<!-- Spring 刷新Introspector防止内存泄露 -->
 	<listener>
 		<listener-class>
-			org.springframework.web.util.IntrospectorCleanupListener
-		</listener-class>
+			org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
 	<!-- 应用 启动-->
 	<listener>
-		<listener-class>com.lyxmq.xs.core.XiaoshuoModulListener</listener-class>
+		<listener-class>com.lyxmq.novel.servlet.listenter.NovelModulListener</listener-class>
 	</listener>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
