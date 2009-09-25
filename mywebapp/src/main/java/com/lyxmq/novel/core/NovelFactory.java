@@ -1,7 +1,11 @@
 package com.lyxmq.novel.core;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.lyxmq.novel.exception.BootstrapException;
 import com.lyxmq.novel.startup.NovelStartup;
@@ -10,6 +14,9 @@ public class NovelFactory {
 	private static final Log log = LogFactory.getLog(NovelFactory.class);
 	// our configured Novel provider
 	private static NovelProvider novelProvider = null;
+	
+	protected static ServletContext servletContext;
+
 
 	/**
 	 * True if bootstrap process has been completed, False otherwise.
@@ -51,16 +58,11 @@ public class NovelFactory {
 
 		// lookup our default provider and instantiate it
 		NovelProvider defaultProvider;
-		String providerClassname = WebloggerConfig.getProperty("weblogger.provider.class");
-		if (providerClassname != null) {
-			try {
-				Class providerClass = Class.forName(providerClassname);
-				defaultProvider = (NovelProvider) providerClass.newInstance();
-			} catch (Exception ex) {
-				throw new BootstrapException("Error instantiating default provider: " + providerClassname, ex);
-			}
-		} else {
-			throw new NullPointerException("No provider specified in config property 'weblogger.provider.class'");
+		try {
+			ApplicationContext context= WebApplicationContextUtils.getWebApplicationContext(servletContext);
+			defaultProvider =(NovelProvider) context.getBean("novelProvider"); 
+		} catch (Exception ex) {
+			throw new BootstrapException("Error instantiating default provider: ", ex);
 		}
 
 		// now just bootstrap using our default provider

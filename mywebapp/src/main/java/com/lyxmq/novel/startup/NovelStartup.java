@@ -1,5 +1,7 @@
 package com.lyxmq.novel.startup;
 
+import com.lyxmq.novel.exception.BootstrapException;
+
 /**
  * 数据的导入，初始化等
  * 此类暂时不使用
@@ -8,10 +10,11 @@ package com.lyxmq.novel.startup;
  */
 public class NovelStartup {
 
+	private static boolean prepare=false;
 	public static boolean isPrepared() {
-		return true;
+		return prepare;
 	}
-	public static void prepared(){
-		
+	public static void prepare() throws BootstrapException {
+		prepare=true;
 	}
 }

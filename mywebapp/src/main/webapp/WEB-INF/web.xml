@@ -62,7 +62,7 @@
 	</listener>
 	<!-- 应用 启动-->
 	<listener>
-		<listener-class>com.lyxmq.novel.servlet.listenter.NovelModulListener</listener-class>
+		<listener-class>com.lyxmq.novel.core.NovelModulListener</listener-class>
 	</listener>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
