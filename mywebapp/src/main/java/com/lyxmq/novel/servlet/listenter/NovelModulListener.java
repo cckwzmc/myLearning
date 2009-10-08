@@ -8,6 +8,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.ContextLoaderListener;
 
+import com.lyxmq.novel.core.NovelFactory;
+
 /**
  * Application Lifecycle Listener implementation class NovelModulListener
  * 
@@ -42,6 +44,7 @@ public class NovelModulListener extends ContextLoaderListener implements Servlet
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
 	 */
 	public void contextDestroyed(ServletContextEvent sce) {
+		NovelFactory.getNovelModulCore().shutdown();
 	}
 
 }

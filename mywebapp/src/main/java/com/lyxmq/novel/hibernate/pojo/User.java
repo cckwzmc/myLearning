@@ -1,8 +1,13 @@
 package com.lyxmq.novel.hibernate.pojo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.management.relation.Role;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,8 +15,8 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
 
 @Entity
-@Table(name="user")
-public class User extends BaseObject implements Serializable,UserDetails{
+@Table(name = "user")
+public class User extends BaseObject implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 8249391781975748871L;
 	private Long user_id;
@@ -31,16 +36,39 @@ public class User extends BaseObject implements Serializable,UserDetails{
 	private String lastLogin_ip;
 	private Integer gender;
 	private String email;
-    private boolean enabled;
-    private boolean accountExpired;
-    private boolean accountLocked;
-    
-    public User(){
-    	
-    }
-    public User(final String userName){
-    	this.user_name=userName;
-    }
+	private boolean enabled;
+	private boolean accountExpired;
+	private boolean accountLocked;
+	/*
+	 * 用户权限控制
+	 */
+	private Set roles = new HashSet();
+	public Set getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set roles) {
+		this.roles = roles;
+	}
+
+	public List getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List permissions) {
+		this.permissions = permissions;
+	}
+
+	private List permissions = new ArrayList();
+
+	public User() {
+
+	}
+
+	public User(final String userName) {
+		this.user_name = userName;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.springframework.security.userdetails.UserDetails#getAuthorities()
 	 */
@@ -91,6 +119,11 @@ public class User extends BaseObject implements Serializable,UserDetails{
 
 	@Override
 	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean hasRole(String requiredUserRole) {
 		// TODO Auto-generated method stub
 		return false;
 	}
