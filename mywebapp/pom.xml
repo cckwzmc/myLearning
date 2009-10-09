@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.mylearning</groupId>
@@ -90,16 +89,8 @@
 
 			<!-- enforcer插件,检查JDK版本1.6 -->
 			<!--
-				<plugin> <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>1.0-beta-1</version> <executions> <execution>
-				<id>enforce-versions</id> <goals> <goal>enforce</goal> </goals>
-				<configuration> <rules> <requireMavenVersion>
-				<version>2.0.9</version> </requireMavenVersion> <requireJavaVersion>
-				<version>1.6</version> </requireJavaVersion> <requireOS>
-				<family>windows</family> </requireOS> </rules> </configuration>
-
-				</execution> </executions> </plugin>
+				<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-enforcer-plugin</artifactId> <version>1.0-beta-1</version> <executions> <execution> <id>enforce-versions</id> <goals> <goal>enforce</goal> </goals> <configuration> <rules> <requireMavenVersion>
+				<version>2.0.9</version> </requireMavenVersion> <requireJavaVersion> <version>1.6</version> </requireJavaVersion> <requireOS> <family>windows</family> </requireOS> </rules> </configuration> </execution> </executions> </plugin>
 			--><!-- resource插件,设定编码 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -224,11 +215,6 @@
 		<dependency>
 			<groupId>org.directwebremoting</groupId>
 			<artifactId>dwr</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jsp-api</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
