@@ -18,7 +18,9 @@ import com.lyxmq.novel.user.NovelUserManager;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class BaseAction extends ActionSupport implements ActionPreparable, SecurityEnforced {
+	
 	private static final Log log = LogFactory.getLog(BaseAction.class);
+	
 	private static final long serialVersionUID = -8503056199217288180L;
 
 	protected static final String CANCEL = "cancel";
@@ -122,32 +124,33 @@ public class BaseAction extends ActionSupport implements ActionPreparable, Secur
 		return hasActionMessages();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List getLocalesList() {
 		return UIUtils.getLocales();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List getTimeZonesList() {
 		return UIUtils.getTimeZones();
 	}
 
-	public List getHoursList() {
-		List ret = new ArrayList();
+	public List<Integer> getHoursList() {
+		List<Integer> ret = new ArrayList<Integer>();
 		for (int i = 0; i < 24; i++) {
 			ret.add(i);
 		}
 		return ret;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List getMinutesList() {
-		List ret = new ArrayList();
+	public List<Integer> getMinutesList() {
+		List<Integer> ret = new ArrayList<Integer>();
 		for (int i = 0; i < 60; i++) {
 			ret.add(i);
 		}
 		return ret;
 	}
 
-	public List getSecondsList() {
+	public List<Integer> getSecondsList() {
 		return getMinutesList();
 	}
 
@@ -201,7 +204,6 @@ public class BaseAction extends ActionSupport implements ActionPreparable, Secur
 	}
 
 	public NovelUserManager getUserNovelAuths() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
