@@ -4,9 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.lyxmq.novel.hibernate.pojo.User;
+import com.lyxmq.novel.service.user.NovelUserManager;
 import com.lyxmq.novel.ui.struts2.core.BaseAction;
 import com.lyxmq.novel.ui.struts2.core.SecurityEnforced;
-import com.lyxmq.novel.user.NovelUserManager;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 

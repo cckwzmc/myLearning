@@ -10,12 +10,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.lyxmq.novel.bootstrap.NovelStartup;
 import com.lyxmq.novel.configuration.NovelConfig;
-import com.lyxmq.novel.core.NovelFactory;
 import com.lyxmq.novel.exception.BootstrapException;
 import com.lyxmq.novel.exception.InitializationException;
 import com.lyxmq.novel.exception.NovelException;
-import com.lyxmq.novel.startup.NovelStartup;
+import com.lyxmq.novel.service.core.NovelFactory;
 
 /**
  * Application Lifecycle Listener implementation class XiaoshuoModulListener

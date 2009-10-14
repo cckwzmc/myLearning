@@ -11,10 +11,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 
-import com.lyxmq.novel.core.NovelServiceCore;
 import com.lyxmq.novel.hibernate.pojo.User;
+import com.lyxmq.novel.service.core.NovelServiceCore;
+import com.lyxmq.novel.service.user.NovelUserManager;
 import com.lyxmq.novel.ui.struts2.utils.UIUtils;
-import com.lyxmq.novel.user.NovelUserManager;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class BaseAction extends ActionSupport implements ActionPreparable, SecurityEnforced {

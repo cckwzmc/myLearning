@@ -1,4 +1,4 @@
-package com.lyxmq.novel.system;
+package com.lyxmq.novel.service.system;
 
 public class NovelMemoryMonitor {
 

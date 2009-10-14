@@ -1,4 +1,4 @@
-package com.lyxmq.novel.user;
+package com.lyxmq.novel.service.user;
 
 import org.springframework.stereotype.Service;
 

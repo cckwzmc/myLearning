@@ -1,4 +1,4 @@
-package com.lyxmq.novel.user;
+package com.lyxmq.novel.service.user;
 
 import com.lyxmq.novel.hibernate.pojo.User;
 

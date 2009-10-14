@@ -1,4 +1,4 @@
-package com.lyxmq.novel.locale;
+package com.lyxmq.novel.service.locale;
 
 public class NovelLocaleManager {
 

@@ -1,4 +1,4 @@
-package com.lyxmq.novel.publish;
+package com.lyxmq.novel.service.publish;
 
 public interface NovelTypeManager {
 

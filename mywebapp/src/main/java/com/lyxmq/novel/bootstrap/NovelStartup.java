@@ -1,4 +1,4 @@
-package com.lyxmq.novel.startup;
+package com.lyxmq.novel.bootstrap;
 
 import com.lyxmq.novel.exception.BootstrapException;
 
