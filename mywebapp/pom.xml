@@ -10,7 +10,7 @@
 	<packaging>war</packaging>
 	<description>小说模块</description>
 	<build>
-		<!-- 命令行输入mvn时，默认执行mvn package  -->
+		<!-- 命令行输入mvn 时，默认执行mvn package  -->
 		<defaultGoal>package</defaultGoal>
 
 		<!-- 设定classes输出到WEB-INF/classes 中，与用Eclipse编译的文件相同  -->
@@ -115,6 +115,10 @@
 			<id>java.net</id>
 			<url>http://download.java.net/maven/1/</url>
 			<layout>legacy</layout>
+		</repository>
+		<repository>
+			<id>java2.net</id>
+			<url>http://download.java.net/maven/2/</url>
 		</repository>
 		<repository>
 			<id>ja-sig</id>
@@ -253,7 +257,27 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-hibernate3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -16,10 +16,6 @@ public class NovelFactory {
 	private static NovelProvider novelProvider = null;
 
 	private static ServletContext servletContext;
-	
-	public static ServletContext getServletContext() {
-		return servletContext;
-	}
 
 	public static void setServletContext(ServletContext servletContext) {
 		NovelFactory.servletContext = servletContext;
