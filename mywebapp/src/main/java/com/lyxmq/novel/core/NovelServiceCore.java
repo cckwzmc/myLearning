@@ -10,7 +10,7 @@ import com.lyxmq.novel.system.IndexManager;
 import com.lyxmq.novel.system.ThreadManager;
 import com.lyxmq.novel.user.NovelUserManager;
 
-public interface NovelModulCore {
+public interface NovelServiceCore {
 	/**
 	 * Get PropertiesManager associated with this Novel instance.
 	 */

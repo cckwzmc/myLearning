@@ -14,9 +14,16 @@ public class NovelFactory {
 	private static final Log log = LogFactory.getLog(NovelFactory.class);
 	// our configured Novel provider
 	private static NovelProvider novelProvider = null;
-	
-	protected static ServletContext servletContext;
 
+	private static ServletContext servletContext;
+	
+	public static ServletContext getServletContext() {
+		return servletContext;
+	}
+
+	public static void setServletContext(ServletContext servletContext) {
+		NovelFactory.servletContext = servletContext;
+	}
 
 	/**
 	 * True if bootstrap process has been completed, False otherwise.
@@ -32,11 +39,11 @@ public class NovelFactory {
 	 * @throws IllegalStateException
 	 *             If the app has not been properly bootstrapped yet.
 	 */
-	public static final NovelModulCore getNovelModulCore() {
+	public static final NovelServiceCore getNovelServiceCore() {
 		if (novelProvider == null) {
 			throw new IllegalStateException("Novel has not been bootstrapped yet");
 		}
-		return novelProvider.getNovelModulCore();
+		return novelProvider.getNovelServiceCore();
 	}
 
 	/**
@@ -59,8 +66,8 @@ public class NovelFactory {
 		// lookup our default provider and instantiate it
 		NovelProvider defaultProvider;
 		try {
-			ApplicationContext context= WebApplicationContextUtils.getWebApplicationContext(servletContext);
-			defaultProvider =(NovelProvider) context.getBean("novelProvider"); 
+			ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+			defaultProvider = (NovelProvider) context.getBean("novelProvider");
 		} catch (Exception ex) {
 			throw new BootstrapException("Error instantiating default provider: ", ex);
 		}
@@ -103,7 +110,7 @@ public class NovelFactory {
 		novelProvider.bootstrap();
 
 		// make sure we are all set
-		if (novelProvider.getNovelModulCore() == null) {
+		if (novelProvider.getNovelServiceCore() == null) {
 			throw new BootstrapException("Bootstrapping failed, Novel instance is null");
 		}
 		log.info("Novel business tier successfully bootstrapped");

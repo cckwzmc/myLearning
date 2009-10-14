@@ -15,8 +15,8 @@ import com.lyxmq.novel.system.ThreadManager;
 import com.lyxmq.novel.user.NovelUserManager;
 
 @Service("novelCore")
-public class NovelModulCoreImpl implements NovelModulCore {
-	private static final Log log = LogFactory.getLog(NovelModulCoreImpl.class);
+public class NovelServiceCoreImpl implements NovelServiceCore {
+	private static final Log log = LogFactory.getLog(NovelServiceCoreImpl.class);
 
 	private NovelUserManager novelUserManager;
 	private PropertiesManager propertiesManager;

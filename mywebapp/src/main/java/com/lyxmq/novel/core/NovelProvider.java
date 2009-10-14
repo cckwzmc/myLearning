@@ -19,5 +19,5 @@ public interface NovelProvider {
 	 * 
 	 * @return
 	 */
-	public NovelModulCore getNovelModulCore();
+	public NovelServiceCore getNovelServiceCore();
 }

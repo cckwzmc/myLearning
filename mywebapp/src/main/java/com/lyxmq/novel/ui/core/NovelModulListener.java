@@ -1,4 +1,4 @@
-package com.lyxmq.novel.core;
+package com.lyxmq.novel.ui.core;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -11,6 +11,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.lyxmq.novel.configuration.NovelConfig;
+import com.lyxmq.novel.core.NovelFactory;
 import com.lyxmq.novel.exception.BootstrapException;
 import com.lyxmq.novel.exception.InitializationException;
 import com.lyxmq.novel.exception.NovelException;
@@ -60,9 +61,9 @@ public class NovelModulListener extends ContextLoaderListener implements Servlet
 		} else {
 			// trigger bootstrapping process
 			try {
-				NovelFactory.servletContext = servletContext;
+				NovelFactory.setServletContext(servletContext);
 				NovelFactory.bootstrap();
-				NovelFactory.getNovelModulCore().initialize();
+				NovelFactory.getNovelServiceCore().initialize();
 			} catch (BootstrapException e) {
 				log.fatal("Novel module boot start failed", e);
 			} catch (InitializationException e) {
@@ -109,7 +110,7 @@ public class NovelModulListener extends ContextLoaderListener implements Servlet
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
 	 */
 	public void contextDestroyed(ServletContextEvent sce) {
-		NovelFactory.getNovelModulCore().shutdown();
+		NovelFactory.getNovelServiceCore().shutdown();
 	}
 
 }

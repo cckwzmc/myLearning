@@ -3,14 +3,14 @@ package com.lyxmq.novel.core;
 import com.lyxmq.novel.exception.BootstrapException;
 public class NovelProviderImpl implements NovelProvider {
 
-	private static NovelModulCore novelInstance;
-	private NovelModulCore novelCore;
+	private static NovelServiceCore novelInstance;
+	private NovelServiceCore novelCore;
 
-	public NovelModulCore getNovelCore() {
+	public NovelServiceCore getNovelCore() {
 		return novelCore;
 	}
 
-	public void setNovelCore(NovelModulCore novelCore) {
+	public void setNovelCore(NovelServiceCore novelCore) {
 		this.novelCore = novelCore;
 	}
 
@@ -24,7 +24,7 @@ public class NovelProviderImpl implements NovelProvider {
 	}
 
 	@Override
-	public NovelModulCore getNovelModulCore() {
+	public NovelServiceCore getNovelServiceCore() {
 		return novelInstance;
 	}
 
