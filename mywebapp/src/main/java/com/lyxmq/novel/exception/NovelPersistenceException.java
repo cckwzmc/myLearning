@@ -1,6 +1,8 @@
 package com.lyxmq.novel.exception;
 
-public class NovelPersistenceException extends NovelException {
+import javax.persistence.PersistenceException;
+
+public class NovelPersistenceException extends PersistenceException {
 	private static final long serialVersionUID = 1L;
 
 	public NovelPersistenceException() {
