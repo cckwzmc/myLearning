@@ -9,15 +9,14 @@ import javax.persistence.EntityManagerFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Service;
 
 import com.lyxmq.novel.exception.NovelPersistenceException;
 
-@Service("persistenceStrategy")
-public class PersistenceStrategy extends HibernateDaoSupport {
+@Service("jpaPersistenceStrategy")
+public class JPAPersistenceStrategy{
 
-	private static Log logger = LogFactory.getFactory().getInstance(PersistenceStrategy.class);
+	private static Log logger = LogFactory.getFactory().getInstance(JPAPersistenceStrategy.class);
 
 	/**
 	 * The thread local EntityManager.

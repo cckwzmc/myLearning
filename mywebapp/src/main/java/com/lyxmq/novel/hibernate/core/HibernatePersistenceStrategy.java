@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -88,7 +89,7 @@ public class HibernatePersistenceStrategy extends HibernateDaoSupport {
 	}
 
 	/**
-	 * Retrieve object, 
+	 * Retrieve object,
 	 * 
 	 * @param clazz
 	 *            the class of object to retrieve
@@ -102,39 +103,51 @@ public class HibernatePersistenceStrategy extends HibernateDaoSupport {
 	public Object get(Class clazz, String id) throws NovelPersistenceException {
 		return super.getHibernateTemplate().load(clazz, id);
 	}
-	
+
 	/**
-	 * Retrieve object List, 
+	 * Retrieve object List,
+	 * 
 	 * @param clazz
 	 * @return
 	 * @throws NovelPersistenceException
 	 */
 	@SuppressWarnings("unchecked")
-	public List getAll(Class clazz) throws NovelPersistenceException{
+	public List getAll(Class clazz) throws NovelPersistenceException {
 		return super.getHibernateTemplate().loadAll(clazz);
 	}
+
 	/**
-	 * Retrieve object List, 
-	 * @param clazz
+	 * 按参数传递查询，key	- value的方式
+	 * @param hql
+	 * @param filterMap hql中的参数
 	 * @return
 	 * @throws NovelPersistenceException
 	 */
 	@SuppressWarnings("unchecked")
-	public List getAll(String hql,Map sortMap) throws NovelPersistenceException{
-		Session session=super.getSession();
-		Query query=session.createQuery(hql);
+	public List getAll(String hql, Map filterMap) throws NovelPersistenceException {
+		Session session = super.getSession();
+		Query query = session.createQuery(hql);
+		setFilterToQuery(query, filterMap);
 		return query.list();
 	}
-	
+
 	/**
-	 * @param clazz
-	 * @param pageSize
-	 * @param pageIndex
-	 * @return
+	 * 把filterMap中的参数整合入HQL
+	 * @param query
+	 * @param filterMap
 	 * @throws NovelPersistenceException
 	 */
-	public List get(Class clazz,int pageSize,int pageIndex) throws NovelPersistenceException{
-//		return super.getHibernateTemplate().findByExample(exampleEntity, firstResult, maxResults)
-		return null;
+	@SuppressWarnings("unchecked")
+	public void setFilterToQuery(org.hibernate.Query query, Map filterMap) throws NovelPersistenceException {
+		if (filterMap == null)
+			return;
+		Set entries = filterMap.entrySet();
+		for (Object iter : entries) {
+			Map.Entry entry = (Map.Entry) iter;
+			Object key = entry.getKey();
+
+			Object value = entry.getValue();
+			query.setParameter(key.toString(), value);
+		}
 	}
 }
