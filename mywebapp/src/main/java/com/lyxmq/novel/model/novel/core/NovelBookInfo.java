@@ -1,4 +1,4 @@
-package com.lyxmq.novel.model.novelcore;
+package com.lyxmq.novel.model.novel.core;
 
 import java.util.Date;
 
@@ -20,6 +20,7 @@ public class NovelBookInfo extends BaseModel {
 	private long seqNo;
 	//数据显示位置(如：封推等)
 	private String flag;
+	
 	private String title;
 	// 排序使用，使用时间戳
 	private long sortrank;
@@ -28,8 +29,11 @@ public class NovelBookInfo extends BaseModel {
 	private Date createDate;
 	// 发布时间
 	private Date publishDate;
+	//总字数
 	private int charNum;
+	//作者ID
 	private long authorId;
+	//作者
 	private String author;
 	//来源
 	private String source;
@@ -37,7 +41,18 @@ public class NovelBookInfo extends BaseModel {
 	private boolean isComplete;
 	//缩略图url;
 	private String litpic;
+	//是否新书,未上架就算新书。
+	private boolean isNew;
+
 	private String keywords;
+	
+	public boolean isNew() {
+		return isNew;
+	}
+
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
 	
 	public String getFlag() {
 		return flag;

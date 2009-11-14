@@ -1,22 +1,31 @@
-package com.lyxmq.novel.model.novelcore;
+package com.lyxmq.novel.model.novel.core;
 
 import com.lyxmq.novel.model.BaseModel;
 
 /**
  * 
  * 网站频道、菜单管理
+ * 
  * @author Administrator
- *
+ * 
  */
 public class NovelCategoryModel extends BaseModel {
 	private static final long serialVersionUID = 6764609517138235910L;
 	private long id;
+	// 上级ID
 	private long superId;
+	// 名称
 	private String name;
+	// 是否是频道
 	private boolean isChannel;
+	// 是否有自己的首页
+	private boolean isNeedSelfIndex;
+	// 是否隐藏
 	private boolean isHidden;
+	// 相对首页的URL,用目录表示，如果domainUrl有记录，则是相当domainUrl的URL
 	private String urlName;
-	private String domainUrlName;
+	// 是频道，有首页，才有二级的单独域名。
+	private String domainUrl;
 	private String desc;
 
 	public long getId() {
@@ -67,12 +76,20 @@ public class NovelCategoryModel extends BaseModel {
 		this.urlName = urlName;
 	}
 
-	public String getDomainUrlName() {
-		return domainUrlName;
+	public boolean isNeedSelfIndex() {
+		return isNeedSelfIndex;
 	}
 
-	public void setDomainUrlName(String domainUrlName) {
-		this.domainUrlName = domainUrlName;
+	public void setNeedSelfIndex(boolean isNeedSelfIndex) {
+		this.isNeedSelfIndex = isNeedSelfIndex;
+	}
+
+	public String getDomainUrl() {
+		return domainUrl;
+	}
+
+	public void setDomainUrl(String domainUrl) {
+		this.domainUrl = domainUrl;
 	}
 
 	public String getDesc() {
@@ -82,6 +99,7 @@ public class NovelCategoryModel extends BaseModel {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+
 	@Override
 	public boolean equals(Object o) {
 		// TODO Auto-generated method stub

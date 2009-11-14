@@ -1,23 +1,16 @@
-package com.lyxmq.novel.model.novelcore;
-
-import java.util.Date;
+package com.lyxmq.novel.model.novel.system;
 
 import com.lyxmq.novel.model.BaseModel;
 
 /**
- * 
- * 文章内容的精简对象
+ * 系统变量
  * @author Administrator
  *
  */
-public class NovelArticleTiny extends BaseModel {
-	private static final long serialVersionUID = -5290624427573952157L;
-	private long id;
-	private long typeId;
-	private long superTypeId;
-	private String title;
-	private long sortrank;
-	private Date sendDate;
+public class NovelSystemVarConfig extends BaseModel{
+
+	private static final long serialVersionUID = -1186823116719702800L;
+
 	@Override
 	public boolean equals(Object o) {
 		// TODO Auto-generated method stub

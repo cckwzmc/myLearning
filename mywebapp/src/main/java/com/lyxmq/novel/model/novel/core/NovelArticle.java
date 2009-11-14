@@ -1,4 +1,4 @@
-package com.lyxmq.novel.model.novelcore;
+package com.lyxmq.novel.model.novel.core;
 
 import java.util.Date;
 
@@ -19,10 +19,31 @@ public class NovelArticle  extends BaseModel{
 	private int charNum;
 	//是否发布，默认不发布
 	private boolean isPublish;
+	//发布时间
 	private Date publishDate;
 	//小标题
 	private String shorttitle;
+	//收费，默认为0；
+	private int money;
+	//点击数.
+	private int click;
 	
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+	public int getClick() {
+		return click;
+	}
+
+	public void setClick(int click) {
+		this.click = click;
+	}
+
 	public long getId() {
 		return id;
 	}
