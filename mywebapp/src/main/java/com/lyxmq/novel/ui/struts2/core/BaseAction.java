@@ -18,9 +18,9 @@ import com.lyxmq.novel.ui.struts2.utils.UIUtils;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class BaseAction extends ActionSupport implements ActionPreparable, SecurityEnforced {
-	
+
 	private static final Log log = LogFactory.getLog(BaseAction.class);
-	
+
 	private static final long serialVersionUID = -8503056199217288180L;
 
 	protected static final String CANCEL = "cancel";

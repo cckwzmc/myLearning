@@ -1,15 +1,15 @@
-package com.lyxmq.novel.model.novel.system;
+package com.lyxmq.novel.model.cms.core;
 
 import com.lyxmq.novel.model.BaseModel;
 
 /**
- * 系统变量
+ * Cms 文字为主的内容管理，文章内容。
  * @author Administrator
  *
  */
-public class NovelSystemVarConfig extends BaseModel{
+public class CmsArticleContent extends BaseModel {
 
-	private static final long serialVersionUID = -1186823116719702800L;
+	private static final long serialVersionUID = 2986758375828015035L;
 
 	@Override
 	public boolean equals(Object o) {

@@ -1,4 +1,4 @@
-package com.lyxmq.novel.model.novel.system;
+package com.lyxmq.novel.model.cms.system;
 
 import java.io.Serializable;
 
