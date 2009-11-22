@@ -10,7 +10,54 @@ import com.lyxmq.novel.model.BaseModel;
 public class CmsArticleContent extends BaseModel {
 
 	private static final long serialVersionUID = 2986758375828015035L;
+	private long id;
+	private String body;
+	
 
+	//文章内容类型，如；0:自己编辑的内容、1:直接跳转内容,
+	private int typeId;
+	private String redirectUrl;
+	private int templateId;
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
+	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
+	}
+
+	public int getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(int templateId) {
+		this.templateId = templateId;
+	}
 	@Override
 	public boolean equals(Object o) {
 		// TODO Auto-generated method stub
