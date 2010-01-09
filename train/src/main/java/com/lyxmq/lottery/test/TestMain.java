@@ -31,7 +31,7 @@ public class TestMain {
 	private static int currentExpert = 154;
 	private static int historyData = 150;
 	private static String url_prex = "http://www.500wan.com/static/info/ssq/mediadetail/";
-	private static String testUrl = "http://www.500wan.com/static/info/ssq/mediadetail/09154.xml";
+	private static String testUrl = "http://www.500wan.com/static/info/ssq/mediadetail/10002.xml";
 	String[] xmlData = new String[100];
 	private static int avRedNum = 0, avRedFen = 0, avCount = 0;
 	private static int count = 0;
@@ -46,9 +46,9 @@ public class TestMain {
 	// private static String[] redBall = null;
 	private static String[] blueBall = null;
 	private static String pXmlData = "";
-	private static int oneQu=2;
-	private static int twoQu=3;
-	private static int threeQu=1;
+	private static int oneQu = 1;
+	private static int twoQu = 2;
+	private static int threeQu = 3;
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
@@ -60,8 +60,27 @@ public class TestMain {
 		// List<Map<String, List<String>>> list = test.disposeXmlData(xmlData);
 		// test.disposeResultData(list);
 		test.disposeCurrentData();
+
 		System.out.println(isStatHistoryData);
 		try {
+			String content="";
+			for (Iterator<String> iterator = redResultList.iterator(); iterator.hasNext();) {
+				String value = (String) iterator.next();
+				if("".equals(content)){
+					content=value;
+				}else{
+					content+="\n"+value;
+				}
+			}
+
+			File file = new File("d:/myproject/current.xml");
+			if (!file.exists()) {
+				file.createNewFile();
+			} else {
+			}
+			FileWriter writer = new FileWriter(file);
+			writer.write(content);
+			writer.close();
 			// 历史数据统计
 			// disposeHistoryData();
 		} catch (Exception e) {
@@ -163,8 +182,8 @@ public class TestMain {
 				// System.out.print(i + "===");
 				// System.out.println(StringUtils.join(r, ","));
 				// redResultList.add(StringUtils.join(r, ","));
-				String str=printStatData(StringUtils.join(r, ","));
-				if(StringUtils.isNotBlank(str)){
+				String str = printStatData(StringUtils.join(r, ","));
+				if (StringUtils.isNotBlank(str)) {
 					System.out.println(str);
 				}
 				subselect(i + 1, index + 1, r, k);
@@ -181,39 +200,36 @@ public class TestMain {
 		int totalNum = 0;
 		int totalFen = 0;
 		String[] red = StringUtils.split(redResult, ",");
-		int oneTmp=0;
-		int twoTmp=0;
-		int threeTmp=0;
+		int oneTmp = 0;
+		int twoTmp = 0;
+		int threeTmp = 0;
 		for (int i = 0; i < red.length; i++) {
-			int tmp=NumberUtils.toInt(red[i]);
-			if(tmp>0&&tmp<=11){
+			int tmp = NumberUtils.toInt(red[i]);
+			if (tmp > 0 && tmp <= 11) {
 				oneTmp++;
 			}
-			if(tmp>11&&tmp<=22){
+			if (tmp > 11 && tmp <= 22) {
 				twoTmp++;
 			}
-			if(tmp>21&&tmp<=33){
+			if (tmp > 21 && tmp <= 33) {
 				threeTmp++;
 			}
 		}
-		if(oneTmp!=oneQu||twoTmp!=twoQu||threeTmp!=threeQu)
+		if (oneTmp != oneQu || twoTmp != twoQu || threeTmp != threeQu)
 			return null;
 		for (int i = 0; i < red.length; i++) {
-			if(StringUtils.equals(redResult,"1,7,12,14,18,25")){
-				System.out.println();
-			}
 			if (redStatMap.containsKey(red[i])) {
 				String value = redStatMap.get(red[i]);
-				String[] values = StringUtils.split(value,"|");
+				String[] values = StringUtils.split(value, "|");
 				totalNum += NumberUtils.toInt(values[0]);
 				totalFen += NumberUtils.toInt(values[1].replace("%", ""));
 			}
 		}
 
-		int avNum=65;
-		int avFen=15;
+		int avNum = 65;
+		int avFen = 15;
 		if (totalNum <= (avNum + 10) && totalNum >= (avNum - 10) && totalFen <= (avFen + 5) && totalFen >= (avFen - 5)) {
-			
+			redResultList.add(redResult);
 			return redResult;
 		}
 		return null;
