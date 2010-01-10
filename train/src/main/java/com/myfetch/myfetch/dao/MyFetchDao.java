@@ -406,7 +406,7 @@ public class MyFetchDao extends JdbcBaseDao {
 	}
 
 	public List getDedeArchives(int start, int end) {
-		String sql="select id,isbookpage,body from dede_addonarticle t,dede_archives tt where t.id=tt.aid order by t.id limit "+start+","+end;
+		String sql="select tt.id,tt.isbookpage,body from dede_addonarticle t,dede_archives tt where tt.id=tt.id order by tt.id limit "+start+","+end;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 }

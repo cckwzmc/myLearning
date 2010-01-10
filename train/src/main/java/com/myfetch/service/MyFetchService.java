@@ -1,6 +1,5 @@
 package com.myfetch.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +20,8 @@ import org.webservice.client.WebClient;
 import com.myfetch.myfetch.dao.MyFetchDao;
 import com.myfetch.service.http.HttpHtmlService;
 import com.myfetch.service.parse.ParseHtml;
-import com.myfetch.util.DateUtils;
 import com.myfetch.util.DedePublisherUtils;
-import com.myfetch.util.HttpResourceUtils;
+import com.myfetch.util.FileWriterReaderUtils;
 import com.myfetch.util.ServiceUtils;
 import com.myfetch.util.XMLUtils;
 
@@ -31,6 +29,8 @@ public class MyFetchService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MyFetchService.class);
 	MyFetchDao dao = null;
 	public static String bootPath = "D:\\xiaoshuoimg";
+	public static String contentImgPath;
+	public static String contentTxtPath;
 	public final static String[] bookstatus = new String[] { "连载,", "完成,w", "完结,w" };
 
 	public MyFetchDao getDao() {
@@ -213,7 +213,6 @@ public class MyFetchService {
 						}
 					}
 				}
-
 			} else {
 				List bList = unFetchList();
 				for (Iterator iterator = bList.iterator(); iterator.hasNext();) {
@@ -245,6 +244,16 @@ public class MyFetchService {
 	}
 
 	/**
+	 * 书籍章节列表
+	 * 查重方式
+	 * 1、URL查重
+	 * 2、章节名称查重
+	 * 	a)去掉除汉字之外的字符，如：空格、【】，[]，“”，‘’，"",'',以空格分隔的单独字"图"字,如果相同就重复
+	 * 	b)以空格分隔章节名称，判断是否含有卷字，是否含有章字，章节名称，图,如：卷[0]|章[1]|实际章节名称[2]|图[3]
+	 * 	  如果0+1相同就重复
+	 *   如果1+2相同就重复
+	 *   
+	 *  	
 	 * @param files
 	 */
 	@SuppressWarnings("unchecked")
@@ -341,10 +350,13 @@ public class MyFetchService {
 	}
 
 	/**
+	 * 支持抓取图片
 	 * @param files
+	 * @throws IOException 
+	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public void disposeChapterContent(String files) {
+	public void disposeChapterContent(String files) throws IOException {
 		List<String> list = XMLUtils.getXmlFileName(files);
 		for (String filename : list) {
 			Map<String, String> map = XMLUtils.parseContentXml(XMLUtils.getDocumentXml(filename));
@@ -367,10 +379,11 @@ public class MyFetchService {
 							fetchURL = contentUrl.split("###")[1];
 							html = HttpHtmlService.getHtmlContent(fetchURL);
 						}
-						List<Map<String, String>> contentList = ParseHtml.parseChapterContent(html, map);
+						List<Map<String, String>> contentList = ParseHtml.parseChapterContent(html, map,contentTxtPath, ObjectUtils.toString(bMap.get("id")), ObjectUtils.toString(bMap.get("bookid")));
 						// logger.info("开始抓取内容地址为：" + fetchURL);
 						for (Map<String, String> map2 : contentList) {
-							this.dao.saveContentInfo(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))), ObjectUtils.toString(bMap.get("id")), map2.get("contentbody"), map2.get("title"));
+//							this.dao.saveContentInfo(NumberUtils.toInt(ObjectUtils.toString(bMap.get("bookid"))), ObjectUtils.toString(bMap.get("id")), map2.get("contentbody"), map2.get("title"));
+							FileWriterReaderUtils.writeBodyToTxt(contentTxtPath, ObjectUtils.toString(bMap.get("id")), ObjectUtils.toString(bMap.get("bookid")), map2.get("contentbody"));
 							this.dao.updateIsFetchFetchChapterUrls(NumberUtils.toInt(ObjectUtils.toString(bMap.get("id"))));
 						}
 					}
@@ -378,51 +391,6 @@ public class MyFetchService {
 				bList = this.dao.getLimitContentList("0", "0", files, 100);
 			}
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private List getUnContentList() {
-		List list = this.dao.getFetchchapterurlsList();
-		List retList = new ArrayList();
-		if (org.apache.commons.collections.CollectionUtils.isNotEmpty(list)) {
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Map map = (Map) iterator.next();
-				if ("0".equals(ObjectUtils.toString(map.get("isfetch")))) {
-					retList.add(map);
-				}
-			}
-		}
-		return retList;
-	}
-
-	@SuppressWarnings("unchecked")
-	private List getUnMoveContentList() {
-		List list = this.dao.getFetchchapterurlsList();
-		List retList = new ArrayList();
-		if (org.apache.commons.collections.CollectionUtils.isNotEmpty(list)) {
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Map map = (Map) iterator.next();
-				if ("0".equals(ObjectUtils.toString(map.get("ismove")))) {
-					retList.add(map);
-				}
-			}
-		}
-		return retList;
-	}
-
-	@SuppressWarnings("unchecked")
-	private List getContentList() {
-		List list = this.dao.getFetchchapterurlsList();
-		List retList = new ArrayList();
-		if (org.apache.commons.collections.CollectionUtils.isNotEmpty(list)) {
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Map map = (Map) iterator.next();
-				if ("1".equals(ObjectUtils.toString(map.get("isfetch")))) {
-					retList.add(map);
-				}
-			}
-		}
-		return retList;
 	}
 
 	/**
@@ -461,7 +429,7 @@ public class MyFetchService {
 				int retPublish = this.dao.getIntPublishBook(bookid);
 				Integer parentArcId = 0;
 				if (retPublish == 0) {
-					imageDownload(map);
+					FileWriterReaderUtils.imageDownload(map);
 					parentArcId = this.dao.saveConverForDede(typeid, bookid, map);
 				} else {
 					if ("".equals(ObjectUtils.toString(bookBasic.get("bookname")))) {
@@ -538,30 +506,7 @@ public class MyFetchService {
 		ServiceUtils.writePublish(typeMap, bookMap, minArcId);
 	}
 
-	private String imageDownload(Map map) throws IOException {
-		String filename = ObjectUtils.toString(map.get("litpic"));
-		if (!"".equals(filename)) {
-			String dir = DateUtils.getDate();
-			String fileName = StringUtils.substring(filename, filename.lastIndexOf("/") + 1);
-			String savePath = bootPath + "\\" + dir;
-			File filepath = new File(savePath);
-			if (!filepath.exists()) {
-				filepath.mkdirs();
-			}
-			savePath = savePath + "\\" + fileName;
-			filepath = new File(savePath);
-			if (filepath.exists()) {
-				filepath.delete();
-			}
-			int retDown = HttpResourceUtils.saveToFile(filename, savePath);
-			if (retDown == 1) {
-				map.put("litpic", "/uploads/" + dir + "/" + fileName);
-			} else {
-				map.put("litpic", "/uploads/noImage.gif");
-			}
-		}
-		return filename;
-	}
+
 
 	public Boolean isHaveLastUpdate(String lastarcName, String url) {
 		int i = this.dao.getFetchurlsLastUpdate(lastarcName, url);
@@ -626,16 +571,18 @@ public class MyFetchService {
 			XMLUtils.genFetchId(java.util.UUID.randomUUID().toString(), filename);
 		}
 	}
-	public void moveDataForTxt(String filePath){
+	@SuppressWarnings("unchecked")
+	public void moveDataForTxt(String filePath) throws IOException{
 		List list=this.dao.getDedeArchives(0,100);
 		int i=100;
-		String filename="";
 		while(CollectionUtils.isNotEmpty(list)){
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
-				
+				FileWriterReaderUtils.writeBodyToTxt(filePath,ObjectUtils.toString(map.get("id")),ObjectUtils.toString(map.get("isbookpage")),ObjectUtils.toString(map.get("body")));
 			}
 			list=this.dao.getDedeArchives(i,i+=100);
 		}
 	}
+
+
 }

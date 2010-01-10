@@ -96,6 +96,10 @@ public class MasterMainServiceJob {
 			{
 				service.saveDataToDedecms(pro.getProperty("miscsite"));
 			}
+			if("1".equals(ObjectUtils.toString(pro.getProperty("istxtgenpath"))))
+			{
+				service.moveDataForTxt(pro.getProperty("txtgenpath"));
+			}
 //			// 发布完成自动发布
 			if("1".equals(ObjectUtils.toString(pro.getProperty("isrundede"))))
 			{

@@ -40,15 +40,22 @@ public class PatternTest {
 		regex=".*?<td class=\"ccss\">[^<]*<a href=\"([^<]*)\" title=[^\\<]*>([^<]*)</a>.*?";
 		regex=".*?<td class=\"odd\"><a href=\"([^\\u003F<]*)\">[^<]*</a></td>.*?";
 		teststr="WWW.00KS.COM,空|00KS.COM,空|小说整理发布于ωωω.ＳＤＸＳＷ.com,空|手机访问：ωар.ＳdΧsw.com,空|小说整理发布于ωωω.ＳdΧsw.com,空|全文字版小说阅读，更新，更快，尽在手**打**文学网，电脑站：ωωω.sdχsψ。com手机站：ｗàｐ.sdχsψ。com支持文学，支持手**打**!,空|全文字小说阅读，尽在s D x s w . c o m(手@打#小%说^网),空|手打小说网友情提醒：抵制不良作品 注意自我判断 请勿模仿主角 适度阅读益脑 沉迷网络伤身 合理安排时间 享受健康阅读,空|全文字小说阅读，尽在s D x s w . c o m(手@打#小%说^网),空|手 打小 说网，提供最新手_打_版小 说阅读,空|91zw.cn 手打小说网,提供手打版小说下载、在线阅读。无繁杂广告，访问流畅。,空|来www.91zw.cn，最新TXT小说下载,空|PS：隆重向大家推荐手~打小说网(w_w_w.s_d_x_s_w.com)，全文字阅读及下载。,空|手打小说，手打版小说，文字版小说，尽在91zw.cn,空|最新T×T小说下载，尽在手!打!小!说!网!,空|防\\采集\\段落:名词解释手打小说因为目前大部分的小说章节均以图片形式出现，加之过多的水印，让人阅读时很不舒服，91zw.cn为了满足大家的需要，提供手打版小说，所有章节内容全是全文字的，不但可以在线阅读，还可下载TXT小说,不仅方便的在电脑上打开,还可以下载到的MP3和手机中，随时随地可以享受阅读的乐趣。,空|手~打~小~说，手~打~版~小说，文~字~版~小说，尽在s d x s w . c o m,空|手 打小 说网，提供最新手_打_版小 说阅读,空|手打小说网友情提醒：抵制不良作品 注意自我判断 请勿模仿主角 适度阅读益脑 沉迷网络伤身 合理安排时间 享受健康阅读,空|最新手~打版小说，尽在手打小说网,空|最新T×T小说下载，尽在手!打!小!说!网!,空|91zw.cn 手打小说网,提供手打版小说下载、在线阅读。无繁杂广告，访问流畅。,空|全文字小说阅读，尽在s D x s w . c o m(手@打#小%说^网),空|1⑹k小说wWw.1⑹κ.ｃn 文字版首发,空|1⑹ｋ小说手机站wap.⑴⑹ｋ.CＮ整理";
-		System.out.println(teststr.replaceAll("支持手\\u002A\\u002A打\\u002A\\u002A", ""));
+		teststr="<p><br /><img alt=\"d\" border=\"0\" src=\"http://www.123.com/uploadimage/2008-08-01/20080801165211.jpg\" />1<br /><img alt=\"s\" border=\"0\" src=\"http://www.123.com/uploadimage/2008-08-01/20080801165229.jpg\" />2</p>";
+		regex="(http://[([a-z0-9]|.|/|\\-)]+.[(jpg)|(bmp)|(gif)|(png)])";
+//		System.out.println(teststr.replaceAll("支持手\\u002A\\u002A打\\u002A\\u002A", ""));
 		
 		Pattern pt = Pattern.compile(regex);
 		Matcher matcher = pt.matcher(teststr);
+		boolean b = matcher.find();
+		if(b){
+			System.out.println(b);
+			System.out.println(matcher.group(1)+"   "+matcher.end());
 		while(matcher.find()){
 			//System.out.println(matcher.groupCount());
 			//for (int i = 0; i < matcher.groupCount(); i++) {
 				System.out.println(matcher.group(1)+"   "+matcher.end());
 			//}
+		}
 		}
 //		boolean b = matcher.matches(teststr, p);
 //类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：类别：网络原创&nbsp;&nbsp;|&nbsp;&nbsp;作者： 六道&nbsp;&nbsp;|&nbsp;&nbsp;点击：&nbsp;&nbsp;|&nbsp;&nbsp;推荐：
