@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.dom4j.Document;
@@ -65,6 +66,10 @@ public class lottoryService {
 	private static int haveThreeSeries = 0;
 	// 有几个差值为1的，，如1，3，5 算两个
 	private static int haveOnediffer = 1;
+	// 在这些号码中选择6个
+	private static String[] selectCode = new String[] {};
+	//不能同时出现的号码
+	private static String[] cannotSelectedTogethor = new String[] {};
 	static {
 		try {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("lottory/lottory.properties");
@@ -76,6 +81,8 @@ public class lottoryService {
 			includeRed = StringUtils.isNotBlank("includeRed") ? StringUtils.split(pro.getProperty("includeRed"), ",") : null;
 			excludeRed = StringUtils.isNotBlank("excludeRed") ? StringUtils.split(pro.getProperty("excludeRed"), ",") : null;
 			musthavered = StringUtils.isNotBlank("musthavered") ? StringUtils.split(pro.getProperty("musthavered"), ",") : null;
+			cannotSelectedTogethor = StringUtils.isNotBlank("cannotSelectedTogethor") ? StringUtils.split(pro.getProperty("cannotSelectedTogethor"), "|") : null;
+			selectCode = StringUtils.isNotBlank("selectCode") ? StringUtils.split(pro.getProperty("selectCode"), ",") : null;
 			firstMinCode = StringUtils.isNotBlank(pro.getProperty("firstMinCode")) ? NumberUtils.toInt(pro.getProperty("firstMinCode")) : firstMinCode;
 			firstMaxCode = StringUtils.isNotBlank(pro.getProperty("firstMaxCode")) ? NumberUtils.toInt(pro.getProperty("firstMaxCode")) : firstMaxCode;
 			lastMinCode = StringUtils.isNotBlank(pro.getProperty("lastMinCode")) ? NumberUtils.toInt(pro.getProperty("lastMinCode")) : lastMinCode;
@@ -132,12 +139,6 @@ public class lottoryService {
 				int qOne = 0;
 				int qTwo = 0;
 				int qThree = 0;
-				if (ishaveexclude > 0 && redFile.contains(lValue)) {
-					continue;
-				}
-				if(redMedia.contains(lValue)){
-					continue;
-				}
 				if (NumberUtils.toInt(lValues[0]) > firstMaxCode) {
 					continue;
 				}
@@ -148,6 +149,60 @@ public class lottoryService {
 					continue;
 				}
 				if (NumberUtils.toInt(lValues[5]) > lastMaxCode) {
+					continue;
+				}
+				int tempSelect = 0;
+				if (selectCode != null && selectCode.length > 0) {
+					for (int i = 0; i < lValues.length; i++) {
+						for (int j = 0; j < selectCode.length; j++) {
+							if (StringUtils.equals(lValues[i], ObjectUtils.toString(selectCode[j]).trim())) {
+								tempSelect++;
+							}
+						}
+					}
+					if (tempSelect != 6) {
+						continue;
+					}
+				}
+				tempSelect = 0;
+				if (musthavered != null && musthavered.length > 0) {
+					for (int i = 0; i < lValues.length; i++) {
+						for (int j = 0; j < musthavered.length; j++) {
+							if (StringUtils.equals(lValues[i], ObjectUtils.toString(musthavered[j]).trim())) {
+								tempSelect++;
+							}
+						}
+					}
+					if (tempSelect !=musthavered.length) {
+						continue;
+					}
+				}
+				if (cannotSelectedTogethor != null && cannotSelectedTogethor.length > 0) {
+						boolean breakFlag=false;
+						for (int j = 0; j < cannotSelectedTogethor.length; j++) {
+							String[] tmp=StringUtils.split(cannotSelectedTogethor[j], ",");
+							tempSelect = 0;
+							for (int k = 0; k < tmp.length; k++) {
+								for (int i = 0; i < lValues.length; i++) {
+									if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
+										tempSelect++;
+									}
+								}
+							}
+							if(tmp.length==tempSelect)
+							{
+								breakFlag=true;
+								break;
+							}
+						}
+					if (breakFlag) {
+						continue;
+					}
+				}
+				if (ishaveexclude > 0 && redFile.contains(lValue)) {
+					continue;
+				}
+				if (redMedia.contains(lValue)) {
 					continue;
 				}
 				for (int i = 0; i < lValues.length; i++) {
@@ -195,7 +250,7 @@ public class lottoryService {
 			int tmpRed = 0;
 			String filerRed = (String) redList.get(i);
 			String[] lValues = StringUtils.split(filerRed, ",");
-			
+
 			// 必须包含其中的任意一个数字
 			for (int j = 0; j < lValues.length; j++) {
 				for (int k = 0; k < includeRed.length; k++) {
@@ -301,7 +356,7 @@ public class lottoryService {
 	@SuppressWarnings("unchecked")
 	private List<String> disposeFileData() {
 		List<String> list = new ArrayList<String>();
-		String filestr="";
+		String filestr = "";
 		try {
 			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
 			Enumeration urls = null;
@@ -318,7 +373,7 @@ public class lottoryService {
 					BufferedInputStream bis = new BufferedInputStream(is);
 					byte[] bs = new byte[bis.available()];
 					bis.read(bs);
-					filestr=new String(bs, "GBK");
+					filestr = new String(bs, "GBK");
 				} finally {
 					if (is != null) {
 						is.close();
@@ -332,14 +387,14 @@ public class lottoryService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(filestr!=null&&!"".equals(filestr)){
-			String[] redCodes=StringUtils.split(filestr, '\n');
+		if (filestr != null && !"".equals(filestr)) {
+			String[] redCodes = StringUtils.split(filestr, '\n');
 			for (int i = 0; i < redCodes.length; i++) {
-				String[] tmp=StringUtils.split(redCodes[i],",");
+				String[] tmp = StringUtils.split(redCodes[i], ",");
 				for (int j = 0; j < tmp.length; j++) {
-					tmp[j]=tmp[j].startsWith("0")?tmp[j].replace(tmp[j], ""):tmp[j];
+					tmp[j] = tmp[j].startsWith("0") ? tmp[j].replace(tmp[j], "") : tmp[j];
 				}
-				LottoryConstant.redBall =tmp;
+				LottoryConstant.redBall = tmp;
 				LottoryUtils.select(6);
 				for (int j = 0; j < LottoryConstant.redResultList.size(); j++) {
 					String redResult = LottoryConstant.redResultList.get(j);
@@ -348,9 +403,9 @@ public class lottoryService {
 					}
 					list.add(redResult);
 				}
-				LottoryConstant.redResultList = new ArrayList<String>();	
+				LottoryConstant.redResultList = new ArrayList<String>();
 			}
-			
+
 		}
 		return list;
 	}
