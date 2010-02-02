@@ -2,16 +2,13 @@ package com.lyxmq.lottery.test;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -70,6 +67,20 @@ public class lottoryService {
 	private static String[] selectCode = new String[] {};
 	//不能同时出现的号码
 	private static String[] cannotSelectedTogethor = new String[] {};
+	//是否有边号
+	private static int haveSideCode=1;
+	//包含includeRed中的几个数字
+	private static int includeRedNum=1;
+	//上一期号码
+	private static String[] preRedCode=new String[]{};
+	//计算出上一期的所有的边号
+	private static String[] preSideCode=new String[]{};
+	private static int secondMinCode=1;
+	private static int secondMaxCode=17;
+	private static int thirdMinCode=1;
+	private static int thirdMaxCode=27;
+	private static int fourthMinCode=1;
+	private static int fourthMaxCode=34;
 	static {
 		try {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("lottory/lottory.properties");
@@ -83,14 +94,36 @@ public class lottoryService {
 			musthavered = StringUtils.isNotBlank("musthavered") ? StringUtils.split(pro.getProperty("musthavered"), ",") : null;
 			cannotSelectedTogethor = StringUtils.isNotBlank("cannotSelectedTogethor") ? StringUtils.split(pro.getProperty("cannotSelectedTogethor"), "|") : null;
 			selectCode = StringUtils.isNotBlank("selectCode") ? StringUtils.split(pro.getProperty("selectCode"), ",") : null;
+			preRedCode = StringUtils.isNotBlank("preRedCode") ? StringUtils.split(pro.getProperty("preRedCode"), ",") : null;
 			firstMinCode = StringUtils.isNotBlank(pro.getProperty("firstMinCode")) ? NumberUtils.toInt(pro.getProperty("firstMinCode")) : firstMinCode;
 			firstMaxCode = StringUtils.isNotBlank(pro.getProperty("firstMaxCode")) ? NumberUtils.toInt(pro.getProperty("firstMaxCode")) : firstMaxCode;
+			secondMinCode = StringUtils.isNotBlank(pro.getProperty("secondMinCode")) ? NumberUtils.toInt(pro.getProperty("secondMinCode")) : secondMinCode;
+			secondMaxCode = StringUtils.isNotBlank(pro.getProperty("secondMaxCode")) ? NumberUtils.toInt(pro.getProperty("secondMaxCode")) : secondMaxCode;
+			thirdMinCode = StringUtils.isNotBlank(pro.getProperty("thirdMinCode")) ? NumberUtils.toInt(pro.getProperty("thirdMinCode")) : thirdMinCode;
+			thirdMaxCode = StringUtils.isNotBlank(pro.getProperty("thirdMaxCode")) ? NumberUtils.toInt(pro.getProperty("thirdMaxCode")) : thirdMaxCode;
+			fourthMinCode = StringUtils.isNotBlank(pro.getProperty("fourthMinCode")) ? NumberUtils.toInt(pro.getProperty("fourthMinCode")) : fourthMinCode;
+			fourthMaxCode = StringUtils.isNotBlank(pro.getProperty("fourthMaxCode")) ? NumberUtils.toInt(pro.getProperty("fourthMaxCode")) : fourthMaxCode;
 			lastMinCode = StringUtils.isNotBlank(pro.getProperty("lastMinCode")) ? NumberUtils.toInt(pro.getProperty("lastMinCode")) : lastMinCode;
 			lastMaxCode = StringUtils.isNotBlank(pro.getProperty("lastMaxCode")) ? NumberUtils.toInt(pro.getProperty("lastMaxCode")) : lastMaxCode;
 			haveTwoSeries = StringUtils.isNotBlank(pro.getProperty("haveTwoSeries")) ? NumberUtils.toInt(pro.getProperty("haveTwoSeries")) : haveTwoSeries;
 			haveThreeSeries = StringUtils.isNotBlank(pro.getProperty("haveThreeSeries")) ? NumberUtils.toInt(pro.getProperty("haveThreeSeries"))
 					: haveThreeSeries;
 			haveOnediffer = StringUtils.isNotBlank(pro.getProperty("haveOnediffer")) ? NumberUtils.toInt(pro.getProperty("haveOnediffer")) : haveOnediffer;
+			haveSideCode = StringUtils.isNotBlank(pro.getProperty("haveSideCode")) ? NumberUtils.toInt(pro.getProperty("haveSideCode")) : haveSideCode;
+			includeRedNum = StringUtils.isNotBlank(pro.getProperty("includeRedNum")) ? NumberUtils.toInt(pro.getProperty("includeRedNum")) : includeRedNum;
+			if(haveSideCode==1){
+				String temp="";
+				for (int i = 0; i < preRedCode.length; i++) {
+					int tmpInt=NumberUtils.toInt(preRedCode[i]);
+					if("".equals(temp)){
+						temp=tmpInt==1?"2":((tmpInt-1)+","+(tmpInt+1));
+					}else{
+						temp+=","+(tmpInt==1?"2":((tmpInt-1)+","+(tmpInt+1)));
+						
+					}
+				}
+				preSideCode=StringUtils.split(temp,",");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -143,6 +176,24 @@ public class lottoryService {
 					continue;
 				}
 				if (NumberUtils.toInt(lValues[0]) < firstMinCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[1]) > secondMaxCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[1]) < secondMinCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[2]) > thirdMaxCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[2]) < thirdMinCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[3]) > fourthMaxCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[3]) < fourthMinCode) {
 					continue;
 				}
 				if (NumberUtils.toInt(lValues[5]) < lastMinCode) {
@@ -255,6 +306,19 @@ public class lottoryService {
 			for (int j = 0; j < lValues.length; j++) {
 				for (int k = 0; k < includeRed.length; k++) {
 					if (StringUtils.equals(lValues[j], includeRed[k])) {
+						tmpRed++;
+					}
+				}
+			}
+			if (tmpRed != includeRedNum) {
+				redList.remove(i);
+				i--;
+				continue;
+			}
+			// 必须包含其中的任意一个数字(边号)
+			for (int j = 0; j < lValues.length; j++) {
+				for (int k = 0; k < preSideCode.length; k++) {
+					if (StringUtils.equals(lValues[j], preSideCode[k])) {
 						tmpRed++;
 					}
 				}
@@ -386,13 +450,14 @@ public class lottoryService {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+			e.getMessage();
 		}
 		if (filestr != null && !"".equals(filestr)) {
-			String[] redCodes = StringUtils.split(filestr, '\n');
+			String[] redCodes = StringUtils.split(StringUtils.remove(filestr, '\r'), '\n');
 			for (int i = 0; i < redCodes.length; i++) {
 				String[] tmp = StringUtils.split(redCodes[i], ",");
 				for (int j = 0; j < tmp.length; j++) {
-					tmp[j] = tmp[j].startsWith("0") ? tmp[j].replace(tmp[j], "") : tmp[j];
+					tmp[j] = tmp[j].startsWith("0") ? tmp[j].replace("0", "") : tmp[j];
 				}
 				LottoryConstant.redBall = tmp;
 				LottoryUtils.select(6);
