@@ -33,6 +33,7 @@ public class HelloWorldClient extends Thread {
 		factory.setServiceClass(IScholarFetchServicePortType.class);
 		IScholarFetchServicePortType service = (IScholarFetchServicePortType) factory.create();
 		String str = null;
+		
 		java.io.File files = new File("d:\\xml1");
 		 File[] list=files.listFiles();
 		// String[] fielStr = new String[] { "d:\\xml1"};
@@ -58,6 +59,7 @@ public class HelloWorldClient extends Thread {
 					str= reader.readLine();
 				}
 				service.writeData("bhiE8nYtLjUVR8zyNeQWv0wLNqdxaVuKK5bqEeqQyWY=",1505,2009, 32768, new String(Base64.encodeBase64(filestr.toString().getBytes())));
+								//                                               ins_id,yearBatch,ref_db.db_bit_code,
 			}
 
 			// file = new FileReader(list[i]);

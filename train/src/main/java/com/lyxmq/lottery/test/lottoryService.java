@@ -35,7 +35,7 @@ public class lottoryService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(lottoryService.class);
 	LottoryDao dao = null;
 	private static int count = 0;
-	private static String xmlUrl = "http://www.500wan.com/static/info/ssq/mediadetail/10002.xml";
+	private static String xmlUrl = "";
 	private static int quOne = -1;
 	private static int quTwo = -1;
 	private static int quThree = 3;
@@ -50,9 +50,9 @@ public class lottoryService {
 	// 是否从 文件中读取排除号码
 	private static int ishaveexclude = 0;
 	// 第一个数字要求大于等于该数字
-	private static int firstMinCode = 2;
+	private static int firstMinCode = 1;
 	// 第一个数字要求小于等于该数字
-	private static int firstMaxCode = 9;
+	private static int firstMaxCode = 33;
 	// 最大数字要求大于等于该数字
 	private static int lastMinCode = 29;
 	// 最大数字要求小于等于该数字
@@ -75,12 +75,12 @@ public class lottoryService {
 	private static String[] preRedCode=new String[]{};
 	//计算出上一期的所有的边号
 	private static String[] preSideCode=new String[]{};
-	private static int secondMinCode=1;
-	private static int secondMaxCode=17;
-	private static int thirdMinCode=1;
-	private static int thirdMaxCode=27;
-	private static int fourthMinCode=1;
-	private static int fourthMaxCode=34;
+	private static int secondMinCode=2;
+	private static int secondMaxCode=20;
+	private static int thirdMinCode=3;
+	private static int thirdMaxCode=29;
+	private static int fourthMinCode=4;
+	private static int fourthMaxCode=33;
 	static {
 		try {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("lottory/lottory.properties");
@@ -149,14 +149,24 @@ public class lottoryService {
 
 	@SuppressWarnings("unchecked")
 	public void getCurrentExpertSingleResult() {
-		String xmlData = getXmlData(xmlUrl);
+		String xmlData ="";
+		if(StringUtils.isNotBlank(xmlUrl)){
+			xmlData = getXmlData(xmlUrl);
+		}
+		
 		List<String> redMedia = new ArrayList<String>();
 		List<String> redFile = new ArrayList<String>();
-		redMedia = disposeXmlData(xmlData);
+		if(StringUtils.isNotBlank(xmlData))
+		{
+			redMedia = disposeXmlData(xmlData);
+		}
 		if (ishaveexclude > 0) {
 			redFile = disposeFileData();
 		}
-		Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
+		if(StringUtils.isNotBlank(xmlData))
+		{
+			Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
+		}
 		List<String> redList = new ArrayList<String>();
 		int count = this.dao.getTotalLottoryResult();
 		int last = 0;
