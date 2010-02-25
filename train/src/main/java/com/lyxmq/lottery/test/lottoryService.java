@@ -65,22 +65,22 @@ public class lottoryService {
 	private static int haveOnediffer = 1;
 	// 在这些号码中选择6个
 	private static String[] selectCode = new String[] {};
-	//不能同时出现的号码
+	// 不能同时出现的号码
 	private static String[] cannotSelectedTogethor = new String[] {};
-	//是否有边号
-	private static int haveSideCode=1;
-	//包含includeRed中的几个数字
-	private static int includeRedNum=1;
-	//上一期号码
-	private static String[] preRedCode=new String[]{};
-	//计算出上一期的所有的边号
-	private static String[] preSideCode=new String[]{};
-	private static int secondMinCode=2;
-	private static int secondMaxCode=20;
-	private static int thirdMinCode=3;
-	private static int thirdMaxCode=29;
-	private static int fourthMinCode=4;
-	private static int fourthMaxCode=33;
+	// 是否有边号
+	private static int haveSideCode = 1;
+	// 包含includeRed中的几个数字
+	private static int includeRedNum = 1;
+	// 上一期号码
+	private static String[] preRedCode = new String[] {};
+	// 计算出上一期的所有的边号
+	private static String[] preSideCode = new String[] {};
+	private static int secondMinCode = 2;
+	private static int secondMaxCode = 20;
+	private static int thirdMinCode = 3;
+	private static int thirdMaxCode = 29;
+	private static int fourthMinCode = 4;
+	private static int fourthMaxCode = 33;
 	static {
 		try {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("lottory/lottory.properties");
@@ -92,7 +92,8 @@ public class lottoryService {
 			includeRed = StringUtils.isNotBlank("includeRed") ? StringUtils.split(pro.getProperty("includeRed"), ",") : null;
 			excludeRed = StringUtils.isNotBlank("excludeRed") ? StringUtils.split(pro.getProperty("excludeRed"), ",") : null;
 			musthavered = StringUtils.isNotBlank("musthavered") ? StringUtils.split(pro.getProperty("musthavered"), ",") : null;
-			cannotSelectedTogethor = StringUtils.isNotBlank("cannotSelectedTogethor") ? StringUtils.split(pro.getProperty("cannotSelectedTogethor"), "|") : null;
+			cannotSelectedTogethor = StringUtils.isNotBlank("cannotSelectedTogethor") ? StringUtils.split(pro.getProperty("cannotSelectedTogethor"), "|")
+					: null;
 			selectCode = StringUtils.isNotBlank("selectCode") ? StringUtils.split(pro.getProperty("selectCode"), ",") : null;
 			preRedCode = StringUtils.isNotBlank("preRedCode") ? StringUtils.split(pro.getProperty("preRedCode"), ",") : null;
 			firstMinCode = StringUtils.isNotBlank(pro.getProperty("firstMinCode")) ? NumberUtils.toInt(pro.getProperty("firstMinCode")) : firstMinCode;
@@ -111,18 +112,18 @@ public class lottoryService {
 			haveOnediffer = StringUtils.isNotBlank(pro.getProperty("haveOnediffer")) ? NumberUtils.toInt(pro.getProperty("haveOnediffer")) : haveOnediffer;
 			haveSideCode = StringUtils.isNotBlank(pro.getProperty("haveSideCode")) ? NumberUtils.toInt(pro.getProperty("haveSideCode")) : haveSideCode;
 			includeRedNum = StringUtils.isNotBlank(pro.getProperty("includeRedNum")) ? NumberUtils.toInt(pro.getProperty("includeRedNum")) : includeRedNum;
-			if(haveSideCode==1){
-				String temp="";
+			if (haveSideCode == 1) {
+				String temp = "";
 				for (int i = 0; i < preRedCode.length; i++) {
-					int tmpInt=NumberUtils.toInt(preRedCode[i]);
-					if("".equals(temp)){
-						temp=tmpInt==1?"2":((tmpInt-1)+","+(tmpInt+1));
-					}else{
-						temp+=","+(tmpInt==1?"2":((tmpInt-1)+","+(tmpInt+1)));
-						
+					int tmpInt = NumberUtils.toInt(preRedCode[i]);
+					if ("".equals(temp)) {
+						temp = tmpInt == 1 ? "2" : ((tmpInt - 1) + "," + (tmpInt + 1));
+					} else {
+						temp += "," + (tmpInt == 1 ? "2" : ((tmpInt - 1) + "," + (tmpInt + 1)));
+
 					}
 				}
-				preSideCode=StringUtils.split(temp,",");
+				preSideCode = StringUtils.split(temp, ",");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -149,22 +150,20 @@ public class lottoryService {
 
 	@SuppressWarnings("unchecked")
 	public void getCurrentExpertSingleResult() {
-		String xmlData ="";
-		if(StringUtils.isNotBlank(xmlUrl)){
+		String xmlData = "";
+		if (StringUtils.isNotBlank(xmlUrl)) {
 			xmlData = getXmlData(xmlUrl);
 		}
-		
+
 		List<String> redMedia = new ArrayList<String>();
 		List<String> redFile = new ArrayList<String>();
-		if(StringUtils.isNotBlank(xmlData))
-		{
+		if (StringUtils.isNotBlank(xmlData)) {
 			redMedia = disposeXmlData(xmlData);
 		}
 		if (ishaveexclude > 0) {
 			redFile = disposeFileData();
 		}
-		if(StringUtils.isNotBlank(xmlData))
-		{
+		if (StringUtils.isNotBlank(xmlData)) {
 			Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
 		}
 		List<String> redList = new ArrayList<String>();
@@ -176,6 +175,7 @@ public class lottoryService {
 			List list = this.dao.getLottoryResultLimit(last, page);
 			last += page;
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				
 				Map lMap = (Map) iterator.next();
 				String lValue = (String) lMap.get("value");
 				String[] lValues = StringUtils.split(lValue, ",");
@@ -213,6 +213,64 @@ public class lottoryService {
 					continue;
 				}
 				int tempSelect = 0;
+				// 胆
+				if (musthavered != null && musthavered.length > 0) {
+					for (int i = 0; i < lValues.length; i++) {
+						for (int j = 0; j < musthavered.length; j++) {
+							if (StringUtils.equals(lValues[i], ObjectUtils.toString(musthavered[j]).trim())) {
+								tempSelect++;
+							}
+						}
+					}
+					if (tempSelect != musthavered.length) {
+						continue;
+					}
+				}
+				tempSelect = 0;
+				// 必须包含其中的任意一个数字
+				for (int j = 0; j < lValues.length; j++) {
+					for (int k = 0; k < includeRed.length; k++) {
+						if (StringUtils.equals(lValues[j], includeRed[k])) {
+							tempSelect++;
+						}
+					}
+				}
+				if (tempSelect != includeRedNum) {
+					continue;
+				}
+				// 必须包含其中的任意一个数字(边号)
+				tempSelect = 0;
+				if (preSideCode != null && preSideCode.length > 0) {
+					for (int j = 0; j < lValues.length; j++) {
+						for (int k = 0; k < preSideCode.length; k++) {
+							if (StringUtils.equals(lValues[j], preSideCode[k])) {
+								tempSelect++;
+							}
+						}
+					}
+					if (tempSelect == 0) {
+						continue;
+					}
+				}
+				// 不能包含其中的任意一个数字
+				tempSelect = 0;
+				if (excludeRed != null && excludeRed.length > 0) {
+					for (int j = 0; j < lValues.length; j++) {
+						for (int k = 0; k < excludeRed.length; k++) {
+							if (StringUtils.equals(lValues[j], excludeRed[k])) {
+								tempSelect++;
+								break;
+							}
+						}
+						if (tempSelect > 0) {
+							break;
+						}
+					}
+					if (tempSelect > 0) {
+						continue;
+					}
+				}
+				// 在指定的一系列号码中选取6个
 				if (selectCode != null && selectCode.length > 0) {
 					for (int i = 0; i < lValues.length; i++) {
 						for (int j = 0; j < selectCode.length; j++) {
@@ -226,37 +284,69 @@ public class lottoryService {
 					}
 				}
 				tempSelect = 0;
-				if (musthavered != null && musthavered.length > 0) {
-					for (int i = 0; i < lValues.length; i++) {
-						for (int j = 0; j < musthavered.length; j++) {
-							if (StringUtils.equals(lValues[i], ObjectUtils.toString(musthavered[j]).trim())) {
-								tempSelect++;
+				// 不能同时存在的号码
+				if (cannotSelectedTogethor != null && cannotSelectedTogethor.length > 0) {
+					boolean breakFlag = false;
+					for (int j = 0; j < cannotSelectedTogethor.length; j++) {
+						String[] tmp = StringUtils.split(cannotSelectedTogethor[j], ",");
+						tempSelect = 0;
+						for (int k = 0; k < tmp.length; k++) {
+							for (int i = 0; i < lValues.length; i++) {
+								if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
+									tempSelect++;
+								}
 							}
 						}
+						if (tmp.length == tempSelect) {
+							breakFlag = true;
+							break;
+						}
 					}
-					if (tempSelect !=musthavered.length) {
+					if (breakFlag) {
 						continue;
 					}
 				}
-				if (cannotSelectedTogethor != null && cannotSelectedTogethor.length > 0) {
-						boolean breakFlag=false;
-						for (int j = 0; j < cannotSelectedTogethor.length; j++) {
-							String[] tmp=StringUtils.split(cannotSelectedTogethor[j], ",");
-							tempSelect = 0;
-							for (int k = 0; k < tmp.length; k++) {
-								for (int i = 0; i < lValues.length; i++) {
-									if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
-										tempSelect++;
-									}
-								}
-							}
-							if(tmp.length==tempSelect)
-							{
-								breakFlag=true;
-								break;
-							}
+				
+				// 至少有一个两连号 或三连号
+				tempSelect = 0;
+				if (haveTwoSeries > 0) {
+					tempSelect = 0;
+					for (int j = 0; j < lValues.length; j++) {
+						int rValue = NumberUtils.toInt(lValues[j]);
+						int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+						if (nextValue != -1 && nextValue - rValue == 1) {
+							tempSelect++;
 						}
-					if (breakFlag) {
+					}
+					if (tempSelect != haveTwoSeries) {
+						continue;
+					}
+				}
+				if (haveThreeSeries > 0) {
+					tempSelect = 0;
+					for (int j = 0; j < lValues.length; j++) {
+						int rValue = NumberUtils.toInt(lValues[j]);
+						int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+						int nNextValue = (j + 2) < lValues.length ? NumberUtils.toInt(lValues[j + 2]) : -1;
+						if (nextValue != -1 && nNextValue != -1 && nextValue - rValue == 1 && nNextValue - nextValue == 1) {
+							tempSelect++;
+						}
+					}
+					if (tempSelect != haveThreeSeries) {
+						continue;
+					}
+				}
+				//有几个以上差值为1的
+				if (haveOnediffer > 0) {
+					tempSelect = 0;
+					for (int j = 0; j < lValues.length; j++) {
+						int rValue = NumberUtils.toInt(lValues[j]);
+						int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+						if (nextValue != -1 && nextValue - rValue == 2) {
+							tempSelect++;
+						}
+					}
+					if (tempSelect < haveOnediffer) {
 						continue;
 					}
 				}
@@ -304,103 +394,6 @@ public class lottoryService {
 						redList.add(lValue);
 						tmpCount++;
 					}
-				}
-			}
-		}
-		for (int i = 0; i < redList.size(); i++) {
-			int tmpRed = 0;
-			String filerRed = (String) redList.get(i);
-			String[] lValues = StringUtils.split(filerRed, ",");
-
-			// 必须包含其中的任意一个数字
-			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < includeRed.length; k++) {
-					if (StringUtils.equals(lValues[j], includeRed[k])) {
-						tmpRed++;
-					}
-				}
-			}
-			if (tmpRed != includeRedNum) {
-				redList.remove(i);
-				i--;
-				continue;
-			}
-			// 必须包含其中的任意一个数字(边号)
-			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < preSideCode.length; k++) {
-					if (StringUtils.equals(lValues[j], preSideCode[k])) {
-						tmpRed++;
-					}
-				}
-			}
-			if (tmpRed == 0) {
-				redList.remove(i);
-				i--;
-				continue;
-			}
-			// 不能包含其中的任意一个数字
-			tmpRed = 0;
-			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < excludeRed.length; k++) {
-					if (StringUtils.equals(lValues[j], excludeRed[k])) {
-						tmpRed++;
-						break;
-					}
-				}
-				if (tmpRed > 0) {
-					break;
-				}
-			}
-			if (tmpRed > 0) {
-				redList.remove(i);
-				i--;
-				continue;
-			}
-			// 至少有一个两连号 或三连号
-			if (haveTwoSeries > 0) {
-				tmpRed = 0;
-				for (int j = 0; j < lValues.length; j++) {
-					int rValue = NumberUtils.toInt(lValues[j]);
-					int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-					if (nextValue != -1 && nextValue - rValue == 1) {
-						tmpRed++;
-					}
-				}
-				if (tmpRed != haveTwoSeries) {
-					redList.remove(i);
-					i--;
-					continue;
-				}
-			}
-			if (haveThreeSeries > 0) {
-				tmpRed = 0;
-				for (int j = 0; j < lValues.length; j++) {
-					int rValue = NumberUtils.toInt(lValues[j]);
-					int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-					int nNextValue = (j + 2) < lValues.length ? NumberUtils.toInt(lValues[j + 2]) : -1;
-					if (nextValue != -1 && nNextValue != -1 && nextValue - rValue == 1 && nNextValue - nextValue == 1) {
-						tmpRed++;
-					}
-				}
-				if (tmpRed != haveThreeSeries) {
-					redList.remove(i);
-					i--;
-					continue;
-				}
-			}
-			if (haveOnediffer > 0) {
-				tmpRed = 0;
-				for (int j = 0; j < lValues.length; j++) {
-					int rValue = NumberUtils.toInt(lValues[j]);
-					int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-					if (nextValue != -1 && nextValue - rValue == 2) {
-						tmpRed++;
-					}
-				}
-				if (tmpRed != haveOnediffer) {
-					redList.remove(i);
-					i--;
-					continue;
 				}
 			}
 		}
