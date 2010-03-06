@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 public class SsqCalculateModel implements Serializable {
 
-	private final long serialVersionUID = -9022764301392106505L;
+	private static final long serialVersionUID = -2445304692807016930L;
+
 	// 设置为几个区,暂时只支持 3区
 	private int setZone = 3;
-	private int firstZone;
+	private int firstZone=-1;
 	private int secondZone;
 	private int thirdZone;
 	private int fourthZone;
@@ -22,16 +23,16 @@ public class SsqCalculateModel implements Serializable {
 	// 是否从 文件中读取排除号码
 	private int ishaveexclude = 0;
 	// 有几个两连号
-	private int haveTwoSeries = 1;
+	private int haveTwoSeries = 0;
 	// 有几个三连号
 	private int haveThreeSeries = 0;
 	// 有几个差值为1的，，如1，3，5 算两个
-	private int haveOnediffer = 1;
+	private int haveOnediffer = 0;
 	// 在这些号码中选择6个
 	private String selectCode = "";
 	// 不能同时出现的号码
 	private String cannotSelectedTogethor = "";
-	// 是否有边号
+	// 是否有边号 0为没有 1为有
 	private int haveSideCode = 1;
 	// 包含includeRed中的几个数字
 	private int includeRedNum = 1;
