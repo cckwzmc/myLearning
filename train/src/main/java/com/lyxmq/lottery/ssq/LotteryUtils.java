@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.test;
+package com.lyxmq.lottery.ssq;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-public class LottoryUtils {
+public class LotteryUtils {
 	private static int count = 0;
 
 	public static void select(int k) {
@@ -22,16 +22,16 @@ public class LottoryUtils {
 	}
 
 	private static void subselect(int head, int index, String[] r, int k) {
-		for (int i = head; i < LottoryConstant.redBall.length + index - k; i++) {
+		for (int i = head; i < LotteryConstant.redBall.length + index - k; i++) {
 			if (index < k) {
-				r[index - 1] = LottoryConstant.redBall[i];
+				r[index - 1] = LotteryConstant.redBall[i];
 				subselect(i + 1, index + 1, r, k);
 				count++;
 			} else if (index == k) {
-				r[index - 1] = LottoryConstant.redBall[i];
+				r[index - 1] = LotteryConstant.redBall[i];
 				// System.out.print(i + "===");
 				// System.out.println(StringUtils.join(r, ","));
-				LottoryConstant.redResultList.add(StringUtils.join(r, ","));
+				LotteryConstant.redResultList.add(StringUtils.join(r, ","));
 				subselect(i + 1, index + 1, r, k);
 				count++;
 			} else {

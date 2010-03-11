@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.test;
+package com.lyxmq.lottery.ssq;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -14,10 +14,10 @@ public class ReverseTestMain {
 	private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReverseTestMain.class);
 
 	public static void main(String[] args) {
-		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml","classpath:/lottory/applicationContext-database.xml",
-				"classpath:/lottory/applicationContext-dao.xml", "classpath:/lottory/applicationContext-service.xml" });
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml","classpath:/lottery/ssq/applicationContext-database.xml",
+				"classpath:/lottery/ssq/applicationContext-dao.xml", "classpath:/lottery/ssq/applicationContext-service.xml" });
 		try {
-			lottoryService service = (lottoryService) context.getBean("lottoryService");
+			LotteryService service = (LotteryService) context.getBean("lotteryService");
 			service.testCode();
 //			service.getCurrentExpertMergeResult();
 //			service.getCurrentExpertSingleResult();

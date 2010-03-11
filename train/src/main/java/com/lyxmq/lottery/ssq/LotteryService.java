@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.test;
+package com.lyxmq.lottery.ssq;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -33,9 +33,9 @@ import org.springframework.util.ClassUtils;
 
 import com.myfetch.service.http.HttpHtmlService;
 
-public class lottoryService {
-	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(lottoryService.class);
-	LottoryDao dao = null;
+public class LotteryService {
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotteryService.class);
+	LotteryDao dao = null;
 	private static int count = 0;
 	private static String xmlUrl = "";
 	private static int quOne = -1;
@@ -85,7 +85,7 @@ public class lottoryService {
 	private static int fourthMaxCode = 33;
 	static {
 		try {
-			Properties pro = PropertiesLoaderUtils.loadAllProperties("lottory/lottory.properties");
+			Properties pro = PropertiesLoaderUtils.loadAllProperties("lottery/ssq/lottery.properties");
 			xmlUrl = StringUtils.isNotBlank(pro.getProperty("xmlUrl")) ? pro.getProperty("xmlUrl") : xmlUrl;
 			quOne = StringUtils.isNotBlank(pro.getProperty("quOne")) ? NumberUtils.toInt(pro.getProperty("quOne")) : quOne;
 			quTwo = StringUtils.isNotBlank(pro.getProperty("quTwo")) ? NumberUtils.toInt(pro.getProperty("quTwo")) : quTwo;
@@ -133,7 +133,7 @@ public class lottoryService {
 
 	}
 
-	public void setDao(LottoryDao dao) {
+	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
 
@@ -179,7 +179,7 @@ public class lottoryService {
 		// Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
 		// }
 		List<String> redList = new ArrayList<String>();
-		int count = this.dao.getTotalLottoryResult();
+		int count = this.dao.getTotalLotteryResult();
 		int last = 0;
 		int page = 50000;
 		int tmpCount = 0;
@@ -455,7 +455,7 @@ public class lottoryService {
 			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
 			Enumeration urls = null;
 			try {
-				urls = classLoader.getResources("lottory/excluderedfile.txt");
+				urls = classLoader.getResources("lottery/ssq/excluderedfile.txt");
 			} catch (IOException e) {
 			}
 			while (urls.hasMoreElements()) {
@@ -489,16 +489,16 @@ public class lottoryService {
 				for (int j = 0; j < tmp.length; j++) {
 					tmp[j] = tmp[j].startsWith("0") ? tmp[j].replace("0", "") : tmp[j];
 				}
-				LottoryConstant.redBall = tmp;
-				LottoryUtils.select(6);
-				for (int j = 0; j < LottoryConstant.redResultList.size(); j++) {
-					String redResult = LottoryConstant.redResultList.get(j);
+				LotteryConstant.redBall = tmp;
+				LotteryUtils.select(6);
+				for (int j = 0; j < LotteryConstant.redResultList.size(); j++) {
+					String redResult = LotteryConstant.redResultList.get(j);
 					if (list.contains(redResult)) {
 						continue;
 					}
 					list.add(redResult);
 				}
-				LottoryConstant.redResultList = new ArrayList<String>();
+				LotteryConstant.redResultList = new ArrayList<String>();
 			}
 
 		}
@@ -536,16 +536,16 @@ public class lottoryService {
 					Node blue = (Node) blueNode.get(i);
 					blueCodeArr[i] = blue.getText().startsWith("0") ? blue.getText().substring(1) : blue.getText();
 				}
-				LottoryConstant.redBall = redCodeArr;
-				LottoryUtils.select(6);
-				for (int i = 0; i < LottoryConstant.redResultList.size(); i++) {
-					String redResult = LottoryConstant.redResultList.get(i);
+				LotteryConstant.redBall = redCodeArr;
+				LotteryUtils.select(6);
+				for (int i = 0; i < LotteryConstant.redResultList.size(); i++) {
+					String redResult = LotteryConstant.redResultList.get(i);
 					if (list.contains(redResult)) {
 						continue;
 					}
 					list.add(redResult);
 				}
-				LottoryConstant.redResultList = new ArrayList<String>();
+				LotteryConstant.redResultList = new ArrayList<String>();
 			}
 
 			if (CollectionUtils.isNotEmpty(list)) {
@@ -596,14 +596,14 @@ public class lottoryService {
 	}
 
 	private void subselect(int head, int index, String[] r, int k) {
-		for (int i = head; i < LottoryConstant.redBall.length + index - k; i++) {
+		for (int i = head; i < LotteryConstant.redBall.length + index - k; i++) {
 			if (index < k) {
-				r[index - 1] = LottoryConstant.redBall[i];
+				r[index - 1] = LotteryConstant.redBall[i];
 				subselect(i + 1, index + 1, r, k);
 				count++;
 			} else if (index == k) {
-				r[index - 1] = LottoryConstant.redBall[i];
-				if (LottoryUtils.isValidateData(r)) {
+				r[index - 1] = LotteryConstant.redBall[i];
+				if (LotteryUtils.isValidateData(r)) {
 					this.dao.saveLottoryResult(StringUtils.join(r, ","));
 				}
 				subselect(i + 1, index + 1, r, k);
@@ -618,7 +618,7 @@ public class lottoryService {
 	@SuppressWarnings("unchecked")
 	public void testCode() {
 
-		int count = this.dao.getTotalLottoryResult();
+		int count = this.dao.getTotalLotteryResult();
 		int last = 0;
 		int page = 100000;
 		int tmpCount = 0;
@@ -695,7 +695,7 @@ public class lottoryService {
 		// ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
 		// Enumeration urls = null;
 		// try {
-		// urls = classLoader.getResources("lottory/excluderedfile.txt");
+		// urls = classLoader.getResources("lottery/ssq/excluderedfile.txt");
 		// } catch (IOException e) {
 		// }
 		// while (urls.hasMoreElements()) {

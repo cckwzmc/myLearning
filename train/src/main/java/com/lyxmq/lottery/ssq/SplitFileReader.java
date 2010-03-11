@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.test;
+package com.lyxmq.lottery.ssq;
 
 import java.io.File;
 import java.io.FileInputStream;

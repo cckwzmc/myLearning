@@ -1,10 +1,10 @@
-package com.lyxmq.lottery.test;
+package com.lyxmq.lottery.ssq;
 
 import java.util.List;
 
 import com.myfetch.myfetch.dao.JdbcBaseDao;
 
-public class LottoryDao  extends JdbcBaseDao {
+public class LotteryDao  extends JdbcBaseDao {
 
 	public void saveLottoryResult(String redResult) {
 		String sql="insert into ssq_lottery_all_result(value) values(?)";
