@@ -18,9 +18,9 @@ public class ReverseTestMain {
 				"classpath:/lottory/applicationContext-dao.xml", "classpath:/lottory/applicationContext-service.xml" });
 		try {
 			lottoryService service = (lottoryService) context.getBean("lottoryService");
-//			service.testCode();
+			service.testCode();
 //			service.getCurrentExpertMergeResult();
-			service.getCurrentExpertSingleResult();
+//			service.getCurrentExpertSingleResult();
 //			service.saveAllRedResult();
 		} catch (Exception e) {
 			e.printStackTrace();

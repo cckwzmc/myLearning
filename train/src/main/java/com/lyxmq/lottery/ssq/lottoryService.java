@@ -1,8 +1,10 @@
 package com.lyxmq.lottery.test;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -154,28 +156,38 @@ public class lottoryService {
 		if (StringUtils.isNotBlank(xmlUrl)) {
 			xmlData = getXmlData(xmlUrl);
 		}
-
+		String qs = xmlUrl.substring(xmlUrl.lastIndexOf("/") + 1, xmlUrl.lastIndexOf("."));
 		List<String> redMedia = new ArrayList<String>();
 		List<String> redFile = new ArrayList<String>();
 		if (StringUtils.isNotBlank(xmlData)) {
-			redMedia = disposeXmlData(xmlData);
+			File qsFile = new File("d:/myproject/ssq_" + qs + ".xml");
+			if (qsFile.exists()) {
+				try {
+					redMedia = fromFileMediaData(qsFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				redMedia = disposeXmlData(xmlData);
+			}
 		}
 		if (ishaveexclude > 0) {
 			redFile = disposeFileData();
 		}
-		if (StringUtils.isNotBlank(xmlData)) {
-			Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
-		}
+		// 算合值的时候可以使用
+		// if (StringUtils.isNotBlank(xmlData)) {
+		// Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
+		// }
 		List<String> redList = new ArrayList<String>();
 		int count = this.dao.getTotalLottoryResult();
 		int last = 0;
-		int page = 10000;
+		int page = 50000;
 		int tmpCount = 0;
 		while (last < count) {
 			List list = this.dao.getLottoryResultLimit(last, page);
 			last += page;
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				
+
 				Map lMap = (Map) iterator.next();
 				String lValue = (String) lMap.get("value");
 				String[] lValues = StringUtils.split(lValue, ",");
@@ -306,7 +318,7 @@ public class lottoryService {
 						continue;
 					}
 				}
-				
+
 				// 至少有一个两连号 或三连号
 				tempSelect = 0;
 				if (haveTwoSeries > 0) {
@@ -336,7 +348,7 @@ public class lottoryService {
 						continue;
 					}
 				}
-				//有几个以上差值为1的
+				// 有几个以上差值为1的
 				if (haveOnediffer > 0) {
 					tempSelect = 0;
 					for (int j = 0; j < lValues.length; j++) {
@@ -418,6 +430,21 @@ public class lottoryService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<String> fromFileMediaData(File qsFile) throws IOException {
+		FileReader rd = new FileReader(qsFile);
+		BufferedReader br = new BufferedReader(rd);
+		String line = "";
+		List<String> list = new ArrayList<String>();
+		while (line != null) {
+			line = br.readLine();
+			if (line != null) {
+				list.add(line);
+			}
+		}
+		rd.close();
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -520,6 +547,33 @@ public class lottoryService {
 				}
 				LottoryConstant.redResultList = new ArrayList<String>();
 			}
+
+			if (CollectionUtils.isNotEmpty(list)) {
+				String qs = xmlUrl.substring(xmlUrl.lastIndexOf("/") + 1, xmlUrl.lastIndexOf("."));
+				try {
+					File file = new File("d:/myproject/ssq_" + qs + ".xml");
+					if (!file.exists()) {
+						file.createNewFile();
+					} else {
+					}
+					FileWriter writer = new FileWriter(file);
+					StringBuffer filePrint = new StringBuffer();
+					int temp = 0;
+					for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+						temp++;
+						String redCode = (String) iterator.next();
+						if (temp < list.size()) {
+							filePrint.append(redCode + "\n");
+						} else {
+							filePrint.append(redCode);
+						}
+					}
+					writer.write(filePrint.toString());
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			return list;
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -598,46 +652,83 @@ public class lottoryService {
 		System.out.println(tmpCount);
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
+		File file = new File("d:/myproject/current.tt");
+		FileReader fr;
 		try {
-			// ClassLoader classLoader=new ClassLoader();
-			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
-			Enumeration urls = null;
-			try {
-				urls = classLoader.getResources("lottory/excluderedfile.txt");
-			} catch (IOException e) {
+			fr = new FileReader(file);
+			BufferedReader br = new BufferedReader(fr);
+			List<String> list = new ArrayList<String>();
+			String line = br.readLine();
+			while (line != null) {
+				list.add(line);
+				line = br.readLine();
 			}
-			while (urls.hasMoreElements()) {
-				URL url = (URL) urls.nextElement();
-				InputStream is = null;
-				try {
-					URLConnection con = url.openConnection();
-					is = con.getInputStream();
-
-					BufferedInputStream bis = new BufferedInputStream(is);
-					byte[] bs = new byte[bis.available()];
-					int ch = 0;
-					// java.nio.ByteBuffer bb=java.nio.ByteBuffer.allocate(2048);
-					// CharBuffer cb=CharBuffer.allocate(bis.available());
-					// while(ch!=-1){
-					// // bb.put(bs);
-					// cb.append((char)ch);
-					// ch=bis.read();
-					//						
-					// }
-					bis.read(bs);
-					System.out.println(new String(bs, "GBK"));
-					// String redCode=new String(bb.array(),"GBK");
-					// String[] redCodes=StringUtils.split(redCode, '\n');
-					// System.out.println(redCodes+"\n"+redCode);
-				} finally {
-					if (is != null) {
-						is.close();
+			List<String> redList = new ArrayList<String>();
+			for (int i = 0; i < list.size(); i++) {
+				String[] redCode = list.get(i).split(",");
+				for (int j = 0; j < redCode.length; j++) {
+					if (!redList.contains(redCode[j])) {
+						redList.add(redCode[j]);
 					}
 				}
 			}
+			String out = "";
+			for (Iterator<String> iterator = redList.iterator(); iterator.hasNext();) {
+				String code = iterator.next();
+				if ("".equals(out)) {
+					out = code;
+				} else {
+					out += "," + code;
+				}
+			}
+			System.out.println(out + "            " + redList.size());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
+		// try {
+		// // ClassLoader classLoader=new ClassLoader();
+		// ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+		// Enumeration urls = null;
+		// try {
+		// urls = classLoader.getResources("lottory/excluderedfile.txt");
+		// } catch (IOException e) {
+		// }
+		// while (urls.hasMoreElements()) {
+		// URL url = (URL) urls.nextElement();
+		// InputStream is = null;
+		// try {
+		// URLConnection con = url.openConnection();
+		// is = con.getInputStream();
+		//
+		// BufferedInputStream bis = new BufferedInputStream(is);
+		// byte[] bs = new byte[bis.available()];
+		// int ch = 0;
+		// // java.nio.ByteBuffer bb=java.nio.ByteBuffer.allocate(2048);
+		// // CharBuffer cb=CharBuffer.allocate(bis.available());
+		// // while(ch!=-1){
+		// // // bb.put(bs);
+		// // cb.append((char)ch);
+		// // ch=bis.read();
+		// //
+		// // }
+		// bis.read(bs);
+		// System.out.println(new String(bs, "GBK"));
+		// // String redCode=new String(bb.array(),"GBK");
+		// // String[] redCodes=StringUtils.split(redCode, '\n');
+		// // System.out.println(redCodes+"\n"+redCode);
+		// } finally {
+		// if (is != null) {
+		// is.close();
+		// }
+		// }
+		// }
+		// } catch (FileNotFoundException e) {
+		// e.printStackTrace();
+		// }
 	}
 }
