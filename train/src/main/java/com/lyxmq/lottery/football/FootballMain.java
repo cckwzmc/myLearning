@@ -9,14 +9,12 @@ public class FootballMain {
 	private static org.slf4j.Logger logger = LoggerFactory.getLogger(FootballMain.class);
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml",
-				"classpath:/football/applicationContext-database.xml", "classpath:/football/applicationContext-dao.xml",
-				"classpath:/football/applicationContext-service.xml" });
+				"classpath:/lottery/football/applicationContext-database.xml", "classpath:/lottery/football/applicationContext-dao.xml",
+				"classpath:/lottery/football/applicationContext-service.xml" });
 		try {
-			FootballLotteryService service = (FootballLotteryService) context.getBean("footballService");
-			 service.genAllCode();
-			// service.getCurrentExpertMergeResult();
-//			service.getCurrentExpertSingleResult();
-			// service.saveAllRedResult();
+			FootballLotteryService service = (FootballLotteryService) context.getBean("ftLotteryService");
+//			 service.genAllCode();
+			service.filterFootballCode();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

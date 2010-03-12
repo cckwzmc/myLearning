@@ -152,39 +152,39 @@ public class LotteryService {
 
 	@SuppressWarnings("unchecked")
 	public void getCurrentExpertSingleResult() {
-		String xmlData = "";
-		if (StringUtils.isNotBlank(xmlUrl)) {
-			xmlData = getXmlData(xmlUrl);
-		}
-		String qs = xmlUrl.substring(xmlUrl.lastIndexOf("/") + 1, xmlUrl.lastIndexOf("."));
-		List<String> redMedia = new ArrayList<String>();
-		List<String> redFile = new ArrayList<String>();
-		if (StringUtils.isNotBlank(xmlData)) {
-			File qsFile = new File("d:/myproject/ssq_" + qs + ".xml");
-			if (qsFile.exists()) {
-				try {
-					redMedia = fromFileMediaData(qsFile);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
-				redMedia = disposeXmlData(xmlData);
-			}
-		}
-		if (ishaveexclude > 0) {
-			redFile = disposeFileData();
-		}
+		// String xmlData = "";
+		// if (StringUtils.isNotBlank(xmlUrl)) {
+		// xmlData = getXmlData(xmlUrl);
+		// }
+		// String qs = xmlUrl.substring(xmlUrl.lastIndexOf("/") + 1, xmlUrl.lastIndexOf("."));
+		// List<String> redMedia = new ArrayList<String>();
+		// List<String> redFile = new ArrayList<String>();
+		// if (StringUtils.isNotBlank(xmlData)) {
+		// File qsFile = new File("d:/myproject/ssq_" + qs + ".xml");
+		// if (qsFile.exists()) {
+		// try {
+		// redMedia = fromFileMediaData(qsFile);
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// } else {
+		// redMedia = disposeXmlData(xmlData);
+		// }
+		// }
+		// if (ishaveexclude > 0) {
+		// redFile = disposeFileData();
+		// }
 		// 算合值的时候可以使用
 		// if (StringUtils.isNotBlank(xmlData)) {
 		// Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
 		// }
 		List<String> redList = new ArrayList<String>();
-		int count = this.dao.getTotalLotteryResult();
+		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
 		int page = 50000;
 		int tmpCount = 0;
 		while (last < count) {
-			List list = this.dao.getLottoryResultLimit(last, page);
+			List list = this.dao.getLottoryFilterResultLimit(last, page);
 			last += page;
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 
@@ -361,12 +361,6 @@ public class LotteryService {
 					if (tempSelect < haveOnediffer) {
 						continue;
 					}
-				}
-				if (ishaveexclude > 0 && redFile.contains(lValue)) {
-					continue;
-				}
-				if (redMedia.contains(lValue)) {
-					continue;
 				}
 				for (int i = 0; i < lValues.length; i++) {
 					if (quOne != -1 && NumberUtils.toInt(lValues[i]) <= quOneNum) {
@@ -730,5 +724,127 @@ public class LotteryService {
 		// } catch (FileNotFoundException e) {
 		// e.printStackTrace();
 		// }
+	}
+
+	/**
+	 * 过滤掉最基本的号码 1：媒体号码 2：推荐号码 3：基本规则号码(必须包含上一期的一个号码,必须包含一个边好，必须有个连号，必须有个差值为1的)
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public void filterCurrentRedCode() {
+		String xmlData = "";
+		if (StringUtils.isNotBlank(xmlUrl)) {
+			xmlData = getXmlData(xmlUrl);
+		}
+		String qs = xmlUrl.substring(xmlUrl.lastIndexOf("/") + 1, xmlUrl.lastIndexOf("."));
+		// 媒体预测号码
+		List<String> redMedia = new ArrayList<String>();
+		// 本人添加的过滤号码
+		List<String> redFile = new ArrayList<String>();
+		if (StringUtils.isNotBlank(xmlData)) {
+			redMedia = disposeXmlData(xmlData);
+		}
+		if (ishaveexclude > 0) {
+			redFile = disposeFileData();
+		}
+		List<String> redList = new ArrayList<String>();
+		int count = this.dao.getTotalLotteryResult();
+		int last = 0;
+		int page = 50000;
+		while (last < count) {
+			List list = this.dao.getLottoryResultLimit(last, page);
+			last += page;
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+
+				Map lMap = (Map) iterator.next();
+				String lValue = (String) lMap.get("value");
+				String[] lValues = StringUtils.split(lValue, ",");
+				if (NumberUtils.toInt(lValues[0]) > firstMaxCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[0]) < firstMinCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[1]) > secondMaxCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[1]) < secondMinCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[2]) > thirdMaxCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[2]) < thirdMinCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[3]) > fourthMaxCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[3]) < fourthMinCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[5]) < lastMinCode) {
+					continue;
+				}
+				if (NumberUtils.toInt(lValues[5]) > lastMaxCode) {
+					continue;
+				}
+				int tempSelect = 0;
+				tempSelect = 0;
+				// 必须包含其中的任意一个数字
+				for (int j = 0; j < lValues.length; j++) {
+					for (int k = 0; k < includeRed.length; k++) {
+						if (StringUtils.equals(lValues[j], includeRed[k])) {
+							tempSelect++;
+						}
+					}
+				}
+				if (tempSelect != includeRedNum) {
+					continue;
+				}
+				// 必须包含其中的任意一个数字(边号)
+				tempSelect = 0;
+				if (preSideCode != null && preSideCode.length > 0) {
+					for (int j = 0; j < lValues.length; j++) {
+						for (int k = 0; k < preSideCode.length; k++) {
+							if (StringUtils.equals(lValues[j], preSideCode[k])) {
+								tempSelect++;
+							}
+						}
+					}
+					if (tempSelect == 0) {
+						continue;
+					}
+				}
+
+				// 至少有一个两连号
+				tempSelect = 0;
+				if (haveTwoSeries > 0) {
+					tempSelect = 0;
+					for (int j = 0; j < lValues.length; j++) {
+						int rValue = NumberUtils.toInt(lValues[j]);
+						int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+						if (nextValue != -1 && nextValue - rValue == 1) {
+							tempSelect++;
+						}
+					}
+					if (tempSelect != haveTwoSeries) {
+						continue;
+					}
+				}
+				if (ishaveexclude > 0 && redFile.contains(lValue)) {
+					continue;
+				}
+				if (redMedia.contains(lValue)) {
+					continue;
+				}
+				redList.add(lValue);
+			}
+		}
+		for (int i = 0; i < redList.size(); i++) {
+			String redCode=redList.get(i);
+			this.dao.addSsqLotteryFilterResult(redCode);
+		}
+		this.dao.saveLotteryGenLog("1", qs, "1");
 	}
 }

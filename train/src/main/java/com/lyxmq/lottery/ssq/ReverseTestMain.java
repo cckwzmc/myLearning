@@ -18,8 +18,9 @@ public class ReverseTestMain {
 				"classpath:/lottery/ssq/applicationContext-dao.xml", "classpath:/lottery/ssq/applicationContext-service.xml" });
 		try {
 			LotteryService service = (LotteryService) context.getBean("lotteryService");
-			service.testCode();
+//			service.testCode();
 //			service.getCurrentExpertMergeResult();
+			service.filterCurrentRedCode();
 //			service.getCurrentExpertSingleResult();
 //			service.saveAllRedResult();
 		} catch (Exception e) {
