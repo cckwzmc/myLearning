@@ -305,7 +305,11 @@
 			<gclassic</artifactId>
 			<version>${logback.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-webtifactId>logback-classic</artifactId>
+			<version>0.9.9</version>
+		</dependency>
 		</dependency>
 				<!-- Junit -->
 		<dependency>

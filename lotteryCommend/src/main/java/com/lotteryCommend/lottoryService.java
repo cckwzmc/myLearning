@@ -33,7 +33,7 @@ import org.springframework.util.ClassUtils;
 
 import com.myfetch.service.http.HttpHtmlService;
 
-public class lottoryService {
+public class LottoryService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(lottoryService.class);
 	LottoryDao dao = null;
 	private static int count = 0;

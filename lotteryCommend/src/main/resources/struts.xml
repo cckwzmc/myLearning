@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC 
-    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-    "http://struts.apache.org/dtds/struts-2.0.dtd">
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
 
 <struts>
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.locale" value="zh_CN" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.enable.SlashesInActionNames" value="true" />
 
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.i18n.reload" value="true" />
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<constant name="struts.convention.classes.reload" value="true" />
+	<!-- 放到WEB-INF的目的的保护文件资源，只能通过程序内部跳转才能访问，我们的权限拦截器或其他权限处理只要加到action上就可以了 -->
+	<constant name="struts.convention.result.path" value="/WEB-INF/pages/" />
+	<!--    是否不扫描类。一定要设为false，否则convention插件不起作用，零配置也没有意义。 -->
+	<constant name="struts.convention.action.disableScanning" value="false" />
+
+	<!-- 配置action的后缀名称，可以为空 -->
+	<constant name="struts.action.extension" value="action,do,," />
+	<!-- 设置默认的父包，一般我们都设置一个default包继承自struts-default。大部分类再继承default。如果有特殊的类需要特殊的包，只能在action中再指定父包了-->
+	<constant name="struts.convention.default.parent.package" value="default" />
+
+	<!-- 确定搜索包的路径。只要是结尾为action的包都要搜索 -->
+	<constant name="struts.convention.package.locators" value="action" />
+	<!-- 　排除哪些包不搜索。按默认配置即可。逗号分割字符串。  -->
+	<constant name="struts.convention.exclude.packages" value="org.apache.struts.*,org.apache.struts2.*,org.springframework.web.struts.*,org.springframework.web.struts2.*,org.hibernate.*" />
+	<!-- 默认返回的结果类型搜索。按顺序先找相关的dispatcher的jsp文件是否存在。然后再找freemarker，再找 velocity。  -->
+	<constant name="struts.convention.relative.result.types" value="dispatcher,freemarker,velocity" />
+
+	<!-- 一些公共的资源文件 -->
+	<constant name="struts.custom.i18n.resources" value="resource.commonResource" />
+
+	<package name="default" extends="struts-default">
+		<!-- 使用自定义国际化拦截 -->
+		<interceptor name="lotteryI18n" class="com.lotteryCommend.web.action.interceptor.LotteryI18nInterceptor" />
+		<!-- 定义异常处理拦截器  iris开发 -->
+		<interceptor name="actionException" class="com.lotteryCommend.web.action.interceptor.ActionExceptionnterceptor" />
+		<interceptors>
+			<interceptor-stack name="defaultStack">
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="servletConfig" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="staticParams" />
+				<interceptor-ref name="params" />
+			</interceptor-stack>
+		</interceptors>
+	</package>
 </struts>
