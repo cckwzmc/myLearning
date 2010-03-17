@@ -9,6 +9,10 @@
         <pattern>/images/*</pattern>
         <pattern>/dojo/*</pattern>
         <pattern>/struts/*</pattern>
+        <pattern>/*.htm</pattern>
+        <pattern>/*.html</pattern>
+        <pattern>/*.shtm</pattern>
+        <pattern>/*.shtml</pattern>
     </excludes>
 
     <decorator name="main" page="main.jsp">

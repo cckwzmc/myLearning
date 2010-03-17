@@ -35,18 +35,93 @@
 	<constant name="struts.custom.i18n.resources" value="resource.commonResource" />
 
 	<package name="default" extends="struts-default">
-		<!-- 使用自定义国际化拦截 -->
-		<interceptor name="lotteryI18n" class="com.lotteryCommend.web.action.interceptor.LotteryI18nInterceptor" />
-		<!-- 定义异常处理拦截器  iris开发 -->
-		<interceptor name="actionException" class="com.lotteryCommend.web.action.interceptor.ActionExceptionnterceptor" />
 		<interceptors>
+			<!-- 使用自定义国际化拦截 -->
+			<interceptor name="lotteryI18n" class="com.lotteryCommend.web.action.interceptor.LotteryI18nInterceptor" />
+			<!-- 定义异常处理拦截器  -->
+			<interceptor name="actionException" class="com.lotteryCommend.web.action.interceptor.ActionExceptionnterceptor" />
+
 			<interceptor-stack name="defaultStack">
 				<interceptor-ref name="exception" />
+				<interceptor-ref name="alias" />
+				<interceptor-ref name="lotteryI18n" />
+				<interceptor-ref name="checkbox" />
+				<interceptor-ref name="multiselect" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*</param>
+				</interceptor-ref>
 				<interceptor-ref name="servletConfig" />
-				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="prepare" />
+				<interceptor-ref name="chain" />
+				<interceptor-ref name="modelDriven" />
+				<interceptor-ref name="fileUpload" />
 				<interceptor-ref name="staticParams" />
-				<interceptor-ref name="params" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*</param>
+				</interceptor-ref>
+				<interceptor-ref name="conversionError" />
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+			</interceptor-stack>
+
+			<interceptor-stack name="lottery-defaultStack">
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="alias" />
+				<interceptor-ref name="servletConfig" />
+				<interceptor-ref name="lotteryI18n" />
+				<interceptor-ref name="prepare" />
+				<interceptor-ref name="chain" />
+				<interceptor-ref name="debugging" />
+				<interceptor-ref name="scopedModelDriven" />
+				<interceptor-ref name="modelDriven" />
+				<interceptor-ref name="fileUpload" />
+				<interceptor-ref name="checkbox" />
+				<interceptor-ref name="multiselect" />
+				<interceptor-ref name="staticParams" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*</param>
+				</interceptor-ref>
+				<interceptor-ref name="conversionError" />
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+			</interceptor-stack>
+
+			<!--
+				基于paramsPrepareParamsStack, 增加store
+				interceptor保证actionMessage在redirect后不会丢失
+			-->
+			<interceptor-stack name="lotteryStack">
+				<interceptor-ref name="store">
+					<param name="operationMode">AUTOMATIC</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="lottery-defaultStack" />
+				<!-- 截取异常日志信息方便跟踪 -->
+				<interceptor-ref name="actionException" />
+
 			</interceptor-stack>
 		</interceptors>
+
+		<default-interceptor-ref name="lotteryStack" />
+		<!-- 系统异常跳转页面-->
+		<global-results>
+			<result name="exception">/common/500.jsp</result>
+			<result name="invalid.token">/common/token-error.jsp</result>
+		</global-results>
+
+		<!-- 系统异常处理错误影射	 -->
+		<global-exception-mappings>
+			<exception-mapping result="exception" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
 	</package>
 </struts>
