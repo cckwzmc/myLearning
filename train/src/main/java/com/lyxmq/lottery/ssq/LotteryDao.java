@@ -74,7 +74,7 @@ public class LotteryDao extends JdbcBaseDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public Map isGenLotteryResult(String type, String lotteryQh) {
-		String sql = "select is_gen from lottery_gen_log t where t.type=? and t.lotteryQh";
+		String sql = "select is_gen from lottery_gen_log t where t.type=? and t.lottery_qh=?";
 		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { type, lotteryQh });
 		if (CollectionUtils.isNotEmpty(list)) {
 			return (Map) list.get(0);
@@ -84,5 +84,10 @@ public class LotteryDao extends JdbcBaseDao {
 	public int getTotalLotteryFilterResult() {
 		String sql = "select count(*) from ssq_lottery_filter_result";
 		return this.getJdbcTemplate().queryForInt(sql);
+	}
+
+	public void deleteSsqLotteryFilterResult() {
+		String sql="delete from ssq_lottery_filter_result";
+		this.getJdbcTemplate().update(sql);
 	}
 }

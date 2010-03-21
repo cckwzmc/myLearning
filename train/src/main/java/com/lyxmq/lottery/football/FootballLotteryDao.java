@@ -29,17 +29,17 @@ public class FootballLotteryDao extends JdbcBaseDao {
 	}
 
 	public void saveFootballLottoryFilterResult(String redResult) {
-		String sql = "insert into fb_lottery_filter_result(value) values(?)";
+		String sql = "insert into ft_lottery_filter_result(value) values(?)";
 		this.getJdbcTemplate().update(sql, new Object[] { redResult });
 	}
 
 	public void insertFootballFilterCode() {
-		String sql="insert into fb_lottery_filter_result(id,value) select id ,value from ft_lottery_all_result";
+		String sql="insert into ft_lottery_filter_result(id,value) select id ,value from ft_lottery_all_result";
 		this.getJdbcTemplate().update(sql);
 	}
 
 	public void deleteFootballFilterCode(String value) {
-		String sql="delete from fb_lottery_filter_result where value=?";
+		String sql="delete from ft_lottery_filter_result where value=?";
 		this.getJdbcTemplate().update(sql,new Object[]{value});
 	}
 }

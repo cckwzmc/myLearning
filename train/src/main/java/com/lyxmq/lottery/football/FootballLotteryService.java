@@ -231,6 +231,9 @@ public class FootballLotteryService {
 		if (value.indexOf("-") != -1) {
 			tmp = value.split("-");
 		}
+		if (value.indexOf(",") != -1) {
+			tmp = value.split(",");
+		}
 		if("14".equals(split)){
 			List<String> code = new ArrayList<String>();
 			for (int i = 0; i < value.length(); i++) {

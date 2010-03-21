@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -812,27 +813,21 @@ public class LotteryService {
 							}
 						}
 					}
-					if (tempSelect == 0) {
-						continue;
-					}
 				}
 
 				// 至少有一个两连号
-				tempSelect = 0;
-				if (haveTwoSeries > 0) {
-					tempSelect = 0;
-					for (int j = 0; j < lValues.length; j++) {
-						int rValue = NumberUtils.toInt(lValues[j]);
-						int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-						if (nextValue != -1 && nextValue - rValue == 1) {
-							tempSelect++;
-						}
-					}
-					if (tempSelect != haveTwoSeries) {
-						continue;
+				int serTempSelect = 0;
+				for (int j = 0; j < lValues.length; j++) {
+					int rValue = NumberUtils.toInt(lValues[j]);
+					int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+					if (nextValue != -1 && nextValue - rValue == 1) {
+						serTempSelect++;
 					}
 				}
-				if (ishaveexclude > 0 && redFile.contains(lValue)) {
+				if (serTempSelect <=0 && tempSelect<=0) {
+					continue;
+				}
+				if (CollectionUtils.isNotEmpty(redFile)&&redFile.contains(lValue)) {
 					continue;
 				}
 				if (redMedia.contains(lValue)) {
@@ -840,6 +835,11 @@ public class LotteryService {
 				}
 				redList.add(lValue);
 			}
+		}
+		if(MapUtils
+				.isEmpty(this.dao.isGenLotteryResult("1", qs))){
+			this.dao.deleteSsqLotteryFilterResult();
+				
 		}
 		for (int i = 0; i < redList.size(); i++) {
 			String redCode=redList.get(i);
