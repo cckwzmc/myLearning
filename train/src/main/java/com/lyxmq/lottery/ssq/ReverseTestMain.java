@@ -20,8 +20,8 @@ public class ReverseTestMain {
 			LotteryService service = (LotteryService) context.getBean("lotteryService");
 //			service.testCode();
 //			service.getCurrentExpertMergeResult();
-			service.filterCurrentRedCode();
-//			service.getCurrentExpertSingleResult();
+//			service.filterCurrentRedCode();
+			service.getCurrentExpertSingleResult();
 //			service.saveAllRedResult();
 		} catch (Exception e) {
 			e.printStackTrace();

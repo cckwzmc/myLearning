@@ -290,7 +290,7 @@ public class FootballLotteryService {
 		}
 		if (sameOne > 0 && sameThree > 0 && sameTwo > 0 && sameOne < 8 && sameThree < 8 && sameTwo < 8 && cs < 4) {
 			count++;
-			this.footballLotteryDao.saveFootballLottoryResult(result);
+			this.footballLotteryDao.saveFootballLottoryFilterResult(result);
 		}
 	}
 

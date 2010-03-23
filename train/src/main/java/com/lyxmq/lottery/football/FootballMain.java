@@ -13,8 +13,8 @@ public class FootballMain {
 				"classpath:/lottery/football/applicationContext-service.xml" });
 		try {
 			FootballLotteryService service = (FootballLotteryService) context.getBean("ftLotteryService");
-//			 service.genAllCode();
-			service.filterFootballCode();
+			 service.genAllCode();
+//			service.filterFootballCode();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

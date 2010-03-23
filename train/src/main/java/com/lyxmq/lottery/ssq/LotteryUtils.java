@@ -20,7 +20,26 @@ public class LotteryUtils {
 		subselect(0, 1, result, k);
 
 	}
+	public static void select(int k,String[] source,List<String> resultList) {
+		String[] result = new String[k];
+		subselect(0, 1, result, k,source,resultList);
+	}
 
+	private static void subselect(int head, int index, String[] r, int k,String[] source,List<String> resultList) {
+		for (int i = head; i < source.length + index - k; i++) {
+			if (index < k) {
+				r[index - 1] = source[i];
+				subselect(i + 1, index + 1, r, k);
+			} else if (index == k) {
+				r[index - 1] = source[i];
+				resultList.add(StringUtils.join(r, ","));
+				subselect(i + 1, index + 1, r, k);
+			} else {
+				return;
+			}
+			
+		}
+	}
 	private static void subselect(int head, int index, String[] r, int k) {
 		for (int i = head; i < LotteryConstant.redBall.length + index - k; i++) {
 			if (index < k) {

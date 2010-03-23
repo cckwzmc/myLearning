@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -15,6 +14,8 @@
 	<name>train</name>
 	<properties>
 		<cxf.version>[2,)</cxf.version>
+		<slf4j.version>1.5.11</slf4j.version>
+		<logback.version>0.9.18</logback.version>
 	</properties>
 	<description>
      learning
@@ -95,16 +96,10 @@
 
 			<!-- enforcer插件,检查JDK版本1.6 -->
 			<!--
-				<plugin> <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>1.0-beta-1</version> <executions> <execution>
-				<id>enforce-versions</id> <goals> <goal>enforce</goal> </goals>
-				<configuration> <rules> <requireMavenVersion>
-				<version>2.0.9</version> </requireMavenVersion> <requireJavaVersion>
-				<version>1.6</version> </requireJavaVersion> <requireOS>
-				<family>windows</family> </requireOS> </rules> </configuration>
-
-				</execution> </executions> </plugin>
+				<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-enforcer-plugin</artifactId> <version>1.0-beta-1</version> <executions> <execution>
+				<id>enforce-versions</id> <goals> <goal>enforce</goal> </goals> <configuration> <rules> <requireMavenVersion> <version>2.0.9</version> </requireMavenVersion>
+				<requireJavaVersion> <version>1.6</version> </requireJavaVersion> <requireOS> <family>windows</family> </requireOS> </rules> </configuration> </execution> </executions>
+				</plugin>
 			--><!-- resource插件,设定编码 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -176,9 +171,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	<!--
+		<!--
 		Jetty is needed if you're using the CXFServlet
-	--><dependency>
+	-->
+		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http-jetty</artifactId>
 			<version>${cxf.version}</version>
@@ -195,11 +191,8 @@
 			<version>1.4.1</version>
 		</dependency>
 		<!--
-			<dependency> <groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-xjc-dv</artifactId> <version>2.2</version>
-			<exclusions> <exclusion> <artifactId>spring-core</artifactId>
-			<groupId>org.springframework</groupId> </exclusion> </exclusions>
-			</dependency>
+			<dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-xjc-dv</artifactId> <version>2.2</version> <exclusions> <exclusion> <artifactId>spring-core</artifactId>
+			<groupId>org.springframework</groupId> </exclusion> </exclusions> </dependency>
 		-->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -329,6 +322,26 @@
 		<dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>quartz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-access</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 	</dependencies>
 </project>   

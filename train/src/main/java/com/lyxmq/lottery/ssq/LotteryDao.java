@@ -85,9 +85,17 @@ public class LotteryDao extends JdbcBaseDao {
 		String sql = "select count(*) from ssq_lottery_filter_result";
 		return this.getJdbcTemplate().queryForInt(sql);
 	}
+<<<<<<< .mine
+
+	public void clearSsqLotteryFilterResult() {
+		String sql="delete from ssq_lottery_filter_result ";
+		this.getJdbcTemplate().update(sql);
+	}
+=======
 
 	public void deleteSsqLotteryFilterResult() {
 		String sql="delete from ssq_lottery_filter_result";
 		this.getJdbcTemplate().update(sql);
 	}
+>>>>>>> .r203
 }
