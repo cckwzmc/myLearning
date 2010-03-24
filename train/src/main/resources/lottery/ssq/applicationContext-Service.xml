@@ -4,9 +4,11 @@
 	default-autowire="byName">
 	<bean id="lotteryService" class="com.lyxmq.lottery.ssq.LotteryService">
 		<property name="dao" ref="lotteryDao"/>
-		<property name="lotterySsqConfigService" ref="lotterySsqConfigService"></property>
 		<property name="lotterySsqMediaService" ref="lotterySsqMediaService"></property>
 		<property name="lotterySsqOtherCommendService" ref="lotterySsqOtherCommendService"></property>
+	</bean>
+	<bean id="initLotteryService" class="com.lyxmq.lottery.ssq.LotteryInitService">
+		<property name="dao" ref="lotteryDao"/>
 	</bean>
 	<bean id="lotterySsqConfigService" class="com.lyxmq.lottery.ssq.LotterySsqConifgService"></bean>
 	<bean id="lotterySsqMediaService" class="com.lyxmq.lottery.ssq.LotterySsqMediaService"></bean>

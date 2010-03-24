@@ -17,12 +17,14 @@ public class ReverseTestMain {
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml","classpath:/lottery/ssq/applicationContext-database.xml",
 				"classpath:/lottery/ssq/applicationContext-dao.xml", "classpath:/lottery/ssq/applicationContext-service.xml" });
 		try {
+//			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
+//			initService.saveAllRedResult();
+			
 			LotteryService service = (LotteryService) context.getBean("lotteryService");
-//			service.testCode();
 //			service.getCurrentExpertMergeResult();
 //			service.filterCurrentRedCode();
-			service.getCurrentExpertSingleResult();
-//			service.saveAllRedResult();
+//			service.getCurrentExpertSingleResult();
+			service.filterCurrentRedCodeFromFile();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

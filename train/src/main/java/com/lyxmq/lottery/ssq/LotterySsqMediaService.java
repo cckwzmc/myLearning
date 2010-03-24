@@ -104,30 +104,39 @@ public class LotterySsqMediaService {
 		return openBlueCode;
 	}
 	
-	public void saveCurrentMediaRedCode(Document document){
+	/**
+	 * 按单注方式生成红球号码
+	 * @param document
+	 */
+	public List<String> parseCurrentMediaRedCode(Document document){
 		List<String[]> redCode=this.getMediaRedCode(document);
 		List<String> resultList=new ArrayList<String>();
-		List<String> list=new ArrayList<String>();
-		for (Iterator iterator = redCode.iterator(); iterator.hasNext();) {
+		for (Iterator<String[]> iterator = redCode.iterator(); iterator.hasNext();) {
 			String[] red = (String[]) iterator.next();
 			LotteryUtils.select(6, red, resultList);
-			for (Iterator iterator2 = resultList.iterator(); iterator2.hasNext();) {
-				String resultRedCode = (String) iterator2.next();
-				if(list.contains(resultRedCode)){
-					continue;
-				}
-				list.add(resultRedCode);
-			}
 		}
+		return resultList;
+	}
+	/**
+	 * 按单注方式生成红球号码
+	 * @param document
+	 */
+	public List<String> parseCurrentMediaRedCode(List<String[]> redList){
+		List<String> resultList=new ArrayList<String>();
+		for (Iterator<String[]> iterator = redList.iterator(); iterator.hasNext();) {
+			String[] red = (String[]) iterator.next();
+			LotteryUtils.select(6, red, resultList);
+		}
+		return resultList;
 	}
 	/**
 	 * @param redMedia
 	 * @param qh
 	 */
-	public void saveCurrentMediaRedCode(List<String[]> redMedia,String qh) {
+	public void saveCurrentMediaRedCode(List<String> redMedia,String qh) {
 		if (CollectionUtils.isNotEmpty(redMedia)) {
 			try {
-				File file = new File("d:/myproject/ssq_media_" + qh + ".xml");
+				File file = new File("d:/myproject/ssq_media_red_" + qh + ".xml");
 				if (!file.exists()) {
 					file.createNewFile();
 				} else {
@@ -135,13 +144,13 @@ public class LotterySsqMediaService {
 				FileWriter writer = new FileWriter(file);
 				StringBuffer filePrint = new StringBuffer();
 				int temp = 0;
-				for (Iterator<String[]> iterator = redMedia.iterator(); iterator.hasNext();) {
+				for (Iterator<String> iterator = redMedia.iterator(); iterator.hasNext();) {
 					temp++;
-					String[] redCode = (String[]) iterator.next();
+					String redCode = (String) iterator.next();
 					if (temp < redMedia.size()) {
-						filePrint.append(StringUtils.join(redCode, ",") + "\n");
+						filePrint.append(redCode+ "\n");
 					} else {
-						filePrint.append(StringUtils.join(redCode, ","));
+						filePrint.append(redCode);
 					}
 				}
 				writer.write(filePrint.toString());

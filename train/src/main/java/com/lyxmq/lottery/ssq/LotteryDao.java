@@ -9,7 +9,7 @@ import com.myfetch.myfetch.dao.JdbcBaseDao;
 
 public class LotteryDao extends JdbcBaseDao {
 
-	public void saveLottoryResult(String redResult) {
+	public void saveSsqLottoryResult(String redResult) {
 		String sql = "insert into ssq_lottery_all_result(value) values(?)";
 		this.getJdbcTemplate().update(sql, new Object[] { redResult });
 	}
@@ -26,7 +26,7 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getLottoryResultAll() {
+	public List getSsqLottoryResultAll() {
 		String sql = "select value from ssq_lottery_all_result t order by id ";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
@@ -37,13 +37,13 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	// ~~~~~~~~过滤后的查询
-	public List getLotteryFilterResultAll() {
+	public List getSsqLotteryFilterResultAll() {
 		String sql = "select value from ssq_lottery_filter_result t order by id ";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getLottoryFilterResultLimit(int first, int page) {
+	public List getSsqLottoryFilterResultLimit(int first, int page) {
 		String sql = "select value from ssq_lottery_filter_result t order by id limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
@@ -81,21 +81,19 @@ public class LotteryDao extends JdbcBaseDao {
 		}
 		return null;
 	}
+
 	public int getTotalLotteryFilterResult() {
 		String sql = "select count(*) from ssq_lottery_filter_result";
 		return this.getJdbcTemplate().queryForInt(sql);
 	}
-<<<<<<< .mine
 
 	public void clearSsqLotteryFilterResult() {
-		String sql="delete from ssq_lottery_filter_result ";
+		String sql = "delete from ssq_lottery_filter_result ";
 		this.getJdbcTemplate().update(sql);
 	}
-=======
 
 	public void deleteSsqLotteryFilterResult() {
-		String sql="delete from ssq_lottery_filter_result";
+		String sql = "delete from ssq_lottery_filter_result";
 		this.getJdbcTemplate().update(sql);
 	}
->>>>>>> .r203
 }
