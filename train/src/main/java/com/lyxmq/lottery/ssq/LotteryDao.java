@@ -96,4 +96,17 @@ public class LotteryDao extends JdbcBaseDao {
 		String sql = "delete from ssq_lottery_filter_result";
 		this.getJdbcTemplate().update(sql);
 	}
+
+	/**
+	 * @param expect
+	 * @param type
+	 * @param code
+	 * @param num
+	 * @param fen
+	 * @param isTrue
+	 */
+	public void saveSsqLotteryHistoryStat(String expect, String type, String code, String num, String fen, boolean isTrue) {
+		String sql="insert into ssq_lottery_his_media_stat values(?,?,?,?,?,?)";
+		this.getJdbcTemplate().update(sql, new Object[]{expect,type,code,num,fen,isTrue?1:0});
+	}
 }

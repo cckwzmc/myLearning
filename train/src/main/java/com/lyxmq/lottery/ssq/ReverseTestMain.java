@@ -17,9 +17,9 @@ public class ReverseTestMain {
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml","classpath:/lottery/ssq/applicationContext-database.xml",
 				"classpath:/lottery/ssq/applicationContext-dao.xml", "classpath:/lottery/ssq/applicationContext-service.xml" });
 		try {
-//			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
+			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
 //			initService.saveAllRedResult();
-			
+//			initService.initHistoryMediaStatForFile();
 			LotteryService service = (LotteryService) context.getBean("lotteryService");
 //			service.getCurrentExpertMergeResult();
 //			service.filterCurrentRedCode();

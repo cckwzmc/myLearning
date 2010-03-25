@@ -95,16 +95,17 @@ public class HttpHtmlService {
 			/* 4 判断访问的状态码 */
 			if (statusCode != HttpStatus.SC_OK) {
 				System.err.println("Method failed: " + getMethod.getStatusLine());
+				return statusCode+"";
 			}
 			/* 5 处理 HTTP 响应内容 */
 			// HTTP响应头部信息，这里简单打印
 			Header[] headers = getMethod.getResponseHeaders();
 //			for (Header h : headers)
 //				System.out.println(h.getName() + " " + h.getValue());
-//			InputStream response = getMethod.getResponseBodyAsStream();//
-//			html = inputStream2String(response);
-			byte[] result=getMethod.getResponseBody();
-			html=new String(result,"UTF-8");
+			InputStream response = getMethod.getResponseBodyAsStream();//
+			html = inputStreamStringUtf8(response);
+//			byte[] result=getMethod.getResponseBody();
+//			html=new String(response,"UTF-8");
 			return html;
 
 		} catch (HttpException e) {
@@ -119,6 +120,29 @@ public class HttpHtmlService {
 			getMethod.releaseConnection();
 		}
 		return html;
+	}
+
+	private static String inputStreamStringUtf8(InputStream is) {
+		String ret = "";
+
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+
+			String tempbf = "";
+			StringBuffer html = new StringBuffer(100);
+			while ((tempbf = br.readLine()) != null) {
+				html.append(tempbf + "\n");
+			}
+			// String ret=this.convertToGBK(buffer.toString());
+
+			ret = new String(html.toString());
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	public static String inputStream2String(InputStream is) {
@@ -156,5 +180,8 @@ public class HttpHtmlService {
 		}
 		System.out.println(encoding.getEncoding());
 		return retStr = "";
+	}
+	public static void main(String[] args) {
+		getXmlContent("http://www.500wan.com/static/info/ssq/mediadetail/10017.xml");
 	}
 }

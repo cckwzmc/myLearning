@@ -1,16 +1,16 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.utils;
 
-import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
+
+import com.lyxmq.lottery.ssq.LotteryConstant;
+import com.myfetch.service.http.HttpHtmlService;
 
 public class LotteryUtils {
 	private static int count = 0;
@@ -56,8 +56,6 @@ public class LotteryUtils {
 				count++;
 			} else if (index == k) {
 				r[index - 1] = LotteryConstant.redBall[i];
-				// System.out.print(i + "===");
-				// System.out.println(StringUtils.join(r, ","));
 				LotteryConstant.redResultList.add(StringUtils.join(r, ","));
 				subselect(i + 1, index + 1, r, k);
 				count++;
@@ -67,25 +65,19 @@ public class LotteryUtils {
 
 		}
 	}
-
-	@SuppressWarnings("unchecked")
-	public static Map<String, String> disposeXmlStatData(String xmlData) {
-		try {
-			Document document = DocumentHelper.parseText(xmlData);
-			List redCode = document.selectNodes("//xml/red/code");
-			Map<String, String> redMap = new HashMap<String, String>();
-			for (int i = 0; i < redCode.size(); i++) {
-				Node redRs = (Node) redCode.get(i);
-				String code = redRs.getText();
-				String num = ((Element) redRs).attributeValue("num");
-				String fen = ((Element) redRs).attributeValue("fen");
-				redMap.put(code, num + "|" + fen);
+	public static String getFileContent(File file) throws IOException {
+		FileReader rd = new FileReader(file);
+		BufferedReader br = new BufferedReader(rd);
+		String retContent="";
+		String line = "";
+		while (line != null) {
+			line = br.readLine();
+			if(StringUtils.isNotBlank(line))
+			{
+				retContent+=line;
 			}
-			return redMap;
-		} catch (DocumentException e) {
-			e.printStackTrace();
 		}
-		return null;
+		rd.close();
+		return retContent;
 	}
-
 }
