@@ -89,8 +89,10 @@
 
 			<!-- enforcer插件,检查JDK版本1.6 -->
 			<!--
-				<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-enforcer-plugin</artifactId> <version>1.0-beta-1</version> <executions> <execution> <id>enforce-versions</id> <goals> <goal>enforce</goal> </goals> <configuration> <rules> <requireMavenVersion>
-				<version>2.0.9</version> </requireMavenVersion> <requireJavaVersion> <version>1.6</version> </requireJavaVersion> <requireOS> <family>windows</family> </requireOS> </rules> </configuration> </execution> </executions> </plugin>
+				<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-enforcer-plugin</artifactId> <version>1.0-beta-1</version> <executions> <execution>
+				<id>enforce-versions</id> <goals> <goal>enforce</goal> </goals> <configuration> <rules> <requireMavenVersion> <version>2.0.9</version> </requireMavenVersion>
+				<requireJavaVersion> <version>1.6</version> </requireJavaVersion> <requireOS> <family>windows</family> </requireOS> </rules> </configuration> </execution> </executions>
+				</plugin>
 			--><!-- resource插件,设定编码 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -298,13 +300,38 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-webtifactId>logback-classic</artifactId>
 			<version>0.9.9</version>
-		</dependen<!--
+		</dependen
 		<dependency>
 			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-openidtifactId>logback-classic</artifactId>
+			<artifactId>spring-security-configtifactId>logback-classic</artifactId>
 			<version>0.9.9</version>
 		</dependency>
-		--></dependency>
+		<dependency>
+			<grouporg.springframework.security</groupId>
+			<artifactId>spring-security-openidtifactId>logback-classic</artifactId>
+			<version>0.9.9</version>
+		</dependency><dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibstifactId>logback-classic</artifactId>
+			<version>0.9.9</version>
+		</dependency>
+		<dependency>
+			<grouporg.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.jcaptcha4struts2</groupId>
+			<artifactId>jcaptcha4struts2</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha</artifactId>
+			<version>2.0-alpha-1</version>
+		</dependency>
+
+		</dependency>
 				<!-- Junit -->
 		<dependency>
 			<groupId>junit</groupId>

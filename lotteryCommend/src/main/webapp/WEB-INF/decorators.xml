@@ -13,6 +13,8 @@
         <pattern>/*.html</pattern>
         <pattern>/*.shtm</pattern>
         <pattern>/*.shtml</pattern>
+        <pattern>/login.jsp*</pattern>
+        <pattern>/login.do*</pattern>
     </excludes>
 
     <decorator name="main" page="main.jsp">

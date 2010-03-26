@@ -23,6 +23,7 @@ public class RootContext implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	public void contextInitialized(ServletContextEvent sce) {
+		log.info("开始咯..................... ");
 		log.debug("RootContext lotteryCommend start init............");
 	}
 

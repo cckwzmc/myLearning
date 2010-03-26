@@ -42,15 +42,11 @@
 	<logger name="org.hibernate.SQL">
 		<level value="info" />
 	</logger>
-	<logger name="com.lotterycommend.core">
-		<level value="error"></level>
-	</logger>
-	<logger name="com.lotterycommend">
+	<logger name="com.lotterycommend.web">
 		<level value="info"></level>
 	</logger>
 	<root>
 		<level value="info" />
-		<level value="error" />
 		<appender-ref ref="stdout" />
 		<appender-ref ref="logfile" />
 	</root>
