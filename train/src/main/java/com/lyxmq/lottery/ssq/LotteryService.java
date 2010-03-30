@@ -243,64 +243,64 @@ public class LotteryService {
 		int count = this.dao.getTotalLotteryResult();
 		int last = 0;
 		int page = 40000;
-		try {
-			File file = new File("d:/myproject/ssq_red_" + this.expect + ".xml");
-			if (!file.exists()) {
-				file.createNewFile();
-			} else {
-			}
-			FileWriter writer = new FileWriter(file, true);
-			while (last < count) {
-				List list = this.dao.getLottoryResultLimit(last, page);
-				last += page;
-				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-					Map lMap = (Map) iterator.next();
-					String lValue = (String) lMap.get("value");
-					String[] lValues = StringUtils.split(lValue, ",");
-					if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
-						continue;
-					}
-					if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
-						continue;
-					}
-					if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
-						continue;
-					}
-					if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
-						continue;
-					}
-					if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
-						continue;
-					}
-					if (redMedia.contains(lValue)) {
-						continue;
-					}
-					// redList.add(lValue);
-
-					// for (int i = 0; i < redList.size(); i++) {
-					// String filerRed = (String) redList.get(i);
-					// filerRed = (i == redList.size() - 1) ? filerRed : filerRed + "\n";
-					writer.write(lValue + "\n");
-					// }
-
+		// try {
+		// File file = new File("d:/myproject/ssq_red_" + this.expect + ".xml");
+		// if (!file.exists()) {
+		// file.createNewFile();
+		// } else {
+		// }
+		// FileWriter writer = new FileWriter(file, true);
+		while (last < count) {
+			List list = this.dao.getLottoryResultLimit(last, page);
+			last += page;
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map lMap = (Map) iterator.next();
+				String lValue = (String) lMap.get("value");
+				String[] lValues = StringUtils.split(lValue, ",");
+				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
+					continue;
 				}
-				// if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", qs))) {
-				// this.dao.clearSsqLotteryFilterResult();
-				// }
-				// StringBuffer sb = new StringBuffer();
-				// for (int i = 0; i < redList.size(); i++) {
-				// String redCode = redList.get(i);
-				// sb.append(redCode + "\n");
-				// // this.dao.addSsqLotteryFilterResult(redCode);
-				// }
-				// this.dao.saveLotteryGenLog("1", qs, "1");
-			}
-			writer.close();
+				if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
+					continue;
+				}
+				if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
+					continue;
+				}
+				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
+					continue;
+				}
+				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
+					continue;
+				}
+				if (redMedia.contains(lValue)) {
+					continue;
+				}
+				redList.add(lValue);
 
-		} catch (IOException e) {
-			e.printStackTrace();
+				// for (int i = 0; i < redList.size(); i++) {
+				// String filerRed = (String) redList.get(i);
+				// filerRed = (i == redList.size() - 1) ? filerRed : filerRed + "\n";
+				// writer.write(lValue + "\n");
+				// }
+
+			}
+			// if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", qs))) {
+			// this.dao.clearSsqLotteryFilterResult();
+			// }
+			// StringBuffer sb = new StringBuffer();
+			// for (int i = 0; i < redList.size(); i++) {
+			// String redCode = redList.get(i);
+			// sb.append(redCode + "\n");
+			// // this.dao.addSsqLotteryFilterResult(redCode);
+			// }
+			// this.dao.saveLotteryGenLog("1", qs, "1");
 		}
-		// this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml");
+		// writer.close();
+		//
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml");
 	}
 
 	/**
@@ -334,59 +334,75 @@ public class LotteryService {
 			e.printStackTrace();
 		}
 		List<String> redList = new ArrayList<String>();
+		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqMediaUtils.getMediaExpect(document)))) {
+			this.dao.clearSsqLotteryFilterResult();
+		}
 		int count = this.dao.getTotalLotteryResult();
 		int last = 0;
-		int page = 40000;
-		try {
-			File file = new File("d:/myproject/ssq_red_" + this.expect + ".xml");
-			if (!file.exists()) {
-				file.createNewFile();
+		int page = 60000;
+		// try {
+		// File file = new File("d:/myproject/ssq_red_" + this.expect + ".xml");
+		// if (!file.exists()) {
+		// file.createNewFile();
+		// } else {
+		// }
+		// FileWriter writer = new FileWriter(file, true);
+		List list = null;
+		int cTemp=0;
+		while (last < count) {
+			list = this.dao.getLottoryResultLimit(last, page);
+			// List list=this.dao.getSsqLottoryResultAll();
+			if (list.size() == count) {
+				last = list.size();
 			} else {
-			}
-			FileWriter writer = new FileWriter(file, true);
-			while (last < count) {
-				List list = this.dao.getLottoryResultLimit(last, page);
 				last += page;
-				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-					Map lMap = (Map) iterator.next();
-					String lValue = (String) lMap.get("value");
-					String[] lValues = StringUtils.split(lValue, ",");
-					if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
-						continue;
-					}
-					if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
-						continue;
-					}
-					if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
-						continue;
-					}
-					if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
-						continue;
-					}
-					if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
-						continue;
-					}
-					if (redMedia.contains(lValue)) {
-						continue;
-					}
-					// redList.add(lValue);
-					writer.write(lValue + "\n");
-				}
 			}
-			writer.close();
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map lMap = (Map) iterator.next();
+				String lValue = (String) lMap.get("value");
+				String[] lValues = StringUtils.split(lValue, ",");
+				
+				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
+					continue;
+				}
+				if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
+					continue;
+				}
+				if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
+					continue;
+				}
+				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
+					continue;
+				}
+				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
+					continue;
+				}
+				if (redMedia.contains(lValue)) {
+					continue;
+				}
+//				cTemp++;
+//				if(141414>=cTemp){
+//					continue;
+//				}
+				// redList.add(lValue);
+				
+				this.dao.addSsqLotteryFilterResult(lValue);
+				// writer.write(lValue + "\n");
+			}
+			// }
+			// writer.close();
+			//
+			// } catch (IOException e) {
+			// e.printStackTrace();
+			// }
 
-		} catch (IOException e) {
-			e.printStackTrace();
+			// StringBuffer sb = new StringBuffer();
+			// for (int i = 0; i < redList.size(); i++) {
+			// String redCode = redList.get(i);
+			// sb.append(redCode + "\n");
+//			this.dao.addSsqLotteryFilterResult(lValue);
+			// }
 		}
-		// if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", qs))) {
-		// this.dao.clearSsqLotteryFilterResult();
-		// }
-		// StringBuffer sb = new StringBuffer();
-		// for (int i = 0; i < redList.size(); i++) {
-		// String redCode = redList.get(i);
-		// sb.append(redCode + "\n");
-		// // this.dao.addSsqLotteryFilterResult(redCode);
-		// }
 		// this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml");
 		// this.dao.saveLotteryGenLog("1", qs, "1");
 	}
