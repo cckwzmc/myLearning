@@ -9,8 +9,9 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 /**
  * 媒体推荐的处理
+ * 
  * @author Administrator
- *
+ * 
  */
 public class LotterySsqConifgService {
 	private static String xmlUrl = "";
@@ -70,7 +71,8 @@ public class LotterySsqConifgService {
 			includeRed = StringUtils.isNotBlank("includeRed") ? StringUtils.split(pro.getProperty("includeRed"), ",") : null;
 			excludeRed = StringUtils.isNotBlank("excludeRed") ? StringUtils.split(pro.getProperty("excludeRed"), ",") : null;
 			musthavered = StringUtils.isNotBlank("musthavered") ? StringUtils.split(pro.getProperty("musthavered"), ",") : null;
-			cannotSelectedTogethor = StringUtils.isNotBlank("cannotSelectedTogethor") ? StringUtils.split(pro.getProperty("cannotSelectedTogethor"), "|") : null;
+			cannotSelectedTogethor = StringUtils.isNotBlank("cannotSelectedTogethor") ? StringUtils.split(pro.getProperty("cannotSelectedTogethor"), "|")
+					: null;
 			selectCode = StringUtils.isNotBlank("selectCode") ? StringUtils.split(pro.getProperty("selectCode"), ",") : null;
 			preRedCode = StringUtils.isNotBlank("preRedCode") ? StringUtils.split(pro.getProperty("preRedCode"), ",") : null;
 			firstMinCode = StringUtils.isNotBlank(pro.getProperty("firstMinCode")) ? NumberUtils.toInt(pro.getProperty("firstMinCode")) : firstMinCode;
@@ -84,7 +86,8 @@ public class LotterySsqConifgService {
 			lastMinCode = StringUtils.isNotBlank(pro.getProperty("lastMinCode")) ? NumberUtils.toInt(pro.getProperty("lastMinCode")) : lastMinCode;
 			lastMaxCode = StringUtils.isNotBlank(pro.getProperty("lastMaxCode")) ? NumberUtils.toInt(pro.getProperty("lastMaxCode")) : lastMaxCode;
 			haveTwoSeries = StringUtils.isNotBlank(pro.getProperty("haveTwoSeries")) ? NumberUtils.toInt(pro.getProperty("haveTwoSeries")) : haveTwoSeries;
-			haveThreeSeries = StringUtils.isNotBlank(pro.getProperty("haveThreeSeries")) ? NumberUtils.toInt(pro.getProperty("haveThreeSeries")) : haveThreeSeries;
+			haveThreeSeries = StringUtils.isNotBlank(pro.getProperty("haveThreeSeries")) ? NumberUtils.toInt(pro.getProperty("haveThreeSeries"))
+					: haveThreeSeries;
 			haveOnediffer = StringUtils.isNotBlank(pro.getProperty("haveOnediffer")) ? NumberUtils.toInt(pro.getProperty("haveOnediffer")) : haveOnediffer;
 			haveSideCode = StringUtils.isNotBlank(pro.getProperty("haveSideCode")) ? NumberUtils.toInt(pro.getProperty("haveSideCode")) : haveSideCode;
 			includeRedNum = StringUtils.isNotBlank(pro.getProperty("includeRedNum")) ? NumberUtils.toInt(pro.getProperty("includeRedNum")) : includeRedNum;
@@ -93,9 +96,12 @@ public class LotterySsqConifgService {
 				for (int i = 0; i < preRedCode.length; i++) {
 					int tmpInt = NumberUtils.toInt(preRedCode[i]);
 					if ("".equals(temp)) {
-						temp = tmpInt == 1 ? "2" : ((tmpInt - 1) + "," + (tmpInt + 1));
+						temp = tmpInt == 1 ? "02" : (((tmpInt - 1) < 10 ? "0" + (tmpInt - 1) : (tmpInt - 1)) + "," + ((tmpInt + 1) < 10 ? "0" + (tmpInt + 1)
+								: (tmpInt + 1)));
 					} else {
-						temp += "," + (tmpInt == 1 ? "2" : ((tmpInt - 1) + "," + (tmpInt + 1)));
+						temp += ","
+								+ (tmpInt == 1 ? "02" : (((tmpInt - 1) < 10 ? "0" + (tmpInt - 1) : (tmpInt - 1)) + "," + ((tmpInt + 1) < 10 ? "0"
+										+ (tmpInt + 1) : (tmpInt + 1))));
 
 					}
 				}
@@ -106,179 +112,237 @@ public class LotterySsqConifgService {
 		}
 
 	}
+
 	public static String getXmlUrl() {
 		return xmlUrl;
 	}
+
 	public static void setXmlUrl(String xmlUrl) {
 		LotterySsqConifgService.xmlUrl = xmlUrl;
 	}
+
 	public static int getQuOne() {
 		return quOne;
 	}
+
 	public static void setQuOne(int quOne) {
 		LotterySsqConifgService.quOne = quOne;
 	}
+
 	public static int getQuTwo() {
 		return quTwo;
 	}
+
 	public static void setQuTwo(int quTwo) {
 		LotterySsqConifgService.quTwo = quTwo;
 	}
+
 	public static int getQuThree() {
 		return quThree;
 	}
+
 	public static void setQuThree(int quThree) {
 		LotterySsqConifgService.quThree = quThree;
 	}
+
 	public static int getQuOneNum() {
 		return quOneNum;
 	}
+
 	public static void setQuOneNum(int quOneNum) {
 		LotterySsqConifgService.quOneNum = quOneNum;
 	}
+
 	public static int getQuTwoNum() {
 		return quTwoNum;
 	}
+
 	public static void setQuTwoNum(int quTwoNum) {
 		LotterySsqConifgService.quTwoNum = quTwoNum;
 	}
+
 	public static String[] getIncludeRed() {
 		return includeRed;
 	}
+
 	public static void setIncludeRed(String[] includeRed) {
 		LotterySsqConifgService.includeRed = includeRed;
 	}
+
 	public static String[] getExcludeRed() {
 		return excludeRed;
 	}
+
 	public static void setExcludeRed(String[] excludeRed) {
 		LotterySsqConifgService.excludeRed = excludeRed;
 	}
+
 	public static String[] getMusthavered() {
 		return musthavered;
 	}
+
 	public static void setMusthavered(String[] musthavered) {
 		LotterySsqConifgService.musthavered = musthavered;
 	}
+
 	public static int getIshaveexclude() {
 		return ishaveexclude;
 	}
+
 	public static void setIshaveexclude(int ishaveexclude) {
 		LotterySsqConifgService.ishaveexclude = ishaveexclude;
 	}
+
 	public static int getFirstMinCode() {
 		return firstMinCode;
 	}
+
 	public static void setFirstMinCode(int firstMinCode) {
 		LotterySsqConifgService.firstMinCode = firstMinCode;
 	}
+
 	public static int getFirstMaxCode() {
 		return firstMaxCode;
 	}
+
 	public static void setFirstMaxCode(int firstMaxCode) {
 		LotterySsqConifgService.firstMaxCode = firstMaxCode;
 	}
+
 	public static int getLastMinCode() {
 		return lastMinCode;
 	}
+
 	public static void setLastMinCode(int lastMinCode) {
 		LotterySsqConifgService.lastMinCode = lastMinCode;
 	}
+
 	public static int getLastMaxCode() {
 		return lastMaxCode;
 	}
+
 	public static void setLastMaxCode(int lastMaxCode) {
 		LotterySsqConifgService.lastMaxCode = lastMaxCode;
 	}
+
 	public static int getHaveTwoSeries() {
 		return haveTwoSeries;
 	}
+
 	public static void setHaveTwoSeries(int haveTwoSeries) {
 		LotterySsqConifgService.haveTwoSeries = haveTwoSeries;
 	}
+
 	public static int getHaveThreeSeries() {
 		return haveThreeSeries;
 	}
+
 	public static void setHaveThreeSeries(int haveThreeSeries) {
 		LotterySsqConifgService.haveThreeSeries = haveThreeSeries;
 	}
+
 	public static int getHaveOnediffer() {
 		return haveOnediffer;
 	}
+
 	public static void setHaveOnediffer(int haveOnediffer) {
 		LotterySsqConifgService.haveOnediffer = haveOnediffer;
 	}
+
 	public static String[] getSelectCode() {
 		return selectCode;
 	}
+
 	public static void setSelectCode(String[] selectCode) {
 		LotterySsqConifgService.selectCode = selectCode;
 	}
+
 	public static String[] getCannotSelectedTogethor() {
 		return cannotSelectedTogethor;
 	}
+
 	public static void setCannotSelectedTogethor(String[] cannotSelectedTogethor) {
 		LotterySsqConifgService.cannotSelectedTogethor = cannotSelectedTogethor;
 	}
+
 	public static int getHaveSideCode() {
 		return haveSideCode;
 	}
+
 	public static void setHaveSideCode(int haveSideCode) {
 		LotterySsqConifgService.haveSideCode = haveSideCode;
 	}
+
 	public static int getIncludeRedNum() {
 		return includeRedNum;
 	}
+
 	public static void setIncludeRedNum(int includeRedNum) {
 		LotterySsqConifgService.includeRedNum = includeRedNum;
 	}
+
 	public static String[] getPreRedCode() {
 		return preRedCode;
 	}
+
 	public static void setPreRedCode(String[] preRedCode) {
 		LotterySsqConifgService.preRedCode = preRedCode;
 	}
+
 	public static String[] getPreSideCode() {
 		return preSideCode;
 	}
+
 	public static void setPreSideCode(String[] preSideCode) {
 		LotterySsqConifgService.preSideCode = preSideCode;
 	}
+
 	public static int getSecondMinCode() {
 		return secondMinCode;
 	}
+
 	public static void setSecondMinCode(int secondMinCode) {
 		LotterySsqConifgService.secondMinCode = secondMinCode;
 	}
+
 	public static int getSecondMaxCode() {
 		return secondMaxCode;
 	}
+
 	public static void setSecondMaxCode(int secondMaxCode) {
 		LotterySsqConifgService.secondMaxCode = secondMaxCode;
 	}
+
 	public static int getThirdMinCode() {
 		return thirdMinCode;
 	}
+
 	public static void setThirdMinCode(int thirdMinCode) {
 		LotterySsqConifgService.thirdMinCode = thirdMinCode;
 	}
+
 	public static int getThirdMaxCode() {
 		return thirdMaxCode;
 	}
+
 	public static void setThirdMaxCode(int thirdMaxCode) {
 		LotterySsqConifgService.thirdMaxCode = thirdMaxCode;
 	}
+
 	public static int getFourthMinCode() {
 		return fourthMinCode;
 	}
+
 	public static void setFourthMinCode(int fourthMinCode) {
 		LotterySsqConifgService.fourthMinCode = fourthMinCode;
 	}
+
 	public static int getFourthMaxCode() {
 		return fourthMaxCode;
 	}
+
 	public static void setFourthMaxCode(int fourthMaxCode) {
 		LotterySsqConifgService.fourthMaxCode = fourthMaxCode;
 	}
-	
+
 }

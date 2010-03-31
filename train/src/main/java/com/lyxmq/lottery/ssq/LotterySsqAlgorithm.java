@@ -76,7 +76,7 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * // 必须包含其中的任意一个数字(边号)
-	 * 
+	 * 并且不能超过2个
 	 * @param lValues
 	 * @return
 	 */
@@ -91,10 +91,10 @@ public class LotterySsqAlgorithm {
 				}
 			}
 		}
-		if (tempSelect == 0) {
+		if (tempSelect == 0||tempSelect>2) {
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	/**

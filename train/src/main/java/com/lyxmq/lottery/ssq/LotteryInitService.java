@@ -2,7 +2,9 @@ package com.lyxmq.lottery.ssq;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.dom4j.Document;
@@ -178,8 +180,12 @@ public class LotteryInitService {
 		this.dao.saveSsqLottoryResult(redCode);
 	}
 
+	/**
+	 * 从当前配置URL补充媒体预测号码
+	 */
+	@SuppressWarnings("unchecked")
 	public void initHistoryMediaStat() {
-		LotterySsqConifgService config = new LotterySsqConifgService();
+		new LotterySsqConifgService();
 		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getXmlUrl());
 		if (StringUtils.isBlank(xmlData)) {
 			return;
@@ -193,16 +199,65 @@ public class LotteryInitService {
 		String expect = LotterySsqMediaUtils.getMediaExpect(document);
 		int expectInt = NumberUtils.toInt(expect);
 		String xmlContent = "";
-		for (int i = expectInt; i < 18; i--) {
+		Map map=this.dao.getSsqLotteryHisMediaStatMaxExpect();
+		String hisExpect="";
+		if(MapUtils.isNotEmpty(map)){
+			hisExpect=(String) map.get("expect");
+		}
+		for (int i = expectInt; i > NumberUtils.toInt(hisExpect); i--) {
 			xmlContent = LotterySsqMediaUtils.getHistoryMediaXml(i < 10000 ? "0" + i : i + "");
 			if (StringUtils.isNotBlank(xmlContent)) {
-				expectInt=i;
-				break;
+				this.lotterySsqMediaService.saveHistoryMediaStat(xmlContent,expectInt<10000?"0"+expectInt:expectInt+"");
 			}
 		}
 		
-		this.lotterySsqMediaService.saveHistoryMediaStat(xmlContent,expectInt<10000?"0"+expectInt:expectInt+"");
+		
 	}
+	
+	/**
+	 * 从当前配置URL补充历史开奖号码
+	 */
+	@SuppressWarnings("unchecked")
+	public void initHistoryOpenCode() {
+		new LotterySsqConifgService();
+		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getXmlUrl());
+		if (StringUtils.isBlank(xmlData)) {
+			return;
+		}
+		Document document = null;
+		try {
+			document = DocumentHelper.parseText(xmlData);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		String expect = LotterySsqMediaUtils.getMediaExpect(document);
+		int expectInt = NumberUtils.toInt(expect);
+		String xmlContent = "";
+		Map map=this.dao.getSsqLotteryHisOpenCodeMaxExpect();
+		String hisExpect="";
+		if(MapUtils.isNotEmpty(map)){
+			hisExpect=(String) map.get("expect");
+		}
+		for (int i = expectInt; i > NumberUtils.toInt(hisExpect); i--) {
+			xmlContent = LotterySsqMediaUtils.getHistoryMediaXml(i < 10000 ? "0" + i : i + "");
+			if (StringUtils.isNotBlank(xmlContent)) {
+				int sum=0;
+				String[] redCode=LotterySsqMediaUtils.getHistoryOpenRedcode(document);
+				if(redCode==null||redCode.length!=6){
+					continue;
+				}
+				for (int j = 0; j < redCode.length; j++) {
+					sum+=NumberUtils.toInt(redCode[j]);
+				}
+				this.dao.saveSsqLotteryHisOpenCode(LotterySsqMediaUtils.getHistoryOpenBlueCode(document),StringUtils.join(redCode, ","),sum,expectInt<10000?"0"+expectInt:expectInt+"");
+			}
+		}
+		
+		
+	}
+	/**
+	 * 从文件中读取媒体历史预测号码
+	 */
 	public void initHistoryMediaStatForFile() {
 		String path="D:/myproject/myselflearning/lottery/ssq_media/";
 		File file=new File(path);
@@ -224,6 +279,41 @@ public class LotteryInitService {
 					}
 					String expect = LotterySsqMediaUtils.getMediaExpect(document);
 					this.lotterySsqMediaService.saveHistoryMediaStat(xmlContent,expect);
+				} catch (IOException e) {
+					logger.error(listFile[i].getName()+"==="+e.getMessage());
+				}
+			}
+		}
+	}
+	/**
+	 * 从文件中读取媒体历史开奖号码
+	 */
+	public void initHistoryOpenCodeFromFile(){
+		String path="D:/myproject/myselflearning/lottery/ssq_media/";
+		File file=new File(path);
+		File[] listFile=null;
+		if(file.isDirectory()){
+			listFile=file.listFiles();
+		}
+		if(listFile!=null){
+			for (int i = 0; i < listFile.length; i++) {
+				try {
+					String xmlContent=LotteryUtils.getFileContent(listFile[i]);
+					Document document = null;
+					try {
+						document = DocumentHelper.parseText(xmlContent);
+					} catch (Exception e) {
+						logger.error(e.getMessage());
+						e.printStackTrace();
+						logger.error(xmlContent);
+					}
+					String expect = LotterySsqMediaUtils.getMediaExpect(document);
+					int sum=0;
+					String[] redCode=LotterySsqMediaUtils.getHistoryOpenRedcode(document);
+					for (int j = 0; j < redCode.length; j++) {
+						sum+=NumberUtils.toInt(redCode[j]);
+					}
+					this.dao.saveSsqLotteryHisOpenCode(LotterySsqMediaUtils.getHistoryOpenBlueCode(document),StringUtils.join(redCode, ","),sum,expect);
 				} catch (IOException e) {
 					logger.error(listFile[i].getName()+"==="+e.getMessage());
 				}

@@ -28,6 +28,7 @@ public class LotteryService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotteryService.class);
 	LotteryDao dao = null;
 	private String expect = "";
+	private boolean isSaveToDatabase = true;
 	LotterySsqConifgService lotterySsqConfigService = null;
 	LotterySsqMediaService lotterySsqMediaService = null;
 	LotterySsqOtherCommendService lotterySsqOtherCommendService = null;
@@ -92,30 +93,16 @@ public class LotteryService {
 		// Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
 		// }
 		List<String> redList = new ArrayList<String>();
-		// int count = this.dao.getTota/lLotteryFilterResult();
+		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
 		int page = 50000;
-		boolean whileFlag = true;
 		List list = new ArrayList();
-		while (whileFlag) {
-			if (StringUtils.isNotBlank(this.expect)) {
-				File qsFile = new File("d:/myproject/ssq_red_" + this.expect + ".xml");
-				if (qsFile.exists()) {
-					try {
-						list = fromFileMediaData(qsFile);
-						whileFlag = false;
-					} catch (IOException e) {
-						logger.error(e.getMessage());
-						whileFlag = false;
-					}
-				} else {
-					list = this.dao.getSsqLottoryFilterResultLimit(last, page);
-				}
-			}
+		while (last < count) {
+			list = this.dao.getSsqLottoryFilterResultLimit(last, page);
 			last += page;
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				String lValue = (String) iterator.next();
-				String[] lValues = StringUtils.split(lValue, ",");
+				Map lValue = (Map) iterator.next();
+				String[] lValues = StringUtils.split(ObjectUtils.toString(lValue.get("value")), ",");
 				int qOne = 0;
 				int qTwo = 0;
 				int qThree = 0;
@@ -140,7 +127,6 @@ public class LotteryService {
 				if (!LotterySsqAlgorithm.isRedTogethorCode(lValues)) {
 					continue;
 				}
-
 				if (!LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
 					continue;
 				}
@@ -168,21 +154,27 @@ public class LotteryService {
 					}
 				}
 				if (LotterySsqAlgorithm.isRedCoincidenceZone(lValues, qOne, qTwo, qThree)) {
-					redList.add(lValue);
+					redList.add(ObjectUtils.toString(lValue.get("value")));
 				}
 			}
 		}
-		writeFile(redList, "d:/myproject/current.xml");
+		writeFile(redList, "d:/myproject/current.xml",false);
 	}
 
-	private void writeFile(List<String> redList, String fileName) {
+	/**
+	 * 以追加的方式写入文件
+	 * 
+	 * @param redList
+	 * @param fileName
+	 */
+	private void writeFile(List<String> redList, String fileName,boolean isAppend) {
 		try {
 			File file = new File(fileName);
 			if (!file.exists()) {
 				file.createNewFile();
 			} else {
 			}
-			FileWriter writer = new FileWriter(file, true);
+			FileWriter writer = new FileWriter(file, isAppend);
 			for (int i = 0; i < redList.size(); i++) {
 				String filerRed = (String) redList.get(i);
 				filerRed = (i == redList.size() - 1) ? filerRed : filerRed + "\n";
@@ -210,7 +202,7 @@ public class LotteryService {
 	}
 
 	/**
-	 * 过滤掉最基本的号码 1：媒体号码 2：推荐号码 3：基本规则号码(必须包含上一期的一个号码,必须包含一个边好，必须有个连号，必须有个差值为1的)
+	 * 处理媒体号码及自己收集的号码
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -224,32 +216,44 @@ public class LotteryService {
 		List<String> redMedia = new ArrayList<String>();
 		// 本人添加的过滤号码
 		List<String> redFile = new ArrayList<String>();
+		Document document = null;
 		if (StringUtils.isNotBlank(xmlData)) {
-			Document document = null;
 			try {
 				document = DocumentHelper.parseText(xmlData);
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
+		}
+		if(document!=null)
+		{
+			if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqMediaUtils.getMediaExpect(document)))) {
+				this.dao.clearSsqLotteryFilterResult();
+				this.dao.clearSsqLotteryCollectResult();
+			}
+		}
+		if(document!=null)
+		{
 			this.expect = LotterySsqMediaUtils.getMediaExpect(document);
-			redMedia = this.lotterySsqMediaService.parseCurrentMediaRedCode(document);
-			this.lotterySsqMediaService.saveCurrentMediaRedCode(redMedia, this.expect);
+			if (!isSaveToDatabase) {
+				redMedia = this.lotterySsqMediaService.parseCurrentMediaRedCode(document);
+				this.lotterySsqMediaService.saveCurrentMediaRedCode(redMedia, this.expect);
+			} else {
+				redMedia = this.lotterySsqMediaService.parseCurrentMediaRedCode(document);
+				this.lotterySsqMediaService.saveCurrentMediaRedCodeToDb(redMedia, this.expect);
+			}
 		}
 		if (LotterySsqConifgService.getIshaveexclude() > 0) {
-			redFile = this.lotterySsqOtherCommendService.parseCurrentFileRedCode("lottery/ssq/excluderedfile.txt");
-			this.lotterySsqOtherCommendService.saveCurrentFileRedCode(redFile, this.expect);
+			if (!isSaveToDatabase) {
+				this.lotterySsqOtherCommendService.parseCurrentFileRedCodeToFile("lottery/ssq/excluderedfile.txt", this.expect);
+			} else {
+				this.lotterySsqOtherCommendService.parseCurrentFileRedCodeToDb("lottery/ssq/excluderedfile.txt");
+			}
 		}
+
 		List<String> redList = new ArrayList<String>();
 		int count = this.dao.getTotalLotteryResult();
 		int last = 0;
 		int page = 40000;
-		// try {
-		// File file = new File("d:/myproject/ssq_red_" + this.expect + ".xml");
-		// if (!file.exists()) {
-		// file.createNewFile();
-		// } else {
-		// }
-		// FileWriter writer = new FileWriter(file, true);
 		while (last < count) {
 			List list = this.dao.getLottoryResultLimit(last, page);
 			last += page;
@@ -266,41 +270,25 @@ public class LotteryService {
 				if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
 					continue;
 				}
-				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
+				if (isSaveToDatabase && this.dao.isExistSsqLotteryCollect(lValue)) {
 					continue;
-				}
-				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
+				} else if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
 					continue;
 				}
 				if (redMedia.contains(lValue)) {
 					continue;
 				}
 				redList.add(lValue);
-
-				// for (int i = 0; i < redList.size(); i++) {
-				// String filerRed = (String) redList.get(i);
-				// filerRed = (i == redList.size() - 1) ? filerRed : filerRed + "\n";
-				// writer.write(lValue + "\n");
-				// }
-
+				if (isSaveToDatabase && redList.size() > 1000) {
+					this.dao.addSsqLotteryFilterResult(redList);
+					redList.clear();
+				} else if (!isSaveToDatabase && redList.size() > 1000) {
+					this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml",true);
+					redList.clear();
+				}
 			}
-			// if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", qs))) {
-			// this.dao.clearSsqLotteryFilterResult();
-			// }
-			// StringBuffer sb = new StringBuffer();
-			// for (int i = 0; i < redList.size(); i++) {
-			// String redCode = redList.get(i);
-			// sb.append(redCode + "\n");
-			// // this.dao.addSsqLotteryFilterResult(redCode);
-			// }
-			// this.dao.saveLotteryGenLog("1", qs, "1");
 		}
-		// writer.close();
-		//
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml");
+		this.dao.saveLotteryGenLog("1", this.expect, "1");
 	}
 
 	/**
@@ -336,22 +324,14 @@ public class LotteryService {
 		List<String> redList = new ArrayList<String>();
 		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqMediaUtils.getMediaExpect(document)))) {
 			this.dao.clearSsqLotteryFilterResult();
+			this.dao.clearSsqLotteryCollectResult();
 		}
 		int count = this.dao.getTotalLotteryResult();
 		int last = 0;
 		int page = 60000;
-		// try {
-		// File file = new File("d:/myproject/ssq_red_" + this.expect + ".xml");
-		// if (!file.exists()) {
-		// file.createNewFile();
-		// } else {
-		// }
-		// FileWriter writer = new FileWriter(file, true);
 		List list = null;
-		int cTemp=0;
 		while (last < count) {
 			list = this.dao.getLottoryResultLimit(last, page);
-			// List list=this.dao.getSsqLottoryResultAll();
 			if (list.size() == count) {
 				last = list.size();
 			} else {
@@ -361,7 +341,7 @@ public class LotteryService {
 				Map lMap = (Map) iterator.next();
 				String lValue = (String) lMap.get("value");
 				String[] lValues = StringUtils.split(lValue, ",");
-				
+
 				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
 					continue;
 				}
@@ -374,37 +354,14 @@ public class LotteryService {
 				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
 					continue;
 				}
-				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
-					continue;
-				}
 				if (redMedia.contains(lValue)) {
 					continue;
 				}
-//				cTemp++;
-//				if(141414>=cTemp){
-//					continue;
-//				}
-				// redList.add(lValue);
-				
 				this.dao.addSsqLotteryFilterResult(lValue);
-				// writer.write(lValue + "\n");
 			}
-			// }
-			// writer.close();
-			//
-			// } catch (IOException e) {
-			// e.printStackTrace();
-			// }
-
-			// StringBuffer sb = new StringBuffer();
-			// for (int i = 0; i < redList.size(); i++) {
-			// String redCode = redList.get(i);
-			// sb.append(redCode + "\n");
-//			this.dao.addSsqLotteryFilterResult(lValue);
-			// }
 		}
-		// this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml");
-		// this.dao.saveLotteryGenLog("1", qs, "1");
+		this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml",true);
+		this.dao.saveLotteryGenLog("1", this.expect, "1");
 	}
 
 	public static void main(String[] args) {

@@ -28,6 +28,12 @@ import com.lyxmq.lottery.ssq.utils.LotteryUtils;
  */
 public class LotterySsqOtherCommendService {
 
+	private LotteryDao dao = null;
+
+	public void setDao(LotteryDao dao) {
+		this.dao = dao;
+	}
+
 	/**
 	 * 从文件中读取号码，包括：红球、蓝球 一行一个号码 "lottery/ssq/excluderedfile.txt"
 	 * 
@@ -90,6 +96,19 @@ public class LotterySsqOtherCommendService {
 		return list;
 	}
 
+	public void parseCurrentFileRedCodeToDb(String fileName) {
+		List<String[]> fileList = this.getCodeFromFile(fileName);
+		List<String> resultList = new ArrayList<String>();
+		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
+			String[] code = (String[]) iterator.next();
+			LotteryUtils.select(6, code[0], resultList);
+			if (resultList.size() > 1000) {
+				this.dao.saveSsqLotteryCollectRedCod(resultList);
+				resultList.clear();
+			}
+		}
+	}
+
 	/**
 	 * 
 	 * @param fileList
@@ -110,6 +129,25 @@ public class LotterySsqOtherCommendService {
 		return this.getRedCodeFromFile(fileList);
 	}
 
+	/**
+	 * 以追加的方式写入文件
+	 * 
+	 * @param expect
+	 * @param string
+	 */
+	public void parseCurrentFileRedCodeToFile(String filename, String expect) {
+		List<String[]> fileList = this.getCodeFromFile(filename);
+		List<String> resultList = new ArrayList<String>();
+		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
+			String[] code = (String[]) iterator.next();
+			LotteryUtils.select(6, code[0], resultList);
+			if (resultList.size() > 1000) {
+				saveCurrentFileRedCode(resultList, expect);
+				resultList.clear();
+			}
+		}
+	}
+
 	public void saveCurrentFileRedCode(List<String> redFile, String qs) {
 		if (CollectionUtils.isNotEmpty(redFile)) {
 			try {
@@ -118,7 +156,7 @@ public class LotterySsqOtherCommendService {
 					file.createNewFile();
 				} else {
 				}
-				FileWriter writer = new FileWriter(file,true);
+				FileWriter writer = new FileWriter(file, true);
 				int temp = 0;
 				for (Iterator<String> iterator = redFile.iterator(); iterator.hasNext();) {
 					temp++;
@@ -135,31 +173,32 @@ public class LotterySsqOtherCommendService {
 			}
 		}
 	}
-//	public static void main(String[] args) throws IOException {
-//		List<String> list=new ArrayList<String>();
-//		list.add("1");
-//		list.add("2");
-//		list.add("3");
-//		list.add("4");
-//		list.add("5");
-//		list.add("6");
-//		list.add("7");
-//		File file = new File("d:/myproject/ssq_file_red_.xml");
-//		if (!file.exists()) {
-//			file.createNewFile();
-//		} else {
-//		}
-//		FileWriter writer = new FileWriter(file,true);
-//		int temp = 0;
-//		for (Iterator<String> iterator = list.iterator(); iterator.hasNext();) {
-//			temp++;
-//			String redCode = (String) iterator.next();
-//			if (temp < list.size()) {
-//				writer.write(redCode + "\n");
-//			} else {
-//				writer.write(redCode);
-//			}
-//		}
-//		writer.close();
-//	}
+	// public static void main(String[] args) throws IOException {
+	// List<String> list=new ArrayList<String>();
+	// list.add("1");
+	// list.add("2");
+	// list.add("3");
+	// list.add("4");
+	// list.add("5");
+	// list.add("6");
+	// list.add("7");
+	// File file = new File("d:/myproject/ssq_file_red_.xml");
+	// if (!file.exists()) {
+	// file.createNewFile();
+	// } else {
+	// }
+	// FileWriter writer = new FileWriter(file,true);
+	// int temp = 0;
+	// for (Iterator<String> iterator = list.iterator(); iterator.hasNext();) {
+	// temp++;
+	// String redCode = (String) iterator.next();
+	// if (temp < list.size()) {
+	// writer.write(redCode + "\n");
+	// } else {
+	// writer.write(redCode);
+	// }
+	// }
+	// writer.close();
+	// }
+
 }

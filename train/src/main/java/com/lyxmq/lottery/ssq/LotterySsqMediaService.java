@@ -3,6 +3,8 @@ package com.lyxmq.lottery.ssq;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +17,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import com.lyxmq.lottery.ssq.utils.LotterySsqMediaUtils;
 import com.lyxmq.lottery.ssq.utils.LotteryUtils;
@@ -214,5 +217,9 @@ public class LotterySsqMediaService {
 		}
 		this.saveHistoryMediaRedStat(expect, LotterySsqMediaUtils.getMediaRedCodeStat(document), StringUtils.join(LotterySsqMediaUtils.getHistoryOpenRedcode(document), ","));
 		this.saveHistoryMediaBlueStat(expect, LotterySsqMediaUtils.getMediaBlueCodeStat(document), LotterySsqMediaUtils.getHistoryOpenBlueCode(document));
+	}
+
+	public void saveCurrentMediaRedCodeToDb(List<String> redMedia, String expect) {
+		this.dao.saveSsqLotteryCollectRedCod(redMedia);
 	}
 }

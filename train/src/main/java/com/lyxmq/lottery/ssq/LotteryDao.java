@@ -1,9 +1,12 @@
 package com.lyxmq.lottery.ssq;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import com.myfetch.myfetch.dao.JdbcBaseDao;
 
@@ -44,7 +47,7 @@ public class LotteryDao extends JdbcBaseDao {
 
 	@SuppressWarnings("unchecked")
 	public List getSsqLottoryFilterResultLimit(int first, int page) {
-		String sql = "select value from ssq_lottery_filter_result t order by id limit " + first + "," + page;
+		String sql = "select value from ssq_lottery_filter_result t limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
@@ -91,6 +94,10 @@ public class LotteryDao extends JdbcBaseDao {
 		String sql = "delete from ssq_lottery_filter_result ";
 		this.getJdbcTemplate().update(sql);
 	}
+	public void clearSsqLotteryCollectResult() {
+		String sql = "delete from ssq_lottery_collect_result ";
+		this.getJdbcTemplate().update(sql);
+	}
 
 	public void deleteSsqLotteryFilterResult() {
 		String sql = "delete from ssq_lottery_filter_result";
@@ -108,5 +115,102 @@ public class LotteryDao extends JdbcBaseDao {
 	public void saveSsqLotteryHistoryStat(String expect, String type, String code, String num, String fen, boolean isTrue) {
 		String sql="insert into ssq_lottery_his_media_stat values(?,?,?,?,?,?)";
 		this.getJdbcTemplate().update(sql, new Object[]{expect,type,code,num,fen,isTrue?1:0});
+	}
+
+	/**
+	 * 保存收集的号码
+	 * @param redMedia
+	 */
+	public void saveSsqLotteryCollectRedCod(final List<String> redMedia) {
+		if(CollectionUtils.isEmpty(redMedia)){
+			return;
+		}
+		BatchPreparedStatementSetter pps=null;
+		String sql="insert into ssq_lottery_collect_result values(?)";
+		pps=new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setString(1, redMedia.get(i));
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return redMedia.size();
+			}
+		};
+		try{
+			this.getJdbcTemplate().batchUpdate(sql, pps);
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
+	}
+
+	public boolean isExistSsqLotteryCollect(String lValue) {
+		String sql="select count(*) from ssq_lottery_collect_result where  value=?";
+		return this.getJdbcTemplate().queryForInt(sql,new Object[]{lValue})>0?true:false;
+	}
+
+	/**
+	 * 经过媒体过滤、文件过滤后留下的红球号码
+	 * @param redList
+	 */
+	public void addSsqLotteryFilterResult(final List<String> redList) {
+		if(CollectionUtils.isEmpty(redList)){
+			return;
+		}
+		BatchPreparedStatementSetter pps=null;
+		String sql = "insert into ssq_lottery_filter_result(value) values (?)";
+		pps=new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setString(1, redList.get(i));
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return redList.size();
+			}
+		};
+		try{
+			this.getJdbcTemplate().batchUpdate(sql, pps);
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
+	}
+	/**
+	 * 保存历史开奖号码s
+	 * @param historyOpenRedcode
+	 * @param join
+	 * @param sum
+	 * @param expect
+	 */
+	public void saveSsqLotteryHisOpenCode(String blueCode, String redCode, int sum, String expect) {
+		String sql="insert into ssq_lottery_his_open_code values(?,?,?,?)";
+		this.getJdbcTemplate().update(sql, new Object[]{expect,redCode,blueCode,sum});
+			
+	}
+	
+	/**
+	 * 媒体统计中最近的一期
+	 * @return
+	 */
+	public Map getSsqLotteryHisMediaStatMaxExpect(){
+		String sql="select expect from ssq_lottery_his_media_stat order by expect desc limit 0,1";
+		List list=this.getJdbcTemplate().queryForList(sql);
+		if(CollectionUtils.isNotEmpty(list)){
+			return (Map)list.get(0);
+		}
+		return null;
+	}
+
+	public Map getSsqLotteryHisOpenCodeMaxExpect() {
+		String sql="select expect from ssq_lottery_his_open_code order by expect desc limit 0,1";
+		List list=this.getJdbcTemplate().queryForList(sql);
+		if(CollectionUtils.isNotEmpty(list)){
+			return (Map)list.get(0);
+		}
+		return null;
 	}
 }
