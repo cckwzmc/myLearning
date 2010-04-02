@@ -1,9 +1,13 @@
 package com.myfetch.service.http;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -13,7 +17,17 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.lang.StringUtils;
+import org.apache.html.dom.HTMLDocumentImpl;
+import org.cyberneko.html.parsers.DOMFragmentParser;
+import org.cyberneko.html.parsers.DOMParser;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import sun.awt.image.ByteArrayImageSource;
 
 import com.myfetch.util.ChangeCharset;
 import com.myfetch.util.Encoding;
@@ -182,6 +196,32 @@ public class HttpHtmlService {
 		return retStr = "";
 	}
 	public static void main(String[] args) {
-		getXmlContent("http://www.500wan.com/static/info/ssq/mediadetail/10017.xml");
+		String html=getHtmlContent("http://my.blog.sina.com.cn/login.php");
+		System.out.println(HtmlParseUtils.getElementById(html, "form_login", "GB2312"));
+		html=getHtmlContent("http://sports.sina.com.cn/l/ssqleitai/").toLowerCase();
+//		html="<table "+StringUtils.substringBetween(html,"<table", "</table>")+"</table>";
+		DocumentFragment documentFragment=new HTMLDocumentImpl().createDocumentFragment();
+		DOMFragmentParser domParser=new DOMFragmentParser();
+		InputStream is=new ByteArrayInputStream(html.getBytes());
+		
+		try {
+			domParser.parse(new InputSource(is), documentFragment);
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(documentFragment.getFirstChild().toString());
+		DOMParser parser=new DOMParser();
+		try {
+			parser.setProperty("http://cyberneko.org/html/properties/default-encoding", "GB2312");
+			parser.parse(new InputSource(is));
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Document doc=parser.getDocument();
+		System.out.println(doc.getTextContent());
 	}
 }

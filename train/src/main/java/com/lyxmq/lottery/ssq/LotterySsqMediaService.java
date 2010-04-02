@@ -174,9 +174,17 @@ public class LotterySsqMediaService {
 			String value = redMap.get(code);
 			String[] stat = StringUtils.split(value, "|");
 			if (StringUtils.indexOf(redCode, "," + code + ",") != -1) {
-				this.dao.saveSsqLotteryHistoryStat(expect, "0", code, stat[0], stat[1], true);
+				try {
+					this.dao.saveSsqLotteryHistoryStat(expect, "0", code, stat[0], stat[1], true);
+				} catch (Exception e) {
+					log.error(e.getMessage());
+				}
 			} else {
-				this.dao.saveSsqLotteryHistoryStat(expect, "0", code, stat[0], stat[1], false);
+				try {
+					this.dao.saveSsqLotteryHistoryStat(expect, "0", code, stat[0], stat[1], false);
+				} catch (Exception e) {
+					log.error(e.getMessage());
+				}
 			}
 		}
 	}
@@ -194,9 +202,17 @@ public class LotterySsqMediaService {
 			String value = blueMap.get(code);
 			String[] stat = StringUtils.split(value, "|");
 			if (StringUtils.equals(blueCode, code)) {
-				this.dao.saveSsqLotteryHistoryStat(expect, "1", code, stat[0], stat[1], true);
+				try {
+					this.dao.saveSsqLotteryHistoryStat(expect, "1", code, stat[0], stat[1], true);
+				} catch (Exception e) {
+					log.error(e.getMessage());
+				}
 			} else {
-				this.dao.saveSsqLotteryHistoryStat(expect, "1", code, stat[0], stat[1], false);
+				try {
+					this.dao.saveSsqLotteryHistoryStat(expect, "1", code, stat[0], stat[1], false);
+				} catch (Exception e) {
+					log.error(e.getMessage());
+				}
 			}
 		}
 	}
@@ -215,7 +231,8 @@ public class LotterySsqMediaService {
 		} catch (DocumentException e) {
 			log.error("XML parse error");
 		}
-		this.saveHistoryMediaRedStat(expect, LotterySsqMediaUtils.getMediaRedCodeStat(document), StringUtils.join(LotterySsqMediaUtils.getHistoryOpenRedcode(document), ","));
+		this.saveHistoryMediaRedStat(expect, LotterySsqMediaUtils.getMediaRedCodeStat(document), StringUtils.join(LotterySsqMediaUtils
+				.getHistoryOpenRedcode(document), ","));
 		this.saveHistoryMediaBlueStat(expect, LotterySsqMediaUtils.getMediaBlueCodeStat(document), LotterySsqMediaUtils.getHistoryOpenBlueCode(document));
 	}
 

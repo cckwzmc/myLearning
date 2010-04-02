@@ -179,7 +179,7 @@ public class LotterySsqMediaUtils {
 		String content = "";
 		url += expect + ".xml";
 		try {
-			content = HttpHtmlService.getHtmlContent(url);
+			content = HttpHtmlService.getXmlContent(url);
 		} catch (Exception e) {
 
 		}

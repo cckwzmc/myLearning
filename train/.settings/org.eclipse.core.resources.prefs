@@ -1,5 +1,7 @@
-#Mon May 25 09:28:45 CST 2009
+#Mon Aug 24 02:08:08 CST 2009
 eclipse.preferences.version=1
+encoding//src/main/java/com/myfetch/service/MyFetchService.java=UTF-8
 encoding//src/main/java/org/model/template/TemplateAbstract.java=UTF-8
 encoding//src/main/java/org/model/template/TemplateAbstractImpl.java=UTF-8
 encoding//src/main/java/org/webservice/server/ScholarFetchServiceInterceptor.java=GBK
+encoding/<project>=UTF-8
