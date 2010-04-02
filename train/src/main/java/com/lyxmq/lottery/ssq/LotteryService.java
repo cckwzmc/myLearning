@@ -7,9 +7,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -54,7 +56,7 @@ public class LotteryService {
 	}
 
 	public void getCurrentExpertMergeResult() {
-		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getXmlUrl());
+		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia1Url());
 		if (StringUtils.isBlank(xmlData)) {
 			return;
 		}
@@ -68,8 +70,7 @@ public class LotteryService {
 
 	@SuppressWarnings("unchecked")
 	public void getCurrentExpertSingleResult() {
-		this.initConifg(true);
-		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getXmlUrl());
+		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia1Url());
 		if (StringUtils.isBlank(xmlData)) {
 			return;
 		}
@@ -158,7 +159,7 @@ public class LotteryService {
 				}
 			}
 		}
-		writeFile(redList, "d:/myproject/current.xml",false);
+		writeFile(redList, "d:/myproject/current.xml", false);
 	}
 
 	/**
@@ -167,7 +168,7 @@ public class LotteryService {
 	 * @param redList
 	 * @param fileName
 	 */
-	private void writeFile(List<String> redList, String fileName,boolean isAppend) {
+	private void writeFile(List<String> redList, String fileName, boolean isAppend) {
 		try {
 			File file = new File(fileName);
 			if (!file.exists()) {
@@ -202,13 +203,12 @@ public class LotteryService {
 	}
 
 	/**
-	 * 处理媒体号码及自己收集的号码
-	 * 
+	 * 从头开始，处理媒体号码及自己收集的号码 第一次过滤
 	 */
 	@SuppressWarnings("unchecked")
-	public void filterCurrentRedCode() {
+	public void filterCurrentRedCodeFirst() {
 		this.initConifg(true);
-		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getXmlUrl());
+		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia1Url());
 		if (StringUtils.isBlank(xmlData)) {
 			return;
 		}
@@ -224,15 +224,13 @@ public class LotteryService {
 				e.printStackTrace();
 			}
 		}
-		if(document!=null)
-		{
+		if (document != null) {
 			if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqMediaUtils.getMediaExpect(document)))) {
 				this.dao.clearSsqLotteryFilterResult();
 				this.dao.clearSsqLotteryCollectResult();
 			}
 		}
-		if(document!=null)
-		{
+		if (document != null) {
 			this.expect = LotterySsqMediaUtils.getMediaExpect(document);
 			if (!isSaveToDatabase) {
 				redMedia = this.lotterySsqMediaService.parseCurrentMediaRedCode(document);
@@ -250,43 +248,13 @@ public class LotteryService {
 			}
 		}
 
-		List<String> redList = new ArrayList<String>();
 		int count = this.dao.getTotalLotteryResult();
 		int last = 0;
 		int page = 40000;
 		while (last < count) {
 			List list = this.dao.getLottoryResultLimit(last, page);
 			last += page;
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Map lMap = (Map) iterator.next();
-				String lValue = (String) lMap.get("value");
-				String[] lValues = StringUtils.split(lValue, ",");
-				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
-					continue;
-				}
-				if (isSaveToDatabase && this.dao.isExistSsqLotteryCollect(lValue)) {
-					continue;
-				} else if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
-					continue;
-				}
-				if (redMedia.contains(lValue)) {
-					continue;
-				}
-				redList.add(lValue);
-				if (isSaveToDatabase && redList.size() > 1000) {
-					this.dao.addSsqLotteryFilterResult(redList);
-					redList.clear();
-				} else if (!isSaveToDatabase && redList.size() > 1000) {
-					this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml",true);
-					redList.clear();
-				}
-			}
+			filterRedCode(redMedia, redFile, list);
 		}
 		this.dao.saveLotteryGenLog("1", this.expect, "1");
 	}
@@ -298,7 +266,7 @@ public class LotteryService {
 	@SuppressWarnings("unchecked")
 	public void filterCurrentRedCodeFromFile() {
 		this.initConifg(true);
-		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getXmlUrl());
+		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia1Url());
 		if (StringUtils.isBlank(xmlData)) {
 			return;
 		}
@@ -321,7 +289,6 @@ public class LotteryService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		List<String> redList = new ArrayList<String>();
 		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqMediaUtils.getMediaExpect(document)))) {
 			this.dao.clearSsqLotteryFilterResult();
 			this.dao.clearSsqLotteryCollectResult();
@@ -337,31 +304,100 @@ public class LotteryService {
 			} else {
 				last += page;
 			}
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Map lMap = (Map) iterator.next();
-				String lValue = (String) lMap.get("value");
-				String[] lValues = StringUtils.split(lValue, ",");
+			filterRedCode(redMedia, redFile, list);
+		}
+		this.dao.saveLotteryGenLog("1", this.expect, "1");
+	}
 
-				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
-					continue;
-				}
-				if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
-					continue;
-				}
-				if (redMedia.contains(lValue)) {
-					continue;
-				}
-				this.dao.addSsqLotteryFilterResult(lValue);
+	/**
+	 * 第一步过滤号码算法
+	 * 
+	 * @param redMedia
+	 * @param redFile
+	 * @param redList
+	 * @param list
+	 */
+	@SuppressWarnings("unchecked")
+	private void filterRedCode(List<String> redMedia, List<String> redFile, List list) {
+		List<String> redList = new ArrayList<String>();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Map lMap = (Map) iterator.next();
+			String lValue = (String) lMap.get("value");
+			String[] lValues = StringUtils.split(lValue, ",");
+
+			if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
+				continue;
+			}
+			if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
+				continue;
+			}
+			if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
+				continue;
+			}
+
+			if (isSaveToDatabase && this.dao.isExistSsqLotteryCollect(lValue)) {
+				continue;
+			} else if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
+				continue;
+			}
+
+			if (redMedia.contains(lValue)) {
+				continue;
+			}
+			redList.add(lValue);
+			if (isSaveToDatabase && redList.size() > 1000) {
+				this.dao.addSsqLotteryFilterResult(redList);
+				redList.clear();
+			} else if (!isSaveToDatabase && redList.size() > 1000) {
+				this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml", true);
+				redList.clear();
 			}
 		}
-		this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml",true);
-		this.dao.saveLotteryGenLog("1", this.expect, "1");
+	}
+
+	public void filterCurrentRedCode() {
+		this.initConifg(true);
+		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia1Url());
+		if (StringUtils.isBlank(xmlData)) {
+			return;
+		}
+		Document document = null;
+		try {
+			document = DocumentHelper.parseText(xmlData);
+		} catch (DocumentException e) {
+			logger.error("document parse error。");
+		}
+		if (document == null) {
+			logger.error("document is null。");
+			return;
+		}
+		boolean isExist = MapUtils.isNotEmpty(this.dao.isGenLotteryResult("1", LotterySsqMediaUtils.getMediaExpect(document)));
+		if (isExist) {
+			// 以追加的方式过滤号码，即在原来的基础上删除号码
+			this.filterCurrentRedCodeDel(document);
+		} else {
+			this.filterCurrentRedCodeFirst();
+		}
+	}
+
+	/**
+	 * 再次删除通常是指读取文本中的来过滤
+	 */
+	@SuppressWarnings("unchecked")
+	public void filterCurrentRedCodeDel(Document document) {
+		this.expect = LotterySsqMediaUtils.getMediaExpect(document);
+		if (LotterySsqConifgService.getIshaveexclude() > 0) {
+			if (!isSaveToDatabase) {
+				this.lotterySsqOtherCommendService.parseCurrentFileRedCodeToFile("lottery/ssq/excluderedfile.txt", this.expect);
+			} else {
+				this.dao.clearSsqLotteryCollectResult();
+				this.lotterySsqOtherCommendService.parseCurrentFileRedCodeToDb("lottery/ssq/excluderedfile.txt");
+			}
+		}
+		if(this.dao.getTotalLotteryCollectResult()>0)
+		{
+			this.dao.deleteSsqLotteryFilterResultInCollect();
+		}
 	}
 
 	public static void main(String[] args) {

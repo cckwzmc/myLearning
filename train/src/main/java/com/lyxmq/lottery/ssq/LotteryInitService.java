@@ -186,7 +186,7 @@ public class LotteryInitService {
 	@SuppressWarnings("unchecked")
 	public void initHistoryMediaStat() {
 		new LotterySsqConifgService();
-		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getXmlUrl());
+		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia1Url());
 		if (StringUtils.isBlank(xmlData)) {
 			return;
 		}
@@ -204,10 +204,27 @@ public class LotteryInitService {
 		if(MapUtils.isNotEmpty(map)){
 			hisExpect=(String) map.get("expect");
 		}
+		else{
+			hisExpect="08088";
+		}
+		expectInt--;
 		for (int i = expectInt; i > NumberUtils.toInt(hisExpect); i--) {
 			xmlContent = LotterySsqMediaUtils.getHistoryMediaXml(i < 10000 ? "0" + i : i + "");
+			if(i%1000>158){
+				i=i/1000*1000+155;
+				continue;
+			}
+			try {
+				document = DocumentHelper.parseText(xmlContent);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				document=null;
+			}
+			if(document==null){
+				continue;
+			}
 			if (StringUtils.isNotBlank(xmlContent)) {
-				this.lotterySsqMediaService.saveHistoryMediaStat(xmlContent,expectInt<10000?"0"+expectInt:expectInt+"");
+				this.lotterySsqMediaService.saveHistoryMediaStat(xmlContent,i<10000?"0"+i:i+"");
 			}
 		}
 		
@@ -220,7 +237,7 @@ public class LotteryInitService {
 	@SuppressWarnings("unchecked")
 	public void initHistoryOpenCode() {
 		new LotterySsqConifgService();
-		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getXmlUrl());
+		String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia1Url());
 		if (StringUtils.isBlank(xmlData)) {
 			return;
 		}
@@ -237,11 +254,28 @@ public class LotteryInitService {
 		String hisExpect="";
 		if(MapUtils.isNotEmpty(map)){
 			hisExpect=(String) map.get("expect");
+		}else{
+			hisExpect="08088";
 		}
+		expectInt--;
 		for (int i = expectInt; i > NumberUtils.toInt(hisExpect); i--) {
 			xmlContent = LotterySsqMediaUtils.getHistoryMediaXml(i < 10000 ? "0" + i : i + "");
 			if (StringUtils.isNotBlank(xmlContent)) {
 				int sum=0;
+				try {
+					document = DocumentHelper.parseText(xmlContent);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+					document=null;
+				}
+				if(i%1000>158){
+					i=i/1000*1000+155;
+					continue;
+				}
+				if(document==null){
+					continue;
+				}
+				
 				String[] redCode=LotterySsqMediaUtils.getHistoryOpenRedcode(document);
 				if(redCode==null||redCode.length!=6){
 					continue;
@@ -249,7 +283,7 @@ public class LotteryInitService {
 				for (int j = 0; j < redCode.length; j++) {
 					sum+=NumberUtils.toInt(redCode[j]);
 				}
-				this.dao.saveSsqLotteryHisOpenCode(LotterySsqMediaUtils.getHistoryOpenBlueCode(document),StringUtils.join(redCode, ","),sum,expectInt<10000?"0"+expectInt:expectInt+"");
+				this.dao.saveSsqLotteryHisOpenCode(LotterySsqMediaUtils.getHistoryOpenBlueCode(document),StringUtils.join(redCode, ","),sum,i<10000?"0"+i:i+"");
 			}
 		}
 		

@@ -14,7 +14,8 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
  * 
  */
 public class LotterySsqConifgService {
-	private static String xmlUrl = "";
+	private static String media1Url = "";
+	private static String media2Url = "";
 	private static int quOne = -1;
 	private static int quTwo = -1;
 	private static int quThree = 3;
@@ -63,7 +64,8 @@ public class LotterySsqConifgService {
 	static {
 		try {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("lottery/ssq/lottery.properties");
-			xmlUrl = StringUtils.isNotBlank(pro.getProperty("xmlUrl")) ? pro.getProperty("xmlUrl") : xmlUrl;
+			media1Url = StringUtils.isNotBlank(pro.getProperty("media1Url")) ? pro.getProperty("media1Url") : media1Url;
+			media2Url = StringUtils.isNotBlank(pro.getProperty("media2Url")) ? pro.getProperty("media2Url") : media2Url;
 			quOne = StringUtils.isNotBlank(pro.getProperty("quOne")) ? NumberUtils.toInt(pro.getProperty("quOne")) : quOne;
 			quTwo = StringUtils.isNotBlank(pro.getProperty("quTwo")) ? NumberUtils.toInt(pro.getProperty("quTwo")) : quTwo;
 			quThree = StringUtils.isNotBlank(pro.getProperty("quThree")) ? NumberUtils.toInt(pro.getProperty("quThree")) : quThree;
@@ -113,12 +115,29 @@ public class LotterySsqConifgService {
 
 	}
 
-	public static String getXmlUrl() {
-		return xmlUrl;
+
+	/**
+	 * XML内容
+	 * @return
+	 */
+	public static String getMedia1Url() {
+		return media1Url;
 	}
 
-	public static void setXmlUrl(String xmlUrl) {
-		LotterySsqConifgService.xmlUrl = xmlUrl;
+	public static void setMedia1Url(String media1Url) {
+		LotterySsqConifgService.media1Url = media1Url;
+	}
+
+	/**
+	 * HTML 内容
+	 * @return
+	 */
+	public static String getMedia2Url() {
+		return media2Url;
+	}
+
+	public static void setMedia2Url(String media2Url) {
+		LotterySsqConifgService.media2Url = media2Url;
 	}
 
 	public static int getQuOne() {
