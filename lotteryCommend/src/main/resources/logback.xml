@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<Encoding>UTF-8</Encoding>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				%date [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+		</layout>
+	</appender>
+
+	<appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>lottery_commend.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				lottery_commend.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				%date [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+		</layout>
+	</appender>
+
+
+	<logger name="org.springframework">
+		<level value="error" />
+	</logger>
+	<logger name="org.springframework.security">
+		<level value="error" />
+	</logger>
+
+	<logger name="net.sf.ehcache">
+		<level value="error" />
+	</logger>
+	<logger name="org.hibernate">
+		<level value="error" />
+	</logger>
+	<logger name="org.hibernate.SQL">
+		<level value="info" />
+	</logger>
+	<logger name="com.lotterycommend.web">
+		<level value="info"></level>
+	</logger>
+	<root>
+		<level value="info" />
+		<appender-ref ref="stdout" />
+		<appender-ref ref="logfile" />
+	</root>
+</configuration>
+

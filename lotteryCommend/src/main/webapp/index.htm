@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<!-- Framework CSS -->
+<link rel="stylesheet" href="resources/css/blueprint/screen.css"
+	type="text/css" media="screen, projection" />
+<!--<link rel="stylesheet" href="resources/css/blueprint/print.css"
+	type="text/css" media="print" />
+-->
+<!--[if lt IE 8]><link rel="stylesheet" href="resources/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+<!-- Import fancy-type plugin for the sample page. -->
+<link rel="stylesheet"
+	href="resources/css/blueprint/plugins/fancy-type/screen.css"
+	type="text/css" media="screen, projection" />
+	<style>
+	  .nav_main {
+			background:url("http://www.500wan.com/images/info/public/bg_nav_main.gif") repeat scroll 0 0 transparent;
+			border-color:#5082C1;
+			border-style:solid;
+			border-width:0 1px;
+			color:#BED9F5;
+			height:32px;
+			line-height:34px;
+			margin:auto;
+			overflow:hidden;
+			width:966px;
+		}
+		.nav_main ul {
+			margin-left:15px;
+			list-style:none outside none;
+		}
+		.nav_main a:link, .nav_main a:visited {
+			color:#FFFFFF;
+			font-weight:bold;
+			margin:0 5px;
+			text-decoration:none;
+		}
+		.nav_main a:hover, .nav_main a:active {
+			color:#FFFF00;
+			text-decoration:underline;
+		}
+		.nav_main li {
+			float:left;
+		}
+		.login {
+			background:url("http://www.500wan.com/images/info/public/img_01.gif") repeat-x scroll 0 0 transparent;
+			border:1px solid #8BC0E7;
+			height:200px;
+			overflow:hidden;
+			width:228px;
+		}
+		.login2 {
+			background:url("http://www.500wan.com/images/info/public/img_03.gif") repeat-x scroll center bottom transparent;
+			height:200px;
+			width:228px;
+		}
+		.login h1 {
+			background:url("http://www.500wan.com/images/info/public/img_02.gif") no-repeat scroll 0 0 transparent;
+			color:#000000;
+			font-size:14px;
+			height:16px;
+			margin:8px;
+			overflow:hidden;
+			padding-left:15px;
+			padding-top:2px;
+		}
+		.login .help {
+			background:url("http://www.500wan.com/images/info/public/line_01.gif") repeat-x scroll 0 0 transparent;
+			line-height:20px;
+			margin:5px 3px 3px;
+			padding:5px 0 0 5px;
+		}
+		.input {
+			border:1px solid #D0E4FF;
+			color:#004D9D;
+			font-family:Verdana,Arial;
+		}
+		.news {
+			background:url("http://www.500wan.com/images/info/public/img_04.gif") repeat-x scroll center bottom transparent;
+			border:1px solid #8BC0E7;
+			float:right;
+			height:241px;
+			margin-left:10px;
+			overflow:hidden;
+			width:320px;
+		}
+		.focus {
+			border:1px solid #8BC0E7;
+			float:left;
+			height:239px;
+			margin-left:10px;
+			padding:1px;
+			width:391px;
+		}
+	</style>
+</head>
+<body>
+<div id="top-bar">
+	<div class="container">
+		<img src="http://img.500wan.com/upimages/sfc/36faa2b2-6196-4e5d-ac5d-d7901e0dff09.gif" alt="" />
+	</div>
+	<div class="container">
+		<div class="span-12">logo</div>
+		<div class="span-12 last">重要链接</div>
+	</div>	
+</div>
+<div id="menu">
+	<div class="container">
+		<div class="nav_main">
+		  <ul>
+		    <li><a href="/">首 页</a>|</li>
+		    <li><a target="_blank" href="/pages/info/guoguan/">过关统计</a>|</li>
+		    <li><a target="_blank" href="/pages/info/kaijiang/">全国开奖</a>|</li>
+		    <li><a target="_blank" href="/pages/info/hero/">名人堂</a>|</li>
+		    <li><a target="_blank" href="http://leitai.500wan.com/"><font color="#ffff00">有奖擂台</font></a>|</li>
+		    <li><a target="_blank" href="/pages/info/paihang/">排行榜</a>|</li>
+		    <li><a target="_blank" href="http://info.500wan.com/n_opencode/">足彩研究所</a>|</li>
+		    <li><a target="_blank" href="http://yegoo.500wan.com">彩票客户端</a>|</li>
+		    <li><a target="_blank" href="http://soft.500wan.com/">过滤软件</a>|</li>
+		    <li><a target="_blank" href="/pages/info/odds/">指数中心</a>|</li>
+		    <li><a target="_blank" href="http://live.500wan.com/">即时比分</a>|</li>
+		    <li><a target="_blank" href="/pages/info/soccerdata/">联赛资料</a>|</li>
+		    <li><a target="_blank" href="/pages/info/datachart/">数据图表</a>|</li>
+		    <li><a target="_blank" href="http://3g.500wan.com/pages/wap/">手机</a>|</li>
+		    <li><a target="_blank" href="http://game.500wan.com/">游戏</a></li>
+		  </ul>
+		</div>
+	</div>
+</div>
+<div id="split" class="container" style="height:8px;">
+</div>
+<div id="main1" class="container">
+		<div class="span-6">
+			<div class="login">
+				<div class="login2">
+					<h1>会员登录</h1>
+					<div>
+					<form id="login_form" method="post" action="http://passport.500wan.com/login/login.php">
+					<div style="margin: 0px;padding: 8px;0px;0px;0px;">	
+						<div  style="margin: 0px;padding: 0px;">
+							用户名： <input type="text" class="input" id="u" name="u"/>
+						</div>
+						<div  style="margin: 0px;padding: 0px;">
+							密&nbsp;&nbsp;&nbsp;&nbsp;码： <input type="password" class="input" id="p" name="p"/>
+						</div>
+						<div  style="margin: 0px;padding: 0px;">
+							验证码： <input type="text" maxlength="4" size="6" class="input" id="c" name="c"/><span id="veid"></span>
+						</div>
+					</div>	
+					<table cellspacing="5" cellpadding="0" border="0" align="center">
+						<tbody>
+							<tr>
+								<td><input type="image" src="http://www.500wan.com/images/info/public/btn_login3.gif" value="提交" name="Submit"></td>
+								<td><a target="_blank" href="http://passport.500wan.com/pages/info/user/">免费注册</a> | <a target="_blank" href="http://passport.500wan.com/pages/info/user/getpwd.php">忘记密码</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<table cellspacing="0" cellpadding="0" border="0" align="center" style="margin-top: 10px;">
+						<tbody>
+							<tr>
+								<td width="106"><a onfocus="this.blur()" href="javascript:void(TenpayUserLogin('',this));"><img border="0" src="/images/info/public/hezuo/btn_login_qq3.gif"></a></td>
+								<td><a onfocus="this.blur()" href="javascript:void(zfb.userLogin('opt=', self));"><img border="0" src="/images/info/public/hezuo/btn_login_zfb.gif"></a></td>
+							</tr>
+						</tbody>
+					</table>
+					</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	<div class="span-10 first">
+		<div class="focus">
+			<script type="text/javascript">
+			//&lt;![CDATA[    
+			 var focus_width=391
+			 var focus_height=221
+			 var text_height=18
+			 var swf_height = focus_height+text_height
+			 var pics=""
+			 var links=""
+			 var texts=""
+			 
+			 pics+="http://img.500wan.com/upimages/sfc/bb0dcd84-0fb0-4cc5-a91c-6c9bb1fd6b60.jpg"+"|"
+			 links+="http://www.500wan.com/static/info/index/news/topnews/634030426281171170_215654.shtml"+"|"
+			 texts+="“冷”空气侵袭意西 胜负彩18期迎990万滚存"+"|"
+			 
+			 pics+="http://img.500wan.com/upimages/sfc/24d96ced-6b00-4d17-998e-6c4ba40947a8.jpg"+"|"
+			 links+="http://www.500wan.com/static/info/bjdc/news/newslist/634025450843747257_214949.shtml"+"|"
+			 texts+="混合串+倍投“黄超凤”拿下41,503元"+"|"
+			 
+			 pics+="http://img.500wan.com/upimages/sfc/9cda6bf0-1d93-4b55-8104-087211c209f6.jpg"+"|"
+			 links+="http://www.500wan.com/static/info/index/allarticle/634022631382142564_214588.shtml"+"|"
+			 texts+="开门大利市“敢动奥巴马”夺胜负头奖346万"+"|"
+			 
+			 pics+="http://img.500wan.com/upimages/sfc/d37df133-916d-4bf6-a2e9-a5441deaa7e3.jpg"+"|"
+			 links+="http://www.500wan.com/static/info/index/allarticle/634012286166979006_214154.shtml"+"|"
+			 texts+="胜负007期、008期本站连中2注500万"+"|"
+			 
+			 pics=pics.substring(0,pics.length-1)
+			 links=links.substring(0,links.length-1)
+			 texts=texts.substring(0,texts.length-1)
+			 var param = { allowScriptAccess:"sameDomain", menu:"false", wmode:"opaque", bgcolor:"#F0F0F0" };
+			 param.FlashVars = 'pics='+pics+'&amp;links='+links+'&amp;texts='+texts+'&amp;borderwidth='+focus_width+'&amp;borderheight='+focus_height+'&amp;textheight='+text_height;
+			 document.write(fw.ui.flash("http://www.500wan.com/images/info/public/focussports1.swf", focus_width, swf_height, param));
+			//]]&gt;
+			 </script><embed width="391" height="239" src="/lottery/resources/images/focussports1.swf" quality="high" flashvars="pics=http://img.500wan.com/upimages/sfc/bb0dcd84-0fb0-4cc5-a91c-6c9bb1fd6b60.jpg|http://img.500wan.com/upimages/sfc/24d96ced-6b00-4d17-998e-6c4ba40947a8.jpg|http://img.500wan.com/upimages/sfc/9cda6bf0-1d93-4b55-8104-087211c209f6.jpg|http://img.500wan.com/upimages/sfc/d37df133-916d-4bf6-a2e9-a5441deaa7e3.jpg&amp;links=http://www.500wan.com/static/info/index/news/topnews/634030426281171170_215654.shtml|http://www.500wan.com/static/info/bjdc/news/newslist/634025450843747257_214949.shtml|http://www.500wan.com/static/info/index/allarticle/634022631382142564_214588.shtml|http://www.500wan.com/static/info/index/allarticle/634012286166979006_214154.shtml&amp;texts=“冷”空气侵袭意西 胜负彩18期迎990万滚存|混合串+倍投“黄超凤”拿下41,503元|开门大利市“敢动奥巴马”夺胜负头奖346万|胜负007期、008期本站连中2注500万&amp;borderwidth=391&amp;borderheight=221&amp;textheight=18" bgcolor="#F0F0F0" wmode="opaque" menu="false" allowscriptaccess="sameDomain" type="application/x-shockwave-flash"><a href="http://www.500wan.com/images/info/public/focussports1.swf" class="vglpgzbcdzdnvgaecnms ffbaafmaoxlzcljtvcgi" title="点击这里使 Adblock Plus 过滤该对象" style="left: 747px ! important; top: 222px ! important;"></a><a href="http://www.500wan.com/images/info/public/focussports1.swf" class="vglpgzbcdzdnvgaecnms"></a>
+		</div>
+	</div>
+	<div class="span-8 last">
+			<div class="news">
+				<div class="topnews">
+				<h1><a target="_blank" href="http://www.500wan.com/static/info/index/news/topnews/634030426281171170_215654.shtml">滚存990万创机遇 任九017期迎大奖72万</a></h1>
+				<div class="content"><font color="#0000ff">[</font><a target="_blank" href="http://www.500wan.com/static/info/index/allarticle/634029624254506865_215550.shtml"><font color="#0000ff">胜负15期本站会员命中4注头奖</font></a><font color="#0000ff"> </font><a target="_blank"
+					href="http://www.500wan.com/static/info/index/allarticle/634027805546694192_215246.shtml"><font color="#0000ff">14期5注一等遗憾流产</font></a><font color="#0000ff">]</font></div>
+				<ul style="margin-right: 8px;" class="list1">
+				
+					<li><font color="#ff0000">[中奖] </font><a target="_blank" href="http://www.500wan.com/static/info/index/allarticle/634022631382142564_214588.shtml"><font color="#ff0000">开门大利市"敢动奥巴马"夺胜负10期头奖346万</font></a></li>
+				
+					<li>[喜讯] <a target="_blank" href="http://www.500wan.com/static/info/ssq/news/newlist/634024377939945748_214796.shtml">双色球虎年首期好彩头</a> <a target="_blank" href="http://www.500wan.com/static/info/ssq/news/ssqhx/634026021558609207_214957.shtml">四川彩民20元揽5256万</a></li>
+				
+					<li>[关注] <a target="_blank" href="http://3g.500wan.com/pages/huodong/newyear/index.shtml">500WAN手机购彩 娱乐便民 精彩无限 好运随行</a></li>
+				
+					<li>[盘点] <a target="_blank" href="http://www.500wan.com/static/info/index/allarticle/634015854044306549_214562.shtml">牛气常在无人能及 虎虎生威共创购彩中奖福地</a></li>
+				
+					<li>[重磅] <a target="_blank" href="http://www.500wan.com/static/info/index/news/topnews/634012236186134592_214101.shtml">本站第27注500万:"莱万特"胜负008期谱写神话<font color="#0000ff"></font></a></li>
+					<li class="line"></li>
+					<li>[开奖] <a target="_blank" href="http://www.500wan.com/static/info/index/allarticle/634024309671536236_214755.shtml">胜负13期会员中一等奖2注</a>&nbsp;<a href="http://www.500wan.com/static/info/index/allarticle/634023463386629874_214662.shtml">胜负12期中头奖6注</a></li>
+				
+					<li>[开奖] <a target="_blank" href="http://www.500wan.com/static/info/index/allarticle/634023463386629874_214662.shtml">胜负彩10012期 “3764432”等讨得新年好彩头</a></li>
+				
+				</ul>
+				</div>
+			</div>
+	</div>
+</div>
+<div id="ad1" class="container">
+	广告
+</div>
+<div id="main2" class="container">
+	<div class="span-7">最新出奖信息</div>
+	<div class="span-8">分类资讯</div>
+	<div class="span-7 last">历史记录</div>
+</div>
+<div id="ad2" class="container">
+	广告
+</div>
+</body>
+</html>

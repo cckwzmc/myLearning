@@ -1,0 +1,96 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:s="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.0.xsd"
+	default-autowire="byType" default-lazy-init="true">
+	<!-- 在xml中配置安全的方法 -->
+	<!--
+		<s:http auto-config="true" lowercase-comparisons="false"> <s:intercept-url pattern="/resources/**" filters="none" /> <s:intercept-url pattern="/login.jsp*" filters="none"
+		/> <s:intercept-url pattern="/**" access="ROLE_USER" /> <s:form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?error=true"
+		login-processing-url="/j_security_check" /> <s:session-management> <s:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" expired-url="/expired.jsp" />
+		</s:session-management> <s:remember-me/> </s:http> <s:authentication-manager alias="authenticationManager" />
+	-->
+	<!-- 验证管理器 -->
+	<!--<s:authentication-manager alias="authenticationManager" />
+
+	--><!-- 授权判断配置, 将授权名称的默认前缀由ROLE_改为L_. -->
+	<!--
+		<bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased"> <property name="decisionVoters"> <list> IRIS 针对 SaaS方式的验证做出特殊处理 <bean
+		class="com.iris.scm.security.springsecurity.RoleInsVoter"> <property name="rolePrefix" value="L_" /> </bean> <bean
+		class="org.springframework.security.access.vote.AuthenticatedVoter" /> </list> </property> </bean>
+	--><!-- 自定义过滤器,在数据库存储URL-授权 beging -->
+	<!--
+		<bean id="filterSecurityInterceptor" class="org.springframework.security.intercept.web.FilterSecurityInterceptor"> <s:custom-filter before="FILTER_SECURITY_INTERCEPTOR"
+		/> <property name="accessDecisionManager" ref="accessDecisionManager" /> <property name="objectDefinitionSource" ref="databaseDefinitionSource" /> </bean>
+	--><!-- DefinitionSource工厂,使用resourceDetailService提供的URL-授权关系. -->
+	<!--
+		<bean id="databaseDefinitionSource" class="com.iris.scm.security.springsecurity.DefinitionSourceFactoryBean"> <property name="resourceDetailService"
+		ref="resourceDetailService" /> </bean> <bean id="resourceDetailService" class="com.iris.scm.security.service.RemotingResourceDetailServiceImpl"> <property
+		name="remotingServiceFactory" ref="remotingServiceFactory"></property> </bean>
+	-->
+	<!-- 把配置移入数据库 -->
+	<s:http access-decision-manager-ref="accessDecisionManager" lowercase-comparisons="false">
+		<s:access-denied-handler error-page="/login.jsp?error=true" />
+		<s:session-management>
+			<s:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" expired-url="/expired.jsp" />
+		</s:session-management>
+		<s:logout />
+		<s:anonymous />
+		<s:remember-me />
+	</s:http>
+	<!-- 验证管理器 -->
+	<s:authentication-manager alias="authenticationManagerAlias">
+		<s:authentication-provider user-service-ref="userDetailService">
+			<s:password-encoder hash="md5" />
+		</s:authentication-provider>
+	</s:authentication-manager>
+
+	<!--JCaptcha验证码服务 -->
+	<bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+		<property name="captchaEngine">
+			<bean class="org.springside.modules.security.jcaptcha.GMailEngine" />
+		</property>
+		<!-- 
+		默认生成的图片180秒过期 , 可另行设置
+		<property name="minGuarantedStorageDelayInSeconds" value="180" />
+		-->
+	</bean>
+	<bean id="userDetailService" class="com.lotteryCommend.security.core.UserDetailsService"></bean>
+	<!-- TODO MR: Modify LDAP and CAS Configuration for Spring Security 2.0.x -->
+
+	<!-- ===================== LDAP AUTHENTICATION ==================== -->
+	<!--
+		BEGIN: Sample LDAP/RollerDB hybrid security configuration <bean id="initialDirContextFactory" class="org.springframework.security.ldap.DefaultInitialDirContextFactory">
+		<constructor-arg value="LDAP_URL"/> <property name="managerDn" value="LDAP_USERNAME"/> <property name="managerPassword" value="LDAP_PASSWORD"/> </bean> <bean
+		id="ldapUserSearch" class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch"> <constructor-arg index="0" value=""/> <constructor-arg index="1"
+		value="uid={0}"/> <constructor-arg index="2" ref="initialDirContextFactory"/> <property name="searchSubtree" value="true"/> </bean> <bean id="ldapAuthProvider"
+		class="org.springframework.security.providers.ldap.LdapAuthenticationProvider"> <constructor-arg> <bean
+		class="org.springframework.security.providers.ldap.authenticator.BindAuthenticator"> <constructor-arg ref="initialDirContextFactory"/> <property name="userSearch"
+		ref="ldapUserSearch"/> </bean> </constructor-arg> <constructor-arg ref="jdbcAuthoritiesPopulator"/> <property name="userCache" ref="userCache"/> </bean> <bean
+		id="jdbcAuthoritiesPopulator" class="org.apache.roller.weblogger.ui.core.security.AuthoritiesPopulator"> <property name="defaultRole" value="register"/> </bean>
+	-->
+	<!-- END Sample LDAP/RollerDB hybrid security configuration -->
+
+	<!-- ======================== CENTRAL AUTHENTICATION SERVICE (CAS) ======================= -->
+	<!--
+		BEGIN: Sample CAS/RollerDB hybrid security configuration <bean id="casProcessingFilter" class="org.springframework.security.ui.cas.CasProcessingFilter"> <property
+		name="authenticationManager" ref="authenticationManager"/> <property name="authenticationFailureUrl" value="/roller-ui/login.rol?error=true"/> <property
+		name="defaultTargetUrl" value="/"/> <property name="filterProcessesUrl" value="/roller_j_security_check"/> </bean> <bean id="casProcessingFilterEntryPoint"
+		class="org.springframework.security.ui.cas.CasProcessingFilterEntryPoint"> <property name="loginUrl" value="https://localhost:8443/cas/login"/> <property
+		name="serviceProperties" ref="serviceProperties"/> </bean> <bean id="casAuthenticationProvider"
+		class="org.springframework.security.providers.cas.CasAuthenticationProvider"> <property name="casAuthoritiesPopulator"> <bean
+		class="org.apache.roller.weblogger.ui.core.security.RollerCasPopulator"> <property name="userDetailsService" ref="jdbcAuthenticationDao"/> </bean> </property> <property
+		name="casProxyDecider" ref="casProxyDecider"/> <property name="ticketValidator" ref="casProxyTicketValidator"/> <property name="statelessTicketCache"
+		ref="statelessTicketCache"/> <property name="key" value="rollerlovesacegi"/> </bean> <bean id="casProxyTicketValidator"
+		class="org.springframework.security.providers.cas.ticketvalidator.CasProxyTicketValidator"> <property name="casValidate"
+		value="https://localhost:8443/cas/proxyValidate"/> <property name="proxyCallbackUrl" value="http://localhost:8080/roller/casProxy/receptor"/> <property
+		name="serviceProperties" ref="serviceProperties"/> <property name="trustStore" value="/Library/Java/Home/lib/security/cacerts"/> </bean> <bean id="cacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/> <bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager"/> <property name="cacheName" value="ticketCache"/> </bean> <bean id="statelessTicketCache"
+		class="org.springframework.security.providers.cas.cache.EhCacheBasedTicketCache"> <property name="cache" ref="ticketCacheBackend"/> </bean> <bean id="casProxyDecider"
+		class="org.springframework.security.providers.cas.proxy.RejectProxyTickets"/> <bean id="serviceProperties" class="org.springframework.security.ui.cas.ServiceProperties">
+		<property name="service" value="http://localhost:8080/roller/roller_j_security_check"/> <property name="sendRenew" value="false"/> </bean>
+	-->
+	<!-- END Sample CAS/RollerDB hybrid security configuration -->
+</beans>
