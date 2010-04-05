@@ -2,6 +2,8 @@ package com.lyxmq.lottery.ssq;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
@@ -19,7 +21,7 @@ public class LotteryInitService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotteryInitService.class);
 	LotteryDao dao = null;
 	LotterySsqMediaService lotterySsqMediaService = null;
-
+	private List<String> redList=new ArrayList<String>();
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
@@ -177,7 +179,12 @@ public class LotteryInitService {
 		if (isReturn) {
 			return;
 		}
-		this.dao.saveSsqLottoryResult(redCode);
+		redList.add(redCode);
+		if(redList.size()>2000)
+		{
+			this.dao.batchSaveSsqLottoryResult(redList);
+			redList.clear();
+		}
 	}
 
 	/**

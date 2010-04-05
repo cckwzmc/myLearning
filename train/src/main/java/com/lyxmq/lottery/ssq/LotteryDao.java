@@ -257,4 +257,29 @@ public class LotteryDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForInt(sql);
 	}
 
+	public void batchSaveSsqLottoryResult(final List<String> redList) {
+		if (CollectionUtils.isEmpty(redList)) {
+			return;
+		}
+		BatchPreparedStatementSetter pps = null;
+		String sql = "insert into ssq_lottery_all_result(value) values (?)";
+		pps = new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setString(1, redList.get(i));
+			}
+
+			@Override
+			public int getBatchSize() {
+				return redList.size();
+			}
+		};
+		try {
+			this.getJdbcTemplate().batchUpdate(sql, pps);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
+
 }

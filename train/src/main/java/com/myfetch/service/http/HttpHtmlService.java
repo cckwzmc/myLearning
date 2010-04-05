@@ -1,13 +1,9 @@
 package com.myfetch.service.http;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -17,17 +13,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.lang.StringUtils;
-import org.apache.html.dom.HTMLDocumentImpl;
-import org.cyberneko.html.parsers.DOMFragmentParser;
-import org.cyberneko.html.parsers.DOMParser;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentFragment;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import sun.awt.image.ByteArrayImageSource;
 
 import com.myfetch.util.ChangeCharset;
 import com.myfetch.util.Encoding;
@@ -87,6 +73,54 @@ public class HttpHtmlService {
 			getMethod.releaseConnection();
 		}
 		return html;
+	}
+	public static InputStream getHtmlContentInputStream(String url) {
+		InputStream response=null;
+		/* 1 生成 HttpClinet 对象并设置参数 */
+		HttpClient httpClient = new HttpClient();
+		// 设置 Http 连接超时为5秒
+		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
+		
+		/* 2 生成 GetMethod 对象并设置参数 */
+		GetMethod getMethod = new GetMethod(url);
+		// 设置 get 请求超时为 5 秒
+		getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 60000);
+		// 设置请求重试处理，用的是默认的重试处理：请求三次
+		getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
+		
+		/* 3 执行 HTTP GET 请求 */
+		try {
+			int statusCode = httpClient.executeMethod(getMethod);
+			/* 4 判断访问的状态码 */
+			if (statusCode != HttpStatus.SC_OK) {
+				System.err.println("Method failed: " + getMethod.getStatusLine());
+			}
+			
+			/* 5 处理 HTTP 响应内容 */
+			// HTTP响应头部信息，这里简单打印
+			Header[] headers = getMethod.getResponseHeaders();
+			for (Header h : headers)
+				System.out.println(h.getName() + " " + h.getValue());
+			// 读取 HTTP 响应内容，这里简单打印网页内容
+			// byte[] responseBody = getMethod.getResponseBody();// 读取为字节数组
+			// this.convertToGBK(new String(responseBody));
+			// html = new String(responseBody);
+			
+			// System.out.println(new String(responseBody));
+			// 读取为 InputStream，在网页内容数据量大时候推荐使用(没有解决乱码问题)
+			response = getMethod.getResponseBodyAsStream();//
+		} catch (HttpException e) {
+			// 发生致命的异常，可能是协议不对或者返回的内容有问题
+			// System.out.println("Please check your provided http address!");
+			logger.error(e.getMessage() + "采集地址为：" + url);
+		} catch (IOException e) {
+			// 发生网络异常
+			logger.error(e.getMessage() + "采集地址为：" + url);
+		} finally {
+			/* 6 .释放连接 */
+			getMethod.releaseConnection();
+		}
+		return response;
 	}
 
 	public static String getXmlContent(String url) {
@@ -196,32 +230,12 @@ public class HttpHtmlService {
 		return retStr = "";
 	}
 	public static void main(String[] args) {
-		String html=getHtmlContent("http://my.blog.sina.com.cn/login.php");
-		System.out.println(HtmlParseUtils.getElementById(html, "form_login", "GB2312"));
-		html=getHtmlContent("http://sports.sina.com.cn/l/ssqleitai/").toLowerCase();
-//		html="<table "+StringUtils.substringBetween(html,"<table", "</table>")+"</table>";
-		DocumentFragment documentFragment=new HTMLDocumentImpl().createDocumentFragment();
-		DOMFragmentParser domParser=new DOMFragmentParser();
-		InputStream is=new ByteArrayInputStream(html.getBytes());
-		
+		String html="";
 		try {
-			domParser.parse(new InputSource(is), documentFragment);
-		} catch (SAXException e) {
-			e.printStackTrace();
+			html = InputStreamUtils.readInputStream(HttpHtmlService.getHtmlContentInputStream("http://www.sina.com.cn"), "GB2312");
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		System.out.println(documentFragment.getFirstChild().toString());
-		DOMParser parser=new DOMParser();
-		try {
-			parser.setProperty("http://cyberneko.org/html/properties/default-encoding", "GB2312");
-			parser.parse(new InputSource(is));
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Document doc=parser.getDocument();
-		System.out.println(doc.getTextContent());
+		} 
+		System.out.println(HtmlParseUtils.getElementById(html, "page", "GB2312"));
 	}
 }
