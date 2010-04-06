@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -102,10 +103,14 @@ public class LotterySsqOtherCommendService {
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
 			LotteryUtils.select(6, code[0], resultList);
-			if (resultList.size() > 1000) {
+			if (resultList.size() > 2000) {
 				this.dao.saveSsqLotteryCollectRedCod(resultList);
 				resultList.clear();
 			}
+		}
+		if(CollectionUtils.isNotEmpty(resultList)){
+			this.dao.saveSsqLotteryCollectRedCod(resultList);
+			resultList.clear();
 		}
 	}
 
@@ -141,10 +146,14 @@ public class LotterySsqOtherCommendService {
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
 			LotteryUtils.select(6, code[0], resultList);
-			if (resultList.size() > 1000) {
+			if (resultList.size() > 2000) {
 				saveCurrentFileRedCode(resultList, expect);
 				resultList.clear();
 			}
+		}
+		if(CollectionUtils.isNotEmpty(resultList)){
+			saveCurrentFileRedCode(resultList, expect);
+			resultList.clear();
 		}
 	}
 

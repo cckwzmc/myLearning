@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,14 +17,12 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import com.lyxmq.lottery.ssq.utils.LotterySsqMediaUtils;
 import com.lyxmq.lottery.ssq.utils.LotteryUtils;
+import com.mchange.v1.io.InputStreamUtils;
 import com.myfetch.service.http.HtmlParseUtils;
 import com.myfetch.service.http.HttpHtmlService;
-import com.myfetch.service.http.InputStreamUtils;
-import com.myfetch.service.http.WebHtmlUtils;
 
 /**
  * 媒体推荐的处理
@@ -222,24 +218,24 @@ public class LotterySsqMediaService {
 	}
 
 	public static void main(String[] args) {
-		WebHtmlUtils client=new WebHtmlUtils();
-		String html="";
-		try {
-			html = InputStreamUtils.readInputStream(client.doGet("http://www.sina.com.cn", ""), "GB2312");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HttpException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(HtmlParseUtils.getElementById(html, "page", "GB2312"));
+		// WebHtmlUtils client=new WebHtmlUtils();
+		// String html="";
+		// try {
+		// html = InputStreamUtils.readInputStream(client.doGet("http://www.sina.com.cn", ""), "GB2312");
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// } catch (URISyntaxException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// } catch (InterruptedException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// } catch (HttpException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// System.out.println(HtmlParseUtils.getElementById(html, "page", "GB2312"));
 	}
 
 	public void saveHistoryMediaStat(String xmlContent, String expect) {
@@ -252,7 +248,8 @@ public class LotterySsqMediaService {
 		} catch (DocumentException e) {
 			log.error("XML parse error");
 		}
-		this.saveHistoryMediaRedStat(expect, LotterySsqMediaUtils.getMediaRedCodeStat(document), StringUtils.join(LotterySsqMediaUtils.getHistoryOpenRedcode(document), ","));
+		this.saveHistoryMediaRedStat(expect, LotterySsqMediaUtils.getMediaRedCodeStat(document), StringUtils.join(LotterySsqMediaUtils
+				.getHistoryOpenRedcode(document), ","));
 		this.saveHistoryMediaBlueStat(expect, LotterySsqMediaUtils.getMediaBlueCodeStat(document), LotterySsqMediaUtils.getHistoryOpenBlueCode(document));
 	}
 

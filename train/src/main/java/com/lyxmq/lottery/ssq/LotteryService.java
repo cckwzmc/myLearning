@@ -345,13 +345,20 @@ public class LotteryService {
 				continue;
 			}
 			redList.add(lValue);
-			if (isSaveToDatabase && redList.size() > 1000) {
+			if (isSaveToDatabase && redList.size() > 2000) {
 				this.dao.addSsqLotteryFilterResult(redList);
 				redList.clear();
-			} else if (!isSaveToDatabase && redList.size() > 1000) {
+			} else if (!isSaveToDatabase && redList.size() > 2000) {
 				this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml", true);
 				redList.clear();
 			}
+		}
+		if (isSaveToDatabase && CollectionUtils.isNotEmpty(redList)) {
+			this.dao.addSsqLotteryFilterResult(redList);
+			redList.clear();
+		} else if (!isSaveToDatabase && CollectionUtils.isNotEmpty(redList)) {
+			this.writeFile(redList, "d:/myproject/ssq_red_" + this.expect + ".xml", true);
+			redList.clear();
 		}
 	}
 

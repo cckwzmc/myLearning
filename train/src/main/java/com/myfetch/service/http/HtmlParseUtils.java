@@ -3,12 +3,10 @@ package com.myfetch.service.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpException;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.cyberneko.html.parsers.DOMParser;
@@ -22,7 +20,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
-
 
 public class HtmlParseUtils {
 	private static Logger logger=LoggerFactory.getLogger(HtmlParseUtils.class);
@@ -129,24 +126,5 @@ public class HtmlParseUtils {
 		}
 		return data;
 	}
-	public static void main(String[] args) {
-		WebHtmlUtils client=new WebHtmlUtils();
-		String html="";
-		try {
-			html = InputStreamUtils.readInputStream(client.doGet("http://www.sina.com.cn", ""), "GB2312");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HttpException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(HtmlParseUtils.getElementById(html, "page", "GB2312"));
-	}
+
 }
