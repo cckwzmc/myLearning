@@ -3,8 +3,12 @@ package com.lyxmq.train.htmlparser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 
 import junit.framework.TestCase;
+
+import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.Source;
 
 import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Document;
@@ -15,9 +19,11 @@ import com.myfetch.service.http.HttpHtmlService;
 
 public class HtmlParserTest extends TestCase {
 	public void testParserHtml() {
-		String html = HttpHtmlService.getHtmlContent("http://about.validator.nu/htmlparser/");
+		String html = HttpHtmlService.getHtmlContent("http://www.sina.com.cn");
 		// input file
-		DOMParser parser =new DOMParser();
+		Source source = new Source(html);
+		Element element=source.getElementById("page");
+		DOMParser parser = new DOMParser();
 		BufferedReader in = new BufferedReader(new StringReader(html));
 		try {
 			parser.parse(new InputSource(in));
