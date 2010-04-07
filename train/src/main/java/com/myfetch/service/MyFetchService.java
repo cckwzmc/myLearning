@@ -18,7 +18,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.webservice.client.WebClient;
 
 import com.myfetch.myfetch.dao.MyFetchDao;
-import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.http.util.HttpHtmlService;
 import com.myfetch.service.parse.ParseHtml;
 import com.myfetch.util.DedePublisherUtils;
 import com.myfetch.util.FileWriterReaderUtils;

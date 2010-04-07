@@ -10,7 +10,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +26,7 @@ import com.lyxmq.lottery.ssq.utils.LotteryUtils;
  * @author Administrator
  * 
  */
-public class LotterySsqOtherCommendService {
+public class LotterySsqFileService {
 
 	private LotteryDao dao = null;
 

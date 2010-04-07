@@ -12,7 +12,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
 
-import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.http.util.HttpHtmlService;
 import com.myfetch.util.FileWriterReaderUtils;
 
 public class ParseHtml {

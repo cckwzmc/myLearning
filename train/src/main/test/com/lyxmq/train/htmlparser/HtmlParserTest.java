@@ -1,40 +1,34 @@
 package com.lyxmq.train.htmlparser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
-
 import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.Source;
 
-import org.cyberneko.html.parsers.DOMParser;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.http.util.HttpHtmlService;
 
 public class HtmlParserTest extends TestCase {
+	private static final Logger logger=LoggerFactory.getLogger(HtmlParserTest.class);
 	public void testParserHtml() {
-		String html = HttpHtmlService.getHtmlContent("http://www.sina.com.cn");
+		String html = HttpHtmlService.getHtmlContent("http://sports.sina.com.cn/l/ssqleitai/");
 		// input file
 		Source source = new Source(html);
-		Element element=source.getElementById("page");
-		DOMParser parser = new DOMParser();
-		BufferedReader in = new BufferedReader(new StringReader(html));
-		try {
-			parser.parse(new InputSource(in));
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Element element=source.getElementById("table1");
+		List<Element> eList=element.getAllElements("tr");
+		for(Element e:eList.subList(1, eList.size())){
+			List<Element> tdList=e.getAllElements("td");
+			Element tdE=tdList.get(3);
+			List<Element> divList=tdE.getAllElements("div");
+			for(Element eDiv:divList){
+				logger.info(eDiv.getContent().toString());
+			}
+			logger.info(tdE.getContent().toString());
 		}
-		Document doc = parser.getDocument();
-		assertNull(doc);
 	}
 }

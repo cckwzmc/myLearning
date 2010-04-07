@@ -1,4 +1,4 @@
-package com.myfetch.service.http;
+package com.myfetch.service.http.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.myfetch.service.http;
+package com.myfetch.service.http.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -142,7 +142,7 @@ public class HttpHtmlService {
 			int statusCode = httpClient.executeMethod(getMethod);
 			/* 4 判断访问的状态码 */
 			if (statusCode != HttpStatus.SC_OK) {
-				System.err.println("Method failed: " + getMethod.getStatusLine());
+				logger.error("Method failed: " + getMethod.getStatusLine());
 				return statusCode+"";
 			}
 			/* 5 处理 HTTP 响应内容 */
@@ -228,14 +228,5 @@ public class HttpHtmlService {
 		}
 		System.out.println(encoding.getEncoding());
 		return retStr = "";
-	}
-	public static void main(String[] args) {
-		String html="";
-		try {
-			html = InputStreamUtils.readInputStream(HttpHtmlService.getHtmlContentInputStream("http://www.sina.com.cn"), "GB2312");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
-		System.out.println(HtmlParseUtils.getElementById(html, "page", "GB2312"));
 	}
 }

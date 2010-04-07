@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.http.util.HttpHtmlService;
 
 public class Test {
 

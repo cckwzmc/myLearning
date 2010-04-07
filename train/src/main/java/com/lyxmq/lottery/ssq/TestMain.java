@@ -21,7 +21,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.http.util.HttpHtmlService;
 
 public class TestMain {
 	// http://www.500wan.com/static/info/ssq/mediadetail/09154.xml

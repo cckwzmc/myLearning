@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import com.myfetch.myfetch.dao.JdbcBaseDao;
@@ -248,12 +249,12 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	public void deleteSsqLotteryFilterResultInCollect() {
-		String sql="delete from ssq_lottery_filter_result  where value in(select value from ssq_lottery_collect_result)";
+		String sql = "delete from ssq_lottery_filter_result  where value in(select value from ssq_lottery_collect_result)";
 		this.getJdbcTemplate().update(sql);
 	}
 
 	public int getTotalLotteryCollectResult() {
-		String sql="select count(*) from ssq_lottery_collect_result";
+		String sql = "select count(*) from ssq_lottery_collect_result";
 		return this.getJdbcTemplate().queryForInt(sql);
 	}
 
@@ -282,4 +283,55 @@ public class LotteryDao extends JdbcBaseDao {
 		}
 	}
 
+	public void saveSsqLotteryMedia(String type, String expect, String xmlData) {
+		String sql = "insert into ssq_lottery_media values(?,?,?)";
+		this.getJdbcTemplate().update(sql, new Object[] { expect, xmlData, type });
+	}
+
+	public int getSsqLotteryMediaByExpect(String expect, String type) {
+		String sql = "select count(*) from ssq_lottery_media t where t.expect=? and t.type=?";
+		return this.getJdbcTemplate().queryForInt(sql, new Object[] { expect, type });
+	}
+	@SuppressWarnings("unchecked")
+	public String getSsqLotteryMediaContentByExpect(String expect, String type) {
+		String sql = "select content from ssq_lottery_media t where t.expect=? and t.type=?";
+		List list=this.getJdbcTemplate().queryForList(sql, new Object[] { expect, type });
+		if(CollectionUtils.isNotEmpty(list)){
+			return ObjectUtils.toString(((Map)list.get(0)).get("content"));
+		}
+		return "";
+	}
+
+	public void saveSsqLotteryFilterResult() {
+		String sql="insert into ssq_lottery_filter_result(value) select value from ssq_lottery_all_result";
+		this.getJdbcTemplate().update(sql);
+		sql="delete from ssq_lottery_filter_result where value in(select value from ssq_lottery_collect_result)";
+		this.getJdbcTemplate().update(sql);
+		
+	}
+
+	public void deleteSsqLotteryFilterResult(final List<String> redList) {
+		if (CollectionUtils.isEmpty(redList)) {
+			return;
+		}
+		BatchPreparedStatementSetter pps = null;
+		String sql = "delete from  ssq_lottery_filter_result where values=?";
+		pps = new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setString(1, redList.get(i));
+			}
+
+			@Override
+			public int getBatchSize() {
+				return redList.size();
+			}
+		};
+		try {
+			this.getJdbcTemplate().batchUpdate(sql, pps);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
 }

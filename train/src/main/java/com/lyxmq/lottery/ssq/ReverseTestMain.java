@@ -20,8 +20,10 @@ public class ReverseTestMain {
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
 //			initService.saveAllRedResult();
 //			initService.initHistoryMediaStatForFile();
-			initService.initHistoryOpenCode();
-			initService.initHistoryMediaStat();
+//			initService.initHistoryOpenCode();
+//			initService.initHistoryMediaStat();
+			initService.fetchMedia500WanContent();
+			initService.fetchMediaSinaContent();
 			LotteryService service = (LotteryService) context.getBean("lotteryService");
 //			service.getCurrentExpertMergeResult();
 			service.filterCurrentRedCode();

@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.lyxmq.lottery.ssq.LotteryConstant;
-import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.http.util.HttpHtmlService;
 
 public class LotteryUtils {
 	private static int count = 0;

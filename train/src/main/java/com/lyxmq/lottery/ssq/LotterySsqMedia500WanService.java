@@ -3,7 +3,6 @@ package com.lyxmq.lottery.ssq;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -20,17 +18,15 @@ import org.slf4j.LoggerFactory;
 
 import com.lyxmq.lottery.ssq.utils.LotterySsqMediaUtils;
 import com.lyxmq.lottery.ssq.utils.LotteryUtils;
-import com.mchange.v1.io.InputStreamUtils;
-import com.myfetch.service.http.HtmlParseUtils;
-import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.http.util.HttpHtmlService;
 
 /**
  * 媒体推荐的处理
  * 
  * @author Administrator
  */
-public class LotterySsqMediaService {
-	private static Logger log = LoggerFactory.getLogger(LotterySsqMediaService.class);
+public class LotterySsqMedia500WanService {
+	private static Logger log = LoggerFactory.getLogger(LotterySsqMedia500WanService.class);
 	LotteryDao dao = null;
 
 	public void setDao(LotteryDao dao) {
@@ -217,27 +213,11 @@ public class LotterySsqMediaService {
 		}
 	}
 
-	public static void main(String[] args) {
-		// WebHtmlUtils client=new WebHtmlUtils();
-		// String html="";
-		// try {
-		// html = InputStreamUtils.readInputStream(client.doGet("http://www.sina.com.cn", ""), "GB2312");
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (URISyntaxException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (HttpException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// System.out.println(HtmlParseUtils.getElementById(html, "page", "GB2312"));
-	}
-
+	/**
+	 * 500wan媒体推荐统计
+	 * @param xmlContent
+	 * @param expect
+	 */
 	public void saveHistoryMediaStat(String xmlContent, String expect) {
 		if (StringUtils.isBlank(xmlContent)) {
 			return;
@@ -253,6 +233,11 @@ public class LotterySsqMediaService {
 		this.saveHistoryMediaBlueStat(expect, LotterySsqMediaUtils.getMediaBlueCodeStat(document), LotterySsqMediaUtils.getHistoryOpenBlueCode(document));
 	}
 
+	/**
+	 * 保存当期媒体推荐
+	 * @param redMedia
+	 * @param expect
+	 */
 	public void saveCurrentMediaRedCodeToDb(List<String> redMedia, String expect) {
 		this.dao.saveSsqLotteryCollectRedCod(redMedia);
 	}

@@ -12,7 +12,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-import com.myfetch.service.http.HttpHtmlService;
+import com.myfetch.service.http.util.HttpHtmlService;
 
 public class LotterySsqMediaUtils {
 	/**

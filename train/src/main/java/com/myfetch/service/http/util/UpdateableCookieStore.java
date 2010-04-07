@@ -1,4 +1,4 @@
-package com.myfetch.service.http;
+package com.myfetch.service.http.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
