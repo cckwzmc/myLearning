@@ -315,7 +315,7 @@ public class LotteryDao extends JdbcBaseDao {
 			return;
 		}
 		BatchPreparedStatementSetter pps = null;
-		String sql = "delete from  ssq_lottery_filter_result where values=?";
+		String sql = "delete from  ssq_lottery_filter_result where value=?";
 		pps = new BatchPreparedStatementSetter() {
 
 			@Override

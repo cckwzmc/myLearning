@@ -30,6 +30,11 @@ public class LotteryService {
 	LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
 	LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
 	LotterySsqFileService lotterySsqFileService = null;
+	LotterySsqCustomerDyjService lotterySsqCustomerDyjService = null;
+
+	public void setLotterySsqCustomerDyjService(LotterySsqCustomerDyjService lotterySsqCustomerDyjService) {
+		this.lotterySsqCustomerDyjService = lotterySsqCustomerDyjService;
+	}
 
 	public void setLotterySsqMediaSinaService(LotterySsqMediaSinaService lotterySsqMediaSinaService) {
 		this.lotterySsqMediaSinaService = lotterySsqMediaSinaService;
@@ -241,10 +246,11 @@ public class LotteryService {
 			if (CollectionUtils.isNotEmpty(mediaSinaList)) {
 				redMedia.addAll(mediaSinaList);
 			}
-			for(int i=0;i<redMedia.size();i++)
-			{
-				this.lotterySsqMedia500WanService.saveCurrentMediaRedCodeToDb(redMedia.subList(i, i=(i+1000>redMedia.size()?redMedia.size():i+1000)), LotterySsqConifgService.getExpect());
+			for (int i = 0; i < redMedia.size(); i++) {
+				this.lotterySsqMedia500WanService.saveCurrentMediaRedCodeToDb(redMedia
+						.subList(i, i = (i + 1000 > redMedia.size() ? redMedia.size() : i + 1000)), LotterySsqConifgService.getExpect());
 			}
+			this.lotterySsqCustomerDyjService.saveDyjProjectRedCode();
 		}
 		if (LotterySsqConifgService.getIshaveexclude() > 0) {
 			if (!isSaveToDatabase) {
@@ -364,12 +370,12 @@ public class LotteryService {
 			return;
 		}
 		boolean isExist = MapUtils.isNotEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()));
-//		if (isExist) {
-//			// 以追加的方式过滤号码，即在原来的基础上删除号码
-//			this.filterCurrentRedCodeAppend();
-//		} else {
+		if (isExist) {
+			// 以追加的方式过滤号码，即在原来的基础上删除号码
+			this.filterCurrentRedCodeAppend();
+		} else {
 			this.filterCurrentRedCodeFirst();
-//		}
+		}
 	}
 
 	/**

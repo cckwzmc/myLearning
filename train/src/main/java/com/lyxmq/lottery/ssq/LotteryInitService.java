@@ -370,7 +370,7 @@ public class LotteryInitService {
 	 */
 	public void fetchMediaSinaContent() {
 		if (this.dao.getSsqLotteryMediaByExpect(LotterySsqConifgService.getExpect(), "1") == 0) {
-			String htmlData = HttpHtmlService.getHtmlContent(LotterySsqConifgService.getMediaSinaUrl());
+			String htmlData = HttpHtmlService.getHtmlContent(LotterySsqConifgService.getMediaSinaUrl(),"GB2312");
 			String existStr = "第" + LotterySsqConifgService.getExpect() + "期双色球";
 			String firstTr = HtmlParseUtils.getElementByTagName(HtmlParseUtils.getElementById(htmlData, "table1"), "tr", 0);
 			if (StringUtils.indexOf((StringUtils.remove(firstTr, " ")), existStr) != -1

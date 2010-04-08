@@ -18,7 +18,9 @@ public class LotterySsqConifgService {
 	private static String media500WanUrl = "";
 	private static String mediaSinaUrl = "";
 	private static String dyjUrl = "";
+	private static String dyjDowload = "";
 	private static String www500wanUrl = "";
+	private static String www500wanDowload = "";
 	private static int quOne = -1;
 	private static int quTwo = -1;
 	private static int quThree = 3;
@@ -75,8 +77,13 @@ public class LotterySsqConifgService {
 
 			dyjUrl = StringUtils.isNotBlank(pro.getProperty("dyjUrl")) ? pro.getProperty("dyjUrl") : dyjUrl;
 			dyjUrl = StringUtils.replace(dyjUrl, "@expect@", expect);
+			dyjDowload = StringUtils.isNotBlank(pro.getProperty("dyjDowload")) ? pro.getProperty("dyjDowload") : dyjDowload;
+			dyjDowload = StringUtils.replace(dyjDowload, "@expect@", expect);
+			
 			www500wanUrl = StringUtils.isNotBlank(pro.getProperty("www500wanUrl")) ? pro.getProperty("www500wanUrl") : www500wanUrl;
 			www500wanUrl = StringUtils.replace(www500wanUrl, "@expect@", expect);
+			www500wanDowload = StringUtils.isNotBlank(pro.getProperty("www500wanDowload")) ? pro.getProperty("www500wanDowload") : www500wanDowload;
+			www500wanDowload = StringUtils.replace(www500wanDowload, "@expect@", expect);
 
 			quOne = StringUtils.isNotBlank(pro.getProperty("quOne")) ? NumberUtils.toInt(pro.getProperty("quOne")) : quOne;
 			quTwo = StringUtils.isNotBlank(pro.getProperty("quTwo")) ? NumberUtils.toInt(pro.getProperty("quTwo")) : quTwo;
@@ -234,6 +241,10 @@ public class LotterySsqConifgService {
 		return preRedCode;
 	}
 
+	public static String getWww500wanDowload() {
+		return www500wanDowload;
+	}
+	
 	public static String[] getPreSideCode() {
 		return preSideCode;
 	}
@@ -253,6 +264,11 @@ public class LotterySsqConifgService {
 	public static int getThirdMaxCode() {
 		return thirdMaxCode;
 	}
+
+	public static String getDyjDowload() {
+		return dyjDowload;
+	}
+
 
 	public static int getFourthMinCode() {
 		return fourthMinCode;
