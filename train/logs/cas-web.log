@@ -1,8 +1,0 @@
-2009-08-29 23:10:21,807 [QuartzScheduler_Worker-1] INFO  com.myfetch.util.XMLUtils - title::
-2009-08-29 23:10:21,917 [QuartzScheduler_Worker-1] INFO  com.myfetch.util.XMLUtils - fetchtype::1
-2009-08-29 23:10:21,927 [QuartzScheduler_Worker-1] INFO  com.myfetch.util.XMLUtils - contentstart::<div id="content">
-2009-08-29 23:10:21,927 [QuartzScheduler_Worker-1] INFO  com.myfetch.util.XMLUtils - fetchtypeend::1
-2009-08-29 23:10:21,927 [QuartzScheduler_Worker-1] INFO  com.myfetch.util.XMLUtils - contentend::<a href="index.html">
-2009-08-29 23:10:21,927 [QuartzScheduler_Worker-1] INFO  com.myfetch.util.XMLUtils - contentbody::
-2009-08-29 23:10:21,927 [QuartzScheduler_Worker-1] INFO  com.myfetch.util.XMLUtils - replaceword::-[-&nbsp;本篇由&nbsp;读者吧&nbsp;-&nbsp;Www.Dz88.Com&nbsp;首发转载&nbsp;-]-,空|本篇章节由 *读者吧* - Ｄz88.Com 转载首发,空|( 本章由 读者吧 -  转载发布),空|读者吧,91中文|www.dz88.com,www.91zw.cn|dz88.com,91zw.cn|( 看文字手打小说就来 读者吧 www.dZ88.coM )
-2009-08-29 23:10:25,402 [QuartzScheduler_Worker-1] INFO  com.myfetch.service.MyFetchService - 开始抓取内容地址为：http://www.dz88.com/files/article/html/8/8940/1274230.html
