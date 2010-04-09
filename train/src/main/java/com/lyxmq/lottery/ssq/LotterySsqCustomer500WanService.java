@@ -1,18 +1,18 @@
 package com.lyxmq.lottery.ssq;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.Source;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,6 @@ public class LotterySsqCustomer500WanService {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Map<String, String>> get500WanProject() {
 		new LotterySsqConifgService();
 		String url = LotterySsqConifgService.getWww500wanUrl();
@@ -52,29 +51,23 @@ public class LotterySsqCustomer500WanService {
 			if(k>3){
 				break;
 			}
-			String dyjXmlData = HttpHtmlService.getXmlContent(StringUtils.replace(url,"@pageno@",i+""), "GB2312");
-			logger.info(StringUtils.replace(url,"@pageno@",i+""));
-			Document document = null;
-			try {
-				document = DocumentHelper.parseText(dyjXmlData);
-			} catch (DocumentException e) {
-				logger.error("parser xml error===" + e.getMessage());
-			}
-			List list=new ArrayList();
-			try{
-				list = document.selectNodes("//xml/row");
-			}catch(Exception e){
-			}
-			if(CollectionUtils.isEmpty(list)){
+			String jsonData = HttpHtmlService.getHtmlContent(StringUtils.replace(url,"@page@",i+""), "GB2312");
+			logger.info(StringUtils.replace(url,"@page@",i+""));
+			JSONArray array=JSONArray.fromObject("["+jsonData+"]");
+			if(array.isEmpty()){
 				k++;
+				continue;
 			}
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Node node = (Node) iterator.next();
-				Element e = (Element) node;
+			JSONObject obj=JSONObject.fromObject(array.get(0));
+			array=JSONArray.fromObject(obj.getString("data"));
+			for (int j=0;j<array.size();j++) {
+				obj=JSONObject.fromObject(array.get(j));
+				String fangan=obj.getString("fangan");
+				if(fangan.indexOf("查看")==-1){
+					continue;
+				}
 				Map<String, String> map = new HashMap<String, String>();
-				map.put("id", e.attributeValue("id"));
-				map.put("playtype", e.attributeValue("playtype"));
-				map.put("isupload", e.attributeValue("isupload"));
+				map.put("fangan",obj.getString("fangan"));
 				retList.add(map);
 			}
 		}
@@ -86,11 +79,10 @@ public class LotterySsqCustomer500WanService {
 	 * @param playtype
 	 * @return
 	 */
-	public List<String> download500WanProject(String id,String playtype){
-		String url=StringUtils.replace(StringUtils.replace(LotterySsqConifgService.getDyjDowload(),"@id@",id),"@playtype@",playtype);
-		String content = HttpHtmlService.getXmlContent(url, "GB2312");
-		if(content.indexOf("该方案")!=-1){
-			return null;
+	public List<String> download500WanProject(String url){
+		String content = HttpHtmlService.getHtmlContent(url, "GB2312");
+		if(content.indexOf("red")!=-1){
+			return this.parserdownloadProjectHtml(content);
 		}
 		List<String> list=new ArrayList<String>();
 		content=StringUtils.replace(content, " + ", "+");
@@ -98,20 +90,67 @@ public class LotterySsqCustomer500WanService {
 		content=StringUtils.replace(content, " | ", "+");
 		content=StringUtils.replace(content, " \n", "\n");
 		content=StringUtils.replace(content, "\t", ",");
+		content=StringUtils.replace(content, "、", ",");
+		content=StringUtils.replace(content, "，", ",");
 		String[] contents=StringUtils.split(content,"\n");
 		for (int i = 0; i < contents.length; i++) {
-			list.add(StringUtils.replace(contents[i]," ", ","));
+			String code=contents[i];
+			String[] codes=StringUtils.split(code, " ");
+			if(codes.length==7){
+				code=codes[0]+","+codes[1]+","+codes[2]+","+codes[3]+","+codes[4]+","+codes[5]+"+"+codes[6];
+			}else{
+				code=StringUtils.replace(code," ", ",");
+			}
+			list.add(code);
 		}
 		return list;
 	}
+	/**
+	 * 解析html
+	 * @param content
+	 * @return
+	 */
+	private List<String> parserdownloadProjectHtml(String content) {
+		List<String> list=new ArrayList<String>();
+		Source source=new Source(content);
+		Element projectDetailList=source.getElementById("projectDetailList");
+		List<Element> detail=projectDetailList.getAllElementsByClass("num");
+		for(Element e:detail){
+			String code=e.getContent().getTextExtractor().toString();
+			if(code.indexOf("红球")!=-1){
+				code=StringUtils.replace(code, " ", "");
+				code=StringUtils.replace(code, "蓝球:", "+");
+				code=StringUtils.replace(code, "红球:", "");
+			}else{
+				code=StringUtils.replace(code, " ", "");
+				code=StringUtils.replace(code, "蓝球:", "+");
+				code=StringUtils.replace(code, "胆:", "");
+				code=StringUtils.replace(code, "拖:", ",");
+				code=sortCode(code);
+			}
+			list.add(code);
+		}
+		return list;
+	}
+
+	/**
+	 * 给红球排序
+	 * @param code
+	 * @return
+	 */
+	private String sortCode(String code) {
+		String[] codes=StringUtils.split(code, "+");
+		String[] redCode=StringUtils.split(codes[0],",");
+		Arrays.sort(redCode);
+		code=StringUtils.join(redCode, ",")+"+"+codes[1];
+		return code;
+	}
+
 	public void save500WanProjectRedCode(){
 		List<Map<String,String>> list=this.get500WanProject();
 		List<String> resultList=new ArrayList<String>();
 		for(Map<String,String> map : list){
-			if("0".equals(map.get("isupload"))){
-				continue;
-			}
-			List<String> pList=this.download500WanProject(map.get("id"), map.get("playtype"));
+			List<String> pList=this.download500WanProject(this.parserUrl(map.get("fangan")));
 			if(CollectionUtils.isEmpty(pList)){
 				continue;
 			}
@@ -133,5 +172,15 @@ public class LotterySsqCustomer500WanService {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
+	}
+
+	private String parserUrl(String fangan) {
+		String download=LotterySsqConifgService.getWww500wanDowload();
+		if(fangan.toLowerCase().indexOf("onclick")!=-1){
+			download=StringUtils.replace(download, "@pid@",StringUtils.substringBetween(fangan, "list.showProject(", ")"));
+		}else{
+			download="http://"+StringUtils.substringBetween(fangan, "http://", "'");
+		}
+		return download;
 	}
 }

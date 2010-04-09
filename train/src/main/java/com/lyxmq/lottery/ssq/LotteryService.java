@@ -31,6 +31,11 @@ public class LotteryService {
 	LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
 	LotterySsqFileService lotterySsqFileService = null;
 	LotterySsqCustomerDyjService lotterySsqCustomerDyjService = null;
+	LotterySsqCustomer500WanService lotterySsqCustomer500WanService=null;
+	
+	public void setLotterySsqCustomer500WanService(LotterySsqCustomer500WanService lotterySsqCustomer500WanService) {
+		this.lotterySsqCustomer500WanService = lotterySsqCustomer500WanService;
+	}
 
 	public void setLotterySsqCustomerDyjService(LotterySsqCustomerDyjService lotterySsqCustomerDyjService) {
 		this.lotterySsqCustomerDyjService = lotterySsqCustomerDyjService;
@@ -222,7 +227,7 @@ public class LotteryService {
 		// 本人添加的过滤号码
 		List<String> redFile = new ArrayList<String>();
 		Document document = null;
-		if (StringUtils.isNotBlank(media500Wan)) {
+		if (StringUtils.isNotBlank(media500Wan)&&media500Wan.length()>100) {
 			try {
 				document = DocumentHelper.parseText(media500Wan);
 			} catch (DocumentException e) {
@@ -234,14 +239,20 @@ public class LotteryService {
 			this.dao.clearSsqLotteryCollectResult();
 		}
 		if (!isSaveToDatabase) {
-			redMedia = this.lotterySsqMedia500WanService.parseCurrentMediaRedCode(document);
+			if(document!=null)
+			{
+				redMedia = this.lotterySsqMedia500WanService.parseCurrentMediaRedCode(document);
+			}
 			List<String> mediaSinaList = this.lotterySsqMediaSinaService.parseCurrentMediaRedCode(mediaSina);
 			if (CollectionUtils.isNotEmpty(mediaSinaList)) {
 				redMedia.addAll(mediaSinaList);
 			}
 			this.lotterySsqMedia500WanService.saveCurrentMediaRedCode(redMedia, LotterySsqConifgService.getExpect());
 		} else {
-			redMedia = this.lotterySsqMedia500WanService.parseCurrentMediaRedCode(document);
+			if(document!=null)
+			{
+				redMedia = this.lotterySsqMedia500WanService.parseCurrentMediaRedCode(document);
+			}
 			List<String> mediaSinaList = this.lotterySsqMediaSinaService.parseCurrentMediaRedCode(mediaSina);
 			if (CollectionUtils.isNotEmpty(mediaSinaList)) {
 				redMedia.addAll(mediaSinaList);
@@ -251,6 +262,7 @@ public class LotteryService {
 						.subList(i, i = (i + 1000 > redMedia.size() ? redMedia.size() : i + 1000)), LotterySsqConifgService.getExpect());
 			}
 			this.lotterySsqCustomerDyjService.saveDyjProjectRedCode();
+			this.lotterySsqCustomer500WanService.save500WanProjectRedCode();
 		}
 		if (LotterySsqConifgService.getIshaveexclude() > 0) {
 			if (!isSaveToDatabase) {

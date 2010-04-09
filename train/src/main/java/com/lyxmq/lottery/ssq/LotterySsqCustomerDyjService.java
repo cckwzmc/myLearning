@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -18,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lyxmq.lottery.ssq.utils.LotteryUtils;
 import com.myfetch.service.http.util.HttpHtmlService;
+import com.sun.corba.se.impl.orbutil.ObjectUtility;
 
 /**
  * 大赢家用户购买/收集的数据处理
@@ -48,13 +51,14 @@ public class LotterySsqCustomerDyjService {
 			if(k>3){
 				break;
 			}
-			String dyjXmlData = HttpHtmlService.getXmlContent(StringUtils.replace(url,"@pageno@",i+""), "GB2312");
+			String dyjXmlData = HttpHtmlService.getXmlContent(StringUtils.replace(StringUtils.replace(url,"@pageno@",i+""),"@random@",this.genRandom()), "GB2312");
 			logger.info(StringUtils.replace(url,"@pageno@",i+""));
 			Document document = null;
 			try {
 				document = DocumentHelper.parseText(dyjXmlData);
 			} catch (DocumentException e) {
 				logger.error("parser xml error===" + e.getMessage());
+				logger.error(dyjXmlData);
 			}
 			List list=new ArrayList();
 			try{
@@ -90,10 +94,14 @@ public class LotterySsqCustomerDyjService {
 		}
 		List<String> list=new ArrayList<String>();
 		content=StringUtils.replace(content, " + ", "+");
+		content=StringUtils.replace(content, " = ", "+");
 		content=StringUtils.replace(content, "<br><br>", "\n");
 		content=StringUtils.replace(content, " | ", "+");
+		content=StringUtils.replace(content, "|", "+");
+		content=StringUtils.replace(content, "=", "+");
 		content=StringUtils.replace(content, " \n", "\n");
 		content=StringUtils.replace(content, "\t", ",");
+		content=StringUtils.replace(content, ".", ",");
 		String[] contents=StringUtils.split(content,"\n");
 		for (int i = 0; i < contents.length; i++) {
 			list.add(StringUtils.replace(contents[i]," ", ","));
@@ -129,5 +137,23 @@ public class LotterySsqCustomerDyjService {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
+	}
+	/**
+	 * 小数点后16位
+	 * @return
+	 */
+	public String genRandom(){
+		double rnd=RandomUtils.nextDouble();
+		String d=ObjectUtils.toString(rnd);
+		if(d.length()>=18){
+			d=d.substring(0, 18);
+		}else{
+			for (int j = 1; j <=18; j++) {
+				if(d.length()<j){
+					d+="0";
+				}
+			}
+		}
+		return d;
 	}
 }

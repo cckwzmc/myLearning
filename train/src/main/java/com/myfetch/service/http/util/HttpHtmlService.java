@@ -110,7 +110,7 @@ public class HttpHtmlService {
 			// HTTP响应头部信息，这里简单打印
 			Header[] headers = getMethod.getResponseHeaders();
 			for (Header h : headers)
-				System.out.println(h.getName() + " " + h.getValue());
+				logger.debug(h.getName() + " " + h.getValue());
 			// 读取 HTTP 响应内容，这里简单打印网页内容
 			// byte[] responseBody = getMethod.getResponseBody();// 读取为字节数组
 			// this.convertToGBK(new String(responseBody));
