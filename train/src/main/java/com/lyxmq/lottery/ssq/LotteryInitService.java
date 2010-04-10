@@ -313,14 +313,6 @@ public class LotteryInitService {
 			for (int i = 0; i < listFile.length; i++) {
 				try {
 					String xmlContent = LotteryUtils.getFileContent(listFile[i]);
-					Document document = null;
-					try {
-						document = DocumentHelper.parseText(xmlContent);
-					} catch (Exception e) {
-						logger.error(e.getMessage());
-						e.printStackTrace();
-						logger.error(xmlContent);
-					}
 					this.lotterySsqMedia500WanService.saveHistoryMediaStat(xmlContent, LotterySsqConifgService.getExpect());
 				} catch (IOException e) {
 					logger.error(listFile[i].getName() + "===" + e.getMessage());
