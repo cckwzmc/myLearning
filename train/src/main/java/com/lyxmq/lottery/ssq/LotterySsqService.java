@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import com.lyxmq.lottery.ssq.utils.LotterySsqMediaUtils;
 
-public class LotteryService {
-	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotteryService.class);
+public class LotterySsqService {
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotterySsqService.class);
 	LotteryDao dao = null;
 	private boolean isSaveToDatabase = true;
 	LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
@@ -262,7 +262,6 @@ public class LotteryService {
 						.subList(i, i = (i + 1000 > redMedia.size() ? redMedia.size() : i + 1000)), LotterySsqConifgService.getExpect());
 			}
 			this.lotterySsqCustomerDyjService.saveDyjProjectRedCode();
-			this.lotterySsqCustomer500WanService.save500WanProjectRedCode();
 		}
 		if (LotterySsqConifgService.getIshaveexclude() > 0) {
 			if (!isSaveToDatabase) {

@@ -2,6 +2,7 @@ package com.lyxmq.lottery.ssq;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +48,8 @@ public class LotterySsqCustomer500WanService {
 		String url = LotterySsqConifgService.getWww500wanUrl();
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		int k=0;
-		for (int i = 1; i < 100; i++) {
-			if(k>3){
+		for (int i = 1; i < 300; i++) {
+			if(k>4){
 				break;
 			}
 			String jsonData = HttpHtmlService.getHtmlContent(StringUtils.replace(url,"@page@",i+""), "GB2312");
@@ -121,6 +122,8 @@ public class LotterySsqCustomer500WanService {
 				code=StringUtils.replace(code, " ", "");
 				code=StringUtils.replace(code, "蓝球:", "+");
 				code=StringUtils.replace(code, "红球:", "");
+			}else if(code.indexOf("胆")!=-1||code.indexOf("拖")!=-1){
+				continue;
 			}else{
 				code=StringUtils.replace(code, " ", "");
 				code=StringUtils.replace(code, "蓝球:", "+");
@@ -150,14 +153,20 @@ public class LotterySsqCustomer500WanService {
 		List<Map<String,String>> list=this.get500WanProject();
 		List<String> resultList=new ArrayList<String>();
 		for(Map<String,String> map : list){
-			List<String> pList=this.download500WanProject(this.parserUrl(map.get("fangan")));
+			for(int i=0;i<10000;i++){
+				
+			}
+			String downloadUrl=this.parserUrl(map.get("fangan"));
+			downloadUrl=StringUtils.replace(downloadUrl, "@nowdate@", new Date().getTime()+"");
+			List<String> pList=this.download500WanProject(downloadUrl);
+			logger.info(downloadUrl);
 			if(CollectionUtils.isEmpty(pList)){
 				continue;
 			}
 			for(String ssq:pList){
 				String redCode=StringUtils.split(ssq, "+")[0];
 				String[] redCodes =StringUtils.split(redCode,",");
-				if(redCodes.length<6){
+				if(redCodes.length<6||redCodes.length>20){
 					logger.error("方案解析失败=="+ssq);
 					continue;
 				}

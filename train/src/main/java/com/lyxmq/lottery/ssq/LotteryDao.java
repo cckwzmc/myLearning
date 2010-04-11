@@ -334,4 +334,50 @@ public class LotteryDao extends JdbcBaseDao {
 			logger.error(e.getMessage());
 		}
 	}
+
+	public int getCountSsqLotteryCollectResultByProid(String proid, String net) {
+		String sql="select count(*) from ssq_lottery_collect_result t where t.proid=? and t.net=?";
+		return this.getJdbcTemplate().queryForInt(sql,new Object[]{proid,net});
+	}
+
+	public void saveSsqLotteryCollectFetch(String string, String string2, String join) {
+		
+	}
+
+	public void batchSaveSsqLotteryCollectFetch(final List<Map<String, String>> resultList) {
+		if (CollectionUtils.isEmpty(resultList)) {
+			return;
+		}
+		BatchPreparedStatementSetter pps = null;
+		String sql = "insert into ssq_lottery_collect_fetch(id,net,code,expect) values(?,?,?,?)";
+		pps = new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setString(1, resultList.get(i).get("proid"));
+				ps.setString(2, resultList.get(i).get("net"));
+				ps.setString(3, resultList.get(i).get("code"));
+				ps.setString(4, resultList.get(i).get("expect"));
+			}
+
+			@Override
+			public int getBatchSize() {
+				return resultList.size();
+			}
+		};
+		try {
+			this.getJdbcTemplate().batchUpdate(sql, pps);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
+
+	public void clearHisDyjProjectCode(String expect, String net) {
+		String sql="delete from ssq_lottery_collect_fetch where net=? and expect<>?";
+		this.getJdbcTemplate().update(sql,new Object[]{net,expect});
+	}
+	public List getSsqLotteryCollectFetchLimit(int first, int page,String net) {
+		String sql = "select code from ssq_lottery_collect_fetch t where t.net=? limit " + first + "," + page;
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{net});
+	}
 }

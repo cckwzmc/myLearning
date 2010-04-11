@@ -9,6 +9,7 @@ public class FootballLotteryUtils {
 
 	public static List<String> doCallAllCode(String[][] ftCodes) {
 		List<String> list = new ArrayList<String>();
+		try{
 		for (int i = 0; i < ftCodes[0].length; i++) {
 			String tempI = ftCodes[0][i];
 			for (int j = 0; j < ftCodes[1].length; j++) {
@@ -52,6 +53,9 @@ public class FootballLotteryUtils {
 					}
 				}
 			}
+		}
+		}catch(Exception e){
+			System.out.println(ftCodes.toString());
 		}
 		return list;
 	}
@@ -98,8 +102,9 @@ public class FootballLotteryUtils {
 	 * @return
 	 */
 	public static String[][] splitFootballCode(String code){
-		String[] codes=code.split(",");
 		String[][] ftCode = new String[14][];
+		try{
+		String[] codes=code.split(",");
 		for (int i = 0; i < codes.length; i++) {
 			String tt = "";
 			for (int j = 0; j < codes[i].length(); j++) {
@@ -110,6 +115,8 @@ public class FootballLotteryUtils {
 				}
 			}
 			ftCode[i] = tt.split(",");
+		}}catch(Exception e){
+			e.printStackTrace();
 		}
 		return ftCode;
 	}

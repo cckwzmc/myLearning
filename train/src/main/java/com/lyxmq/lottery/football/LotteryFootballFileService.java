@@ -75,6 +75,8 @@ public class LotteryFootballFileService {
 				if (StringUtils.indexOf(value, "|") != -1) {
 					String[] tmp = StringUtils.split(value, "|");
 					list.add(this.convertArray(tmp[1], "("));
+				}else if(value.indexOf("(")!=-1){
+					list.add(this.convertArray(value, "("));
 				} else if (value.indexOf("-") != -1) {
 					list.add(this.convertArray(value, "-"));
 				} else if (value.length() == 14) {
@@ -161,7 +163,12 @@ public class LotteryFootballFileService {
 		List<String> fbList = new ArrayList<String>();
 		for (String[][] ftCodes : list) {
 			List<String> tmpList = FootballLotteryUtils.doCallAllCode(ftCodes);
-			fbList.addAll(tmpList);
+			if(CollectionUtils.isNotEmpty(tmpList))
+			{
+				fbList.addAll(tmpList);
+			}else{
+				logger.info(ftCodes.toString());
+			}
 			if (fbList.size() > 2000) {
 				this.footballLotteryDao.batchSaveFootballCollectionResult(fbList);
 				fbList.clear();

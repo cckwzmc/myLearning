@@ -83,7 +83,7 @@ public class LotteryFootballInitService {
 		}else{
 			return;
 		}
-		if(footballList.size()>2000)
+		if(footballList.size()>5000)
 		{
 			this.footballLotteryDao.batchSaveFootballLottoryAllResult(footballList);
 			footballList.clear();

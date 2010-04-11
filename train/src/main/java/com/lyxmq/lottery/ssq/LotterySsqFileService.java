@@ -11,8 +11,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -44,8 +46,8 @@ public class LotterySsqFileService {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String[]> getCodeFromFile(String fileName) {
-		List<String[]> list = new ArrayList<String[]>();
+	public Set<String[]> getCodeFromFile(String fileName) {
+		Set<String[]> list = new HashSet<String[]>();
 		String filestr = "";
 		try {
 			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
@@ -97,7 +99,7 @@ public class LotterySsqFileService {
 	}
 
 	public void parseCurrentFileRedCodeToDb(String fileName) {
-		List<String[]> fileList = this.getCodeFromFile(fileName);
+		Set<String[]> fileList = this.getCodeFromFile(fileName);
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
@@ -119,7 +121,7 @@ public class LotterySsqFileService {
 	 *            String[] String[0]=redCode,String[1]=blueCode
 	 * @return
 	 */
-	public List<String> getRedCodeFromFile(List<String[]> fileList) {
+	public List<String> getRedCodeFromFile(Set<String[]> fileList) {
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
@@ -129,7 +131,7 @@ public class LotterySsqFileService {
 	}
 
 	public List<String> parseCurrentFileRedCode(String fileName) {
-		List<String[]> fileList = this.getCodeFromFile(fileName);
+		Set<String[]> fileList = this.getCodeFromFile(fileName);
 		return this.getRedCodeFromFile(fileList);
 	}
 
@@ -140,7 +142,7 @@ public class LotterySsqFileService {
 	 * @param string
 	 */
 	public void parseCurrentFileRedCodeToFile(String filename, String expect) {
-		List<String[]> fileList = this.getCodeFromFile(filename);
+		Set<String[]> fileList = this.getCodeFromFile(filename);
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();

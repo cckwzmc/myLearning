@@ -74,7 +74,7 @@ public class LotteryFootballMedia500WanService {
 		try {
 			doc = DocumentHelper.parseText(xmlData);
 		} catch (DocumentException e) {
-			log.error("xml parse erro =============");
+			log.error("xml parse erro ============="+e.getMessage());
 			log.error(xmlData);
 		}
 		List<String> result=new ArrayList<String>();
@@ -108,7 +108,7 @@ public class LotteryFootballMedia500WanService {
 		url = StringUtils.replace(url, "@footballExpect@", expect);
 		String xmlData = "";
 		try{
-			xmlData=HttpHtmlService.getXmlContent(url, "GB2312");
+			xmlData=HttpHtmlService.getXmlContent(url, "utf-8");
 		}catch(Exception e){
 			log.error(e.getMessage());
 			log.error(url);

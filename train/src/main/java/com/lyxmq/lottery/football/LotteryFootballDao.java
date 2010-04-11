@@ -97,4 +97,11 @@ public class LotteryFootballDao extends JdbcBaseDao {
 			logger.error(e.getMessage());
 		}	
 	}
+
+	public void saveFootballLottoryFilterResult() {
+		String sql="insert into ft_lottery_filter_result(value) select value from ft_lottery_all_result";
+		this.getJdbcTemplate().update(sql);
+		sql="delete from ft_lottery_all_result where value in(select value from ft_lottery_collect_result)";
+		this.getJdbcTemplate().update(sql);
+	}
 }
