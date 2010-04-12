@@ -111,6 +111,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		content = StringUtils.replace(content, " + ", "+");
 		content = StringUtils.replace(content, " = ", "+");
 		content = StringUtils.replace(content, "<br><br>", "\n");
+		content = StringUtils.replace(content, "<br>", "\n");
 		content = StringUtils.replace(content, " | ", "+");
 		content = StringUtils.replace(content, "|", "+");
 		content = StringUtils.replace(content, "=", "+");
@@ -119,7 +120,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		content = StringUtils.replace(content, ".", ",");
 		String[] contents = StringUtils.split(content, "\n");
 		for (int i = 0; i < contents.length; i++) {
-			list.add(StringUtils.replace(contents[i], " ", ","));
+			list.add(StringUtils.replace(contents[i], " ", ",").trim());
 		}
 		return list;
 	}
@@ -203,14 +204,15 @@ public class LotterySsqCustomerDyjService extends Thread {
 			tmpMap.put("expect", LotterySsqConifgService.getExpect());
 			tmpMap.put("code", StringUtils.join(codes, "@@"));
 			resultList.add(tmpMap);
-//			if (resultList.size() > 200) {
+			if (resultList.size() > 200) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 				resultList.clear();
-//			}
+			}
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
+		stop();
 	}
 }

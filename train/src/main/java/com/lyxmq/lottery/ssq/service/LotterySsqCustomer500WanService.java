@@ -74,7 +74,18 @@ public class LotterySsqCustomer500WanService extends Thread{
 				}
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("fangan",obj.getString("fangan"));
-				map.put("proid",obj.getString("proid"));
+				String proid=obj.getString("proid");
+				if(StringUtils.indexOf(proid, "</a>")!=-1)
+				{
+					proid=StringUtils.substringBetween(proid, ">", "</a>").trim();
+					if(StringUtils.indexOf(proid, "</")!=-1){
+						proid=StringUtils.substring(proid, 0, StringUtils.indexOf(proid, "</"));
+					}
+					if(StringUtils.lastIndexOf(proid, ">")!=-1){
+						proid=StringUtils.substring(proid, StringUtils.indexOf(proid,">")+1);
+					}
+				}
+				map.put("proid",proid.trim());
 				retList.add(map);
 			}
 			try {
@@ -231,10 +242,10 @@ public class LotterySsqCustomer500WanService extends Thread{
 			tmpMap.put("expect", LotterySsqConifgService.getExpect());
 			tmpMap.put("code", StringUtils.join(codes, "@@"));
 			resultList.add(tmpMap);
-//			if (resultList.size() > 200) {
+			if (resultList.size() > 200) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 				resultList.clear();
-//			}
+			}
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
