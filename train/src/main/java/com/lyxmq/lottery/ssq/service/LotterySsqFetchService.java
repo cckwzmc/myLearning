@@ -1,4 +1,6 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.service;
+
+import com.lyxmq.lottery.ssq.dao.LotteryDao;
 
 /**
  * 抓取500万/大赢家 用户投注号码
@@ -28,15 +30,14 @@ public class LotterySsqFetchService {
 	 * 大赢家用户投注抓取/由于大赢家的访问有一定的限制，所以在抓取时要休眠一定的时间
 	 */
 	public void fetchDyjCustomerProject() {
-		this.lotterySsqCustomerDyjService.fetchDyjProjectCode();
-
+		this.lotterySsqCustomerDyjService.start();
 	}
 
 	/**
 	 * 500wan用户投注抓取
 	 */
 	public void fetch500WanCustomerProject() {
-		this.lotterySsqCustomer500WanService.save500WanProjectRedCode();
+		this.lotterySsqCustomer500WanService.start();
 	}
 
 }

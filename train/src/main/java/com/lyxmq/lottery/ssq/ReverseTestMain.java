@@ -1,10 +1,16 @@
 package com.lyxmq.lottery.ssq;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.lyxmq.lottery.ssq.service.LotteryInitService;
+import com.lyxmq.lottery.ssq.service.LotterySsqFetchService;
+import com.lyxmq.lottery.ssq.service.LotterySsqService;
 
 /**
  * 反向处理，把不存在媒体预测的结果选出来，两种方式 1、把媒体的结果都合并处理。 2、把媒体的结果分开处理。
@@ -13,18 +19,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class ReverseTestMain {
 	private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReverseTestMain.class);
-
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml", "classpath:/lottery/ssq/applicationContext-database.xml", "classpath:/lottery/ssq/applicationContext-dao.xml",
 				"classpath:/lottery/ssq/applicationContext-service.xml" });
 		try {
-			Scanner scanner = new Scanner(System.in);
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
+			Scanner scanner = new Scanner(System.in);
 			long currentTime = System.currentTimeMillis();
 			logger.info("按y开始开始初始化操作，按n跳过一步，60秒钟后默认开始初始化操作.....");
 			String in="";
+			in = scanner.nextLine();
 			while (true&&currentTime + 60000 > System.currentTimeMillis()) {
-				in = scanner.nextLine();
 				if ("n".equalsIgnoreCase(in)) {
 					break;
 				}
@@ -88,5 +93,27 @@ public class ReverseTestMain {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 }
+//class TimeScanner extends Thread{
+//	Scanner scanner=null;
+//	public TimeScanner(Scanner scanner){
+//		this.scanner=scanner;
+//		start();
+//	}
+//	public void run(){
+//		long currentTime = System.currentTimeMillis();
+//		try{
+//			while(true){
+//				if(currentTime + 5000 < System.currentTimeMillis())
+//				{
+//					break;
+//				}
+//			}
+//			scanner.reclose();
+//		}catch(Exception e){
+//			scanner.close();
+//		}
+//	}
+//}

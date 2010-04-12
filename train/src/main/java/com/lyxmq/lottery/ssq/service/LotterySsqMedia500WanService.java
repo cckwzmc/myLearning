@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.service;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,6 +16,7 @@ import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lyxmq.lottery.ssq.dao.LotteryDao;
 import com.lyxmq.lottery.ssq.utils.LotterySsqMediaUtils;
 import com.lyxmq.lottery.ssq.utils.LotteryUtils;
 import com.myfetch.service.http.util.HttpHtmlService;

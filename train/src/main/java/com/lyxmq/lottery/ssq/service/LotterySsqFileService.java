@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.service;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -20,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.ClassUtils;
 
+import com.lyxmq.lottery.ssq.dao.LotteryDao;
 import com.lyxmq.lottery.ssq.utils.LotteryUtils;
 
 /**

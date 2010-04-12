@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lyxmq.lottery.ssq.dao.LotteryDao;
 import com.lyxmq.lottery.ssq.utils.LotteryUtils;
 import com.myfetch.service.http.util.HtmlParseUtils;
 

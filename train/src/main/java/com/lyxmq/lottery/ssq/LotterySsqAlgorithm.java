@@ -7,6 +7,8 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
+import com.lyxmq.lottery.ssq.service.LotterySsqConifgService;
+
 /**
  * @author Administrator
  *

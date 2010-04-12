@@ -1,9 +1,10 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,12 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lyxmq.lottery.ssq.dao.LotteryDao;
 import com.lyxmq.lottery.ssq.utils.LotteryUtils;
 import com.myfetch.service.http.util.HttpHtmlService;
 
@@ -30,14 +33,16 @@ import com.myfetch.service.http.util.HttpHtmlService;
  * @author LIYI
  * 
  */
-public class LotterySsqCustomer500WanService {
+public class LotterySsqCustomer500WanService extends Thread{
 	private static final Logger logger = LoggerFactory.getLogger(LotterySsqCustomer500WanService.class);
 	private LotteryDao dao = null;
 
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
-
+	public void run(){
+		this.fetch500WanProjectRedCode();
+	}
 	/**
 	 * 获取用户的各种方案
 	 * 
@@ -69,7 +74,13 @@ public class LotterySsqCustomer500WanService {
 				}
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("fangan",obj.getString("fangan"));
+				map.put("proid",obj.getString("proid"));
 				retList.add(map);
+			}
+			try {
+				sleep(5000);
+			} catch (InterruptedException e) {
+				notify();
 			}
 		}
 		return retList;
@@ -82,6 +93,11 @@ public class LotterySsqCustomer500WanService {
 	 */
 	public List<String> download500WanProject(String url){
 		String content = HttpHtmlService.getHtmlContent(url, "GB2312");
+		try {
+			sleep(5000);
+		} catch (InterruptedException e) {
+			notify();
+		}
 		if(content.indexOf("red")!=-1){
 			return this.parserdownloadProjectHtml(content);
 		}
@@ -149,32 +165,31 @@ public class LotterySsqCustomer500WanService {
 		return code;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void save500WanProjectRedCode(){
-		List<Map<String,String>> list=this.get500WanProject();
-		List<String> resultList=new ArrayList<String>();
-		for(Map<String,String> map : list){
-			for(int i=0;i<10000;i++){
-				
-			}
-			String downloadUrl=this.parserUrl(map.get("fangan"));
-			downloadUrl=StringUtils.replace(downloadUrl, "@nowdate@", new Date().getTime()+"");
-			List<String> pList=this.download500WanProject(downloadUrl);
-			logger.info(downloadUrl);
-			if(CollectionUtils.isEmpty(pList)){
-				continue;
-			}
-			for(String ssq:pList){
-				String redCode=StringUtils.split(ssq, "+")[0];
-				String[] redCodes =StringUtils.split(redCode,",");
-				if(redCodes.length<6||redCodes.length>20){
-					logger.error("方案解析失败=="+ssq);
-					continue;
+		List<String> resultList = new ArrayList<String>();
+		int last = 0;
+		int page = 20000;
+		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
+		while (CollectionUtils.isNotEmpty(list)) {
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map map = (Map) iterator.next();
+				String code = ObjectUtils.toString(map.get("code"));
+				String[] codes = StringUtils.split(code, "@@");
+				for(String ssq:codes)
+				{
+					String redCode=StringUtils.split(ssq, "+")[0];
+					String[] redCodes =StringUtils.split(redCode,",");
+					if(redCodes.length<6||redCodes.length>20){
+						logger.error("方案解析失败=="+ssq);
+						continue;
+					}
+					LotteryUtils.select(6, redCodes, resultList);
 				}
-				LotteryUtils.select(6, redCodes, resultList);
-			}
-			if (resultList.size() > 2000) {
-				this.dao.saveSsqLotteryCollectRedCod(resultList);
-				resultList.clear();
+				if (resultList.size() > 2000) {
+					this.dao.saveSsqLotteryCollectRedCod(resultList);
+					resultList.clear();
+				}
 			}
 		}
 		if(CollectionUtils.isNotEmpty(resultList)){
@@ -191,5 +206,39 @@ public class LotterySsqCustomer500WanService {
 			download="http://"+StringUtils.substringBetween(fangan, "http://", "'");
 		}
 		return download;
+	}
+
+	public void fetch500WanProjectRedCode() {
+		this.dao.clearHisFetchProjectCode(LotterySsqConifgService.getExpect(), "0");
+		List<Map<String,String>> list=this.get500WanProject();
+		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
+		for(Map<String,String> map : list){
+			String downloadUrl=this.parserUrl(map.get("fangan"));
+			if (this.dao.getCountSsqLotteryCollectFetchByProid(map.get("proid"), "0") > 0) {
+				continue;
+			}
+			downloadUrl=StringUtils.replace(downloadUrl, "@nowdate@", new Date().getTime()+"");
+			logger.info(downloadUrl);
+			List<String> pList=this.download500WanProject(downloadUrl);
+			
+			if(CollectionUtils.isEmpty(pList)){
+				continue;
+			}
+			String[] codes = pList.toArray(new String[pList.size()]);
+			Map<String, String> tmpMap = new HashMap<String, String>();
+			tmpMap.put("proid", map.get("proid"));
+			tmpMap.put("net", "0");
+			tmpMap.put("expect", LotterySsqConifgService.getExpect());
+			tmpMap.put("code", StringUtils.join(codes, "@@"));
+			resultList.add(tmpMap);
+//			if (resultList.size() > 200) {
+				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
+				resultList.clear();
+//			}
+		}
+		if (CollectionUtils.isNotEmpty(resultList)) {
+			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
+			resultList.clear();
+		}
 	}
 }

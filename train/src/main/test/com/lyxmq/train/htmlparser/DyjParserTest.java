@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lyxmq.lottery.ssq.LotterySsqConifgService;
-import com.lyxmq.lottery.ssq.LotterySsqCustomerDyjService;
 import com.lyxmq.lottery.ssq.service.BaseTestCase;
+import com.lyxmq.lottery.ssq.service.LotterySsqConifgService;
+import com.lyxmq.lottery.ssq.service.LotterySsqCustomerDyjService;
 import com.myfetch.service.http.util.HttpHtmlService;
 
 public class DyjParserTest extends BaseTestCase{

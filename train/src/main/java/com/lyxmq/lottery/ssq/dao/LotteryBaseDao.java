@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.dao;
 
 import com.myfetch.myfetch.dao.JdbcBaseDao;
 

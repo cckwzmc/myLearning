@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -335,8 +335,8 @@ public class LotteryDao extends JdbcBaseDao {
 		}
 	}
 
-	public int getCountSsqLotteryCollectResultByProid(String proid, String net) {
-		String sql="select count(*) from ssq_lottery_collect_result t where t.proid=? and t.net=?";
+	public int getCountSsqLotteryCollectFetchByProid(String proid, String net) {
+		String sql="select count(*) from ssq_lottery_collect_fetch t where t.id=? and t.net=?";
 		return this.getJdbcTemplate().queryForInt(sql,new Object[]{proid,net});
 	}
 
@@ -372,7 +372,7 @@ public class LotteryDao extends JdbcBaseDao {
 		}
 	}
 
-	public void clearHisDyjProjectCode(String expect, String net) {
+	public void clearHisFetchProjectCode(String expect, String net) {
 		String sql="delete from ssq_lottery_collect_fetch where net=? and expect<>?";
 		this.getJdbcTemplate().update(sql,new Object[]{net,expect});
 	}
@@ -380,4 +380,5 @@ public class LotteryDao extends JdbcBaseDao {
 		String sql = "select code from ssq_lottery_collect_fetch t where t.net=? limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{net});
 	}
+
 }

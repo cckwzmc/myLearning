@@ -1,4 +1,4 @@
-package com.lyxmq.lottery.ssq;
+package com.lyxmq.lottery.ssq.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,6 +21,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.slf4j.LoggerFactory;
 
+import com.lyxmq.lottery.ssq.LotterySsqAlgorithm;
+import com.lyxmq.lottery.ssq.dao.LotteryDao;
 import com.lyxmq.lottery.ssq.utils.LotterySsqMediaUtils;
 
 public class LotterySsqService {
