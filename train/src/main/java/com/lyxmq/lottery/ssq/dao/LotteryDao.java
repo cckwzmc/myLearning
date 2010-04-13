@@ -305,14 +305,12 @@ public class LotteryDao extends JdbcBaseDao {
 	public void saveSsqLotteryFilterResult() {
 		String sql="insert into ssq_lottery_filter_result(value) select value from ssq_lottery_all_result";
 		this.getJdbcTemplate().update(sql);
-		sql="delete from ssq_lottery_filter_result where value in(select value from ssq_lottery_collect_result)";
-		this.getJdbcTemplate().update(sql);
 		
 	}
 
-	public void deleteSsqLotteryFilterResult(final List<String> redList) {
+	public int[] deleteSsqLotteryFilterResult(final List<String> redList) {
 		if (CollectionUtils.isEmpty(redList)) {
-			return;
+			return null;
 		}
 		BatchPreparedStatementSetter pps = null;
 		String sql = "delete from  ssq_lottery_filter_result where value=?";
@@ -320,7 +318,7 @@ public class LotteryDao extends JdbcBaseDao {
 
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				ps.setString(1, redList.get(i));
+				ps.setObject(1, redList.get(i));
 			}
 
 			@Override
@@ -329,10 +327,12 @@ public class LotteryDao extends JdbcBaseDao {
 			}
 		};
 		try {
-			this.getJdbcTemplate().batchUpdate(sql, pps);
+			int[] ret=this.getJdbcTemplate().batchUpdate(sql, pps);
+			return ret;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
+		return null;
 	}
 
 	public int getCountSsqLotteryCollectFetchByProid(String proid, String net) {
@@ -377,8 +377,17 @@ public class LotteryDao extends JdbcBaseDao {
 		this.getJdbcTemplate().update(sql,new Object[]{net,expect});
 	}
 	public List getSsqLotteryCollectFetchLimit(int first, int page,String net) {
-		String sql = "select code from ssq_lottery_collect_fetch t where t.net=? limit " + first + "," + page;
+		String sql = "select id,code from ssq_lottery_collect_fetch t where t.net=? limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{net});
+	}
+	public List getSsqLotteryCollectResultLimit(int first, int page) {
+		String sql = "select value from ssq_lottery_collect_result t  limit " + first + "," + page;
+		return this.getJdbcTemplate().queryForList(sql);
+	}
+
+	public void deleteSsqLotteryAllFilterResult() {
+		String sql="delete from ssq_lottery_filter_result where value in(select value from ssq_lottery_collect_result)";
+		this.getJdbcTemplate().update(sql);
 	}
 
 }

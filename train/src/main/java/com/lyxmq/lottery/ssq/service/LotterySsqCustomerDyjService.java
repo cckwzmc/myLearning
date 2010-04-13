@@ -129,12 +129,13 @@ public class LotterySsqCustomerDyjService extends Thread {
 	public void saveDyjProjectRedCode() {
 		List<String> resultList = new ArrayList<String>();
 		int last = 0;
-		int page = 20000;
+		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
+				code=StringUtils.replace(code, "|", "+");
 				String[] codes = StringUtils.split(code, "@@");
 				for (String ssq : codes) {
 					String redCode = StringUtils.split(ssq, "+")[0];
@@ -213,6 +214,6 @@ public class LotterySsqCustomerDyjService extends Thread {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
-		stop();
+		logger.info("========"+"大赢家抓取完成..............................................");
 	}
 }

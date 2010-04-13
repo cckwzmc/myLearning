@@ -9,6 +9,7 @@
 		<property name="lotterySsqFileService" ref="lotterySsqFileService"></property>
 		<property name="lotterySsqCustomerDyjService" ref="lotterySsqCustomerDyjService"></property>
 		<property name="lotterySsqCustomer500WanService" ref="lotterySsqCustomer500WanService"></property>
+		<property name="lotterySsqThan20Service" ref="lotterySsqThan20Service"></property>
 	</bean>
 	<bean id="initLotteryService" class="com.lyxmq.lottery.ssq.service.LotteryInitService">
 		<property name="dao" ref="lotteryDao" />
@@ -18,6 +19,7 @@
 	</bean>
 	<bean id="lotterySsqMedia500WanService" class="com.lyxmq.lottery.ssq.service.LotterySsqMedia500WanService">
 		<property name="dao" ref="lotteryDao" />
+		<property name="lotterySsqThan20Service" ref="lotterySsqThan20Service"></property>
 	</bean>
 	<bean id="lotterySsqMediaSinaService" class="com.lyxmq.lottery.ssq.service.LotterySsqMediaSinaService">
 		<property name="dao" ref="lotteryDao" />
@@ -30,10 +32,15 @@
 	</bean>
 	<bean id="lotterySsqCustomer500WanService" class="com.lyxmq.lottery.ssq.service.LotterySsqCustomer500WanService">
 		<property name="dao" ref="lotteryDao" />
+		<property name="lotterySsqThan20Service" ref="lotterySsqThan20Service"></property>
 	</bean>
-	<bean id="lotteryFetchService" class="com.lyxmq.lottery.ssq.service.LotterySsqFetchService">
+	<bean id="lotterySsqThan20Service" class="com.lyxmq.lottery.ssq.service.LotterySsqThan20Service">
+		<property name="dao" ref="lotteryDao" />
+	</bean>
+	<bean id="lotteryCollectService" class="com.lyxmq.lottery.ssq.service.LotterySsqCollectService">
 		<property name="dao" ref="lotteryDao" />
 		<property name="lotterySsqCustomerDyjService" ref="lotterySsqCustomerDyjService"></property>
 		<property name="lotterySsqCustomer500WanService" ref="lotterySsqCustomer500WanService"></property>
+		<property name="lotterySsqFileService" ref="lotterySsqFileService"></property>
 	</bean>
 </beans>	

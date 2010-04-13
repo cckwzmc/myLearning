@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
@@ -42,6 +44,11 @@ public class LotterySsqCustomer500WanService extends Thread{
 	}
 	public void run(){
 		this.fetch500WanProjectRedCode();
+	}
+	LotterySsqThan20Service lotterySsqThan20Service=null;
+	
+	public void setLotterySsqThan20Service(LotterySsqThan20Service lotterySsqThan20Service) {
+		this.lotterySsqThan20Service = lotterySsqThan20Service;
 	}
 	/**
 	 * 获取用户的各种方案
@@ -116,6 +123,10 @@ public class LotterySsqCustomer500WanService extends Thread{
 		content=StringUtils.replace(content, " + ", "+");
 		content=StringUtils.replace(content, "<br><br>", "\n");
 		content=StringUtils.replace(content, " | ", "+");
+		content=StringUtils.replace(content, "∣", "+");
+		content=StringUtils.replace(content, "|", "+");
+		content=StringUtils.replace(content, "  ", " ");
+		content = StringUtils.replace(content, "=", "+");
 		content=StringUtils.replace(content, " \n", "\n");
 		content=StringUtils.replace(content, "\t", ",");
 		content=StringUtils.replace(content, "、", ",");
@@ -149,6 +160,8 @@ public class LotterySsqCustomer500WanService extends Thread{
 				code=StringUtils.replace(code, " ", "");
 				code=StringUtils.replace(code, "蓝球:", "+");
 				code=StringUtils.replace(code, "红球:", "");
+				code=StringUtils.replace(code, "蓝球", "+");
+				code=StringUtils.replace(code, "红球", "");
 			}else if(code.indexOf("胆")!=-1||code.indexOf("拖")!=-1){
 				continue;
 			}else{
@@ -180,12 +193,23 @@ public class LotterySsqCustomer500WanService extends Thread{
 	public void save500WanProjectRedCode(){
 		List<String> resultList = new ArrayList<String>();
 		int last = 0;
-		int page = 20000;
+		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
+		Pattern p = Pattern.compile("[^\\x00-\\xff]");  
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
+				code=StringUtils.replace(code, "|", "+");
+				code=StringUtils.replace(code, "∣", "+");
+				code=StringUtils.replace(code, " ", "");
+				code=StringUtils.replace(code, "@@@@", "@@");
+				code=StringUtils.replace(code, "� ", "");
+				Matcher m = p.matcher(code);
+				if(m.find()){
+					logger.error("内容有非法字符=="+code);
+					continue;
+				}
 				String[] codes = StringUtils.split(code, "@@");
 				for(String ssq:codes)
 				{
@@ -202,6 +226,8 @@ public class LotterySsqCustomer500WanService extends Thread{
 					resultList.clear();
 				}
 			}
+			last+=page;
+			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
 		}
 		if(CollectionUtils.isNotEmpty(resultList)){
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
@@ -251,5 +277,6 @@ public class LotterySsqCustomer500WanService extends Thread{
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
+		logger.info("========"+"500Wan抓取完成..............................................");
 	}
 }

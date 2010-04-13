@@ -34,6 +34,7 @@ public class LotterySsqService {
 	LotterySsqFileService lotterySsqFileService = null;
 	LotterySsqCustomerDyjService lotterySsqCustomerDyjService = null;
 	LotterySsqCustomer500WanService lotterySsqCustomer500WanService=null;
+	LotterySsqThan20Service lotterySsqThan20Service=null;
 	
 	public void setLotterySsqCustomer500WanService(LotterySsqCustomer500WanService lotterySsqCustomer500WanService) {
 		this.lotterySsqCustomer500WanService = lotterySsqCustomer500WanService;
@@ -53,6 +54,10 @@ public class LotterySsqService {
 
 	public void setLotterySsqFileService(LotterySsqFileService lotterySsqFileService) {
 		this.lotterySsqFileService = lotterySsqFileService;
+	}
+
+	public void setLotterySsqThan20Service(LotterySsqThan20Service lotterySsqThan20Service) {
+		this.lotterySsqThan20Service = lotterySsqThan20Service;
 	}
 
 	public void setDao(LotteryDao dao) {
@@ -83,6 +88,7 @@ public class LotterySsqService {
 	@SuppressWarnings("unchecked")
 	public void getCurrentExpertSingleResult() {
 		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
 		if (StringUtils.isBlank(media500Wan)) {
 			return;
 		}
@@ -91,6 +97,19 @@ public class LotterySsqService {
 			try {
 				Document document = DocumentHelper.parseText(media500Wan);
 				redCodeList = LotterySsqMediaUtils.getMediaRedCode(document);
+				List<String> mediaSinaList = this.lotterySsqMediaSinaService.getCurrentMediaRedCode(mediaSina);
+				if (CollectionUtils.isNotEmpty(mediaSinaList)) {
+					for(String ssq:mediaSinaList){
+						redCodeList.add(ssq.split(","));
+					}
+				}
+				for(int i=0;i<redCodeList.size();i++){
+					String[] ssq=redCodeList.get(i);
+					if(ssq.length>15){
+						redCodeList.remove(i);
+						i--;
+					}
+				}
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
@@ -220,14 +239,14 @@ public class LotterySsqService {
 	public void filterCurrentRedCodeFirst() {
 		this.initConifg(true);
 		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+		//有超过20个号码的推荐
+//		media500Wan="";
 		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
 		if (StringUtils.isBlank(media500Wan) && StringUtils.isBlank(mediaSina)) {
 			return;
 		}
 		// 媒体预测号码
 		List<String> redMedia = new ArrayList<String>();
-		// 本人添加的过滤号码
-		List<String> redFile = new ArrayList<String>();
 		Document document = null;
 		if (StringUtils.isNotBlank(media500Wan)&&media500Wan.length()>100) {
 			try {
@@ -235,10 +254,6 @@ public class LotterySsqService {
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
-		}
-		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()))) {
-			this.dao.clearSsqLotteryFilterResult();
-			this.dao.clearSsqLotteryCollectResult();
 		}
 		if (!isSaveToDatabase) {
 			if(document!=null)
@@ -263,32 +278,26 @@ public class LotterySsqService {
 				this.lotterySsqMedia500WanService.saveCurrentMediaRedCodeToDb(redMedia
 						.subList(i, i = (i + 1000 > redMedia.size() ? redMedia.size() : i + 1000)), LotterySsqConifgService.getExpect());
 			}
-			this.lotterySsqCustomerDyjService.saveDyjProjectRedCode();
 		}
-		if (LotterySsqConifgService.getIshaveexclude() > 0) {
-			if (!isSaveToDatabase) {
-				this.lotterySsqFileService.parseCurrentFileRedCodeToFile("lottery/ssq/excluderedfile.txt", LotterySsqConifgService.getExpect());
-			} else {
-				this.lotterySsqFileService.parseCurrentFileRedCodeToDb("lottery/ssq/excluderedfile.txt");
-			}
-		}
-		this.dao.saveSsqLotteryFilterResult();
+//		this.dao.saveSsqLotteryFilterResult();
+//		this.dao.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
 		int page = 40000;
 		while (last < count) {
 			List list = this.dao.getSsqLottoryFilterResultLimit(last, page);
 			last += page;
-			filterRedCode(redMedia, redFile, list);
+			filterRedCode(redMedia, list);
 		}
 		this.dao.saveLotteryGenLog("1", LotterySsqConifgService.getExpect(), "1");
 	}
 
 	/**
 	 * 
-	 * 从文件中读取数据过滤
+	 * 从文件中读取数据过滤不再使用
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public void filterCurrentRedCodeFromFile() {
 		this.initConifg(true);
 		// 媒体预测号码
@@ -318,7 +327,7 @@ public class LotterySsqService {
 			} else {
 				last += page;
 			}
-			filterRedCode(redMedia, redFile, list);
+//			filterRedCode(redMedia, redFile, list);
 		}
 		this.dao.saveLotteryGenLog("1", LotterySsqConifgService.getExpect(), "1");
 	}
@@ -332,7 +341,7 @@ public class LotterySsqService {
 	 * @param list
 	 */
 	@SuppressWarnings("unchecked")
-	private void filterRedCode(List<String> redMedia, List<String> redFile, List list) {
+	private void filterRedCode(List<String> redMedia, List list) {
 		List<String> redList = new ArrayList<String>();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Map lMap = (Map) iterator.next();
@@ -349,9 +358,7 @@ public class LotterySsqService {
 				redList.add(lValue);
 			}
 
-			if (isSaveToDatabase && this.dao.isExistSsqLotteryCollect(lValue)) {
-				continue;
-			} else if (CollectionUtils.isNotEmpty(redFile) && redFile.contains(lValue)) {
+			if (this.dao.isExistSsqLotteryCollect(lValue)) {
 				redList.add(lValue);
 			}
 
@@ -384,7 +391,7 @@ public class LotterySsqService {
 		}
 		boolean isExist = MapUtils.isNotEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()));
 		if (isExist) {
-			// 以追加的方式过滤号码，即在原来的基础上删除号码
+			// 以追加的方式过滤号码，即在原来的基础上删除号码,只能用于文本收集方式
 			this.filterCurrentRedCodeAppend();
 		} else {
 			this.filterCurrentRedCodeFirst();
@@ -395,16 +402,8 @@ public class LotterySsqService {
 	 * 再次删除通常是指读取文本中的来过滤
 	 */
 	public void filterCurrentRedCodeAppend() {
-		if (LotterySsqConifgService.getIshaveexclude() > 0) {
-			if (!isSaveToDatabase) {
-				this.lotterySsqFileService.parseCurrentFileRedCodeToFile("lottery/ssq/excluderedfile.txt", LotterySsqConifgService.getExpect());
-			} else {
-				this.lotterySsqFileService.parseCurrentFileRedCodeToDb("lottery/ssq/excluderedfile.txt");
-			}
-		}
-		if (this.dao.getTotalLotteryCollectResult() > 0) {
-			this.dao.deleteSsqLotteryFilterResultInCollect();
-		}
+		List<String> list=this.lotterySsqFileService.getCurrentFileRedCode();
+		this.dao.deleteSsqLotteryFilterResult(list);
 	}
 
 	public static void main(String[] args) {

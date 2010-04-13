@@ -4,13 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.lyxmq.lottery.ssq.LotteryConstant;
-import com.myfetch.service.http.util.HttpHtmlService;
 
 public class LotteryUtils {
 	private static int count = 0;

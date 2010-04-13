@@ -33,7 +33,11 @@ public class LotterySsqMedia500WanService {
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
-
+	LotterySsqThan20Service lotterySsqThan20Service=null;
+	
+	public void setLotterySsqThan20Service(LotterySsqThan20Service lotterySsqThan20Service) {
+		this.lotterySsqThan20Service = lotterySsqThan20Service;
+	}
 	/**
 	 * 按单注方式生成红球号码
 	 * 
@@ -44,6 +48,10 @@ public class LotterySsqMedia500WanService {
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = redCode.iterator(); iterator.hasNext();) {
 			String[] red = (String[]) iterator.next();
+			if(red.length>20){
+				this.lotterySsqThan20Service.select(6, red, resultList);
+				continue;
+			}
 			LotteryUtils.select(6, red, resultList);
 		}
 		return resultList;

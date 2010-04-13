@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.lyxmq.lottery.ssq.service.LotteryInitService;
-import com.lyxmq.lottery.ssq.service.LotterySsqFetchService;
+import com.lyxmq.lottery.ssq.service.LotterySsqCollectService;
 import com.lyxmq.lottery.ssq.service.LotterySsqService;
 
 /**
@@ -48,7 +48,7 @@ public class ReverseTestMain {
 				}
 				Thread.sleep(2000);
 			}
-			LotterySsqFetchService fetchservice = (LotterySsqFetchService) context.getBean("lotteryFetchService");
+			LotterySsqCollectService collectservice = (LotterySsqCollectService) context.getBean("lotteryCollectService");
 			currentTime = System.currentTimeMillis();
 			logger.info("按y开始开始抓取大赢家的用户投注，按n跳过这一步，60秒钟后默认开始抓取大赢家用户投注.....");
 			in = scanner.nextLine();
@@ -57,7 +57,7 @@ public class ReverseTestMain {
 					break;
 				}
 				if ("y".equalsIgnoreCase(in) || currentTime + 60000 < System.currentTimeMillis()) {
-					fetchservice.fetchDyjCustomerProject();
+					collectservice.fetchDyjCustomerProject();
 					break;
 				}
 				Thread.sleep(2000);
@@ -69,22 +69,46 @@ public class ReverseTestMain {
 					break;
 				}
 				if ("y".equalsIgnoreCase(in) || currentTime + 60000 < System.currentTimeMillis()) {
-					fetchservice.fetch500WanCustomerProject();
+					collectservice.fetch500WanCustomerProject();
 					break;
 				}
 				Thread.sleep(2000);
 			}
-
-			LotterySsqService service = (LotterySsqService) context.getBean("lotteryService");
-			// service.getCurrentExpertMergeResult();
-			currentTime = System.currentTimeMillis();
-			logger.info("按y开始开始抓取大赢家的用户投注，按n跳过这一步，60秒钟后默认开始抓取大赢家用户投注.....");
+			logger.info("按y开始读取文本格式的手工收集信息，按n跳过这一步，60秒钟后默认自动开始.....");
 			in = scanner.nextLine();
 			while (true) {
 				if ("n".equalsIgnoreCase(in)) {
 					break;
 				}
 				if ("y".equalsIgnoreCase(in) || currentTime + 60000 < System.currentTimeMillis()) {
+					collectservice.collectFileProject();
+					break;
+				}
+				Thread.sleep(2000);
+			}
+			logger.info("按y开始计算采集数据，按n跳过这一步，60秒钟后默认自动开始.....");
+			in = scanner.nextLine();
+			while (true) {
+				if ("n".equalsIgnoreCase(in)) {
+					break;
+				}
+				if ("y".equalsIgnoreCase(in)) {
+					collectservice.collectResultDispose();
+					break;
+				}
+				Thread.sleep(2000);
+			}
+//			collectservice.deleteFilterResultFromCollect();
+			LotterySsqService service = (LotterySsqService) context.getBean("lotteryService");
+			// service.getCurrentExpertMergeResult();
+			currentTime = System.currentTimeMillis();
+			logger.info("开始生成过滤号码，按y开始，按n跳过这一步，60秒钟后默认自动开始.....");
+			in = scanner.nextLine();
+			while (true) {
+				if ("n".equalsIgnoreCase(in)) {
+					break;
+				}
+				if ("y".equalsIgnoreCase(in)) {
 					service.filterCurrentRedCode();
 				}
 			}

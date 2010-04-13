@@ -11,13 +11,21 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
+import org.hibernate.id.UUIDHexGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
 import com.lyxmq.lottery.ssq.dao.LotteryDao;
@@ -29,14 +37,18 @@ import com.lyxmq.lottery.ssq.utils.LotteryUtils;
  * @author Administrator
  * 
  */
-public class LotterySsqFileService {
-
+public class LotterySsqFileService extends Thread{
+	private  static Logger logger=LoggerFactory.getLogger(LotterySsqFileService.class);
+	
+	private  final String DEFAULTFILENAME="lottery/ssq/excluderedfile.txt"; 
 	private LotteryDao dao = null;
 
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
-
+	public void run(){
+		this.collectFileCode();
+	}
 	/**
 	 * 从文件中读取号码，包括：红球、蓝球 一行一个号码 "lottery/ssq/excluderedfile.txt"
 	 * 
@@ -115,6 +127,19 @@ public class LotterySsqFileService {
 			resultList.clear();
 		}
 	}
+	/**
+	 * 不保存文件中的数据至数据库，直接返回分析结果
+	 * @param fileName
+	 */
+	public List<String> getCurrentFileRedCode() {
+		Set<String[]> fileList = this.getCodeFromFile(this.DEFAULTFILENAME);
+		List<String> resultList = new ArrayList<String>();
+		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
+			String[] code = (String[]) iterator.next();
+			LotteryUtils.select(6, code[0], resultList);
+		}
+		return resultList;
+	}
 
 	/**
 	 * 
@@ -184,6 +209,90 @@ public class LotterySsqFileService {
 			}
 		}
 	}
+	
+	/**
+	 * 文件收集号码
+	 */
+	public void collectFileCode(){
+		Set<String[]> fileCode=this.getCodeFromFile("lottery/ssq/excluderedfile.txt");
+		List<Map<String,String>> resultList=new ArrayList<Map<String,String>>();
+		int i=0;
+		String sCode="";
+		for (Iterator<String[]> iterator = fileCode.iterator(); iterator.hasNext();) {
+			String[] codes = (String[]) iterator.next();
+			String code=StringUtils.join(codes,"+");
+			i++;
+			if("".equals(sCode)){
+				sCode=code;
+			}else{
+				sCode+="@@"+code;
+			}
+			if(i>10){
+				Map<String,String> map=new HashMap<String, String>();
+				map.put("code", sCode);
+				map.put("net", "2");
+				map.put("expect", LotterySsqConifgService.getExpect());
+				map.put("proid", RandomUtils.nextInt(999999999)+"");
+				resultList.add(map);
+				i=0;
+				sCode="";
+			}
+			if(resultList.size()>200){
+				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
+				resultList.clear();
+			}
+		}
+		if(!"".equals(sCode)){
+			Map<String,String> map=new HashMap<String, String>();
+			map.put("code", sCode);
+			map.put("net", "2");
+			map.put("expect", LotterySsqConifgService.getExpect());
+			map.put("proid", RandomUtils.nextInt(999999999)+"");
+			resultList.add(map);
+		}
+		if(CollectionUtils.isNotEmpty(resultList)){
+			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
+			resultList.clear();
+		}
+		logger.info("========"+"文件抓取完成..............................................");
+	}
+	/**
+	 * 处理ssq_lottery_collect_fetch中的文件类型数据
+	 */
+	public void saveFileProjectRedCode() {
+		List<String> resultList = new ArrayList<String>();
+		int last = 0;
+		int page = 200;
+		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "2");
+		while (CollectionUtils.isNotEmpty(list)) {
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map map = (Map) iterator.next();
+				String code = ObjectUtils.toString(map.get("code"));
+				code=StringUtils.replace(code, "|", "+");
+				String[] codes = StringUtils.split(code, "@@");
+				for(String ssq:codes)
+				{
+					String redCode=StringUtils.split(ssq, "+")[0];
+					String[] redCodes =StringUtils.split(redCode,",");
+					if(redCodes.length<6||redCodes.length>20){
+						logger.error("方案解析失败=="+ssq);
+						continue;
+					}
+					LotteryUtils.select(6, redCodes, resultList);
+				}
+				if (resultList.size() > 2000) {
+					this.dao.saveSsqLotteryCollectRedCod(resultList);
+					resultList.clear();
+				}
+			}
+			last+=page;
+			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "2");
+		}
+		if(CollectionUtils.isNotEmpty(resultList)){
+			this.dao.saveSsqLotteryCollectRedCod(resultList);
+			resultList.clear();
+		}
+	}
 	// public static void main(String[] args) throws IOException {
 	// List<String> list=new ArrayList<String>();
 	// list.add("1");
@@ -211,5 +320,6 @@ public class LotterySsqFileService {
 	// }
 	// writer.close();
 	// }
+	
 
 }
