@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections.SetUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -87,6 +89,7 @@ public class LotterySsqService {
 
 	@SuppressWarnings("unchecked")
 	public void getCurrentExpertSingleResult() {
+		/*媒体推荐号码*/
 		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
 		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
 		if (StringUtils.isBlank(media500Wan)) {
@@ -114,15 +117,9 @@ public class LotterySsqService {
 				e.printStackTrace();
 			}
 		}
-		// List<String> redMedia = new ArrayList<String>();
-		// List<String> redFile = new ArrayList<String>();
-		// if (ishaveexclude > 0) {
-		// redFile = disposeFileData();
-		// }
-		// 算合值的时候可以使用
-		// if (StringUtils.isNotBlank(xmlData)) {
-		// Map<String, String> map = LottoryUtils.disposeXmlStatData(xmlData);
-		// }
+		/**文本收集的号码***/
+//		Set<String> fileRedCode=this.lotterySsqFileService.getRedCodeFromFile();
+		
 		List<String> redList = new ArrayList<String>();
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
@@ -171,7 +168,13 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isRedIncludeMediaFourCode(lValues, redCodeList)) {
 					continue;
 				}
-
+				/*
+				 * 即我认为这些号码是不可能中奖的，
+				 * 推荐使用文本方式保存的号码使用
+				 */
+//				if(CollectionUtils.isNotEmpty(fileRedCode)&&!LotterySsqAlgorithm.isRedCodeHaveSix(fileRedCode,lValues)){
+//					continue;
+//				}
 				for (int i = 0; i < lValues.length; i++) {
 					if (LotterySsqConifgService.getQuOne() != -1 && NumberUtils.toInt(lValues[i]) <= LotterySsqConifgService.getQuOneNum()) {
 						qOne++;

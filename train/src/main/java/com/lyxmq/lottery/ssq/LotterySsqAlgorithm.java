@@ -2,6 +2,7 @@ package com.lyxmq.lottery.ssq;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -84,7 +85,10 @@ public class LotterySsqAlgorithm {
 	 */
 	public static boolean isRedIncludeSideCode(String[] lValues) {
 		int tempSelect = 0;
-		if (LotterySsqConifgService.getPreSideCode() != null && LotterySsqConifgService.getPreSideCode().length > 0) {
+		if(LotterySsqConifgService.getPreSideCode() == null ){
+			return true;
+		} 
+		if (LotterySsqConifgService.getPreSideCode().length > 0) {
 			for (int j = 0; j < lValues.length; j++) {
 				for (int k = 0; k < LotterySsqConifgService.getPreSideCode().length; k++) {
 					if (StringUtils.equals(lValues[j], LotterySsqConifgService.getPreSideCode()[k])) {
@@ -92,30 +96,54 @@ public class LotterySsqAlgorithm {
 					}
 				}
 			}
-		}
-		if (tempSelect == 0||tempSelect>2) {
-			return false;
+			if (tempSelect == 0||tempSelect>2) {
+				return false;
+			}
+		}else if (LotterySsqConifgService.getPreSideCode().length==0) {
+			for (int j = 0; j < lValues.length; j++) {
+				for (int k = 0; k < LotterySsqConifgService.getPreSideCode().length; k++) {
+					if (StringUtils.equals(lValues[j], LotterySsqConifgService.getPreSideCode()[k])) {
+						tempSelect++;
+					}
+				}
+			}
+			if (tempSelect > 0) {
+				return false;
+			}
 		}
 		return true;
 	}
 
 	/**
 	 * // 至少有一个两连号
-	 * 
+	 * 0表示不能包含连号
 	 * @param lValues
 	 * @return
 	 */
 	public static boolean isRedIncludeEvenIn(String[] lValues) {
 		int tempSelect2 = 0;
-		for (int j = 0; j < lValues.length; j++) {
-			int rValue = NumberUtils.toInt(lValues[j]);
-			int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-			if (nextValue != -1 && nextValue - rValue == 1) {
-				tempSelect2++;
+		if(LotterySsqConifgService.getHaveTwoSeries()==0){
+			for (int j = 0; j < lValues.length; j++) {
+				int rValue = NumberUtils.toInt(lValues[j]);
+				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+				if (nextValue != -1 && nextValue - rValue == 1) {
+					tempSelect2++;
+				}
 			}
-		}
-		if (tempSelect2 <LotterySsqConifgService.getHaveTwoSeries()) {
-			return false;
+			if (tempSelect2 >LotterySsqConifgService.getHaveTwoSeries()) {
+				return false;
+			}
+		}else if(LotterySsqConifgService.getHaveTwoSeries()>0){
+			for (int j = 0; j < lValues.length; j++) {
+				int rValue = NumberUtils.toInt(lValues[j]);
+				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+				if (nextValue != -1 && nextValue - rValue == 1) {
+					tempSelect2++;
+				}
+			}
+			if (tempSelect2 <LotterySsqConifgService.getHaveTwoSeries()) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -276,8 +304,8 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedIncludeMediaFourCode(String[] lValues, List<String[]> redCodeList) {
-		int tempSelect = 0;
 		for (Iterator<String[]> iterator2 = redCodeList.iterator(); iterator2.hasNext();) {
+			int tempSelect = 0;
 			String[] mediaRedCode = (String[]) iterator2.next();
 			for (int i = 0; i < mediaRedCode.length; i++) {
 				for (int j = 0; j < lValues.length; j++) {
@@ -289,6 +317,7 @@ public class LotterySsqAlgorithm {
 			if (tempSelect > 4) {
 				return false;
 			}
+			
 		}
 		return true;
 	}
@@ -329,6 +358,17 @@ public class LotterySsqAlgorithm {
 				return true;
 			}
 		}
+		return false;
+	}
+
+	/**
+	 * 不能有超过5个的相同号码，
+	 * 即我认为这些号码是不可能中奖的，
+	 * 推荐使用文本方式保存的号码使用
+	 * @return
+	 */
+	public static boolean isRedCodeHaveSix(Set<String> sixRedCode,String[] lValues) {
+		int count=0;
 		return false;
 	}
 }

@@ -110,7 +110,78 @@ public class LotterySsqFileService extends Thread{
 		}
 		return list;
 	}
+	/**
+	 * 使用默认文件名
+	 * @return
+	 */
+	public Set<String[]> getCodeFromFile() {
+		Set<String[]> list = new HashSet<String[]>();
+		String filestr = "";
+		try {
+			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+			Enumeration urls = null;
+			try {
+				urls = classLoader.getResources(this.DEFAULTFILENAME);
+			} catch (IOException e) {
+			}
+			while (urls.hasMoreElements()) {
+				URL url = (URL) urls.nextElement();
+				InputStream is = null;
+				try {
+					URLConnection con = url.openConnection();
+					is = con.getInputStream();
+					BufferedInputStream bis = new BufferedInputStream(is);
+					byte[] bs = new byte[bis.available()];
+					bis.read(bs);
+					filestr = new String(bs, "GBK");
+				} finally {
+					if (is != null) {
+						is.close();
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+			e.getMessage();
+		}
+		if (filestr != null && !"".equals(filestr)) {
+			String[] redCodes = StringUtils.split(StringUtils.remove(filestr, '\r'), '\n');
+			for (int i = 0; i < redCodes.length; i++) {
+				String code = redCodes[i];
+				String[] codes = new String[2];
+				code = StringUtils.replace(StringUtils.replace(code, " ", ""), "|", "+");
+				if (StringUtils.indexOf(code, "+") != -1) {
+					codes = StringUtils.split(code, "+");
+				} else {
+					codes[0] = code;
+					codes[1] = null;
+				}
+				list.add(codes);
+			}
+		}
+		return list;
+	}
+	/**
+	 * 使用默认文件名
+	 * @return
+	 */
+	public Set<String> getRedCodeFromFile() {
+		Set<String[]> list = this.getCodeFromFile();
+		Set<String> redSet=new HashSet<String>();
+		for (String[] code:list) {
+			redSet.add(code[0]);
+		}
+		return redSet;
+	}
 
+	/**
+	 * 解析红球并入库
+	 * @param fileName
+	 */
 	public void parseCurrentFileRedCodeToDb(String fileName) {
 		Set<String[]> fileList = this.getCodeFromFile(fileName);
 		List<String> resultList = new ArrayList<String>();
@@ -184,6 +255,11 @@ public class LotterySsqFileService extends Thread{
 		}
 	}
 
+	/**
+	 * 保存解析过的红球写入文件
+	 * @param redFile
+	 * @param qs
+	 */
 	public void saveCurrentFileRedCode(List<String> redFile, String qs) {
 		if (CollectionUtils.isNotEmpty(redFile)) {
 			try {
