@@ -104,7 +104,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		} catch (InterruptedException e) {
 			notify();
 		}
-		if (content.indexOf("该方案") != -1) {
+		if (content.indexOf("该方案") != -1||content.indexOf("尚未截止")!=-1) {
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
