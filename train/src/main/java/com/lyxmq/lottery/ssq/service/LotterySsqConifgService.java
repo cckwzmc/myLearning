@@ -23,7 +23,7 @@ public class LotterySsqConifgService {
 	private static String www500wanDowload = "";
 	private static int quOne = -1;
 	private static int quTwo = -1;
-	private static int quThree = 3;
+	private static int quThree = -1;
 	private static int quOneNum = 11;
 	private static int quTwoNum = 22;
 	// 包含其中一个数字
@@ -43,17 +43,17 @@ public class LotterySsqConifgService {
 	// 最大数字要求小于等于该数字
 	private static int lastMaxCode = 34;
 	// 有几个两连号
-	private static int haveTwoSeries = 1;
+	private static int haveTwoSeries = -1;
 	// 有几个三连号
-	private static int haveThreeSeries = 0;
+	private static int haveThreeSeries = -1;
 	// 有几个差值为1的，，如1，3，5 算两个
-	private static int haveOnediffer = 1;
+	private static int haveOnediffer = -1;
 	// 在这些号码中选择6个
 	private static String[] selectCode = new String[] {};
 	// 不能同时出现的号码
 	private static String[] cannotSelectedTogethor = new String[] {};
 	// 是否有边号
-	private static int haveSideCode = 1;
+	private static int haveSideCode = -1;
 	// 包含includeRed中的几个数字
 	private static int includeRedNum = 1;
 	// 上一期号码
