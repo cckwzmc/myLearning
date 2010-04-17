@@ -10,11 +10,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.collections.SetUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -284,6 +282,7 @@ public class LotterySsqService {
 		}
 //		this.dao.saveSsqLotteryFilterResult();
 //		this.dao.deleteSsqLotteryAllFilterResult();
+		this.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
 		int page = 40000;
@@ -293,6 +292,27 @@ public class LotterySsqService {
 			filterRedCode(redMedia, list);
 		}
 		this.dao.saveLotteryGenLog("1", LotterySsqConifgService.getExpect(), "1");
+	}
+
+	/**
+	 * 删除过滤号码
+	 */
+	@SuppressWarnings("unchecked")
+	private void deleteSsqLotteryAllFilterResult() {
+		int count = this.dao.getTotalLotteryCollectResult();
+		int page=0;
+		int pagesize=40000;
+		List<String> redCodeList=new ArrayList<String>();
+		while(page<count){
+			List list=this.dao.getSsqLotteryCollectResultLimit(page, pagesize);
+			page+=pagesize;
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map map = (Map) iterator.next();
+				redCodeList.add(ObjectUtils.toString(map.get("value")));
+				redCodeList.clear();
+			}
+			this.dao.batchDelSsqLotteryFilterResult(redCodeList);
+		}
 	}
 
 	/**
@@ -361,9 +381,9 @@ public class LotterySsqService {
 				redList.add(lValue);
 			}
 
-			if (this.dao.isExistSsqLotteryCollect(lValue)) {
-				redList.add(lValue);
-			}
+//			if (this.dao.isExistSsqLotteryCollect(lValue)) {
+//				redList.add(lValue);
+//			}
 
 			if (redMedia.contains(lValue)) {
 				redList.add(lValue);

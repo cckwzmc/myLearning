@@ -129,6 +129,8 @@ public class LotterySsqCustomer500WanService extends Thread{
 		content = StringUtils.replace(content, "=", "+");
 		content=StringUtils.replace(content, " \n", "\n");
 		content=StringUtils.replace(content, "\t", ",");
+		content=StringUtils.replace(content, ".", ",");
+		content=StringUtils.replace(content, "-", ",");
 		content=StringUtils.replace(content, "、", ",");
 		content=StringUtils.replace(content, "，", ",");
 		String[] contents=StringUtils.split(content,"\n");
@@ -205,6 +207,7 @@ public class LotterySsqCustomer500WanService extends Thread{
 				code=StringUtils.replace(code, " ", "");
 				code=StringUtils.replace(code, "@@@@", "@@");
 				code=StringUtils.replace(code, "� ", "");
+				code=StringUtils.replace(code, ". ", ",");
 				Matcher m = p.matcher(code);
 				if(m.find()){
 					logger.error("内容有非法字符=="+code);

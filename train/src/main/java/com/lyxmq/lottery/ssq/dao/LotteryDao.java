@@ -159,7 +159,7 @@ public class LotteryDao extends JdbcBaseDao {
 	 * 
 	 * @param redList
 	 */
-	public void addSsqLotteryFilterResult(final List<String> redList) {
+	public void batchSaveSsqLotteryFilterResult(final List<String> redList) {
 		if (CollectionUtils.isEmpty(redList)) {
 			return;
 		}

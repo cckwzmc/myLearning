@@ -94,6 +94,7 @@ public class LotterySsqFileService extends Thread{
 			e.getMessage();
 		}
 		if (filestr != null && !"".equals(filestr)) {
+			filestr = fileStrReplace(filestr);
 			String[] redCodes = StringUtils.split(StringUtils.remove(filestr, '\r'), '\n');
 			for (int i = 0; i < redCodes.length; i++) {
 				String code = redCodes[i];
@@ -111,11 +112,35 @@ public class LotterySsqFileService extends Thread{
 		return list;
 	}
 	/**
+	 * 替换算法
+	 * @param filestr
+	 * @return
+	 */
+	private String fileStrReplace(String filestr) {
+		filestr = StringUtils.replace(filestr, " + ", "+");
+		filestr = StringUtils.replace(filestr, " = ", "+");
+		filestr = StringUtils.replace(filestr, "<br><br>", "\n");
+		filestr = StringUtils.replace(filestr, "<br>", "\n");
+		filestr = StringUtils.replace(filestr, " | ", "+");
+		filestr = StringUtils.replace(filestr, "|", "+");
+		filestr = StringUtils.replace(filestr, "=", "+");
+		filestr = StringUtils.replace(filestr, " \n", "\n");
+		filestr = StringUtils.replace(filestr, " \r\n", "\n");
+		filestr = StringUtils.replace(filestr, "\n\r\n", "\n");
+		filestr = StringUtils.replace(filestr, " \n\n", "\n");
+		filestr = StringUtils.replace(filestr, "\t", ",");
+		filestr = StringUtils.replace(filestr, ".", ",");
+		filestr = StringUtils.replace(filestr, "、", ",");
+		filestr = StringUtils.replace(filestr, "，", ",");
+		filestr = StringUtils.replace(filestr, " ", ",");
+		return filestr;
+	}
+	/**
 	 * 使用默认文件名
 	 * @return
 	 */
 	public Set<String[]> getCodeFromFile() {
-		Set<String[]> list = new HashSet<String[]>();
+		Set<String[]> list = new HashSet<String[]>(50,20);
 		String filestr = "";
 		try {
 			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
@@ -133,7 +158,7 @@ public class LotterySsqFileService extends Thread{
 					BufferedInputStream bis = new BufferedInputStream(is);
 					byte[] bs = new byte[bis.available()];
 					bis.read(bs);
-					filestr = new String(bs, "GBK");
+					filestr = new String(bs, "GB2312");
 				} finally {
 					if (is != null) {
 						is.close();
@@ -149,6 +174,7 @@ public class LotterySsqFileService extends Thread{
 			e.getMessage();
 		}
 		if (filestr != null && !"".equals(filestr)) {
+			filestr = fileStrReplace(filestr);
 			String[] redCodes = StringUtils.split(StringUtils.remove(filestr, '\r'), '\n');
 			for (int i = 0; i < redCodes.length; i++) {
 				String code = redCodes[i];
@@ -368,6 +394,10 @@ public class LotterySsqFileService extends Thread{
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
+	}
+	public static void main(String[] args) {
+		LotterySsqFileService f=new LotterySsqFileService();
+		f.getCodeFromFile();
 	}
 	// public static void main(String[] args) throws IOException {
 	// List<String> list=new ArrayList<String>();
