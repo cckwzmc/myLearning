@@ -25,6 +25,11 @@ public class LotteryInitService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotteryInitService.class);
 	LotteryDao dao = null;
 	LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
+	LotterySsqMediaSinaService lotterySsqMediaSinaService=null;
+	
+	public void setLotterySsqMediaSinaService(LotterySsqMediaSinaService lotterySsqMediaSinaService) {
+		this.lotterySsqMediaSinaService = lotterySsqMediaSinaService;
+	}
 	private List<String> redList = new ArrayList<String>();
 
 	public void setDao(LotteryDao dao) {
@@ -383,5 +388,16 @@ public class LotteryInitService {
 			String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia500WanUrl());
 			this.dao.saveSsqLotteryMedia("0", LotterySsqConifgService.getExpect(), xmlData);
 		}
+	}
+	public void fetchMediaSinaDan(){
+		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
+		if(StringUtils.isBlank(mediaSina)){
+			return;
+		}
+		List<String> list=this.lotterySsqMediaSinaService.getCurrentMediaDanRedCode(mediaSina);
+		if(CollectionUtils.isEmpty(list)){
+			return;
+		}
+		this.lotterySsqMediaSinaService.saveCurrrentMediaDanRedCode(list);
 	}
 }

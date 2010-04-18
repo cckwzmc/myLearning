@@ -96,6 +96,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 	 * @return
 	 */
 	public List<String> downloadDyjProject(String id, String playtype) {
+		List<String> list = new ArrayList<String>();
 		String url = StringUtils.replace(StringUtils.replace(LotterySsqConifgService.getDyjDowload(), "@id@", id), "@playtype@", playtype);
 		logger.info(url);
 		String content = HttpHtmlService.getXmlContent(url, "GB2312");
@@ -105,9 +106,9 @@ public class LotterySsqCustomerDyjService extends Thread {
 			notify();
 		}
 		if (content.indexOf("该方案") != -1||content.indexOf("尚未截止")!=-1) {
+			list.add("-1");
 			return null;
 		}
-		List<String> list = new ArrayList<String>();
 		content = StringUtils.replace(content, " + ", "+");
 		content = StringUtils.replace(content, " = ", "+");
 		content = StringUtils.replace(content, "<br><br>", "\n");
@@ -127,7 +128,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 
 	@SuppressWarnings("unchecked")
 	public void saveDyjProjectRedCode() {
-		List<String> resultList = new ArrayList<String>();
+		List<String[]> resultList = new ArrayList<String[]>();
 		int last = 0;
 		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
@@ -144,7 +145,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 						logger.error("方案解析失败==" + ssq);
 						continue;
 					}
-					LotteryUtils.select(6, redCodes, resultList);
+					LotteryUtils.selectArray(6, redCodes, resultList);
 					if (resultList.size() > 2000) {
 						this.dao.saveSsqLotteryCollectRedCod(resultList);
 						resultList.clear();
@@ -198,12 +199,21 @@ public class LotterySsqCustomerDyjService extends Thread {
 			if (CollectionUtils.isEmpty(pList)) {
 				continue;
 			}
-			String[] codes = pList.toArray(new String[pList.size()]);
 			Map<String, String> tmpMap = new HashMap<String, String>();
+			if(CollectionUtils.isNotEmpty(pList)&&"-1".equals(pList.get(0))){
+				tmpMap.put("proid", map.get("proid"));
+				tmpMap.put("net", "1");
+				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("code", "-1");
+				tmpMap.put("isfail", "1");
+				continue;
+			}
+			String[] codes = pList.toArray(new String[pList.size()]);
 			tmpMap.put("proid", map.get("proid"));
 			tmpMap.put("net", "1");
 			tmpMap.put("expect", LotterySsqConifgService.getExpect());
 			tmpMap.put("code", StringUtils.join(codes, "@@"));
+			tmpMap.put("isfail", "0");
 			resultList.add(tmpMap);
 			if (resultList.size() > 200) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);

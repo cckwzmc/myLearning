@@ -1,8 +1,10 @@
 package com.lyxmq.lottery.ssq.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import net.htmlparser.jericho.Element;
 
@@ -24,7 +26,7 @@ public class LotterySsqMediaSinaService {
 	LotteryDao dao = null;
 
 	public void setDao(LotteryDao dao) {
-		this.dao = dao;
+		this.dao = dao;  
 	}
 	/**
 	 * html格式
@@ -59,5 +61,27 @@ public class LotterySsqMediaSinaService {
 		}
 		return redList;
 	}
-	
+	public List<String> getCurrentMediaDanRedCode(String mediaSina) {
+		List<String> redList=new ArrayList<String>();
+		List<Element> list=HtmlParseUtils.getElementListByTagName(mediaSina, "tr");
+		for(Element e:list.subList(1,list.size())){
+			List<Element> tdList=HtmlParseUtils.getElementListByTagName(e.toString(), "td");
+			Element tdE=tdList.get(2);
+			List<Element> divList=tdE.getAllElements("div");
+			String redCode="";
+			for(Element eDiv:divList){
+				if(StringUtils.isBlank(redCode)){
+					redCode=eDiv.getContent().toString().length()<2?"0"+eDiv.getContent().toString():eDiv.getContent().toString().substring(0,2);
+				}else{
+					redCode+=","+(eDiv.getContent().toString().length()<2?"0"+eDiv.getContent().toString():eDiv.getContent().toString().substring(0,2));
+				}
+			}
+			redList.add(redCode);
+		}
+		return redList;
+	}
+	public void saveCurrrentMediaDanRedCode(List<String> list)
+	{	
+		this.dao.batchSqqLotteryDanResult(list,"0");
+	}
 }

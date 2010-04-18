@@ -44,6 +44,8 @@ public class ReverseTestMain {
 					initService.fetchMedia500WanContent();
 					logger.info("开始抓取本期sina媒体推荐号码..............");
 					initService.fetchMediaSinaContent();
+					logger.info("开始抓取本期sina媒体推荐红球胆..............");
+					initService.fetchMediaSinaDan();
 					break;
 				}
 				Thread.sleep(2000);

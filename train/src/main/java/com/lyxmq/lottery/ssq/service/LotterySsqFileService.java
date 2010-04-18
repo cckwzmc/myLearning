@@ -42,7 +42,14 @@ public class LotterySsqFileService extends Thread{
 	
 	private  final String DEFAULTFILENAME="lottery/ssq/excluderedfile.txt"; 
 	private LotteryDao dao = null;
-
+	LotterySsqThan20Service lotterySsqThan20Service=null;
+	
+	public static void setLogger(Logger logger) {
+		LotterySsqFileService.logger = logger;
+	}
+	public void setLotterySsqThan20Service(LotterySsqThan20Service lotterySsqThan20Service) {
+		this.lotterySsqThan20Service = lotterySsqThan20Service;
+	}
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
@@ -210,10 +217,10 @@ public class LotterySsqFileService extends Thread{
 	 */
 	public void parseCurrentFileRedCodeToDb(String fileName) {
 		Set<String[]> fileList = this.getCodeFromFile(fileName);
-		List<String> resultList = new ArrayList<String>();
+		List<String[]> resultList = new ArrayList<String[]>();
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
-			LotteryUtils.select(6, code[0], resultList);
+			LotteryUtils.selectArray(6, code[0].split(","), resultList);
 			if (resultList.size() > 2000) {
 				this.dao.saveSsqLotteryCollectRedCod(resultList);
 				resultList.clear();
@@ -361,8 +368,9 @@ public class LotterySsqFileService extends Thread{
 	/**
 	 * 处理ssq_lottery_collect_fetch中的文件类型数据
 	 */
+	@SuppressWarnings("unchecked")
 	public void saveFileProjectRedCode() {
-		List<String> resultList = new ArrayList<String>();
+		List<String[]> resultList = new ArrayList<String[]>();
 		int last = 0;
 		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "2");
@@ -376,11 +384,15 @@ public class LotterySsqFileService extends Thread{
 				{
 					String redCode=StringUtils.split(ssq, "+")[0];
 					String[] redCodes =StringUtils.split(redCode,",");
+					if(redCodes.length>20){
+						lotterySsqThan20Service.select(6, redCodes, false);
+						continue;
+					}
 					if(redCodes.length<6||redCodes.length>20){
 						logger.error("方案解析失败=="+ssq);
 						continue;
 					}
-					LotteryUtils.select(6, redCodes, resultList);
+					LotteryUtils.selectArray(6, redCodes, resultList);
 				}
 				if (resultList.size() > 2000) {
 					this.dao.saveSsqLotteryCollectRedCod(resultList);

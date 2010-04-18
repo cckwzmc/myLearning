@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -58,10 +59,8 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	/**
-	 * @param type
-	 *            1:ssq 2:football
-	 * @param lotteryQh
-	 *            期号 is_gen=0为生成 1:已生成
+	 * @param type 1:ssq 2:football
+	 * @param lotteryQh 期号 is_gen=0为生成 1:已生成
 	 * @return
 	 */
 	public void saveLotteryGenLog(String type, String lotteryQh, String isGen) {
@@ -70,10 +69,8 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	/**
-	 * @param type
-	 *            1:ssq 2:football
-	 * @param lotteryQh
-	 *            期号 is_gen=0为生成 1:已生成
+	 * @param type 1:ssq 2:football
+	 * @param lotteryQh 期号 is_gen=0为生成 1:已生成
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -124,22 +121,27 @@ public class LotteryDao extends JdbcBaseDao {
 	 * 
 	 * @param redMedia
 	 */
-	public void saveSsqLotteryCollectRedCod(final List<String> redMedia) {
-		if (CollectionUtils.isEmpty(redMedia)) {
+	public void saveSsqLotteryCollectRedCod(final List<String[]> redCodeList) {
+		if (CollectionUtils.isEmpty(redCodeList)) {
 			return;
 		}
 		BatchPreparedStatementSetter pps = null;
-		String sql = "insert into ssq_lottery_collect_result values(?)";
+		String sql = "insert into ssq_lottery_collect_result(first,second,third,fourth,firth,sixth) values(?,?,?,?,?,?)";
 		pps = new BatchPreparedStatementSetter() {
 
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				ps.setString(1, redMedia.get(i));
+				ps.setString(1, redCodeList.get(i)[0]);
+				ps.setString(2, redCodeList.get(i)[1]);
+				ps.setString(3, redCodeList.get(i)[2]);
+				ps.setString(4, redCodeList.get(i)[3]);
+				ps.setString(5, redCodeList.get(i)[4]);
+				ps.setString(6, redCodeList.get(i)[5]);
 			}
 
 			@Override
 			public int getBatchSize() {
-				return redMedia.size();
+				return redCodeList.size();
 			}
 		};
 		try {
@@ -292,20 +294,21 @@ public class LotteryDao extends JdbcBaseDao {
 		String sql = "select count(*) from ssq_lottery_media t where t.expect=? and t.type=?";
 		return this.getJdbcTemplate().queryForInt(sql, new Object[] { expect, type });
 	}
+
 	@SuppressWarnings("unchecked")
 	public String getSsqLotteryMediaContentByExpect(String expect, String type) {
 		String sql = "select content from ssq_lottery_media t where t.expect=? and t.type=?";
-		List list=this.getJdbcTemplate().queryForList(sql, new Object[] { expect, type });
-		if(CollectionUtils.isNotEmpty(list)){
-			return ObjectUtils.toString(((Map)list.get(0)).get("content"));
+		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { expect, type });
+		if (CollectionUtils.isNotEmpty(list)) {
+			return ObjectUtils.toString(((Map) list.get(0)).get("content"));
 		}
 		return "";
 	}
 
 	public void saveSsqLotteryFilterResult() {
-		String sql="insert into ssq_lottery_filter_result(value) select value from ssq_lottery_all_result";
+		String sql = "insert into ssq_lottery_filter_result(value) select value from ssq_lottery_all_result";
 		this.getJdbcTemplate().update(sql);
-		
+
 	}
 
 	public int[] deleteSsqLotteryFilterResult(final List<String> redList) {
@@ -327,7 +330,7 @@ public class LotteryDao extends JdbcBaseDao {
 			}
 		};
 		try {
-			int[] ret=this.getJdbcTemplate().batchUpdate(sql, pps);
+			int[] ret = this.getJdbcTemplate().batchUpdate(sql, pps);
 			return ret;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -336,12 +339,12 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	public int getCountSsqLotteryCollectFetchByProid(String proid, String net) {
-		String sql="select count(*) from ssq_lottery_collect_fetch t where t.id=? and t.net=?";
-		return this.getJdbcTemplate().queryForInt(sql,new Object[]{proid,net});
+		String sql = "select count(*) from ssq_lottery_collect_fetch t where t.id=? and t.net=?";
+		return this.getJdbcTemplate().queryForInt(sql, new Object[] { proid, net });
 	}
 
 	public void saveSsqLotteryCollectFetch(String string, String string2, String join) {
-		
+
 	}
 
 	public void batchSaveSsqLotteryCollectFetch(final List<Map<String, String>> resultList) {
@@ -349,7 +352,7 @@ public class LotteryDao extends JdbcBaseDao {
 			return;
 		}
 		BatchPreparedStatementSetter pps = null;
-		String sql = "insert into ssq_lottery_collect_fetch(id,net,code,expect) values(?,?,?,?)";
+		String sql = "insert into ssq_lottery_collect_fetch(id,net,code,expect,isfail) values(?,?,?,?,?)";
 		pps = new BatchPreparedStatementSetter() {
 
 			@Override
@@ -358,6 +361,7 @@ public class LotteryDao extends JdbcBaseDao {
 				ps.setString(2, resultList.get(i).get("net"));
 				ps.setString(3, resultList.get(i).get("code"));
 				ps.setString(4, resultList.get(i).get("expect"));
+				ps.setString(5, resultList.get(i).get("isfail"));
 			}
 
 			@Override
@@ -373,21 +377,67 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	public void clearHisFetchProjectCode(String expect, String net) {
-		String sql="delete from ssq_lottery_collect_fetch where net=? and expect<>?";
-		this.getJdbcTemplate().update(sql,new Object[]{net,expect});
+		String sql = "delete from ssq_lottery_collect_fetch where net=? and expect<>?";
+		this.getJdbcTemplate().update(sql, new Object[] { net, expect });
 	}
-	public List getSsqLotteryCollectFetchLimit(int first, int page,String net) {
-		String sql = "select id,code from ssq_lottery_collect_fetch t where t.net=? limit " + first + "," + page;
-		return this.getJdbcTemplate().queryForList(sql,new Object[]{net});
+
+	public List getSsqLotteryCollectFetchLimit(int first, int page, String net) {
+		String sql = "select id,code from ssq_lottery_collect_fetch t where t.net=? and code!='-1'  limit " + first + "," + page;
+		return this.getJdbcTemplate().queryForList(sql, new Object[] { net });
 	}
+
 	public List getSsqLotteryCollectResultLimit(int first, int page) {
-		String sql = "select value from ssq_lottery_collect_result t  limit " + first + "," + page;
+		String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result t  limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
 	public void deleteSsqLotteryAllFilterResult() {
-		String sql="delete from ssq_lottery_filter_result where value in(select value from ssq_lottery_collect_result)";
+		String sql = "delete from ssq_lottery_filter_result where value in(select value from ssq_lottery_collect_result)";
 		this.getJdbcTemplate().update(sql);
 	}
 
+	/**
+	 * @param danSet
+	 * @param type 0:专业媒体;1用户
+	 */
+	public void batchSqqLotteryDanResult(final List<String> danSet, final String type) {
+		if (CollectionUtils.isEmpty(danSet)) {
+			return;
+		}
+		BatchPreparedStatementSetter pps = null;
+		String sql = "insert into ssq_lottery_dan_result(dan,type) values(?,?)";
+		pps = new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setString(1, danSet.get(i));
+				ps.setString(2, type);
+			}
+
+			@Override
+			public int getBatchSize() {
+				return danSet.size();
+			}
+		};
+		try {
+			this.getJdbcTemplate().batchUpdate(sql, pps);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
+
+	public List getSsqLotteryDanResult(String type) {
+		String sql = "select dan from ssq_lottery_dan_result t where t.type=?";
+		return this.getJdbcTemplate().queryForList(sql, new Object[] { type });
+	}
+
+	public List getSsqLotteryDanResult() {
+		String sql = "select dan from ssq_lottery_dan_result t ";
+		return this.getJdbcTemplate().queryForList(sql);
+	}
+
+	public void batchSaveSsqLotteryCollectResult(List<String[]> list) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -26,30 +26,28 @@ import com.lyxmq.lottery.ssq.utils.LotteryUtils;
 import com.myfetch.service.http.util.HttpHtmlService;
 
 /**
- * 500wan用户购买/收集的数据处理/
- * 查看有两个链接，一个是层方式的一个是下载方式的
- * project_ssqshow.php?pid='+pid+'&'+(+new Date()) 层方式
- * 查看带HTTp链接的是下载方式的
- * 
+ * 500wan用户购买/收集的数据处理/ 查看有两个链接，一个是层方式的一个是下载方式的 project_ssqshow.php?pid='+pid+'&'+(+new Date()) 层方式 查看带HTTp链接的是下载方式的
  * 
  * @author LIYI
- * 
  */
-public class LotterySsqCustomer500WanService extends Thread{
+public class LotterySsqCustomer500WanService extends Thread {
 	private static final Logger logger = LoggerFactory.getLogger(LotterySsqCustomer500WanService.class);
 	private LotteryDao dao = null;
 
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
-	public void run(){
+
+	public void run() {
 		this.fetch500WanProjectRedCode();
 	}
-	LotterySsqThan20Service lotterySsqThan20Service=null;
-	
+
+	LotterySsqThan20Service lotterySsqThan20Service = null;
+
 	public void setLotterySsqThan20Service(LotterySsqThan20Service lotterySsqThan20Service) {
 		this.lotterySsqThan20Service = lotterySsqThan20Service;
 	}
+
 	/**
 	 * 获取用户的各种方案
 	 * 
@@ -59,217 +57,264 @@ public class LotterySsqCustomer500WanService extends Thread{
 		new LotterySsqConifgService();
 		String url = LotterySsqConifgService.getWww500wanUrl();
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
-		int k=0;
+		int k = 0;
 		for (int i = 1; i < 300; i++) {
-			if(k>4){
+			if (k > 4) {
 				break;
 			}
-			String jsonData = HttpHtmlService.getHtmlContent(StringUtils.replace(url,"@page@",i+""), "GB2312");
-			logger.info(StringUtils.replace(url,"@page@",i+""));
-			JSONArray array=JSONArray.fromObject("["+jsonData+"]");
-			if(array.isEmpty()){
+			String jsonData = HttpHtmlService.getHtmlContent(StringUtils.replace(url, "@page@", i + ""), "GB2312");
+			logger.info(StringUtils.replace(url, "@page@", i + ""));
+			JSONArray array = JSONArray.fromObject("[" + jsonData + "]");
+			if (array.isEmpty()) {
 				k++;
 				continue;
 			}
-			JSONObject obj=JSONObject.fromObject(array.get(0));
-			array=JSONArray.fromObject(obj.getString("data"));
-			for (int j=0;j<array.size();j++) {
-				obj=JSONObject.fromObject(array.get(j));
-				String fangan=obj.getString("fangan");
-				if(fangan.indexOf("查看")==-1){
-					continue;
-				}
+			JSONObject obj = JSONObject.fromObject(array.get(0));
+			array = JSONArray.fromObject(obj.getString("data"));
+			for (int j = 0; j < array.size(); j++) {
+				obj = JSONObject.fromObject(array.get(j));
 				Map<String, String> map = new HashMap<String, String>();
-				map.put("fangan",obj.getString("fangan"));
-				String proid=obj.getString("proid");
-				if(StringUtils.indexOf(proid, "</a>")!=-1)
-				{
-					proid=StringUtils.substringBetween(proid, ">", "</a>").trim();
-					if(StringUtils.indexOf(proid, "</")!=-1){
-						proid=StringUtils.substring(proid, 0, StringUtils.indexOf(proid, "</"));
+				map.put("fangan", obj.getString("fangan"));
+				String proid = obj.getString("proid");
+				if (StringUtils.indexOf(proid, "</a>") != -1) {
+					proid = StringUtils.substringBetween(proid, ">", "</a>").trim();
+					if (StringUtils.indexOf(proid, "</") != -1) {
+						proid = StringUtils.substring(proid, 0, StringUtils.indexOf(proid, "</"));
 					}
-					if(StringUtils.lastIndexOf(proid, ">")!=-1){
-						proid=StringUtils.substring(proid, StringUtils.indexOf(proid,">")+1);
+					if (StringUtils.lastIndexOf(proid, ">") != -1) {
+						proid = StringUtils.substring(proid, StringUtils.indexOf(proid, ">") + 1);
 					}
 				}
-				map.put("proid",proid.trim());
+				map.put("proid", proid.trim());
 				retList.add(map);
 			}
 			try {
-				sleep(5000);
+				sleep(3000);
 			} catch (InterruptedException e) {
 				notify();
 			}
 		}
 		return retList;
 	}
+
 	/**
 	 * 下载用户方案
+	 * 
 	 * @param id
 	 * @param playtype
 	 * @return
 	 */
-	public List<String> download500WanProject(String url){
+	public List<String> download500WanProject(String url) {
 		String content = HttpHtmlService.getHtmlContent(url, "GB2312");
 		try {
-			sleep(5000);
+			sleep(3000);
 		} catch (InterruptedException e) {
 			notify();
 		}
-		if(content.indexOf("red")!=-1){
+		if (content.indexOf("red") != -1) {
 			return this.parserdownloadProjectHtml(content);
 		}
-		List<String> list=new ArrayList<String>();
-		content=StringUtils.replace(content, " + ", "+");
-		content=StringUtils.replace(content, "<br><br>", "\n");
-		content=StringUtils.replace(content, " | ", "+");
-		content=StringUtils.replace(content, "∣", "+");
-		content=StringUtils.replace(content, "|", "+");
-		content=StringUtils.replace(content, "  ", " ");
+		List<String> list = new ArrayList<String>();
+		content = StringUtils.replace(content, " + ", "+");
+		content = StringUtils.replace(content, "<br><br>", "\n");
+		content = StringUtils.replace(content, " | ", "+");
+		content = StringUtils.replace(content, "∣", "+");
+		content = StringUtils.replace(content, "|", "+");
+		content = StringUtils.replace(content, "  ", " ");
 		content = StringUtils.replace(content, "=", "+");
-		content=StringUtils.replace(content, " \n", "\n");
-		content=StringUtils.replace(content, "\t", ",");
-		content=StringUtils.replace(content, ".", ",");
-		content=StringUtils.replace(content, "-", ",");
-		content=StringUtils.replace(content, "、", ",");
-		content=StringUtils.replace(content, "，", ",");
-		String[] contents=StringUtils.split(content,"\n");
+		content = StringUtils.replace(content, " \n", "\n");
+		content = StringUtils.replace(content, "\t", ",");
+		content = StringUtils.replace(content, ".", ",");
+		content = StringUtils.replace(content, "-", ",");
+		content = StringUtils.replace(content, "、", ",");
+		content = StringUtils.replace(content, "-", ",");
+		content = StringUtils.replace(content, ".", ",");
+		content = StringUtils.replace(content, "，", ",");
+		String[] contents = StringUtils.split(content, "\n");
 		for (int i = 0; i < contents.length; i++) {
-			String code=contents[i];
-			String[] codes=StringUtils.split(code, " ");
-			if(codes.length==7){
-				code=codes[0]+","+codes[1]+","+codes[2]+","+codes[3]+","+codes[4]+","+codes[5]+"+"+codes[6];
-			}else{
-				code=StringUtils.replace(code," ", ",");
+			String code = contents[i];
+			String[] codes = StringUtils.split(code, " ");
+			if (codes.length == 7) {
+				code = codes[0] + "," + codes[1] + "," + codes[2] + "," + codes[3] + "," + codes[4] + "," + codes[5] + "+" + codes[6];
+			} else {
+				code = StringUtils.replace(code, " ", ",");
 			}
 			list.add(code);
 		}
 		return list;
 	}
+
 	/**
 	 * 解析html
+	 * 
 	 * @param content
 	 * @return
 	 */
 	private List<String> parserdownloadProjectHtml(String content) {
-		List<String> list=new ArrayList<String>();
-		Source source=new Source(content);
-		Element projectDetailList=source.getElementById("projectDetailList");
-		List<Element> detail=projectDetailList.getAllElementsByClass("num");
-		for(Element e:detail){
-			String code=e.getContent().getTextExtractor().toString();
-			if(code.indexOf("红球")!=-1){
-				code=StringUtils.replace(code, " ", "");
-				code=StringUtils.replace(code, "蓝球:", "+");
-				code=StringUtils.replace(code, "红球:", "");
-				code=StringUtils.replace(code, "蓝球", "+");
-				code=StringUtils.replace(code, "红球", "");
-			}else if(code.indexOf("胆")!=-1||code.indexOf("拖")!=-1){
+		List<String> list = new ArrayList<String>();
+		Source source = new Source(content);
+		Element projectDetailList = source.getElementById("projectDetailList");
+		List<Element> detail = projectDetailList.getAllElementsByClass("num");
+		boolean isHaveDan=false;
+		for (Element e : detail) {
+			String code = e.getContent().getTextExtractor().toString();
+			if (code.indexOf("红球") != -1) {
+				code = StringUtils.replace(code, " ", "");
+				code = StringUtils.replace(code, "蓝球:", "+");
+				code = StringUtils.replace(code, "红球:", "");
+				code = StringUtils.replace(code, "蓝球", "+");
+				code = StringUtils.replace(code, "红球", "");
+			} else if (code.indexOf("胆") != -1) {
+				String[] dans = StringUtils.substringsBetween(code, "胆:", "拖:");
+				for (int i = 0; i < dans.length; i++) {
+					String dan = dans[i].replace(" ", "");
+					if (StringUtils.isNotBlank(dan)) {
+						list.add("--1," + dan);
+						isHaveDan=true;
+					}
+				}
+			} else if (code.indexOf("拖") != -1) {
 				continue;
-			}else{
-				code=StringUtils.replace(code, " ", "");
-				code=StringUtils.replace(code, "蓝球:", "+");
-				code=StringUtils.replace(code, "胆:", "");
-				code=StringUtils.replace(code, "拖:", ",");
-				code=sortCode(code);
+			} else {
+				code = StringUtils.replace(code, " ", "");
+				code = StringUtils.replace(code, "蓝球:", "+");
+				code = StringUtils.replace(code, "胆:", "");
+				code = StringUtils.replace(code, "拖:", ",");
+				code = sortCode(code);
 			}
 			list.add(code);
+		}
+		if(isHaveDan){
+			list.add("--1");
 		}
 		return list;
 	}
 
 	/**
 	 * 给红球排序
+	 * 
 	 * @param code
 	 * @return
 	 */
 	private String sortCode(String code) {
-		String[] codes=StringUtils.split(code, "+");
-		String[] redCode=StringUtils.split(codes[0],",");
+		String[] codes = StringUtils.split(code, "+");
+		String[] redCode = StringUtils.split(codes[0], ",");
 		Arrays.sort(redCode);
-		code=StringUtils.join(redCode, ",")+"+"+codes[1];
+		code = StringUtils.join(redCode, ",") + "+" + codes[1];
 		return code;
 	}
 
 	@SuppressWarnings("unchecked")
-	public void save500WanProjectRedCode(){
-		List<String> resultList = new ArrayList<String>();
+	public void save500WanProjectRedCode() {
+		List<String[]> resultList = new ArrayList<String[]>();
 		int last = 0;
 		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
-		Pattern p = Pattern.compile("[^\\x00-\\xff]");  
+		Pattern p = Pattern.compile("[^\\x00-\\xff]");
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
-				code=StringUtils.replace(code, "|", "+");
-				code=StringUtils.replace(code, "∣", "+");
-				code=StringUtils.replace(code, " ", "");
-				code=StringUtils.replace(code, "@@@@", "@@");
-				code=StringUtils.replace(code, "� ", "");
-				code=StringUtils.replace(code, ". ", ",");
 				Matcher m = p.matcher(code);
-				if(m.find()){
-					logger.error("内容有非法字符=="+code);
+				if (m.find()) {
+					logger.error("内容有非法字符==" + code);
 					continue;
 				}
 				String[] codes = StringUtils.split(code, "@@");
-				for(String ssq:codes)
-				{
-					String redCode=StringUtils.split(ssq, "+")[0];
-					String[] redCodes =StringUtils.split(redCode,",");
-					if(redCodes.length<6||redCodes.length>20){
-						logger.error("方案解析失败=="+ssq);
+				for (String ssq : codes) {
+					String redCode = StringUtils.split(ssq, "+")[0];
+					if(redCode.startsWith("--1")){
+						logger.error("使用了胆的方案解析==" + ssq);
 						continue;
 					}
-					LotteryUtils.select(6, redCodes, resultList);
+					String[] redCodes = StringUtils.split(redCode, ",");
+					if (redCodes.length < 6 || redCodes.length > 20) {
+						logger.error("方案解析失败==" + ssq);
+						continue;
+					}
+					LotteryUtils.selectArray(6, redCodes, resultList);
 				}
 				if (resultList.size() > 2000) {
 					this.dao.saveSsqLotteryCollectRedCod(resultList);
 					resultList.clear();
 				}
 			}
-			last+=page;
+			last += page;
 			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
 		}
-		if(CollectionUtils.isNotEmpty(resultList)){
+		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
 	}
 
 	private String parserUrl(String fangan) {
-		String download=LotterySsqConifgService.getWww500wanDowload();
-		if(fangan.toLowerCase().indexOf("onclick")!=-1){
-			download=StringUtils.replace(download, "@pid@",StringUtils.substringBetween(fangan, "list.showProject(", ")"));
-		}else{
-			download="http://"+StringUtils.substringBetween(fangan, "http://", "'");
+		String download = LotterySsqConifgService.getWww500wanDowload();
+		if (fangan.toLowerCase().indexOf("onclick") != -1) {
+			download = StringUtils.replace(download, "@pid@", StringUtils.substringBetween(fangan, "list.showProject(", ")"));
+		} else {
+			download = "http://" + StringUtils.substringBetween(fangan, "http://", "'");
 		}
 		return download;
 	}
 
 	public void fetch500WanProjectRedCode() {
 		this.dao.clearHisFetchProjectCode(LotterySsqConifgService.getExpect(), "0");
-		List<Map<String,String>> list=this.get500WanProject();
+		List<Map<String, String>> list = this.get500WanProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
-		for(Map<String,String> map : list){
-			String downloadUrl=this.parserUrl(map.get("fangan"));
+		List<String> danList=new ArrayList<String>();
+		for (Map<String, String> map : list) {
+			String fangan = map.get("fangan");
 			if (this.dao.getCountSsqLotteryCollectFetchByProid(map.get("proid"), "0") > 0) {
 				continue;
 			}
-			downloadUrl=StringUtils.replace(downloadUrl, "@nowdate@", new Date().getTime()+"");
-			logger.info(downloadUrl);
-			List<String> pList=this.download500WanProject(downloadUrl);
-			
-			if(CollectionUtils.isEmpty(pList)){
+			Map<String, String> tmpMap = new HashMap<String, String>();
+			if (fangan.indexOf("查看") == -1) {
+				tmpMap.put("proid", map.get("proid"));
+				tmpMap.put("net", "0");
+				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("code", "-1");
+				tmpMap.put("isfail", "1");
+				resultList.add(tmpMap);
 				continue;
 			}
+			String downloadUrl = this.parserUrl(map.get("fangan"));
+			downloadUrl = StringUtils.replace(downloadUrl, "@nowdate@", new Date().getTime() + "");
+			logger.info(downloadUrl);
+			List<String> pList = this.download500WanProject(downloadUrl);
+			if(CollectionUtils.isNotEmpty(pList)&&pList.contains("--1")){
+				for (int k=0;k<pList.size();k++) {
+					String dan = (String)pList.get(k);
+					if(dan.startsWith("--1,")){
+						danList.add(pList.remove(k).replace("--1,", ""));
+						k--;
+					}
+				}
+				String[] codes = pList.toArray(new String[pList.size()]);
+				tmpMap.put("proid", map.get("proid"));
+				tmpMap.put("net", "0");
+				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("code", StringUtils.join(codes, "@@"));
+				tmpMap.put("isfail", "0");
+				resultList.add(tmpMap);
+				continue;
+			}
+			if (CollectionUtils.isEmpty(pList)) {
+				tmpMap.put("proid", map.get("proid"));
+				tmpMap.put("net", "0");
+				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("code", "-1");
+				tmpMap.put("isfail", "1");
+				resultList.add(tmpMap);
+				continue;
+			}
+
 			String[] codes = pList.toArray(new String[pList.size()]);
-			Map<String, String> tmpMap = new HashMap<String, String>();
 			tmpMap.put("proid", map.get("proid"));
 			tmpMap.put("net", "0");
 			tmpMap.put("expect", LotterySsqConifgService.getExpect());
 			tmpMap.put("code", StringUtils.join(codes, "@@"));
+			tmpMap.put("isfail", "0");
 			resultList.add(tmpMap);
 			if (resultList.size() > 200) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
@@ -280,6 +325,10 @@ public class LotterySsqCustomer500WanService extends Thread{
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
-		logger.info("========"+"500Wan抓取完成..............................................");
+		if(CollectionUtils.isNotEmpty(danList)){
+			this.dao.batchSqqLotteryDanResult(danList, "1");
+		}
+		
+		logger.info("========" + "500Wan抓取完成..............................................");
 	}
 }

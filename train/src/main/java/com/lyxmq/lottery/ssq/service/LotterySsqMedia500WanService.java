@@ -49,7 +49,7 @@ public class LotterySsqMedia500WanService {
 		for (Iterator<String[]> iterator = redCode.iterator(); iterator.hasNext();) {
 			String[] red = (String[]) iterator.next();
 			if(red.length>20){
-				this.lotterySsqThan20Service.select(6, red, resultList);
+				this.lotterySsqThan20Service.select(6, red, true);
 				continue;
 			}
 			LotteryUtils.select(6, red, resultList);
@@ -248,6 +248,11 @@ public class LotterySsqMedia500WanService {
 	 * @param expect
 	 */
 	public void saveCurrentMediaRedCodeToDb(List<String> redMedia, String expect) {
-		this.dao.saveSsqLotteryCollectRedCod(redMedia);
+		List<String[]> redCodeList=new ArrayList<String[]>();
+		for (Iterator<String> iterator = redMedia.iterator(); iterator.hasNext();) {
+			String redCodes = (String) iterator.next();
+			redCodeList.add(redCodes.split(","));
+		}
+		this.dao.saveSsqLotteryCollectRedCod(redCodeList);
 	}
 }
