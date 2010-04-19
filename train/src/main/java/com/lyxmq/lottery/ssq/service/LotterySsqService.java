@@ -191,9 +191,12 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isRedIncludeMediaFourCode(lValues, redCodeList)) {
 					continue;
 				}
-//				if (!LotterySsqAlgorithm.isRedIncludeMediaThreeCode(lValues, sinaRedCodeList)) {
-//					continue;
-//				}
+				if (!LotterySsqAlgorithm.isRedIncludeMediaThreeCode(lValues, sinaRedCodeList)) {
+					continue;
+				}
+				if(!LotterySsqAlgorithm.isSelectOneCode(lValues)){
+					continue;
+				}
 				/*
 				 * 即我认为这些号码是不可能中奖的，
 				 * 推荐使用文本方式保存的号码使用
@@ -304,14 +307,7 @@ public class LotterySsqService {
 				this.lotterySsqMedia500WanService.saveCurrentMediaRedCodeToDb(redMedia.subList(i, i = (i + 1000 > redMedia.size() ? redMedia.size() : i + 1000)), LotterySsqConifgService.getExpect());
 			}
 
-			// Set<String> setList=this.lotterySsqFileService.getRedCodeFromFile();
-			// for (Iterator iterator = setList.iterator(); iterator.hasNext();) {
-			// String string = (String) iterator.next();
-			//				
-			// }
 		}
-		// this.dao.saveSsqLotteryFilterResult();
-		// this.dao.deleteSsqLotteryAllFilterResult();
 		this.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
@@ -404,16 +400,12 @@ public class LotterySsqService {
 			if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
 				redList.add(lValue);
 			}
-			if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
+//			if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
+//				redList.add(lValue);
+//			}
+			if (LotterySsqAlgorithm.isRedIncludeSideCode(lValues)||LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)||LotterySsqAlgorithm.isIncludePreCode(lValues)) {
 				redList.add(lValue);
 			}
-			if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
-				redList.add(lValue);
-			}
-
-			// if (this.dao.isExistSsqLotteryCollect(lValue)) {
-			// redList.add(lValue);
-			// }
 
 			if (redMedia.contains(lValue)) {
 				redList.add(lValue);

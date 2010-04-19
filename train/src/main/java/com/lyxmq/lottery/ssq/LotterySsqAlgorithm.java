@@ -77,6 +77,28 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+	
+	/**
+	 *  是否至少包含上一期的一个号码
+	 * 
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isIncludePreCode(String[] lValues) {
+		int tempSelect = 0;
+		
+		for (int j = 0; j < lValues.length; j++) {
+			for (int k = 0; k < LotterySsqConifgService.getPreRedCode().length; k++) {
+				if (StringUtils.equals(lValues[j], LotterySsqConifgService.getPreRedCode()[k])) {
+					tempSelect++;
+				}
+			}
+		}
+		if (tempSelect<1) {
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * // 必须包含其中的任意一个数字(边号) 并且不能超过2个
@@ -443,38 +465,39 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+
 	/**
 	 * 其中至少有num注以上不会中一个号码
+	 * 
 	 * @param lValues
 	 * @param sinaDanList
 	 * @return
 	 */
-	public static boolean isSinaDanNoneFilter(String[] lValues, List<String> sinaDanList,int num) {
-		int noneNum=sinaDanList.size()-num;
+	public static boolean isSinaDanNoneFilter(String[] lValues, List<String> sinaDanList, int num) {
+		int noneNum = sinaDanList.size() - num;
 		int tempSelect = 0;
-		if (CollectionUtils.isEmpty(sinaDanList)){
+		if (CollectionUtils.isEmpty(sinaDanList)) {
 			return true;
 		}
 		if (CollectionUtils.isNotEmpty(sinaDanList)) {
 			tempSelect = 0;
 			for (int j = 0; j < sinaDanList.size(); j++) {
-				boolean breakFlag=false;
+				boolean breakFlag = false;
 				String[] tmp = StringUtils.split(ObjectUtils.toString(sinaDanList.get(j)), ",");
 				for (int k = 0; k < tmp.length; k++) {
 					for (int i = 0; i < lValues.length; i++) {
 						if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
 							tempSelect++;
-							breakFlag=true;
+							breakFlag = true;
 						}
 					}
-					if(breakFlag)
-					{
+					if (breakFlag) {
 						break;
 					}
 				}
 			}
 		}
-		if(tempSelect>=noneNum){
+		if (tempSelect >= noneNum) {
 			return false;
 		}
 		return true;
@@ -493,7 +516,7 @@ public class LotterySsqAlgorithm {
 			boolean breakFlag = false;
 			for (int j = 0; j < danList.size(); j++) {
 				String[] tmp = StringUtils.split(ObjectUtils.toString(danList.get(j)), ",");
-				if(tmp.length<3){
+				if (tmp.length < 3) {
 					continue;
 				}
 				tempSelect = 0;
@@ -549,11 +572,13 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 新浪推荐最多有3个推荐会中4个或4个以上
+	 * 
 	 * @param lValues
 	 * @param sinaRedCodeList
 	 * @return
 	 */
 	public static boolean isRedIncludeMediaThreeCode(String[] lValues, List<String[]> sinaRedCodeList) {
+		int count=0;
 		for (Iterator<String[]> iterator2 = sinaRedCodeList.iterator(); iterator2.hasNext();) {
 			int tempSelect = 0;
 			String[] mediaRedCode = (String[]) iterator2.next();
@@ -565,12 +590,39 @@ public class LotterySsqAlgorithm {
 				}
 			}
 			if (tempSelect > 3) {
-				return false;
+				count++;
 			}
 
+		}
+		if(count>3){
+			return false;
 		}
 		return true;
 	}
 
+	/**
+	 * 最多只能中其中的一个///只要是新浪推荐的号码中大于等于6的号码
+	 * 
+	 * @param lValues
+	 * @param sinaRedCodeList
+	 * @return
+	 */
+	public static boolean isSelectOneCode(String[] lValues) {
+		if (LotterySsqConifgService.getSelectedOneCode() == null || LotterySsqConifgService.getSelectedOneCode().length < 1) {
+			return true;
+		}
+		int tempSelect = 0;
+		for (int i = 0; i < LotterySsqConifgService.getSelectedOneCode().length; i++) {
+			for (int j = 0; j < lValues.length; j++) {
+				if (StringUtils.equals(LotterySsqConifgService.getSelectedOneCode()[i], lValues[j])) {
+					tempSelect++;
+				}
+			}
+			if (tempSelect > 1) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

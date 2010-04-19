@@ -66,6 +66,7 @@ public class LotterySsqConifgService {
 	private static int thirdMaxCode = 29;
 	private static int fourthMinCode = 4;
 	private static int fourthMaxCode = 33;
+	private static String[] selectedOneCode = new String[]{};
 	static {
 		try {
 			Properties pro = PropertiesLoaderUtils.loadAllProperties("lottery/ssq/lottery.properties");
@@ -90,6 +91,7 @@ public class LotterySsqConifgService {
 			quThree = StringUtils.isNotBlank(pro.getProperty("quThree")) ? NumberUtils.toInt(pro.getProperty("quThree")) : quThree;
 			ishaveexclude = StringUtils.isNotBlank(pro.getProperty("ishaveexclude")) ? NumberUtils.toInt(pro.getProperty("ishaveexclude")) : ishaveexclude;
 			includeRed = StringUtils.isNotBlank("includeRed") ? StringUtils.split(pro.getProperty("includeRed"), ",") : null;
+			selectedOneCode = StringUtils.isNotBlank("selectedOneCode") ? StringUtils.split(pro.getProperty("selectedOneCode"), ",") : null;
 			excludeRed = StringUtils.isNotBlank("excludeRed") ? StringUtils.split(pro.getProperty("excludeRed"), ",") : null;
 			musthavered = StringUtils.isNotBlank("musthavered") ? StringUtils.split(pro.getProperty("musthavered"), ",") : null;
 			cannotSelectedTogethor = StringUtils.isNotBlank("cannotSelectedTogethor") ? StringUtils.split(pro.getProperty("cannotSelectedTogethor"), "|")
@@ -276,6 +278,11 @@ public class LotterySsqConifgService {
 
 	public static int getFourthMaxCode() {
 		return fourthMaxCode;
+	}
+
+
+	public static String[] getSelectedOneCode() {
+		return selectedOneCode;
 	}
 
 }
