@@ -97,25 +97,29 @@ public class LotterySsqService {
 		}
 		List<String[]> redCodeList = new ArrayList<String[]>();
 		List<String[]> sinaRedCodeList = new ArrayList<String[]>();
-		if (StringUtils.isNotBlank(media500Wan)) {
+		if (StringUtils.isNotBlank(media500Wan)&&media500Wan.length()>100) {
 			try {
 				Document document = DocumentHelper.parseText(media500Wan);
 				redCodeList = LotterySsqMediaUtils.getMediaRedCode(document);
-				List<String> mediaSinaList = this.lotterySsqMediaSinaService.getCurrentMediaRedCode(mediaSina);
-				if (CollectionUtils.isNotEmpty(mediaSinaList)) {
-					for (String ssq : mediaSinaList) {
-						sinaRedCodeList.add(ssq.split(","));
-					}
-				}
-				for (int i = 0; i < redCodeList.size(); i++) {
-					String[] ssq = redCodeList.get(i);
-					if (ssq.length > 15) {
-						redCodeList.remove(i);
-						i--;
-					}
-				}
 			} catch (DocumentException e) {
 				e.printStackTrace();
+			}
+		}
+		if(StringUtils.isNotBlank(mediaSina)&&mediaSina.length()>100)
+		{
+			List<String> mediaSinaList = this.lotterySsqMediaSinaService.getCurrentMediaRedCode(mediaSina);
+			if (CollectionUtils.isNotEmpty(mediaSinaList)) {
+				for (String ssq : mediaSinaList) {
+					sinaRedCodeList.add(ssq.split(","));
+				}
+				redCodeList.addAll(sinaRedCodeList);
+			}
+		}
+		for (int i = 0; CollectionUtils.isNotEmpty(redCodeList)&&i < redCodeList.size(); i++) {
+			String[] ssq = redCodeList.get(i);
+			if (ssq.length > 15) {
+				redCodeList.remove(i);
+				i--;
 			}
 		}
 		/** 文本收集的号码 ***/
@@ -136,6 +140,7 @@ public class LotterySsqService {
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
 		int page = 50000;
+		logger.info("开始过滤号码了.............");
 		while (last < count) {
 			list = this.dao.getSsqLottoryFilterResultLimit(last, page);
 			last += page;
@@ -172,7 +177,7 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isSinaDanAllFilter(lValues, sinaDanList)) {
 					continue;
 				}
-				if (!LotterySsqAlgorithm.isSinaDanNoneFilter(lValues, sinaDanList, 3)) {
+				if (!LotterySsqAlgorithm.isSinaDanNoneFilter(lValues, sinaDanList,5)) {
 					continue;
 				}
 				 if (!LotterySsqAlgorithm.isCustomerDanFilter(lValues,danList)) {
@@ -308,10 +313,12 @@ public class LotterySsqService {
 			}
 
 		}
+		logger.info("开始从过滤号码中删除抓取的号码.............");
 		this.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
 		int page = 40000;
+		logger.info("开始从过滤号码中删除不合理的号码(必须有一个上一期的号码或有边号或隔号).............");
 		while (last < count) {
 			List list = this.dao.getSsqLottoryFilterResultLimit(last, page);
 			last += page;
@@ -403,7 +410,7 @@ public class LotterySsqService {
 //			if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
 //				redList.add(lValue);
 //			}
-			if (LotterySsqAlgorithm.isRedIncludeSideCode(lValues)||LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)||LotterySsqAlgorithm.isIncludePreCode(lValues)) {
+			if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues)&&LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)&&LotterySsqAlgorithm.isIncludePreCode(lValues)) {
 				redList.add(lValue);
 			}
 
