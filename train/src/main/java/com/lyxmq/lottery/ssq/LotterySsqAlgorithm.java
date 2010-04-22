@@ -77,16 +77,16 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
-	
+
 	/**
-	 *  是否至少包含上一期的一个号码
+	 * 是否至少包含上一期的一个号码
 	 * 
 	 * @param lValues
 	 * @return
 	 */
 	public static boolean isIncludePreCode(String[] lValues) {
 		int tempSelect = 0;
-		
+
 		for (int j = 0; j < lValues.length; j++) {
 			for (int k = 0; k < LotterySsqConifgService.getPreRedCode().length; k++) {
 				if (StringUtils.equals(lValues[j], LotterySsqConifgService.getPreRedCode()[k])) {
@@ -94,7 +94,7 @@ public class LotterySsqAlgorithm {
 				}
 			}
 		}
-		if (tempSelect<1) {
+		if (tempSelect < 1) {
 			return false;
 		}
 		return true;
@@ -504,7 +504,7 @@ public class LotterySsqAlgorithm {
 	}
 
 	/**
-	 * 与不能同时出现的号码类似，只是这是通过网上用户收集而来的。
+	 * 与不能同时出现的号码类似，只是这是通过网上用户收集而来的。 1、一个胆不考虑 2、两个胆、三个胆的不能全中 3、大于三个的最多只能中3个
 	 * 
 	 * @param lValues
 	 * @param sinaDanList
@@ -516,20 +516,35 @@ public class LotterySsqAlgorithm {
 			boolean breakFlag = false;
 			for (int j = 0; j < danList.size(); j++) {
 				String[] tmp = StringUtils.split(ObjectUtils.toString(danList.get(j)), ",");
-				if (tmp.length < 3) {
+				if (tmp.length < 2) {
 					continue;
 				}
-				tempSelect = 0;
-				for (int k = 0; k < tmp.length; k++) {
-					for (int i = 0; i < lValues.length; i++) {
-						if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
-							tempSelect++;
+				if (tmp.length == 2 || tmp.length == 3) {
+					tempSelect = 0;
+					for (int k = 0; k < tmp.length; k++) {
+						for (int i = 0; i < lValues.length; i++) {
+							if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
+								tempSelect++;
+							}
 						}
 					}
-				}
-				if (tmp.length == tempSelect) {
-					breakFlag = true;
-					break;
+					if (tmp.length == tempSelect) {
+						breakFlag = true;
+						break;
+					}
+				} else {
+					tempSelect = 0;
+					for (int k = 0; k < tmp.length; k++) {
+						for (int i = 0; i < lValues.length; i++) {
+							if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
+								tempSelect++;
+							}
+						}
+					}
+					if (tempSelect > 3) {
+						breakFlag = true;
+						break;
+					}
 				}
 			}
 			if (breakFlag) {
@@ -578,7 +593,7 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedIncludeMediaThreeCode(String[] lValues, List<String[]> sinaRedCodeList) {
-		int count=0;
+		int count = 0;
 		for (Iterator<String[]> iterator2 = sinaRedCodeList.iterator(); iterator2.hasNext();) {
 			int tempSelect = 0;
 			String[] mediaRedCode = (String[]) iterator2.next();
@@ -594,7 +609,7 @@ public class LotterySsqAlgorithm {
 			}
 
 		}
-		if(count>3){
+		if (count > 3) {
 			return false;
 		}
 		return true;
@@ -611,14 +626,99 @@ public class LotterySsqAlgorithm {
 		if (LotterySsqConifgService.getSelectedOneCode() == null || LotterySsqConifgService.getSelectedOneCode().length < 1) {
 			return true;
 		}
-		int tempSelect = 0;
 		for (int i = 0; i < LotterySsqConifgService.getSelectedOneCode().length; i++) {
-			for (int j = 0; j < lValues.length; j++) {
-				if (StringUtils.equals(LotterySsqConifgService.getSelectedOneCode()[i], lValues[j])) {
-					tempSelect++;
+			int tempSelect = 0;
+			String[] code=LotterySsqConifgService.getSelectedOneCode()[i].split(",");
+			for (int k = 0; k < code.length; k++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if (StringUtils.equals(code[k], lValues[j])) {
+						tempSelect++;
+					}
+				}
+			}	
+			if (tempSelect > 1) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 新浪媒体每注中4个的<3
+	 * 
+	 * @param lValues
+	 * @param mediaSinaList
+	 * @return
+	 */
+	public static boolean isSinaRedCodeXiaoFourFilter(String[] lValues, List<String> mediaSinaList) {
+		int count = 0;
+		for (String redCode : mediaSinaList) {
+			int tempSelect = 0;
+			String[] sinaRedCodes = redCode.split(",");
+			for (int i = 0; i < sinaRedCodes.length; i++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if (StringUtils.equals(sinaRedCodes[i], lValues[j])) {
+						tempSelect++;
+					}
 				}
 			}
-			if (tempSelect > 1) {
+			if (tempSelect > 4) {
+				return false;
+			}
+			if (tempSelect == 4) {
+				count++;
+			}
+		}
+		if (count > 2) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 对用户选择的前10个号码进行过滤 不能存在前2的号码 不能存在前10中的2以上号码
+	 * 
+	 * @param lValues
+	 * @param customerMaxSelected
+	 * @return
+	 */
+	public static boolean isCustomerRedCodeTop10Filter(String[] lValues, List<String> customerMaxSelected) {
+		String no1 = customerMaxSelected.get(0);
+		String no2 = customerMaxSelected.get(1);
+		for (int i = 0; i < lValues.length; i++) {
+			if (StringUtils.equals(lValues[i], no1) || StringUtils.equals(lValues[i], no2)) {
+				return false;
+			}
+		}
+		int selected = 0;
+		for (String redCode : customerMaxSelected) {
+			for (int i = 0; i < lValues.length; i++) {
+				if (StringUtils.equals(lValues[i], redCode)) {
+					selected++;
+				}
+			}
+		}
+		if (selected > 2) {
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean isFileRedCodeFourFilter(String[] lValues, List<String> otherRedCodeList) {
+		if (CollectionUtils.isEmpty(otherRedCodeList)) {
+			return true;
+		}
+		for (String ssq : otherRedCodeList) {
+			String[] redCodes = ssq.split(",");
+			int tempSelect = 0;
+			for (int i = 0; i < redCodes.length; i++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if (StringUtils.equals(redCodes[i], lValues[j])) {
+						tempSelect++;
+					}
+				}
+			}
+			if (tempSelect > 4) {
 				return false;
 			}
 		}

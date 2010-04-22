@@ -370,6 +370,7 @@ public class LotterySsqFileService extends Thread{
 	 */
 	@SuppressWarnings("unchecked")
 	public void saveFileProjectRedCode() {
+		this.dao.clearHisFetchProjectCode(LotterySsqConifgService.getExpect(), "2");
 		List<String[]> resultList = new ArrayList<String[]>();
 		int last = 0;
 		int page = 200;

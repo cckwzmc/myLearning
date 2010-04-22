@@ -91,7 +91,7 @@ public class LotterySsqConifgService {
 			quThree = StringUtils.isNotBlank(pro.getProperty("quThree")) ? NumberUtils.toInt(pro.getProperty("quThree")) : quThree;
 			ishaveexclude = StringUtils.isNotBlank(pro.getProperty("ishaveexclude")) ? NumberUtils.toInt(pro.getProperty("ishaveexclude")) : ishaveexclude;
 			includeRed = StringUtils.isNotBlank("includeRed") ? StringUtils.split(pro.getProperty("includeRed"), ",") : null;
-			selectedOneCode = StringUtils.isNotBlank("selectedOneCode") ? StringUtils.split(pro.getProperty("selectedOneCode"), ",") : null;
+			selectedOneCode = StringUtils.isNotBlank("selectedOneCode") ? StringUtils.split(pro.getProperty("selectedOneCode"), "|") : null;
 			excludeRed = StringUtils.isNotBlank("excludeRed") ? StringUtils.split(pro.getProperty("excludeRed"), ",") : null;
 			musthavered = StringUtils.isNotBlank("musthavered") ? StringUtils.split(pro.getProperty("musthavered"), ",") : null;
 			cannotSelectedTogethor = StringUtils.isNotBlank("cannotSelectedTogethor") ? StringUtils.split(pro.getProperty("cannotSelectedTogethor"), "|")

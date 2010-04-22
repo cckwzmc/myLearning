@@ -331,4 +331,12 @@ public class LotterySsqCustomer500WanService extends Thread {
 		
 		logger.info("========" + "500Wan抓取完成..............................................");
 	}
+	public static void main(String[] args) {
+		LotterySsqCustomer500WanService ss=new LotterySsqCustomer500WanService();
+		String tt="<div class=\"alert_content\" id=\"projectDetailList\">" +
+				"<div class=\"num\"><span class=\"red\">胆: 14,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>" +
+				"<div class=\"num\"><span class=\"red\">胆: 11,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>" +
+				"</div>";
+		System.out.println(ss.parserdownloadProjectHtml(tt));
+	}
 }
