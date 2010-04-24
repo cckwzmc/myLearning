@@ -435,10 +435,7 @@ public class LotterySsqService {
 			if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
 				redList.add(lValue);
 			}
-			// if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
-			// redList.add(lValue);
-			// }
-			if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && LotterySsqAlgorithm.isRedIncludeEvenIn(lValues) && LotterySsqAlgorithm.isIncludePreCode(lValues)) {
+			if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues) && !LotterySsqAlgorithm.isRedIncludeEvenIn(lValues) && !LotterySsqAlgorithm.isIncludePreCode(lValues)) {
 				redList.add(lValue);
 			}
 
