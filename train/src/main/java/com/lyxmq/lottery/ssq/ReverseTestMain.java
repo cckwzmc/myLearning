@@ -114,6 +114,7 @@ public class ReverseTestMain {
 					service.filterCurrentRedCode();
 				}
 			}
+			logger.info("开始生成投注号码...。。。。。。。。。。。。..");
 			service.getCurrentExpertSingleResult();
 			// service.filterCurrentRedCodeFromFile();
 		} catch (Exception e) {

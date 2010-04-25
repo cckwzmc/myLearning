@@ -446,4 +446,18 @@ public class LotteryDao extends JdbcBaseDao {
 				" ccc group by first   order by cc desc  limit 0,10";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
+	/**
+	 * 用户选择号码统计
+	 * @return
+	 */
+	public List getSsqLotteryFetchResultSort() {
+		String sql="select first redcode ,sum(c) cc from (select * from (select first,count(*) c from ssq_lottery_collect_result t group by t.first order by c desc) t where c>20000 union all" +
+				" select * from (select second,count(*) c from ssq_lottery_collect_result t group by t.second order by c desc) t   union all" +
+				" select * from (select third,count(*) c from ssq_lottery_collect_result t group by t.third order by c desc) t   union all " +
+				" select * from (select fourth,count(*) c from ssq_lottery_collect_result t group by t.fourth order by c desc) t   union all " +
+				" select * from (select firth,count(*) c from ssq_lottery_collect_result t group by t.firth order by c desc) t   union all " +
+				" select * from (select sixth,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc) t  )" +
+				" ccc group by first   order by cc desc ";
+		return this.getJdbcTemplate().queryForList(sql);
+	}
 }

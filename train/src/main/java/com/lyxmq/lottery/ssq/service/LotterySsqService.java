@@ -138,7 +138,7 @@ public class LotterySsqService {
 			danList.add(ObjectUtils.toString(obj.get("dan")));
 		}
 		//用户投注过滤
-		List selectedList = this.dao.getSsqLotteryFilterResultTop10();
+		List selectedList = this.dao.getSsqLotteryFetchResultSort();
 		List<String> customerMaxSelected = new ArrayList<String>();
 		for (Iterator iterator = selectedList.iterator(); iterator.hasNext();) {
 			Map map = (Map) iterator.next();
@@ -150,7 +150,7 @@ public class LotterySsqService {
 		otherRedCodeList.addAll(otherRedCodeSet);
 		for(int i=0;CollectionUtils.isNotEmpty(otherRedCodeList)&&i<otherRedCodeList.size();i++){
 			String[] tmp=otherRedCodeList.get(i).split(",");
-			if(tmp.length>=15){
+			if(tmp.length>=15&&tmp.length>6){
 				otherRedCodeList.remove(i);
 				i--;
 				continue;
@@ -206,7 +206,10 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isCustomerDanFilter(lValues, danList)) {
 					continue;
 				}
-				if (!LotterySsqAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected)) {
+				if (!LotterySsqAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected.subList(0, 10))) {
+					continue;
+				}
+				if (!LotterySsqAlgorithm.isCustomerRedCodeTop20Filter(lValues, customerMaxSelected.subList(0, 20))) {
 					continue;
 				}
 				if (!LotterySsqAlgorithm.isFileRedCodeFourFilter(lValues, otherRedCodeList)) {

@@ -21,6 +21,8 @@ public class LotterySsqConifgService {
 	private static String dyjDowload = "";
 	private static String www500wanUrl = "";
 	private static String www500wanDowload = "";
+	private static String caipiaoUrl="";
+	private static String caipiaoDowload="";
 	private static int quOne = -1;
 	private static int quTwo = -1;
 	private static int quThree = -1;
@@ -85,6 +87,11 @@ public class LotterySsqConifgService {
 			www500wanUrl = StringUtils.replace(www500wanUrl, "@expect@", expect);
 			www500wanDowload = StringUtils.isNotBlank(pro.getProperty("www500wanDowload")) ? pro.getProperty("www500wanDowload") : www500wanDowload;
 			www500wanDowload = StringUtils.replace(www500wanDowload, "@expect@", expect);
+			
+			caipiaoUrl = StringUtils.isNotBlank(pro.getProperty("caipiaoUrl")) ? pro.getProperty("caipiaoUrl") : caipiaoUrl;
+			caipiaoUrl = StringUtils.replace(caipiaoUrl, "@expect@", expect);
+			caipiaoDowload = StringUtils.isNotBlank(pro.getProperty("caipiaoDowload")) ? pro.getProperty("caipiaoDowload") : caipiaoDowload;
+			caipiaoDowload = StringUtils.replace(caipiaoDowload, "@expect@", expect);
 
 			quOne = StringUtils.isNotBlank(pro.getProperty("quOne")) ? NumberUtils.toInt(pro.getProperty("quOne")) : quOne;
 			quTwo = StringUtils.isNotBlank(pro.getProperty("quTwo")) ? NumberUtils.toInt(pro.getProperty("quTwo")) : quTwo;
@@ -283,6 +290,16 @@ public class LotterySsqConifgService {
 
 	public static String[] getSelectedOneCode() {
 		return selectedOneCode;
+	}
+
+
+	public static String getCaipiaoUrl() {
+		return caipiaoUrl;
+	}
+
+
+	public static String getCaipiaoDowload() {
+		return caipiaoDowload;
 	}
 
 }
