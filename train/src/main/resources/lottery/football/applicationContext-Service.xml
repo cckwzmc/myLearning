@@ -9,7 +9,7 @@
 	</bean>
 	<bean id="initLotteryService" class="com.lyxmq.lottery.football.service.LotteryFootballInitService">
 		<property name="footballLotteryDao" ref="ftLotteryDao"/>
-		<property name="lotteryFootballCustomer500WanService" ref="lotteryFootballMedia500WanService"></property>
+		<property name="lotteryFootballCustomer500WanService" ref="lotteryFootballCustomer500WanService"></property>
 	</bean>
 	<bean id="fileLotteryService" class="com.lyxmq.lottery.football.service.LotteryFootballFileService">
 		<property name="footballLotteryDao" ref="ftLotteryDao"/>
@@ -17,7 +17,15 @@
 	<bean id="lotteryFootballMedia500WanService" class="com.lyxmq.lottery.football.service.LotteryFootballMedia500WanService">
 		<property name="footballLotteryDao" ref="ftLotteryDao"/>
 	</bean>
-	<bean id="footballCollectService" class="com.lyxmq.lottery.football.service.LotteryFootballCollectService">
+	<bean id="lotteryFootballCustomer500WanService" class="com.lyxmq.lottery.football.service.LotteryFootballCustomer500WanService">
 		<property name="footballLotteryDao" ref="ftLotteryDao"/>
+	</bean>
+	<bean id="lotteryFootballCustomerDyjService" class="com.lyxmq.lottery.football.service.LotteryFootballCustomerDyjService">
+		<property name="footballLotteryDao" ref="ftLotteryDao"/>
+	</bean>
+	<bean id="footballCollectService" class="com.lyxmq.lottery.football.service.LotteryFootballCollectService">
+		<property name="lotteryFootballCustomer500WanService" ref="lotteryFootballCustomer500WanService"></property>
+		<property name="lotteryFootballCustomerDyjService" ref="lotteryFootballCustomerDyjService"></property>
+		<property name="fileLotteryService" ref="fileLotteryService"></property>
 	</bean>
 </beans>	
