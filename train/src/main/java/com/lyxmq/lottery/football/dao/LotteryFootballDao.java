@@ -149,4 +149,9 @@ public class LotteryFootballDao extends JdbcBaseDao {
 		String sql="select count(*) from ft_lottery_media t where t.expect=? and t.type=?";
 		return this.getJdbcTemplate().queryForInt(sql,new Object[]{expect,type});
 	}
+
+	public void clearLotteryFootballCollectFetch(String footballExpect, String type) {
+		String sql="delete from ft_lottery_collect_fetch where expect=? and type=?";
+		this.getJdbcTemplate().update(sql, new Object[]{footballExpect,type});
+	}
 }

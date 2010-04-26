@@ -161,11 +161,13 @@ public class LotteryFootballCustomer500WanService extends Thread {
 	 * @return
 	 */
 	public List<Map<String, String>> fetchMediaHtmlData() {
+		this.footballLotteryDao.clearLotteryFootballCollectFetch(LotteryFootballConifgService.getFootballExpect(),"0");
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		String url = LotteryFootballConifgService.getWww500wanFootballUrl();
 		int k = 0;
 		for (int i = 1; i < 120; i++) {
 			String htmlData = HttpHtmlService.getHtmlContent(StringUtils.replace(StringUtils.replace(StringUtils.replace(url, "@footballExpect@", LotteryFootballConifgService.getFootballExpect()), "@page@", i + ""), "@playid@", "1"), "gb2312");
+			log.info(StringUtils.replace(StringUtils.replace(StringUtils.replace(url, "@footballExpect@", LotteryFootballConifgService.getFootballExpect()), "@page@", i + ""), "@playid@", "1"));
 			if (StringUtils.isBlank(htmlData) || htmlData.length() < 100) {
 				k++;
 				continue;
@@ -214,6 +216,7 @@ public class LotteryFootballCustomer500WanService extends Thread {
 		}
 		for (int i = 1; i < 120; i++) {
 			String htmlData = HttpHtmlService.getHtmlContent(StringUtils.replace(StringUtils.replace(StringUtils.replace(url, "@footballExpect@", LotteryFootballConifgService.getFootballExpect()), "@page@", i + ""), "@playid@", "3"), "gb2312");
+			log.info(StringUtils.replace(StringUtils.replace(StringUtils.replace(url, "@footballExpect@", LotteryFootballConifgService.getFootballExpect()), "@page@", i + ""), "@playid@", "3"));
 			if (StringUtils.isBlank(htmlData) || htmlData.length() < 100) {
 				k++;
 				continue;
