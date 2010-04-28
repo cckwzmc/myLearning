@@ -38,6 +38,11 @@ public class LotterySsqService {
 	private LotterySsqCustomerDyjService lotterySsqCustomerDyjService = null;
 	private LotterySsqCustomer500WanService lotterySsqCustomer500WanService = null;
 	private LotterySsqThan20Service lotterySsqThan20Service = null;
+	private LotteryInitService lotteryInitService=null;
+
+	public void setLotteryInitService(LotteryInitService lotteryInitService) {
+		this.lotteryInitService = lotteryInitService;
+	}
 
 	public void setLotterySsqCustomer500WanService(LotterySsqCustomer500WanService lotterySsqCustomer500WanService) {
 		this.lotterySsqCustomer500WanService = lotterySsqCustomer500WanService;
@@ -344,6 +349,7 @@ public class LotterySsqService {
 
 		}
 		logger.info("开始从过滤号码中删除抓取的号码.............");
+		this.lotteryInitService.saveAllRedResult("1");
 		this.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryAllResult();
 		int last = 0;

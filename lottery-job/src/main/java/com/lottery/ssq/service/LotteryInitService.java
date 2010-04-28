@@ -26,7 +26,7 @@ public class LotteryInitService {
 	LotteryDao dao = null;
 	LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
 	LotterySsqMediaSinaService lotterySsqMediaSinaService=null;
-	
+	private String filterResult="";
 	public void setLotterySsqMediaSinaService(LotterySsqMediaSinaService lotterySsqMediaSinaService) {
 		this.lotterySsqMediaSinaService = lotterySsqMediaSinaService;
 	}
@@ -40,15 +40,15 @@ public class LotteryInitService {
 		this.lotterySsqMedia500WanService = lotterySsqMedia500WanService;
 	}
 
-	public void saveAllRedResult() {
+	public void saveAllRedResult(String filterResult) {
 		logger.info("初始化数据................");
 		select(6);
+		this.filterResult=filterResult;
 	}
 
 	public void select(int k) {
 		String[] result = new String[k];
 		subselect(0, 1, result, k);
-
 	}
 
 	private void subselect(int head, int index, String[] r, int k) {
@@ -71,6 +71,7 @@ public class LotteryInitService {
 	 * 一个区不能有超过4个的号码 不能有>4的连号 不能有3个三连号 不能同时存在三个差值为1或2的 如果号码分布在三个区， 那么三个区的号码差值不能相同 TODO 六个数之间的5差值不能相等有<=4个差值以上
 	 * 
 	 * @param redCode
+	 * @param filterResult 如果=="0"保存到all_result  =="1"保存到filter_result
 	 */
 	private void saveLottoryResult(String redCode) {
 		String[] codeSix = redCode.split(",");
@@ -190,12 +191,23 @@ public class LotteryInitService {
 			return;
 		}
 		redList.add(redCode);
+		
 		if (redList.size() > 2000) {
-			this.dao.batchSaveSsqLottoryResult(redList);
+			if("0".equals(filterResult)||StringUtils.isBlank(filterResult))
+			{
+				this.dao.batchSaveSsqLottoryResult(redList);
+			}else if("1".equals(filterResult)){
+				this.dao.batchSaveSsqLotteryFilterResult(redList);
+			}
 			redList.clear();
 		}
 		if (CollectionUtils.isNotEmpty(redList)) {
-			this.dao.batchSaveSsqLottoryResult(redList);
+			if("0".equals(filterResult)||StringUtils.isBlank(filterResult))
+			{
+				this.dao.batchSaveSsqLottoryResult(redList);
+			}else if("1".equals(filterResult)){
+				this.dao.batchSaveSsqLotteryFilterResult(redList);
+			}
 			redList.clear();
 		}
 	}

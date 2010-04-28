@@ -91,12 +91,11 @@ public class LotterySsqFileService extends Thread{
 				}
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error(fileName+"没有找到..............");
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			logger.error(fileName+"编码有问题..............");
 		} catch (IOException e) {
-			e.printStackTrace();
-			e.getMessage();
+			logger.error(fileName+"+++++"+e.getMessage()+"..............");
 		}
 		if (filestr != null && !"".equals(filestr)) {
 			filestr = fileStrReplace(filestr);
@@ -321,10 +320,13 @@ public class LotterySsqFileService extends Thread{
 	 * 文件收集号码
 	 */
 	public void collectFileCode(){
-		Set<String[]> fileCode=this.getCodeFromFile("lottery/ssq/excluderedfile.txt");
+		Set<String[]> fileCode=this.getCodeFromFile("lottery/ssq/excluderedfile_"+LotterySsqConifgService.getExpect()+".txt");
 		List<Map<String,String>> resultList=new ArrayList<Map<String,String>>();
 		int i=0;
 		String sCode="";
+		if(CollectionUtils.isEmpty(resultList)){
+			return;
+		}
 		for (Iterator<String[]> iterator = fileCode.iterator(); iterator.hasNext();) {
 			String[] codes = (String[]) iterator.next();
 			String code=StringUtils.join(codes,"+");

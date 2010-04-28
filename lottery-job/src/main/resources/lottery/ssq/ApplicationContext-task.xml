@@ -5,16 +5,15 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd"
 	default-autowire="byName">
 	<bean class="com.lottery.ssq.job.LotterySsqJob" id="fetchLotterySsqService">
-		<property name="lotterySsqCustomerDyjService" ref="lotterySsqCustomerDyjService"></property>
-		<property name="lotterySsqCustomer500WanService" ref="lotterySsqCustomer500WanService"></property>
 	</bean>
 
 	<!--起动Bean-->
-	<bean id="fetchJob"
+	<bean id="lotterySsqJob"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="cronLotterySsqTrigger" />
+				<ref bean="cronLotteryFilterTrigger" />
 			</list>
 		</property>
 		<property name="quartzProperties">
@@ -25,7 +24,7 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="scheduledLotterySsqJobDetail"
+	<bean id="scheduledLotterySsqFetchDetail"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject">
 			<ref bean="fetchLotterySsqService" />
@@ -37,11 +36,30 @@
 	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
 	<bean id="cronLotterySsqTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail">
-			<ref bean="scheduledReportJobDetail" />
+			<ref bean="scheduledLotterySsqFetchDetail" />
 		</property>
 		<property name="cronExpression">
 			<!-- 周2，4，7的4点和13自动运行 -->
 			<value>0 0 5,13 ? * SUN,TUE,THU</value>
+		</property>
+	</bean>
+	<bean id="scheduledLotterySsqFilterDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="fetchLotterySsqService" />
+		</property>
+		<property name="targetMethod">
+			<value>parserFetchLotterySsqData</value>
+		</property>
+	</bean>
+	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
+	<bean id="cronLotteryFilterTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="scheduledLotterySsqFilterDetail" />
+		</property>
+		<property name="cronExpression">
+			<!-- 周2，4，7的4点和13自动运行 -->
+			<value>0 0 15 ? * SUN,TUE,THU</value>
 		</property>
 	</bean>
 </beans>	
