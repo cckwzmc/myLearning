@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd"
 	default-autowire="byName">
-	<bean class="com.myfetch.main.MasterMainServiceJob" id="fetchService"></bean>
-	
+	<bean class="com.lottery.ssq.job.LotterySsqJob" id="fetchLotterySsqService">
+		<property name="lotterySsqCustomerDyjService" ref="lotterySsqCustomerDyjService"></property>
+		<property name="lotterySsqCustomer500WanService" ref="lotterySsqCustomer500WanService"></property>
+	</bean>
+
 	<!--起动Bean-->
 	<bean id="fetchJob"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="cronReportTrigger" />
+				<ref bean="cronLotterySsqTrigger" />
 			</list>
 		</property>
 		<property name="quartzProperties">
@@ -20,23 +25,23 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="scheduledReportJobDetail"
+	<bean id="scheduledLotterySsqJobDetail"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject">
-			<ref bean="fetchService" />
+			<ref bean="fetchLotterySsqService" />
 		</property>
 		<property name="targetMethod">
-			<value>fetchDataService</value>
+			<value>fetchLotterySsqService</value>
 		</property>
 	</bean>
 	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
-	<bean id="cronReportTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerBean">
+	<bean id="cronLotterySsqTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail">
 			<ref bean="scheduledReportJobDetail" />
 		</property>
 		<property name="cronExpression">
-			<value>20,50 * * * * ?</value>
+			<!-- 周2，4，7的4点和13自动运行 -->
+			<value>0 0 5,13 ? * SUN,TUE,THU</value>
 		</property>
 	</bean>
 </beans>	

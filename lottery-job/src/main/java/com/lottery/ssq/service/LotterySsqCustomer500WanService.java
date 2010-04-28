@@ -362,7 +362,6 @@ public class LotterySsqCustomer500WanService extends Thread {
 		if(CollectionUtils.isNotEmpty(danList)){
 			this.dao.batchSqqLotteryDanResult(danList, "1");
 		}
-		
 		logger.info("========" + "500Wan抓取完成..............................................");
 	}
 	public static void main(String[] args) {
