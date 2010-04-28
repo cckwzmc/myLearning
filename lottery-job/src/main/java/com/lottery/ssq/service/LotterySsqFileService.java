@@ -320,7 +320,7 @@ public class LotterySsqFileService extends Thread{
 	 * 文件收集号码
 	 */
 	public void collectFileCode(){
-		Set<String[]> fileCode=this.getCodeFromFile("lottery/ssq/excluderedfile_"+LotterySsqConifgService.getExpect()+".txt");
+		Set<String[]> fileCode=this.getCodeFromFile("lottery/ssq/excluderedfile.txt");
 		List<Map<String,String>> resultList=new ArrayList<Map<String,String>>();
 		int i=0;
 		String sCode="";
@@ -439,6 +439,12 @@ public class LotterySsqFileService extends Thread{
 	// }
 	// writer.close();
 	// }
+	/**
+	 * 备份历史，清空文件内容，防止下次误使用.
+	 */
+	public void clearFileContent() {
+		
+	}
 	
 
 }

@@ -67,5 +67,6 @@ public class LotterySsqJob {
 		this.lotterySsqCustomer500WanService.save500WanProjectRedCode();
 		this.lotterySsqCustomerDyjService.saveDyjProjectRedCode();
 		this.lotterySsqService.filterCurrentRedCode();
+		this.lotterySsqFileService.clearFileContent();
 	}
 }
