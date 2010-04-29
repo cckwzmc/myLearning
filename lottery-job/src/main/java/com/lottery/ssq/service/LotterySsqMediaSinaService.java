@@ -7,6 +7,9 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 
 import org.apache.commons.lang.StringUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,62 +27,91 @@ public class LotterySsqMediaSinaService {
 	LotteryDao dao = null;
 
 	public void setDao(LotteryDao dao) {
-		this.dao = dao;  
+		this.dao = dao;
 	}
+
 	/**
 	 * html格式
+	 * 
 	 * @param mediaSina
 	 * @return
 	 */
 	public List<String> parseCurrentMediaRedCode(String mediaSina) {
-		List<String> redCode=this.getCurrentMediaRedCode(mediaSina);
+		List<String> redCode = this.getCurrentMediaRedCode(mediaSina);
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String> iterator = redCode.iterator(); iterator.hasNext();) {
-			String[] red =iterator.next().split(",");
+			String[] red = iterator.next().split(",");
 			LotteryUtils.select(6, red, resultList);
 		}
 		return resultList;
 	}
+
 	public List<String> getCurrentMediaRedCode(String mediaSina) {
-		List<String> redList=new ArrayList<String>();
-		List<Element> list=HtmlParseUtils.getElementListByTagName(mediaSina, "tr");
-		for(Element e:list.subList(1,list.size())){
-			List<Element> tdList=HtmlParseUtils.getElementListByTagName(e.toString(), "td");
-			Element tdE=tdList.get(3);
-			List<Element> divList=tdE.getAllElements("div");
-			String redCode="";
-			for(Element eDiv:divList){
-				if(StringUtils.isBlank(redCode)){
-					redCode=eDiv.getContent().toString().length()<2?"0"+eDiv.getContent().toString():eDiv.getContent().toString().substring(0,2);
-				}else{
-					redCode+=","+(eDiv.getContent().toString().length()<2?"0"+eDiv.getContent().toString():eDiv.getContent().toString().substring(0,2));
+		List<String> redList = new ArrayList<String>();
+		List<Element> list = HtmlParseUtils.getElementListByTagName(mediaSina, "tr");
+		for (Element e : list.subList(1, list.size())) {
+			List<Element> tdList = HtmlParseUtils.getElementListByTagName(e.toString(), "td");
+			Element tdE = tdList.get(3);
+			List<Element> divList = tdE.getAllElements("div");
+			String redCode = "";
+			for (Element eDiv : divList) {
+				if (StringUtils.isBlank(redCode)) {
+					redCode = eDiv.getContent().toString().length() < 2 ? "0" + eDiv.getContent().toString() : eDiv.getContent().toString().substring(0, 2);
+				} else {
+					redCode += "," + (eDiv.getContent().toString().length() < 2 ? "0" + eDiv.getContent().toString() : eDiv.getContent().toString().substring(0, 2));
 				}
 			}
 			redList.add(redCode);
 		}
 		return redList;
 	}
+
 	public List<String> getCurrentMediaDanRedCode(String mediaSina) {
-		List<String> redList=new ArrayList<String>();
-		List<Element> list=HtmlParseUtils.getElementListByTagName(mediaSina, "tr");
-		for(Element e:list.subList(1,list.size())){
-			List<Element> tdList=HtmlParseUtils.getElementListByTagName(e.toString(), "td");
-			Element tdE=tdList.get(2);
-			List<Element> divList=tdE.getAllElements("div");
-			String redCode="";
-			for(Element eDiv:divList){
-				if(StringUtils.isBlank(redCode)){
-					redCode=eDiv.getContent().toString().length()<2?"0"+eDiv.getContent().toString():eDiv.getContent().toString().substring(0,2);
-				}else{
-					redCode+=","+(eDiv.getContent().toString().length()<2?"0"+eDiv.getContent().toString():eDiv.getContent().toString().substring(0,2));
+		List<String> redList = new ArrayList<String>();
+		List<Element> list = HtmlParseUtils.getElementListByTagName(mediaSina, "tr");
+		for (Element e : list.subList(1, list.size())) {
+			List<Element> tdList = HtmlParseUtils.getElementListByTagName(e.toString(), "td");
+			Element tdE = tdList.get(2);
+			List<Element> divList = tdE.getAllElements("div");
+			String redCode = "";
+			for (Element eDiv : divList) {
+				if (StringUtils.isBlank(redCode)) {
+					redCode = eDiv.getContent().toString().length() < 2 ? "0" + eDiv.getContent().toString() : eDiv.getContent().toString().substring(0, 2);
+				} else {
+					redCode += "," + (eDiv.getContent().toString().length() < 2 ? "0" + eDiv.getContent().toString() : eDiv.getContent().toString().substring(0, 2));
 				}
 			}
 			redList.add(redCode);
 		}
 		return redList;
 	}
-	public void saveCurrrentMediaDanRedCode(List<String> list)
-	{	
-		this.dao.batchSqqLotteryDanResult(list,"0");
+
+	public void saveCurrrentMediaDanRedCode(List<String> list) {
+		this.dao.batchSqqLotteryDanResult(list, "0");
+	}
+
+	/**
+	 * 保存当期媒体推荐
+	 * 
+	 * @param redMedia
+	 * @param expect
+	 */
+	public void saveCurrentMediaRedCodeToDb(List<String> redMedia, String expect) {
+		List<String[]> redCodeList = new ArrayList<String[]>();
+		for (Iterator<String> iterator = redMedia.iterator(); iterator.hasNext();) {
+			String redCodes = (String) iterator.next();
+			redCodeList.add(redCodes.split(","));
+		}
+		this.dao.saveSsqLotteryCollectRedCod(redCodeList);
+	}
+
+	/**
+	 * 保存到收集拆分表
+	 */
+	public void saveMediaSinaRedCode() {
+		String mediaContent = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
+		if (StringUtils.isNotBlank(mediaContent) && mediaContent.length() > 100) {
+			this.saveCurrentMediaRedCodeToDb(this.getCurrentMediaRedCode(mediaContent), LotterySsqConifgService.getExpect());
+		}
 	}
 }

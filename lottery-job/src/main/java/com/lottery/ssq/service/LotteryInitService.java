@@ -3,6 +3,7 @@ package com.lottery.ssq.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.slf4j.LoggerFactory;
 
@@ -377,33 +380,92 @@ public class LotteryInitService {
 	}
 
 	/**
-	 * 抓取媒体推荐html内容
+	 * 抓取媒体推荐html内容--sina
 	 */
 	public void fetchMediaSinaContent() {
-		if (this.dao.getSsqLotteryMediaByExpect(LotterySsqConifgService.getExpect(), "1") == 0) {
-			String htmlData = HttpHtmlService.getHtmlContent(LotterySsqConifgService.getMediaSinaUrl(),"GB2312");
+		String mediaContent=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
+		if(StringUtils.isNotBlank(mediaContent)&&mediaContent.length()>100){
+			return;
+		}
+		String htmlData="";
+		if (StringUtils.isBlank(mediaContent)||mediaContent.length()<100) {
+			htmlData = HttpHtmlService.getHtmlContent(LotterySsqConifgService.getMediaSinaUrl(),"GB2312");
 			String existStr = "第" + LotterySsqConifgService.getExpect() + "期双色球";
 			String firstTr = HtmlParseUtils.getElementByTagName(HtmlParseUtils.getElementById(htmlData, "table1"), "tr", 0);
 			if (StringUtils.indexOf((StringUtils.remove(firstTr, " ")), existStr) != -1
-					&& this.dao.getSsqLotteryMediaByExpect(LotterySsqConifgService.getExpect(), "1") == 0) {
+					&& htmlData.length()>100) {
 				this.dao.saveSsqLotteryMedia("1", LotterySsqConifgService.getExpect(), HtmlParseUtils.getElementById(htmlData, "table1"));
+				this.dao.clearHisFetchProjectCode(LotterySsqConifgService.getExpect(), "4");
+				List<String> sinaList=this.lotterySsqMediaSinaService.getCurrentMediaRedCode(htmlData);
+				List<Map<String,String>> rsList=new ArrayList<Map<String,String>>();
+				String code="";
+				for(String redCode:sinaList){
+					if("".equals(code)){
+						code=redCode;
+					}else{
+						code="@@"+redCode;
+					}
+				}
+				Map<String,String> map=new HashMap<String, String>();
+				map.put("code", code);
+				map.put("net", "4");
+				map.put("expect", LotterySsqConifgService.getExpect());
+				map.put("proid", RandomUtils.nextInt(999999999)+"");
+				this.dao.batchSaveSsqLotteryCollectFetch(rsList);
 			}
 
 		}
 	}
 
 	/**
-	 * 抓取媒体推荐html内容
+	 * 抓取媒体推荐html内容--500wan
 	 */
 	public void fetchMedia500WanContent() {
-		if (this.dao.getSsqLotteryMediaByExpect(LotterySsqConifgService.getExpect(), "0") == 0) {
-			String xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia500WanUrl());
-			this.dao.saveSsqLotteryMedia("0", LotterySsqConifgService.getExpect(), xmlData);
+		String mediaContent=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+		if(StringUtils.isNotBlank(mediaContent)&&mediaContent.length()>100){
+			return;
+		}
+		String xmlData="";
+		if (StringUtils.isBlank(mediaContent)||mediaContent.length()<100) {
+			xmlData = HttpHtmlService.getXmlContent(LotterySsqConifgService.getMedia500WanUrl());
+			if(StringUtils.isNotBlank(xmlData)&&xmlData.length()>100&&StringUtils.isBlank(mediaContent))
+			{
+				this.dao.saveSsqLotteryMedia("0", LotterySsqConifgService.getExpect(), xmlData);
+				Document doc=null;
+				try {
+					doc=DocumentHelper.parseText(xmlData);
+				} catch (DocumentException e) {
+					logger.error(e.getMessage());
+				}
+				if(doc!=null)
+				{
+					this.dao.clearHisFetchProjectCode(LotterySsqConifgService.getExpect(), "3");
+					List<String> sinaList=this.lotterySsqMedia500WanService.getCurrentMediaRedCode(doc);
+					List<Map<String,String>> rsList=new ArrayList<Map<String,String>>();
+					String code="";
+					for(String redCode:sinaList){
+						if("".equals(code)){
+							code=redCode;
+						}else{
+							code="@@"+redCode;
+						}
+					}
+					Map<String,String> map=new HashMap<String, String>();
+					map.put("code", code);
+					map.put("net", "3");
+					map.put("expect", LotterySsqConifgService.getExpect());
+					map.put("proid", RandomUtils.nextInt(999999999)+"");
+					this.dao.batchSaveSsqLotteryCollectFetch(rsList);
+				}
+			}
 		}
 	}
+	/**
+	 * 新浪媒体擂台胆保存
+	 */
 	public void fetchMediaSinaDan(){
 		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
-		if(StringUtils.isBlank(mediaSina)){
+		if(StringUtils.isBlank(mediaSina)||mediaSina.length()<100){
 			return;
 		}
 		List<String> list=this.lotterySsqMediaSinaService.getCurrentMediaDanRedCode(mediaSina);

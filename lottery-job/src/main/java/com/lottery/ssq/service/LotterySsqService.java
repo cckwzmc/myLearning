@@ -309,48 +309,9 @@ public class LotterySsqService {
 	@SuppressWarnings("unchecked")
 	public void filterCurrentRedCodeFirst() {
 		this.initConifg(true);
-		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
-		// 有超过20个号码的推荐
-		// media500Wan="";
-		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
-		if (StringUtils.isBlank(media500Wan) && StringUtils.isBlank(mediaSina)) {
-			return;
-		}
-		// 媒体预测号码
-		List<String> redMedia = new ArrayList<String>();
-		Document document = null;
-		if (StringUtils.isNotBlank(media500Wan) && media500Wan.length() > 100) {
-			try {
-				document = DocumentHelper.parseText(media500Wan);
-			} catch (DocumentException e) {
-				e.printStackTrace();
-			}
-		}
-		if (!isSaveToDatabase) {
-			if (document != null) {
-				redMedia = this.lotterySsqMedia500WanService.parseCurrentMediaRedCode(document);
-			}
-			List<String> mediaSinaList = this.lotterySsqMediaSinaService.parseCurrentMediaRedCode(mediaSina);
-			if (CollectionUtils.isNotEmpty(mediaSinaList)) {
-				redMedia.addAll(mediaSinaList);
-			}
-			this.lotterySsqMedia500WanService.saveCurrentMediaRedCode(redMedia, LotterySsqConifgService.getExpect());
-		} else {
-			if (document != null) {
-				redMedia = this.lotterySsqMedia500WanService.parseCurrentMediaRedCode(document);
-			}
-			List<String> mediaSinaList = this.lotterySsqMediaSinaService.parseCurrentMediaRedCode(mediaSina);
-			if (CollectionUtils.isNotEmpty(mediaSinaList)) {
-				redMedia.addAll(mediaSinaList);
-			}
-//			for (int i = 0; i < redMedia.size(); i++) {
-//				this.lotterySsqMedia500WanService.saveCurrentMediaRedCodeToDb(redMedia.subList(i, i = (i + 1000 > redMedia.size() ? redMedia.size() : i + 1000)), LotterySsqConifgService.getExpect());
-//			}
-
-		}
 		logger.info("开始从过滤号码中删除抓取的号码.............");
-//		this.dao.deleteSsqLotteryFilterResult();
-//		this.lotteryInitService.saveAllRedResult("1");
+		this.dao.deleteSsqLotteryFilterResult();
+		this.lotteryInitService.saveAllRedResult("1");
 		this.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryAllResult();
 		int last = 0;
@@ -359,7 +320,7 @@ public class LotterySsqService {
 		while (last < count) {
 			List list = this.dao.getLottoryAllResultLimit(last, page);
 			last += page;
-			filterRedCode(redMedia, list);
+			filterRedCode(list);
 		}
 		this.dao.saveLotteryGenLog("1", LotterySsqConifgService.getExpect(), "1");
 	}
@@ -428,14 +389,14 @@ public class LotterySsqService {
 
 	/**
 	 * 第一步过滤号码算法
-	 * 必须包含边号、连号、上一期的号码，，是不是要加个隔号呢？？（差值为1）
+	 * 必须包含边号、连号、上一期的号码之一，，是不是要加个隔号呢？？（差值为1）
 	 * @param redMedia
 	 * @param redFile
 	 * @param redList
 	 * @param list
 	 */
 	@SuppressWarnings("unchecked")
-	private void filterRedCode(List<String> redMedia, List list) {
+	private void filterRedCode(List list) {
 		List<String> redList = new ArrayList<String>();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Map lMap = (Map) iterator.next();
@@ -449,9 +410,6 @@ public class LotterySsqService {
 				redList.add(lValue);
 			}
 
-			if (redMedia.contains(lValue)) {
-				redList.add(lValue);
-			}
 			if (isSaveToDatabase && redList.size() > 2000) {
 				this.dao.deleteSsqLotteryFilterResult(redList);
 				redList.clear();
@@ -471,11 +429,11 @@ public class LotterySsqService {
 
 	public void filterCurrentRedCode() {
 		this.initConifg(true);
-//		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
-//		if (StringUtils.isBlank(media500Wan)) {
-//			logger.error("这一期的数据还没入库呢!");
-//			return;
-//		}
+		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+		if (StringUtils.isBlank(media500Wan)) {
+			logger.error("这一期的数据还没入库呢!");
+			return;
+		}
 		boolean isExist = MapUtils.isNotEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()));
 		if (isExist) {
 			// 以追加的方式过滤号码，即在原来的基础上删除号码,只能用于文本收集方式
@@ -494,7 +452,18 @@ public class LotterySsqService {
 		List<String> list = this.lotterySsqFileService.getCurrentFileRedCode();
 		this.dao.deleteSsqLotteryFilterResult(list);
 	}
-
+	/**
+	 * 是否已经完成第一步号码过滤
+	 * @param type
+	 * @param lotteryQh
+	 * @return
+	 */
+	public boolean isGenLotteryResult(String type, String lotteryQh){
+		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()))) {
+			return true;
+		}
+		return false;
+	}
 	public static void main(String[] args) {
 		File file = new File("d:/myproject/current.tt");
 		FileReader fr;
@@ -532,7 +501,7 @@ public class LotterySsqService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		// try {
 		// // ClassLoader classLoader=new ClassLoader();
 		// ClassLoader classLoader = ClassUtils.getDefaultClassLoader();

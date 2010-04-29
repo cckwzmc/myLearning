@@ -42,5 +42,7 @@
 		<property name="lotterySsqCustomerDyjService" ref="lotterySsqCustomerDyjService"></property>
 		<property name="lotterySsqCustomer500WanService" ref="lotterySsqCustomer500WanService"></property>
 		<property name="lotterySsqFileService" ref="lotterySsqFileService"></property>
+		<property name="lotterySsqMedia500WanService" ref="lotterySsqMedia500WanService"></property>
+		<property name="lotterySsqMediaSinaService" ref="lotterySsqMediaSinaService"></property>
 	</bean>
 </beans>	

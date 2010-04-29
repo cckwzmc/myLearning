@@ -342,9 +342,6 @@ public class LotteryDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForInt(sql, new Object[] { proid, net });
 	}
 
-	public void saveSsqLotteryCollectFetch(String string, String string2, String join) {
-
-	}
 
 	public void batchSaveSsqLotteryCollectFetch(final List<Map<String, String>> resultList) {
 		if (CollectionUtils.isEmpty(resultList)) {
@@ -380,11 +377,13 @@ public class LotteryDao extends JdbcBaseDao {
 		this.getJdbcTemplate().update(sql, new Object[] { net, expect });
 	}
 
+	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectFetchLimit(int first, int page, String net) {
 		String sql = "select id,code from ssq_lottery_collect_fetch t where t.net=? and code!='-1'  limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql, new Object[] { net });
 	}
 
+	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectResultLimit(int first, int page) {
 		String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result t  limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql);
@@ -458,6 +457,31 @@ public class LotteryDao extends JdbcBaseDao {
 				" select * from (select sixth,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc) t  )" +
 				" ccc group by first   order by cc desc ";
 		return this.getJdbcTemplate().queryForList(sql);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void backupSsqLotteryCollectResult(String expect) {
+		String sql="select * from  ssq_lottery_collect_result_"+expect+"t limit 0,1";
+		List list=this.getJdbcTemplate().queryForList(sql);
+		if(CollectionUtils.isNotEmpty(list)){
+			return;
+		}
+		sql="create table ssq_lottery_collect_result_"+expect+" as select * from ssq_lottery_collect_result";
+		this.getJdbcTemplate().execute(sql);
+	}
+
+	@SuppressWarnings("unchecked")
+	public String getMaxLotteryFetchJob() {
+		String sql="select count(*) from lottery_fetch_job t where t.is_complete=0";
+		if(this.getJdbcTemplate().queryForInt(sql)>1){
+			sql="update lottery_fetch_job  is_complete=1 where expect<>(select max(expect) expect from lottery_fetch_job)";
+		}
+		sql="select max(expect) expect from lottery_fetch_job  where is_complete=1";
+		List list=this.getJdbcTemplate().queryForList(sql);
+		if(CollectionUtils.isNotEmpty(list)){
+			return ObjectUtils.toString(((Map)list.get(0)).get("expect"));
+		}
+		return "";
 	}
 
 }

@@ -33,34 +33,34 @@ import com.lottery.ssq.utils.LotteryUtils;
  * 通过其他方式收集的数据处理
  * 
  * @author Administrator
- * 
  */
-public class LotterySsqFileService extends Thread{
-	private  static Logger logger=LoggerFactory.getLogger(LotterySsqFileService.class);
-	
-	private  final String DEFAULTFILENAME="lottery/ssq/excluderedfile.txt"; 
+public class LotterySsqFileService extends Thread {
+	private static Logger logger = LoggerFactory.getLogger(LotterySsqFileService.class);
+
+	private final String DEFAULTFILENAME = "lottery/ssq/excluderedfile.txt";
 	private LotteryDao dao = null;
-	LotterySsqThan20Service lotterySsqThan20Service=null;
-	
+	LotterySsqThan20Service lotterySsqThan20Service = null;
+
 	public static void setLogger(Logger logger) {
 		LotterySsqFileService.logger = logger;
 	}
+
 	public void setLotterySsqThan20Service(LotterySsqThan20Service lotterySsqThan20Service) {
 		this.lotterySsqThan20Service = lotterySsqThan20Service;
 	}
+
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
-	public void run(){
+
+	public void run() {
 		this.collectFileCode();
 	}
+
 	/**
-	 * 从文件中读取号码，包括：红球、蓝球 一行一个号码 "lottery/ssq/excluderedfile.txt"
+	 * 从文件中读取号码，包括：红球、蓝球 一行一个号码 "lottery/ssq/excluderedfile.txt" fileList中的格式可能包含了蓝球分隔符为"+","|"
 	 * 
-	 * fileList中的格式可能包含了蓝球分隔符为"+","|"
-	 * 
-	 * @param fileName
-	 *            String[] String[0]=redCode,String[1]=blueCode
+	 * @param fileName String[] String[0]=redCode,String[1]=blueCode
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -91,11 +91,11 @@ public class LotterySsqFileService extends Thread{
 				}
 			}
 		} catch (FileNotFoundException e) {
-			logger.error(fileName+"没有找到..............");
+			logger.error(fileName + "没有找到..............");
 		} catch (UnsupportedEncodingException e) {
-			logger.error(fileName+"编码有问题..............");
+			logger.error(fileName + "编码有问题..............");
 		} catch (IOException e) {
-			logger.error(fileName+"+++++"+e.getMessage()+"..............");
+			logger.error(fileName + "+++++" + e.getMessage() + "..............");
 		}
 		if (filestr != null && !"".equals(filestr)) {
 			filestr = fileStrReplace(filestr);
@@ -115,8 +115,10 @@ public class LotterySsqFileService extends Thread{
 		}
 		return list;
 	}
+
 	/**
 	 * 替换算法
+	 * 
 	 * @param filestr
 	 * @return
 	 */
@@ -139,12 +141,14 @@ public class LotterySsqFileService extends Thread{
 		filestr = StringUtils.replace(filestr, " ", ",");
 		return filestr;
 	}
+
 	/**
 	 * 使用默认文件名
+	 * 
 	 * @return
 	 */
 	public Set<String[]> getCodeFromFile() {
-		Set<String[]> list = new HashSet<String[]>(50,20);
+		Set<String[]> list = new HashSet<String[]>(50, 20);
 		String filestr = "";
 		try {
 			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
@@ -195,14 +199,16 @@ public class LotterySsqFileService extends Thread{
 		}
 		return list;
 	}
+
 	/**
 	 * 使用默认文件名
+	 * 
 	 * @return
 	 */
 	public Set<String> getRedCodeFromFile() {
 		Set<String[]> list = this.getCodeFromFile();
-		Set<String> redSet=new HashSet<String>();
-		for (String[] code:list) {
+		Set<String> redSet = new HashSet<String>();
+		for (String[] code : list) {
 			redSet.add(code[0]);
 		}
 		return redSet;
@@ -210,6 +216,7 @@ public class LotterySsqFileService extends Thread{
 
 	/**
 	 * 解析红球并入库
+	 * 
 	 * @param fileName
 	 */
 	public void parseCurrentFileRedCodeToDb(String fileName) {
@@ -223,13 +230,15 @@ public class LotterySsqFileService extends Thread{
 				resultList.clear();
 			}
 		}
-		if(CollectionUtils.isNotEmpty(resultList)){
+		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
 	}
+
 	/**
 	 * 不保存文件中的数据至数据库，直接返回分析结果
+	 * 
 	 * @param fileName
 	 */
 	public List<String> getCurrentFileRedCode() {
@@ -243,9 +252,7 @@ public class LotterySsqFileService extends Thread{
 	}
 
 	/**
-	 * 
-	 * @param fileList
-	 *            String[] String[0]=redCode,String[1]=blueCode
+	 * @param fileList String[] String[0]=redCode,String[1]=blueCode
 	 * @return
 	 */
 	public List<String> getRedCodeFromFile(Set<String[]> fileList) {
@@ -279,7 +286,7 @@ public class LotterySsqFileService extends Thread{
 				resultList.clear();
 			}
 		}
-		if(CollectionUtils.isNotEmpty(resultList)){
+		if (CollectionUtils.isNotEmpty(resultList)) {
 			saveCurrentFileRedCode(resultList, expect);
 			resultList.clear();
 		}
@@ -287,6 +294,7 @@ public class LotterySsqFileService extends Thread{
 
 	/**
 	 * 保存解析过的红球写入文件
+	 * 
 	 * @param redFile
 	 * @param qs
 	 */
@@ -315,56 +323,57 @@ public class LotterySsqFileService extends Thread{
 			}
 		}
 	}
-	
+
 	/**
 	 * 文件收集号码
 	 */
-	public void collectFileCode(){
-		Set<String[]> fileCode=this.getCodeFromFile("lottery/ssq/excluderedfile.txt");
-		List<Map<String,String>> resultList=new ArrayList<Map<String,String>>();
-		int i=0;
-		String sCode="";
-		if(CollectionUtils.isEmpty(resultList)){
+	public void collectFileCode() {
+		Set<String[]> fileCode = this.getCodeFromFile("lottery/ssq/excluderedfile.txt");
+		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
+		int i = 0;
+		String sCode = "";
+		if (CollectionUtils.isEmpty(resultList)) {
 			return;
 		}
 		for (Iterator<String[]> iterator = fileCode.iterator(); iterator.hasNext();) {
 			String[] codes = (String[]) iterator.next();
-			String code=StringUtils.join(codes,"+");
+			String code = StringUtils.join(codes, "+");
 			i++;
-			if("".equals(sCode)){
-				sCode=code;
-			}else{
-				sCode+="@@"+code;
+			if ("".equals(sCode)) {
+				sCode = code;
+			} else {
+				sCode += "@@" + code;
 			}
-			if(i>10){
-				Map<String,String> map=new HashMap<String, String>();
+			if (i > 10) {
+				Map<String, String> map = new HashMap<String, String>();
 				map.put("code", sCode);
 				map.put("net", "2");
 				map.put("expect", LotterySsqConifgService.getExpect());
-				map.put("proid", RandomUtils.nextInt(999999999)+"");
+				map.put("proid", RandomUtils.nextInt(999999999) + "");
 				resultList.add(map);
-				i=0;
-				sCode="";
+				i = 0;
+				sCode = "";
 			}
-			if(resultList.size()>200){
+			if (resultList.size() > 200) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 				resultList.clear();
 			}
 		}
-		if(!"".equals(sCode)){
-			Map<String,String> map=new HashMap<String, String>();
+		if (!"".equals(sCode)) {
+			Map<String, String> map = new HashMap<String, String>();
 			map.put("code", sCode);
 			map.put("net", "2");
 			map.put("expect", LotterySsqConifgService.getExpect());
-			map.put("proid", RandomUtils.nextInt(999999999)+"");
+			map.put("proid", RandomUtils.nextInt(999999999) + "");
 			resultList.add(map);
 		}
-		if(CollectionUtils.isNotEmpty(resultList)){
+		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
-		logger.info("========"+"文件抓取完成..............................................");
+		logger.info("========" + "文件抓取完成..............................................");
 	}
+
 	/**
 	 * 处理ssq_lottery_collect_fetch中的文件类型数据
 	 */
@@ -379,18 +388,17 @@ public class LotterySsqFileService extends Thread{
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
-				code=StringUtils.replace(code, "|", "+");
+				code = StringUtils.replace(code, "|", "+");
 				String[] codes = StringUtils.split(code, "@@");
-				for(String ssq:codes)
-				{
-					String redCode=StringUtils.split(ssq, "+")[0];
-					String[] redCodes =StringUtils.split(redCode,",");
-					if(redCodes.length>20){
+				for (String ssq : codes) {
+					String redCode = StringUtils.split(ssq, "+")[0];
+					String[] redCodes = StringUtils.split(redCode, ",");
+					if (redCodes.length > 20) {
 						lotterySsqThan20Service.select(6, redCodes, false);
 						continue;
 					}
-					if(redCodes.length<6||redCodes.length>20){
-						logger.error("方案解析失败=="+ssq);
+					if (redCodes.length < 6 || redCodes.length > 20) {
+						logger.error("方案解析失败==" + ssq);
 						continue;
 					}
 					LotteryUtils.selectArray(6, redCodes, resultList);
@@ -400,18 +408,21 @@ public class LotterySsqFileService extends Thread{
 					resultList.clear();
 				}
 			}
-			last+=page;
+			last += page;
 			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "2");
 		}
-		if(CollectionUtils.isNotEmpty(resultList)){
+		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
 	}
+
 	public static void main(String[] args) {
-		LotterySsqFileService f=new LotterySsqFileService();
+		LotterySsqFileService f = new LotterySsqFileService();
 		f.getCodeFromFile();
+		f.clearFileContent();
 	}
+
 	// public static void main(String[] args) throws IOException {
 	// List<String> list=new ArrayList<String>();
 	// list.add("1");
@@ -443,8 +454,39 @@ public class LotterySsqFileService extends Thread{
 	 * 备份历史，清空文件内容，防止下次误使用.
 	 */
 	public void clearFileContent() {
-		
+		try {
+			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+			Enumeration urls = null;
+			try {
+				urls = classLoader.getResources(this.DEFAULTFILENAME);
+			} catch (IOException e) {
+			}
+			while (urls.hasMoreElements()) {
+				URL url = (URL) urls.nextElement();
+				String filePath = url.getPath().substring(1);
+				File file = new File(filePath);
+				if (file.exists()) {
+					file.renameTo(new File(filePath + "." + LotterySsqConifgService.getExpect()));
+					file.createNewFile();
+				}
+			}
+		} catch (FileNotFoundException e) {
+			logger.error(this.DEFAULTFILENAME + "没有找到..............");
+		} catch (UnsupportedEncodingException e) {
+			logger.error(this.DEFAULTFILENAME + "编码有问题..............");
+		} catch (IOException e) {
+			logger.error(this.DEFAULTFILENAME + "+++++" + e.getMessage() + "..............");
+		}
 	}
-	
+
+	/**
+	 * 处理过期的收集文件
+	 */
+	public void clearCollectFile() {
+		String expect=this.dao.getMaxLotteryFetchJob();
+		if(StringUtils.isNotBlank(expect)){
+			this.clearFileContent();
+		}
+	}
 
 }

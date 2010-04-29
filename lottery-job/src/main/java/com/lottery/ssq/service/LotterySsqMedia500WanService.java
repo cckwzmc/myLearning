@@ -56,6 +56,22 @@ public class LotterySsqMedia500WanService {
 		}
 		return resultList;
 	}
+	/**
+	 * 500wan媒体推荐红球
+	 * @param document
+	 * @return
+	 */
+	public List<String> getCurrentMediaRedCode(Document document) {
+		List<String[]> redCode = LotterySsqMediaUtils.getMediaRedCode(document);
+		if(CollectionUtils.isEmpty(redCode)){
+			return null;
+		}
+		List<String> resultList = new ArrayList<String>();
+		for(String[] ssq:redCode){
+			resultList.add(StringUtils.join(ssq, ","));
+		}
+		return resultList;
+	}
 
 	/**
 	 * 按单注方式生成红球号码
@@ -254,5 +270,20 @@ public class LotterySsqMedia500WanService {
 			redCodeList.add(redCodes.split(","));
 		}
 		this.dao.saveSsqLotteryCollectRedCod(redCodeList);
+	}
+	/**
+	 * 保存到收集号码表
+	 */
+	public void saveMedia500WanRedCode() {
+		String mediaContent=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+		if(StringUtils.isNotBlank(mediaContent)&&mediaContent.length()>100){
+			Document doc=null;
+			try {
+				doc=DocumentHelper.parseText(mediaContent);
+			} catch (DocumentException e) {
+				log.error(e.getMessage());
+			}
+			this.saveCurrentMediaRedCodeToDb(this.parseCurrentMediaRedCode(doc),LotterySsqConifgService.getExpect());
+		}
 	}
 }
