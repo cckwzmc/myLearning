@@ -54,8 +54,8 @@ public class LotterySsqJob {
 	public void fetchLotterySsqService() {
 		initService();
 		logger.info("后台抓取任务开始...........");
-		this.lotterySsqCustomer500WanService.fetch500WanProjectRedCode();
-		this.lotterySsqCustomerDyjService.fetchDyjProjectCode();
+		this.lotterySsqCustomer500WanService.start();
+		this.lotterySsqCustomerDyjService.start();
 		this.lotterySsqFileService.collectFileCode();
 	}
 

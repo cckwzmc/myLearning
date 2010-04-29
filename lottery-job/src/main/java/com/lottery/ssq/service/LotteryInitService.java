@@ -42,8 +42,8 @@ public class LotteryInitService {
 
 	public void saveAllRedResult(String filterResult) {
 		logger.info("初始化数据................");
-		select(6);
 		this.filterResult=filterResult;
+		select(6);
 	}
 
 	public void select(int k) {

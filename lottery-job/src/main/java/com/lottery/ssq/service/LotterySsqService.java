@@ -343,13 +343,14 @@ public class LotterySsqService {
 			if (CollectionUtils.isNotEmpty(mediaSinaList)) {
 				redMedia.addAll(mediaSinaList);
 			}
-			for (int i = 0; i < redMedia.size(); i++) {
-				this.lotterySsqMedia500WanService.saveCurrentMediaRedCodeToDb(redMedia.subList(i, i = (i + 1000 > redMedia.size() ? redMedia.size() : i + 1000)), LotterySsqConifgService.getExpect());
-			}
+//			for (int i = 0; i < redMedia.size(); i++) {
+//				this.lotterySsqMedia500WanService.saveCurrentMediaRedCodeToDb(redMedia.subList(i, i = (i + 1000 > redMedia.size() ? redMedia.size() : i + 1000)), LotterySsqConifgService.getExpect());
+//			}
 
 		}
 		logger.info("开始从过滤号码中删除抓取的号码.............");
-		this.lotteryInitService.saveAllRedResult("1");
+//		this.dao.deleteSsqLotteryFilterResult();
+//		this.lotteryInitService.saveAllRedResult("1");
 		this.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryAllResult();
 		int last = 0;
@@ -470,11 +471,11 @@ public class LotterySsqService {
 
 	public void filterCurrentRedCode() {
 		this.initConifg(true);
-		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
-		if (StringUtils.isBlank(media500Wan)) {
-			logger.error("这一期的数据还没入库呢!");
-			return;
-		}
+//		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+//		if (StringUtils.isBlank(media500Wan)) {
+//			logger.error("这一期的数据还没入库呢!");
+//			return;
+//		}
 		boolean isExist = MapUtils.isNotEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()));
 		if (isExist) {
 			// 以追加的方式过滤号码，即在原来的基础上删除号码,只能用于文本收集方式

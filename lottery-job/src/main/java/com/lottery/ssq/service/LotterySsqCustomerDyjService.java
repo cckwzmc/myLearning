@@ -80,7 +80,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 				retList.add(map);
 			}
 			try {
-				sleep(20000);
+				sleep(6000);
 			} catch (InterruptedException e) {
 				notify();
 			}
@@ -101,7 +101,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		logger.info(url);
 		String content = HttpHtmlService.getXmlContent(url, "GB2312");
 		try {
-			sleep(15000);
+			sleep(5000);
 		} catch (InterruptedException e) {
 			notify();
 		}
