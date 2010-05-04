@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotteryUtils;
 import com.lottery.util.html.HttpHtmlService;
@@ -50,7 +51,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 	 */
 	public List<Map<String, String>> get500WanProject() {
 		new LotterySsqConifgService();
-		String url = LotterySsqConifgService.getWww500wanUrl();
+		String url = LotterySsqFetchConfig.www500wanUrl;
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		int k = 0;
 		for (int i = 1; i < 300; i++) {
@@ -279,7 +280,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 	}
 
 	private String parserUrl(String fangan) {
-		String download = LotterySsqConifgService.getWww500wanDowload();
+		String download = LotterySsqFetchConfig.www500wanDowload;
 		if (fangan.toLowerCase().indexOf("onclick") != -1) {
 			download = StringUtils.replace(download, "@pid@", StringUtils.substringBetween(fangan, "list.showProject(", ")"));
 		} else {
@@ -293,7 +294,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 	}
 
 	public void fetch500WanProjectRedCode() {
-		this.dao.clearHisFetchProjectCode(LotterySsqConifgService.getExpect(), "0");
+		this.dao.clearHisFetchProjectCode(LotterySsqFetchConfig.expect, "0");
 		List<Map<String, String>> list = this.get500WanProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
 		List<String> danList=new ArrayList<String>();
@@ -306,7 +307,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 			if (fangan.indexOf("查看") == -1) {
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "0");
-				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("expect", LotterySsqFetchConfig.expect);
 				tmpMap.put("code", "-1");
 				tmpMap.put("isfail", "1");
 				resultList.add(tmpMap);
@@ -327,7 +328,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 				String[] codes = pList.toArray(new String[pList.size()]);
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "0");
-				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("expect", LotterySsqFetchConfig.expect);
 				tmpMap.put("code", StringUtils.join(codes, "@@"));
 				tmpMap.put("isfail", "0");
 				resultList.add(tmpMap);
@@ -336,7 +337,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 			if (CollectionUtils.isEmpty(pList)) {
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "0");
-				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("expect", LotterySsqFetchConfig.expect);
 				tmpMap.put("code", "-1");
 				tmpMap.put("isfail", "1");
 				resultList.add(tmpMap);
@@ -346,7 +347,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 			String[] codes = pList.toArray(new String[pList.size()]);
 			tmpMap.put("proid", map.get("proid"));
 			tmpMap.put("net", "0");
-			tmpMap.put("expect", LotterySsqConifgService.getExpect());
+			tmpMap.put("expect", LotterySsqFetchConfig.expect);
 			tmpMap.put("code", StringUtils.join(codes, "@@"));
 			tmpMap.put("isfail", "0");
 			resultList.add(tmpMap);

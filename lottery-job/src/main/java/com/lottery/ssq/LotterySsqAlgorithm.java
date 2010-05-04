@@ -10,7 +10,6 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
-import com.lottery.ssq.service.LotterySsqConifgService;
 
 /**
  * @author Administrator
@@ -23,34 +22,34 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedNumericInRange(String[] redCode) {
-		if (NumberUtils.toInt(redCode[0]) > LotterySsqConifgService.getFirstMaxCode()) {
+		if (NumberUtils.toInt(redCode[0]) > LotterySsqFilterConfig.firstMaxCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[0]) < LotterySsqConifgService.getFirstMinCode()) {
+		if (NumberUtils.toInt(redCode[0]) < LotterySsqFilterConfig.firstMinCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[1]) > LotterySsqConifgService.getSecondMaxCode()) {
+		if (NumberUtils.toInt(redCode[1]) > LotterySsqFilterConfig.secondMaxCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[1]) < LotterySsqConifgService.getSecondMinCode()) {
+		if (NumberUtils.toInt(redCode[1]) < LotterySsqFilterConfig.secondMinCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[2]) > LotterySsqConifgService.getThirdMaxCode()) {
+		if (NumberUtils.toInt(redCode[2]) > LotterySsqFilterConfig.thirdMaxCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[2]) < LotterySsqConifgService.getThirdMinCode()) {
+		if (NumberUtils.toInt(redCode[2]) < LotterySsqFilterConfig.thirdMinCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[3]) > LotterySsqConifgService.getFourthMaxCode()) {
+		if (NumberUtils.toInt(redCode[3]) > LotterySsqFilterConfig.fourthMaxCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[3]) < LotterySsqConifgService.getFourthMinCode()) {
+		if (NumberUtils.toInt(redCode[3]) < LotterySsqFilterConfig.fourthMinCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[5]) < LotterySsqConifgService.getLastMinCode()) {
+		if (NumberUtils.toInt(redCode[5]) < LotterySsqFilterConfig.lastMinCode) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[5]) > LotterySsqConifgService.getLastMaxCode()) {
+		if (NumberUtils.toInt(redCode[5]) > LotterySsqFilterConfig.lastMaxCode) {
 			return false;
 		}
 		return true;
@@ -66,13 +65,13 @@ public class LotterySsqAlgorithm {
 		int tempSelect = 0;
 
 		for (int j = 0; j < lValues.length; j++) {
-			for (int k = 0; k < LotterySsqConifgService.getIncludeRed().length; k++) {
-				if (StringUtils.equals(lValues[j], LotterySsqConifgService.getIncludeRed()[k])) {
+			for (int k = 0; k < LotterySsqFetchConfig.preRedCode.length; k++) {
+				if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preRedCode[k])) {
 					tempSelect++;
 				}
 			}
 		}
-		if (tempSelect < LotterySsqConifgService.getIncludeRedNum()) {
+		if (tempSelect < LotterySsqFilterConfig.includePreRedNum) {
 			return false;
 		}
 		return true;
@@ -88,8 +87,8 @@ public class LotterySsqAlgorithm {
 		int tempSelect = 0;
 
 		for (int j = 0; j < lValues.length; j++) {
-			for (int k = 0; k < LotterySsqConifgService.getPreRedCode().length; k++) {
-				if (StringUtils.equals(lValues[j], LotterySsqConifgService.getPreRedCode()[k])) {
+			for (int k = 0; k < LotterySsqFetchConfig.preRedCode.length; k++) {
+				if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preRedCode[k])) {
 					tempSelect++;
 				}
 			}
@@ -108,13 +107,13 @@ public class LotterySsqAlgorithm {
 	 */
 	public static boolean isRedIncludeSideCode(String[] lValues) {
 		int tempSelect = 0;
-		if (LotterySsqConifgService.getPreSideCode() == null) {
+		if (LotterySsqFetchConfig.preSideCode == null) {
 			return true;
 		}
-		if (LotterySsqConifgService.getPreSideCode().length > 0) {
+		if (LotterySsqFetchConfig.preSideCode.length > 0) {
 			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < LotterySsqConifgService.getPreSideCode().length; k++) {
-					if (StringUtils.equals(lValues[j], LotterySsqConifgService.getPreSideCode()[k])) {
+				for (int k = 0; k < LotterySsqFetchConfig.preSideCode.length; k++) {
+					if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preSideCode[k])) {
 						tempSelect++;
 					}
 				}
@@ -122,10 +121,10 @@ public class LotterySsqAlgorithm {
 			if (tempSelect == 0 || tempSelect > 2) {
 				return false;
 			}
-		} else if (LotterySsqConifgService.getPreSideCode().length == 0) {
+		} else if (LotterySsqFetchConfig.preSideCode.length == 0) {
 			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < LotterySsqConifgService.getPreSideCode().length; k++) {
-					if (StringUtils.equals(lValues[j], LotterySsqConifgService.getPreSideCode()[k])) {
+				for (int k = 0; k < LotterySsqFetchConfig.preSideCode.length; k++) {
+					if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preSideCode[k])) {
 						tempSelect++;
 					}
 				}
@@ -144,11 +143,11 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedIncludeEvenIn(String[] lValues) {
-		if (LotterySsqConifgService.getHaveTwoSeries() < 0) {
+		if (LotterySsqFilterConfig.haveTwoSeries < 0) {
 			return true;
 		}
 		int tempSelect2 = 0;
-		if (LotterySsqConifgService.getHaveTwoSeries() == 0) {
+		if (LotterySsqFilterConfig.haveTwoSeries == 0) {
 			for (int j = 0; j < lValues.length; j++) {
 				int rValue = NumberUtils.toInt(lValues[j]);
 				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
@@ -156,10 +155,10 @@ public class LotterySsqAlgorithm {
 					tempSelect2++;
 				}
 			}
-			if (tempSelect2 > LotterySsqConifgService.getHaveTwoSeries()) {
+			if (tempSelect2 > LotterySsqFilterConfig.haveTwoSeries) {
 				return false;
 			}
-		} else if (LotterySsqConifgService.getHaveTwoSeries() > 0) {
+		} else if (LotterySsqFilterConfig.haveTwoSeries > 0) {
 			for (int j = 0; j < lValues.length; j++) {
 				int rValue = NumberUtils.toInt(lValues[j]);
 				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
@@ -167,7 +166,7 @@ public class LotterySsqAlgorithm {
 					tempSelect2++;
 				}
 			}
-			if (tempSelect2 < LotterySsqConifgService.getHaveTwoSeries()) {
+			if (tempSelect2 < LotterySsqFilterConfig.haveTwoSeries) {
 				return false;
 			}
 		}
@@ -182,15 +181,15 @@ public class LotterySsqAlgorithm {
 	 */
 	public static boolean isRedIncludeRequiredCode(String[] lValues) {
 		int tempSelect = 0;
-		if (LotterySsqConifgService.getMusthavered() != null && LotterySsqConifgService.getMusthavered().length > 0) {
+		if (LotterySsqFilterConfig.musthavered != null && LotterySsqFilterConfig.musthavered.length >=1) {
 			for (int i = 0; i < lValues.length; i++) {
-				for (int j = 0; j < LotterySsqConifgService.getMusthavered().length; j++) {
-					if (StringUtils.equals(lValues[i], ObjectUtils.toString(LotterySsqConifgService.getMusthavered()[j]).trim())) {
+				for (int j = 0; j < LotterySsqFilterConfig.musthavered.length; j++) {
+					if (StringUtils.equals(lValues[i], ObjectUtils.toString(LotterySsqFilterConfig.musthavered[j]).trim())) {
 						tempSelect++;
 					}
 				}
 			}
-			if (tempSelect != LotterySsqConifgService.getMusthavered().length) {
+			if (tempSelect != LotterySsqFilterConfig.musthavered.length) {
 				return false;
 			}
 		}
@@ -206,10 +205,10 @@ public class LotterySsqAlgorithm {
 	public static boolean isRedNotIncludeTheCode(String[] lValues) {
 
 		int tempSelect = 0;
-		if (LotterySsqConifgService.getExcludeRed() != null && LotterySsqConifgService.getExcludeRed().length > 0) {
+		if (LotterySsqFilterConfig.excludeRed != null && LotterySsqFilterConfig.excludeRed.length >=1) {
 			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < LotterySsqConifgService.getExcludeRed().length; k++) {
-					if (StringUtils.equals(lValues[j], LotterySsqConifgService.getExcludeRed()[k])) {
+				for (int k = 0; k < LotterySsqFilterConfig.excludeRed.length; k++) {
+					if (StringUtils.equals(lValues[j], LotterySsqFilterConfig.excludeRed[k])) {
 						tempSelect++;
 						break;
 					}
@@ -232,11 +231,11 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedInTheCodes(String[] lValues) {
-		if (LotterySsqConifgService.getSelectCode() != null && LotterySsqConifgService.getSelectCode().length > 0) {
+		if (LotterySsqFilterConfig.selectCode != null && LotterySsqFilterConfig.selectCode.length >=1) {
 			int tempSelect = 0;
 			for (int i = 0; i < lValues.length; i++) {
-				for (int j = 0; j < LotterySsqConifgService.getSelectCode().length; j++) {
-					if (StringUtils.equals(lValues[i], ObjectUtils.toString(LotterySsqConifgService.getSelectCode()[j]).trim())) {
+				for (int j = 0; j < LotterySsqFilterConfig.selectCode.length; j++) {
+					if (StringUtils.equals(lValues[i], ObjectUtils.toString(LotterySsqFilterConfig.selectCode[j]).trim())) {
 						tempSelect++;
 					}
 				}
@@ -256,10 +255,10 @@ public class LotterySsqAlgorithm {
 	 */
 	public static boolean isRedTogethorCode(String[] lValues) {
 		int tempSelect = 0;
-		if (LotterySsqConifgService.getCannotSelectedTogethor() != null && LotterySsqConifgService.getCannotSelectedTogethor().length > 0) {
+		if (LotterySsqFilterConfig.cannotSelectedTogethor != null && LotterySsqFilterConfig.cannotSelectedTogethor.length >=1) {
 			boolean breakFlag = false;
-			for (int j = 0; j < LotterySsqConifgService.getCannotSelectedTogethor().length; j++) {
-				String[] tmp = StringUtils.split(LotterySsqConifgService.getCannotSelectedTogethor()[j], ",");
+			for (int j = 0; j < LotterySsqFilterConfig.cannotSelectedTogethor.length; j++) {
+				String[] tmp = StringUtils.split(LotterySsqFilterConfig.cannotSelectedTogethor[j], ",");
 				tempSelect = 0;
 				for (int k = 0; k < tmp.length; k++) {
 					for (int i = 0; i < lValues.length; i++) {
@@ -287,10 +286,10 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedIncludeThreeEvenIn(String[] lValues) {
-		if (LotterySsqConifgService.getHaveThreeSeries() < 0) {
+		if (LotterySsqFilterConfig.haveThreeSeries < 0) {
 			return true;
 		}
-		if (LotterySsqConifgService.getHaveThreeSeries() > 0) {
+		if (LotterySsqFilterConfig.haveThreeSeries > 0) {
 			int tempSelect = 0;
 			for (int j = 0; j < lValues.length; j++) {
 				int rValue = NumberUtils.toInt(lValues[j]);
@@ -300,7 +299,7 @@ public class LotterySsqAlgorithm {
 					tempSelect++;
 				}
 			}
-			if (tempSelect < LotterySsqConifgService.getHaveThreeSeries()) {
+			if (tempSelect < LotterySsqFilterConfig.haveThreeSeries) {
 				return false;
 			}
 		} else {
@@ -313,7 +312,7 @@ public class LotterySsqAlgorithm {
 					tempSelect++;
 				}
 			}
-			if (tempSelect > LotterySsqConifgService.getHaveThreeSeries()) {
+			if (tempSelect > LotterySsqFilterConfig.haveThreeSeries) {
 				return false;
 			}
 		}
@@ -321,16 +320,16 @@ public class LotterySsqAlgorithm {
 	}
 
 	/**
-	 * 有几个以上差值为1的,,,, LotterySsqConifgService.getHaveOnediffer()=0表示没有,<0表示有没有都可以
+	 * 有几个以上差值为1的,,,, LotterySsqFilterConfig.getHaveOnediffer()=0表示没有,<0表示有没有都可以
 	 * 
 	 * @param lValues
 	 * @return
 	 */
 	public static boolean isRedIncludeDifferCode(String[] lValues) {
-		if (LotterySsqConifgService.getHaveOnediffer() < 0) {
+		if (LotterySsqFilterConfig.haveOnediffer < 0) {
 			return true;
 		}
-		if (LotterySsqConifgService.getHaveOnediffer() > 0) {
+		if (LotterySsqFilterConfig.haveOnediffer > 0) {
 			int tempSelect = 0;
 			for (int j = 0; j < lValues.length; j++) {
 				int rValue = NumberUtils.toInt(lValues[j]);
@@ -339,7 +338,7 @@ public class LotterySsqAlgorithm {
 					tempSelect++;
 				}
 			}
-			if (tempSelect < LotterySsqConifgService.getHaveOnediffer()) {
+			if (tempSelect < LotterySsqFilterConfig.haveOnediffer) {
 				return false;
 			}
 		} else {
@@ -351,7 +350,7 @@ public class LotterySsqAlgorithm {
 					tempSelect++;
 				}
 			}
-			if (tempSelect > LotterySsqConifgService.getHaveOnediffer()) {
+			if (tempSelect > LotterySsqFilterConfig.haveOnediffer) {
 				return false;
 			}
 		}
@@ -394,12 +393,12 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedCoincidenceZone(String[] lValues, int qOne, int qTwo, int qThree) {
-		if (LotterySsqConifgService.getQuOne() != -1 && LotterySsqConifgService.getQuTwo() != -1 && LotterySsqConifgService.getQuThree() != -1 && (LotterySsqConifgService.getQuOne() + LotterySsqConifgService.getQuTwo() + LotterySsqConifgService.getQuThree()) == 6) {
-			if (qOne == LotterySsqConifgService.getQuOne() && qTwo == LotterySsqConifgService.getQuTwo() && qThree == LotterySsqConifgService.getQuThree()) {
+		if (LotterySsqFilterConfig.quOne != -1 && LotterySsqFilterConfig.quTwo != -1 && LotterySsqFilterConfig.quThree != -1 && (LotterySsqFilterConfig.quOne + LotterySsqFilterConfig.quTwo + LotterySsqFilterConfig.quThree) == 6) {
+			if (qOne == LotterySsqFilterConfig.quOne && qTwo == LotterySsqFilterConfig.quTwo && qThree == LotterySsqFilterConfig.quThree) {
 				return true;
 			}
 		} else {
-			int[] quTemp = { LotterySsqConifgService.getQuOne(), LotterySsqConifgService.getQuTwo(), LotterySsqConifgService.getQuThree() };
+			int[] quTemp = { LotterySsqFilterConfig.quOne, LotterySsqFilterConfig.quTwo, LotterySsqFilterConfig.quThree };
 			boolean[] flag = { false, false, false };
 			for (int i = 0; i < quTemp.length; i++) {
 				if (quTemp[i] != -1) {
@@ -623,12 +622,12 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isSelectOneCode(String[] lValues) {
-		if (LotterySsqConifgService.getSelectedOneCode() == null || LotterySsqConifgService.getSelectedOneCode().length < 1) {
+		if (LotterySsqFilterConfig.selectedOneCode == null || LotterySsqFilterConfig.selectedOneCode.length < 1) {
 			return true;
 		}
-		for (int i = 0; i < LotterySsqConifgService.getSelectedOneCode().length; i++) {
+		for (int i = 0; i < LotterySsqFilterConfig.selectedOneCode.length; i++) {
 			int tempSelect = 0;
-			String[] code = LotterySsqConifgService.getSelectedOneCode()[i].split(",");
+			String[] code = LotterySsqFilterConfig.selectedOneCode[i].split(",");
 			for (int k = 0; k < code.length; k++) {
 				for (int j = 0; j < lValues.length; j++) {
 					if (StringUtils.equals(code[k], lValues[j])) {
@@ -726,6 +725,12 @@ public class LotterySsqAlgorithm {
 		return true;
 	}
 
+	/**
+	 * 从文件中读取的号码中不能中四个以上的号码.
+	 * @param lValues
+	 * @param otherRedCodeList
+	 * @return
+	 */
 	public static boolean isFileRedCodeFourFilter(String[] lValues, List<String> otherRedCodeList) {
 		if (CollectionUtils.isEmpty(otherRedCodeList)) {
 			return true;
@@ -747,12 +752,14 @@ public class LotterySsqAlgorithm {
 		return true;
 	}
 
+	
+	//~~~~~~~~~~~~~~~~~~~~以下是初步过滤的方法~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
 	/**
 	 * 与配置文件无关，只要包含一个边号，即，返回True
 	 * 
 	 * @param lValues
-	 * @param preSideCode
-	 *            边号集合
+	 * @param preSideCode 边号集合
 	 * @return
 	 */
 	public static boolean isFilterRedIncludeSideCode(String[] lValues, String[] preSideCode) {
@@ -788,7 +795,7 @@ public class LotterySsqAlgorithm {
 				tempSelect2++;
 			}
 		}
-		if (tempSelect2==0) {
+		if (tempSelect2 == 0) {
 			return false;
 		}
 		return true;
@@ -796,10 +803,11 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 与配置文件无关，只要包含一个上一期的号码，即，返回True
+	 * 
 	 * @param lValues
 	 * @return
 	 */
-	public static boolean isFilterIncludePreCode(String[] lValues,String[] preRedCode) {
+	public static boolean isFilterIncludePreCode(String[] lValues, String[] preRedCode) {
 		int tempSelect = 0;
 
 		for (int j = 0; j < lValues.length; j++) {
@@ -810,6 +818,46 @@ public class LotterySsqAlgorithm {
 			}
 		}
 		if (tempSelect < 1) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 第一步过滤使用
+	 * 
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isFilterRedNumericInRange(String[] redCode) {
+		if (NumberUtils.toInt(redCode[0]) > LotterySsqFetchConfig.firstMaxCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[0]) < LotterySsqFetchConfig.firstMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[1]) > LotterySsqFetchConfig.secondMaxCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[1]) < LotterySsqFetchConfig.secondMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[2]) > LotterySsqFetchConfig.thirdMaxCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[2]) < LotterySsqFetchConfig.thirdMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[3]) > LotterySsqFetchConfig.fourthMaxCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[3]) < LotterySsqFetchConfig.fourthMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[5]) < LotterySsqFetchConfig.lastMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[5]) > LotterySsqFetchConfig.lastMaxCode) {
 			return false;
 		}
 		return true;

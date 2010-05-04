@@ -16,6 +16,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotteryUtils;
 import com.lottery.util.html.HttpHtmlService;
@@ -43,7 +44,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 	@SuppressWarnings("unchecked")
 	public List<Map<String, String>> getCaipiaoProject() {
 		new LotterySsqConifgService();
-		String url = LotterySsqConifgService.getCaipiaoUrl();
+		String url = LotterySsqFetchConfig.caipiaoUrl;
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		int k = 0;
 		for (int i = 1; i < 100; i++) {
@@ -100,7 +101,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 	 */
 	public List<String> downloadCaipiaoProject(String id, String playtype) {
 		List<String> list = new ArrayList<String>();
-		String url = StringUtils.replace(StringUtils.replace(LotterySsqConifgService.getDyjDowload(), "@playNum@", id), "@playtype@", playtype);
+		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@playNum@", id), "@playtype@", playtype);
 		logger.info(url);
 		String content = HttpHtmlService.getHtmlContent(url, "GB2312");
 		try {
@@ -195,7 +196,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 	 * 爱彩网用户投注抓取
 	 */
 	public void fetchCaipiaoProjectCode() {
-		this.dao.clearHisFetchProjectCode(LotterySsqConifgService.getExpect(), "3");
+		this.dao.clearHisFetchProjectCode(LotterySsqFetchConfig.expect, "3");
 		List<Map<String, String>> list = this.getCaipiaoProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
 		for (Map<String, String> map : list) {
@@ -210,7 +211,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			if(CollectionUtils.isNotEmpty(pList)&&"-1".equals(pList.get(0))){
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "1");
-				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("expect", LotterySsqFetchConfig.expect);
 				tmpMap.put("code", "-1");
 				tmpMap.put("isfail", "1");
 				continue;
@@ -218,7 +219,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			String[] codes = pList.toArray(new String[pList.size()]);
 			tmpMap.put("proid", map.get("proid"));
 			tmpMap.put("net", "3");
-			tmpMap.put("expect", LotterySsqConifgService.getExpect());
+			tmpMap.put("expect", LotterySsqFetchConfig.expect);
 			tmpMap.put("code", StringUtils.join(codes, "@@"));
 			tmpMap.put("isfail", "0");
 			resultList.add(tmpMap);

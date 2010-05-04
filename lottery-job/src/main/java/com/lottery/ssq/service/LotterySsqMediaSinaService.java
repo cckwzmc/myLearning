@@ -7,12 +7,10 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 
 import org.apache.commons.lang.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotteryUtils;
 import com.lottery.util.html.HtmlParseUtils;
@@ -109,9 +107,9 @@ public class LotterySsqMediaSinaService {
 	 * 保存到收集拆分表
 	 */
 	public void saveMediaSinaRedCode() {
-		String mediaContent = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
+		String mediaContent = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "1");
 		if (StringUtils.isNotBlank(mediaContent) && mediaContent.length() > 100) {
-			this.saveCurrentMediaRedCodeToDb(this.getCurrentMediaRedCode(mediaContent), LotterySsqConifgService.getExpect());
+			this.saveCurrentMediaRedCodeToDb(this.getCurrentMediaRedCode(mediaContent), LotterySsqFetchConfig.expect);
 		}
 	}
 }

@@ -73,11 +73,20 @@ public class LotteryDao extends JdbcBaseDao {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public Map isGenLotteryResult(String type, String lotteryQh) {
-		String sql = "select is_gen from lottery_gen_log t where t.type=? and t.lottery_qh=?";
+	public boolean isGenLotteryResult(String type, String lotteryQh) {
+		String sql = "select is_gen from lottery_gen_log t where t.type=? and t.lottery_qh=? and is_gen=1";
 		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { type, lotteryQh });
 		if (CollectionUtils.isNotEmpty(list)) {
-			return (Map) list.get(0);
+			return true;
+		}
+		return false;
+	}
+	@SuppressWarnings("unchecked")
+	public String getGenLotteryMaxExpect(String type ) {
+		String sql = "select max(lottery_qh) expect from lottery_gen_log t where t.type=? and t.is_gen=1";
+		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { type});
+		if (CollectionUtils.isNotEmpty(list)) {
+			return (String) ((Map) list.get(0)).get("expect");
 		}
 		return null;
 	}
@@ -285,8 +294,11 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	public void saveSsqLotteryMedia(String type, String expect, String xmlData) {
-		String sql = "insert into ssq_lottery_media values(?,?,?)";
-		this.getJdbcTemplate().update(sql, new Object[] { expect, xmlData, type });
+		String sql="update ssq_lottery_media set content=? where expect=? and type=?";
+		if(this.getJdbcTemplate().update(sql,new Object[]{xmlData,expect,type})<1){
+			sql = "insert into ssq_lottery_media values(?,?,?)";
+			this.getJdbcTemplate().update(sql, new Object[] { expect, xmlData, type });
+		}
 	}
 
 	public int getSsqLotteryMediaByExpect(String expect, String type) {
@@ -461,13 +473,14 @@ public class LotteryDao extends JdbcBaseDao {
 
 	@SuppressWarnings("unchecked")
 	public void backupSsqLotteryCollectResult(String expect) {
-		String sql="select * from  ssq_lottery_collect_result_"+expect+"t limit 0,1";
-		List list=this.getJdbcTemplate().queryForList(sql);
-		if(CollectionUtils.isNotEmpty(list)){
-			return;
+		try{
+			String sql="select * from  ssq_lottery_collect_result_"+expect+" t limit 0,1";
+			List list=this.getJdbcTemplate().queryForList(sql);
+		}catch(Exception e)
+		{
+			String sql="create table ssq_lottery_collect_result_"+expect+" as select * from ssq_lottery_collect_result";
+			this.getJdbcTemplate().execute(sql);
 		}
-		sql="create table ssq_lottery_collect_result_"+expect+" as select * from ssq_lottery_collect_result";
-		this.getJdbcTemplate().execute(sql);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -482,6 +495,69 @@ public class LotteryDao extends JdbcBaseDao {
 			return ObjectUtils.toString(((Map)list.get(0)).get("expect"));
 		}
 		return "";
+	}
+
+	/**
+	 * @param type  '0:双色球；1：足彩', 
+	 * @param is_complet  '是否已完成；0：未完成；1：已完成',
+	 * @return
+	 */
+	public String getLotterySsqExpectConfig(int type,int is_complete) {
+		String sql="select max(expect) expect from lottery_fetch_job where type=? and is_complete=?";
+		List list=this.getJdbcTemplate().queryForList(sql,new Object[]{type,is_complete});
+		if(CollectionUtils.isNotEmpty(list)){
+			return (String) ((Map)list.get(0)).get("expect");
+		}
+		return "";
+	}
+
+	/**
+	 * @param config_name init_filter_date:初始化数据；gen_data：生成投注号码
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Map getLotterySsqFetchConfig(String config_name) {
+		String sql="select * from ssq_lottery_config t where t.config_name=? and is_reFilter=0";
+		List list=this.getJdbcTemplate().queryForList(sql,new Object[]{config_name});
+		if(CollectionUtils.isNotEmpty(list)){
+			return (Map)list.get(0);
+		}
+		return null;
+	}
+
+	public void updateLotterySsqConfig(String configName) {
+		String sql="update ssq_lottery_config set is_reFilter=1 where config_name=?";
+		this.getJdbcTemplate().update(sql,new Object[]{configName});
+	}
+
+	public void batchInitSaveSsqLotteryFilterResult(final List list) {
+		if (CollectionUtils.isEmpty(list)) {
+			return;
+		}
+		BatchPreparedStatementSetter pps = null;
+		String sql = "insert into ssq_lottery_filter_result(value) values (?)";
+		pps = new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setObject(1, ((Map)list.get(i)).get("value"));
+			}
+
+			@Override
+			public int getBatchSize() {
+				return list.size();
+			}
+		};
+		try {
+			this.getJdbcTemplate().batchUpdate(sql, pps);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
+
+	public void clearLotterySsqDanResult() {
+		String sql="DELETE from ssq_lottery_dan_result";
+		this.getJdbcTemplate().update(sql);
 	}
 
 }

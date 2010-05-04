@@ -16,6 +16,7 @@ import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotterySsqMediaUtils;
 import com.lottery.ssq.utils.LotteryUtils;
@@ -275,7 +276,7 @@ public class LotterySsqMedia500WanService {
 	 * 保存到收集号码表
 	 */
 	public void saveMedia500WanRedCode() {
-		String mediaContent=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+		String mediaContent=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "0");
 		if(StringUtils.isNotBlank(mediaContent)&&mediaContent.length()>100){
 			Document doc=null;
 			try {
@@ -283,7 +284,7 @@ public class LotterySsqMedia500WanService {
 			} catch (DocumentException e) {
 				log.error(e.getMessage());
 			}
-			this.saveCurrentMediaRedCodeToDb(this.parseCurrentMediaRedCode(doc),LotterySsqConifgService.getExpect());
+			this.saveCurrentMediaRedCodeToDb(this.parseCurrentMediaRedCode(doc),LotterySsqFetchConfig.expect);
 		}
 	}
 }

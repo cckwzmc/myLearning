@@ -18,6 +18,7 @@ import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotteryUtils;
 import com.lottery.util.html.HttpHtmlService;
@@ -45,7 +46,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 	@SuppressWarnings("unchecked")
 	public List<Map<String, String>> getDyjProject() {
 		new LotterySsqConifgService();
-		String url = LotterySsqConifgService.getDyjUrl();
+		String url = LotterySsqFetchConfig.dyjUrl;
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		int k = 0;
 		for (int i = 1; i < 100; i++) {
@@ -97,7 +98,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 	 */
 	public List<String> downloadDyjProject(String id, String playtype) {
 		List<String> list = new ArrayList<String>();
-		String url = StringUtils.replace(StringUtils.replace(LotterySsqConifgService.getDyjDowload(), "@id@", id), "@playtype@", playtype);
+		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@id@", id), "@playtype@", playtype);
 		logger.info(url);
 		String content = HttpHtmlService.getXmlContent(url, "GB2312");
 		try {
@@ -185,7 +186,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 	 * 大赢家用户投注抓取
 	 */
 	public void fetchDyjProjectCode() {
-		this.dao.clearHisFetchProjectCode(LotterySsqConifgService.getExpect(), "1");
+		this.dao.clearHisFetchProjectCode(LotterySsqFetchConfig.expect, "1");
 		List<Map<String, String>> list = this.getDyjProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
 		for (Map<String, String> map : list) {
@@ -203,7 +204,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 			if(CollectionUtils.isNotEmpty(pList)&&"-1".equals(pList.get(0))){
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "1");
-				tmpMap.put("expect", LotterySsqConifgService.getExpect());
+				tmpMap.put("expect", LotterySsqFetchConfig.expect);
 				tmpMap.put("code", "-1");
 				tmpMap.put("isfail", "1");
 				continue;
@@ -211,7 +212,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 			String[] codes = pList.toArray(new String[pList.size()]);
 			tmpMap.put("proid", map.get("proid"));
 			tmpMap.put("net", "1");
-			tmpMap.put("expect", LotterySsqConifgService.getExpect());
+			tmpMap.put("expect", LotterySsqFetchConfig.expect);
 			tmpMap.put("code", StringUtils.join(codes, "@@"));
 			tmpMap.put("isfail", "0");
 			resultList.add(tmpMap);

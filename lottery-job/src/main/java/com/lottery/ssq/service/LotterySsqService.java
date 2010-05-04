@@ -23,6 +23,8 @@ import org.dom4j.DocumentHelper;
 import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.LotterySsqAlgorithm;
+import com.lottery.ssq.LotterySsqFetchConfig;
+import com.lottery.ssq.LotterySsqFilterConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotterySsqMediaUtils;
 
@@ -38,7 +40,7 @@ public class LotterySsqService {
 	private LotterySsqCustomerDyjService lotterySsqCustomerDyjService = null;
 	private LotterySsqCustomer500WanService lotterySsqCustomer500WanService = null;
 	private LotterySsqThan20Service lotterySsqThan20Service = null;
-	private LotteryInitService lotteryInitService=null;
+	private LotteryInitService lotteryInitService = null;
 
 	public void setLotteryInitService(LotteryInitService lotteryInitService) {
 		this.lotteryInitService = lotteryInitService;
@@ -81,23 +83,18 @@ public class LotterySsqService {
 	}
 
 	public void getCurrentExpertMergeResult() {
-		String xmlData = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+		String xmlData = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "0");
 		if (StringUtils.isBlank(xmlData)) {
 			return;
 		}
 	}
 
-	private void initConifg(boolean isInit) {
-		if (isInit) {
-			new LotterySsqConifgService();
-		}
-	}
 
 	@SuppressWarnings("unchecked")
 	public void getCurrentExpertSingleResult() {
 		/* 媒体推荐号码 */
-		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
-		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "1");
+		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "0");
+		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "1");
 		if (StringUtils.isBlank(media500Wan)) {
 			return;
 		}
@@ -165,12 +162,16 @@ public class LotterySsqService {
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
 		int page = 50000;
-		logger.info("开始过滤号码了.............");
+		logger.info("开始生成过滤号码了.............");
 		while (last < count) {
 			list = this.dao.getSsqLottoryFilterResultLimit(last, page);
 			last += page;
+			
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map lValue = (Map) iterator.next();
+				if("07,21,22,26,28,30".equals(lValue)){
+					System.out.println();
+				}
 				String[] lValues = StringUtils.split(ObjectUtils.toString(lValue.get("value")), ",");
 				int qOne = 0;
 				int qTwo = 0;
@@ -245,13 +246,13 @@ public class LotterySsqService {
 				// continue;
 				// }
 				for (int i = 0; i < lValues.length; i++) {
-					if (LotterySsqConifgService.getQuOne() != -1 && NumberUtils.toInt(lValues[i]) <= LotterySsqConifgService.getQuOneNum()) {
+					if (LotterySsqFilterConfig.quOne != -1 && NumberUtils.toInt(lValues[i]) <= LotterySsqFilterConfig.quOneNum) {
 						qOne++;
 					}
-					if (LotterySsqConifgService.getQuTwo() != -1 && NumberUtils.toInt(lValues[i]) > LotterySsqConifgService.getQuOneNum() && NumberUtils.toInt(lValues[i]) <= LotterySsqConifgService.getQuTwoNum()) {
+					if (LotterySsqFilterConfig.quTwo != -1 && NumberUtils.toInt(lValues[i]) > LotterySsqFilterConfig.quOneNum && NumberUtils.toInt(lValues[i]) <= LotterySsqFilterConfig.quTwoNum) {
 						qTwo++;
 					}
-					if (LotterySsqConifgService.getQuThree() != -1 && NumberUtils.toInt(lValues[i]) > LotterySsqConifgService.getQuTwoNum()) {
+					if (LotterySsqFilterConfig.quThree != -1 && NumberUtils.toInt(lValues[i]) > LotterySsqFilterConfig.quTwoNum) {
 						qThree++;
 					}
 				}
@@ -308,10 +309,14 @@ public class LotterySsqService {
 	 */
 	@SuppressWarnings("unchecked")
 	public void filterCurrentRedCodeFirst() {
-		this.initConifg(true);
 		logger.info("开始从过滤号码中删除抓取的号码.............");
-		this.dao.deleteSsqLotteryFilterResult();
-		this.lotteryInitService.saveAllRedResult("1");
+		if(this.dao.getTotalLotteryFilterResult()==0)
+		{
+			logger.info("开始初始化过滤号码的最大集合(把AllResult的都转过来)........");
+//			this.lotteryInitService.saveAllRedResult("1");
+			this.initFilterResult();
+		}	
+		logger.info("开始从过滤号码中删除抓取号码........");
 		this.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryAllResult();
 		int last = 0;
@@ -322,7 +327,21 @@ public class LotterySsqService {
 			last += page;
 			filterRedCode(list);
 		}
-		this.dao.saveLotteryGenLog("1", LotterySsqConifgService.getExpect(), "1");
+		this.dao.saveLotteryGenLog("1", LotterySsqFetchConfig.expect, "1");
+		logger.info("第一步过滤号码完成...");
+	}
+
+	private void initFilterResult() {
+		int count = this.dao.getTotalLotteryAllResult();
+		int last = 0;
+		int page = 40000;
+		while (last < count) {
+			List list = this.dao.getLottoryAllResultLimit(last, page);
+			last += page;
+			if(CollectionUtils.isNotEmpty(list)){
+				this.dao.batchInitSaveSsqLotteryFilterResult(list);
+			}
+		}	
 	}
 
 	/**
@@ -354,20 +373,19 @@ public class LotterySsqService {
 	@SuppressWarnings("unchecked")
 	@Deprecated
 	public void filterCurrentRedCodeFromFile() {
-		this.initConifg(true);
 		// 媒体预测号码
 		List<String> redMedia = new ArrayList<String>();
 		// 本人添加的过滤号码
 		List<String> redFile = new ArrayList<String>();
-		File qsFile = new File("d:/myproject/ssq_media_red_" + LotterySsqConifgService.getExpect() + ".xml");
+		File qsFile = new File("d:/myproject/ssq_media_red_" + LotterySsqFetchConfig.expect + ".xml");
 		try {
 			redMedia = this.fromFileMediaData(qsFile);
-			qsFile = new File("d:/myproject/ssq_file_red_" + LotterySsqConifgService.getExpect() + ".xml");
+			qsFile = new File("d:/myproject/ssq_file_red_" + LotterySsqFetchConfig.expect + ".xml");
 			redFile = this.fromFileMediaData(qsFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()))) {
+		if (this.dao.isGenLotteryResult("1", LotterySsqFetchConfig.expect)) {
 			this.dao.clearSsqLotteryFilterResult();
 			this.dao.clearSsqLotteryCollectResult();
 		}
@@ -384,12 +402,12 @@ public class LotterySsqService {
 			}
 			// filterRedCode(redMedia, redFile, list);
 		}
-		this.dao.saveLotteryGenLog("1", LotterySsqConifgService.getExpect(), "1");
+		this.dao.saveLotteryGenLog("1", LotterySsqFetchConfig.expect, "1");
 	}
 
 	/**
-	 * 第一步过滤号码算法
-	 * 必须包含边号、连号、上一期的号码之一，，是不是要加个隔号呢？？（差值为1）
+	 * 第一步过滤号码算法 必须包含边号、连号、上一期的号码之一，，是不是要加个隔号呢？？（差值为1）
+	 * 
 	 * @param redMedia
 	 * @param redFile
 	 * @param redList
@@ -403,10 +421,10 @@ public class LotterySsqService {
 			String lValue = (String) lMap.get("value");
 			String[] lValues = StringUtils.split(lValue, ",");
 
-			if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
+			if (!LotterySsqAlgorithm.isFilterRedNumericInRange(lValues)) {
 				redList.add(lValue);
 			}
-			if (!LotterySsqAlgorithm.isFilterRedIncludeSideCode(lValues, LotterySsqConifgService.getPreSideCode()) && !LotterySsqAlgorithm.isFilterRedIncludeEvenIn(lValues) && !LotterySsqAlgorithm.isFilterIncludePreCode(lValues, LotterySsqConifgService.getPreRedCode())) {
+			if (!LotterySsqAlgorithm.isFilterRedIncludeSideCode(lValues, LotterySsqFetchConfig.preSideCode) && !LotterySsqAlgorithm.isFilterRedIncludeEvenIn(lValues) && !LotterySsqAlgorithm.isFilterIncludePreCode(lValues, LotterySsqFetchConfig.preRedCode)) {
 				redList.add(lValue);
 			}
 
@@ -414,7 +432,7 @@ public class LotterySsqService {
 				this.dao.deleteSsqLotteryFilterResult(redList);
 				redList.clear();
 			} else if (!isSaveToDatabase && redList.size() > 2000) {
-				this.writeFile(redList, "d:/myproject/ssq_red_" + LotterySsqConifgService.getExpect() + ".xml", true);
+				this.writeFile(redList, "d:/myproject/ssq_red_" + LotterySsqFetchConfig.expect + ".xml", true);
 				redList.clear();
 			}
 		}
@@ -422,25 +440,24 @@ public class LotterySsqService {
 			this.dao.deleteSsqLotteryFilterResult(redList);
 			redList.clear();
 		} else if (!isSaveToDatabase && CollectionUtils.isNotEmpty(redList)) {
-			this.writeFile(redList, "d:/myproject/ssq_red_" + LotterySsqConifgService.getExpect() + ".xml", true);
+			this.writeFile(redList, "d:/myproject/ssq_red_" + LotterySsqFetchConfig.expect + ".xml", true);
 			redList.clear();
 		}
 	}
 
 	public void filterCurrentRedCode() {
-		this.initConifg(true);
-		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConifgService.getExpect(), "0");
+		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "0");
 		if (StringUtils.isBlank(media500Wan)) {
 			logger.error("这一期的数据还没入库呢!");
-			return;
+//			return;
 		}
-		boolean isExist = MapUtils.isNotEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()));
+		boolean isExist = this.dao.isGenLotteryResult("1", LotterySsqFetchConfig.expect);
 		if (isExist) {
 			// 以追加的方式过滤号码，即在原来的基础上删除号码,只能用于文本收集方式
-			logger.info("第" + LotterySsqConifgService.getExpect() + "期，双色球再次开始过滤号码(使用追加的方式,即在原来的基础上删除号码,只能用于文本收集方式)........");
+			logger.info("第" + LotterySsqFetchConfig.expect + "期，双色球再次开始过滤号码(使用追加的方式,即在原来的基础上删除号码,只能用于文本收集方式)........");
 			this.filterCurrentRedCodeAppend();
 		} else {
-			logger.info("第" + LotterySsqConifgService.getExpect() + "期，双色球第一次开始过滤号码........");
+			logger.info("第" + LotterySsqFetchConfig.expect + "期，双色球第一次开始过滤号码........");
 			this.filterCurrentRedCodeFirst();
 		}
 	}
@@ -452,18 +469,21 @@ public class LotterySsqService {
 		List<String> list = this.lotterySsqFileService.getCurrentFileRedCode();
 		this.dao.deleteSsqLotteryFilterResult(list);
 	}
+
 	/**
 	 * 是否已经完成第一步号码过滤
+	 * 
 	 * @param type
 	 * @param lotteryQh
 	 * @return
 	 */
-	public boolean isGenLotteryResult(String type, String lotteryQh){
-		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()))) {
+	public boolean isGenLotteryResult(String type, String lotteryQh) {
+		if (this.dao.isGenLotteryResult("1", LotterySsqFetchConfig.expect)) {
 			return true;
 		}
 		return false;
 	}
+
 	public static void main(String[] args) {
 		File file = new File("d:/myproject/current.tt");
 		FileReader fr;
@@ -501,7 +521,7 @@ public class LotterySsqService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		// try {
 		// // ClassLoader classLoader=new ClassLoader();
 		// ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
@@ -542,5 +562,18 @@ public class LotterySsqService {
 		// } catch (FileNotFoundException e) {
 		// e.printStackTrace();
 		// }
+	}
+
+	public void completCurrentGenCode() {
+		this.dao.updateLotterySsqConfig("gen_data");
+	}
+
+	public void clearHisSsqData() {
+		this.lotterySsqFileService.clearCollectFile();
+		this.clearHisDanResult();
+	}
+
+	private void clearHisDanResult() {
+		this.dao.clearLotterySsqDanResult();
 	}
 }

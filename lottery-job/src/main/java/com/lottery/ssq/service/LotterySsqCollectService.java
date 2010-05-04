@@ -8,9 +8,11 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
 
 /**
@@ -79,8 +81,9 @@ public class LotterySsqCollectService {
 	 * 备份历史收集的号码
 	 */
 	public void backHisSsqCollectResult(){
-		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()))) {
-			this.dao.backupSsqLotteryCollectResult(LotterySsqConifgService.getExpect());
+		String expect=this.dao.getGenLotteryMaxExpect("1");
+		if (StringUtils.isNotBlank(expect)) {
+			this.dao.backupSsqLotteryCollectResult(expect);
 		}
 	}
 	/**
@@ -88,7 +91,7 @@ public class LotterySsqCollectService {
 	 */
 	public void collectResultDispose() {
 		logger.info("每一期的第一次必须在抓取完成时使用这个方法............");
-		if (MapUtils.isEmpty(this.dao.isGenLotteryResult("1", LotterySsqConifgService.getExpect()))) {
+		if (this.dao.isGenLotteryResult("1", LotterySsqFetchConfig.expect)) {
 			this.dao.clearSsqLotteryFilterResult();
 			this.dao.clearSsqLotteryCollectResult();
 		}
