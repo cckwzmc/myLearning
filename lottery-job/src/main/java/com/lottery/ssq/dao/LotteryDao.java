@@ -560,4 +560,9 @@ public class LotteryDao extends JdbcBaseDao {
 		this.getJdbcTemplate().update(sql);
 	}
 
+	public List getSsqLotteryCollectResultTopN(int n) {
+		String sql="select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result s ) t group by t.redcode order by c desc limit 0,"+n;
+		return this.getJdbcTemplate().queryForList(sql);
+	}
+
 }

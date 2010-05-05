@@ -158,6 +158,8 @@ public class LotterySsqService {
 				continue;
 			}
 		}
+		//用户投注最多的前30排行
+		List cRedList=this.dao.getSsqLotteryCollectResultTopN(30);
 		List<String> redList = new ArrayList<String>();
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
@@ -169,9 +171,6 @@ public class LotterySsqService {
 			
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map lValue = (Map) iterator.next();
-				if("07,21,22,26,28,30".equals(lValue)){
-					System.out.println();
-				}
 				String[] lValues = StringUtils.split(ObjectUtils.toString(lValue.get("value")), ",");
 				int qOne = 0;
 				int qTwo = 0;
@@ -237,6 +236,12 @@ public class LotterySsqService {
 					continue;
 				}
 				if (!LotterySsqAlgorithm.isSelectOneCode(lValues)) {
+					continue;
+				}
+				if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues,cRedList)) {
+					continue;
+				}
+				if (!LotterySsqAlgorithm.isRedThreeCodeInCustomerResult(lValues,cRedList.subList(0,20))) {
 					continue;
 				}
 				/*

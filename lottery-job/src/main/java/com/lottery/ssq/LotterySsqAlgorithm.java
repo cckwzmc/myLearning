@@ -3,6 +3,7 @@ package com.lottery.ssq;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -859,6 +860,59 @@ public class LotterySsqAlgorithm {
 		}
 		if (NumberUtils.toInt(redCode[5]) > LotterySsqFetchConfig.lastMaxCode) {
 			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 用户投注的前40个不回中超过4个。
+	 * @param lValues
+	 * @param cRedList
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static boolean isRedFourCodeInCustomerResult(String[] lValues, List cRedList) {
+		for (Iterator iterator = cRedList.iterator(); iterator.hasNext();) {
+			int selected=0;
+			Map map = (Map) iterator.next();
+			String redCode=ObjectUtils.toString(map.get("redcode"));
+			String[] redCodes=StringUtils.split(redCode,",");
+			for (int i = 0; i < redCodes.length; i++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if(StringUtils.equals(redCodes[i], lValues[j])){
+						selected++;
+					}
+				}
+			}
+			if(selected>4){
+				return false;
+			}
+		}
+		return true;
+	}
+	/**
+	 * 用户投注的前20个不回中超过3个。
+	 * @param lValues
+	 * @param cRedList
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static boolean isRedThreeCodeInCustomerResult(String[] lValues, List cRedList) {
+		for (Iterator iterator = cRedList.iterator(); iterator.hasNext();) {
+			int selected=0;
+			Map map = (Map) iterator.next();
+			String redCode=ObjectUtils.toString(map.get("redcode"));
+			String[] redCodes=StringUtils.split(redCode,",");
+			for (int i = 0; i < redCodes.length; i++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if(StringUtils.equals(redCodes[i], lValues[j])){
+						selected++;
+					}
+				}
+			}
+			if(selected>3){
+				return false;
+			}
 		}
 		return true;
 	}
