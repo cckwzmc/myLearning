@@ -109,7 +109,7 @@ public class LotterySsqConifgService {
 		// 在这些号码中选择6个
 		LotterySsqFilterConfig.selectCode =StringUtils.isNotBlank(ObjectUtils.toString(map.get("selectCode")))?ObjectUtils.toString(map.get("selectCode")).split(","):null;
 		// 不能同时出现的号码
-		LotterySsqFilterConfig.cannotSelectedTogethor = StringUtils.isNotBlank(ObjectUtils.toString(map.get("cannotSelectedTogethor")))?ObjectUtils.toString(map.get("cannotSelectedTogethor")).split("|"):null;
+		LotterySsqFilterConfig.cannotSelectedTogethor = StringUtils.isNotBlank(ObjectUtils.toString(map.get("cannotSelectedTogethor")))?StringUtils.split(ObjectUtils.toString(map.get("cannotSelectedTogethor")),"|"):null;
 		// 是否有边号
 		LotterySsqFilterConfig.haveSideCode = NumberUtils.toInt(ObjectUtils.toString(map.get("haveSideCode")));
 		// 包含includeRed中的几个数字

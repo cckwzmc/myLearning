@@ -112,7 +112,7 @@ public class LotterySsqJob {
 	/**
 	 * 大赢家用户投注抓取
 	 */
-	public void fetchSinaLotterySsqService() {
+	public void fetchDyjLotterySsqService() {
 		initService();
 		if (!this.lotterySsqConifgService.initFetchConfig()) {
 			logger.info("抓取配置初始化失败....................");
