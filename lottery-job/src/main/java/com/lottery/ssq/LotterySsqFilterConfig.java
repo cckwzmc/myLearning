@@ -43,6 +43,7 @@ public class LotterySsqFilterConfig {
 	public static int fourthMinCode = 4;
 	public static int fourthMaxCode = 33;
 	public static String[] selectedOneCode = new String[]{};
+	public static String[] leastSelectedOneCode=new String[]{};
 	// static {
 	// try {
 	// Properties pro = PropertiesLoaderUtils.loadAllProperties("lottery/ssq/lottery.properties");
@@ -116,5 +117,6 @@ public class LotterySsqFilterConfig {
 	// }
 	//
 	// }
+	public static String[] mustSelectedOneCode=new String[]{};
 
 }

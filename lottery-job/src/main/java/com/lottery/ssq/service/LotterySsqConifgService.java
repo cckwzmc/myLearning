@@ -124,7 +124,9 @@ public class LotterySsqConifgService {
 		LotterySsqFilterConfig.fourthMinCode = NumberUtils.toInt(ObjectUtils.toString(map.get("fourthMinCode")));
 		LotterySsqFilterConfig.fourthMaxCode = NumberUtils.toInt(ObjectUtils.toString(map.get("fourthMaxCode")));
 
-		LotterySsqFilterConfig.selectedOneCode =StringUtils.isNotBlank(ObjectUtils.toString(map.get("selectedOneCode")))?ObjectUtils.toString(map.get("selectedOneCode")).split(","):null;
+		LotterySsqFilterConfig.selectedOneCode =StringUtils.isNotBlank(ObjectUtils.toString(map.get("selectedOneCode")))?StringUtils.split(ObjectUtils.toString(map.get("selectedOneCode")),"|"):null;
+		LotterySsqFilterConfig.leastSelectedOneCode =StringUtils.isNotBlank(ObjectUtils.toString(map.get("leastSelectedOneCode")))?StringUtils.split(ObjectUtils.toString(map.get("leastSelectedOneCode")),"|"):null;
+		LotterySsqFilterConfig.mustSelectedOneCode =StringUtils.isNotBlank(ObjectUtils.toString(map.get("mustSelectedOneCode")))?StringUtils.split(ObjectUtils.toString(map.get("mustSelectedOneCode")),"|"):null;
 		return true;
 	}
 }

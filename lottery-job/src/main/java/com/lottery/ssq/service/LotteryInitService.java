@@ -482,4 +482,8 @@ public class LotteryInitService {
 		}
 		this.lotterySsqMediaSinaService.saveCurrrentMediaDanRedCode(list);
 	}
+	public static void main(String[] args) {
+		LotteryInitService init=new LotteryInitService();
+		init.saveLottoryResult("04,17,23,27,28,32");
+	}
 }

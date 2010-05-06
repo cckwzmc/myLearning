@@ -238,6 +238,12 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isSelectOneCode(lValues)) {
 					continue;
 				}
+				if (!LotterySsqAlgorithm.isLeastSelectedOneCode(lValues)) {
+					continue;
+				}
+				if (!LotterySsqAlgorithm.isMustSelectedOneCode(lValues)) {
+					continue;
+				}
 				if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues,cRedList)) {
 					continue;
 				}

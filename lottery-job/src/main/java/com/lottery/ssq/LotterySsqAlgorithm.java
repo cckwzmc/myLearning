@@ -11,7 +11,6 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
-
 /**
  * @author Administrator
  */
@@ -182,7 +181,7 @@ public class LotterySsqAlgorithm {
 	 */
 	public static boolean isRedIncludeRequiredCode(String[] lValues) {
 		int tempSelect = 0;
-		if (LotterySsqFilterConfig.musthavered != null && LotterySsqFilterConfig.musthavered.length >=1) {
+		if (LotterySsqFilterConfig.musthavered != null && LotterySsqFilterConfig.musthavered.length >= 1) {
 			for (int i = 0; i < lValues.length; i++) {
 				for (int j = 0; j < LotterySsqFilterConfig.musthavered.length; j++) {
 					if (StringUtils.equals(lValues[i], ObjectUtils.toString(LotterySsqFilterConfig.musthavered[j]).trim())) {
@@ -206,7 +205,7 @@ public class LotterySsqAlgorithm {
 	public static boolean isRedNotIncludeTheCode(String[] lValues) {
 
 		int tempSelect = 0;
-		if (LotterySsqFilterConfig.excludeRed != null && LotterySsqFilterConfig.excludeRed.length >=1) {
+		if (LotterySsqFilterConfig.excludeRed != null && LotterySsqFilterConfig.excludeRed.length >= 1) {
 			for (int j = 0; j < lValues.length; j++) {
 				for (int k = 0; k < LotterySsqFilterConfig.excludeRed.length; k++) {
 					if (StringUtils.equals(lValues[j], LotterySsqFilterConfig.excludeRed[k])) {
@@ -232,7 +231,7 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedInTheCodes(String[] lValues) {
-		if (LotterySsqFilterConfig.selectCode != null && LotterySsqFilterConfig.selectCode.length >=1) {
+		if (LotterySsqFilterConfig.selectCode != null && LotterySsqFilterConfig.selectCode.length >= 1) {
 			int tempSelect = 0;
 			for (int i = 0; i < lValues.length; i++) {
 				for (int j = 0; j < LotterySsqFilterConfig.selectCode.length; j++) {
@@ -256,7 +255,7 @@ public class LotterySsqAlgorithm {
 	 */
 	public static boolean isRedTogethorCode(String[] lValues) {
 		int tempSelect = 0;
-		if (LotterySsqFilterConfig.cannotSelectedTogethor != null && LotterySsqFilterConfig.cannotSelectedTogethor.length >=1) {
+		if (LotterySsqFilterConfig.cannotSelectedTogethor != null && LotterySsqFilterConfig.cannotSelectedTogethor.length >= 1) {
 			boolean breakFlag = false;
 			for (int j = 0; j < LotterySsqFilterConfig.cannotSelectedTogethor.length; j++) {
 				String[] tmp = StringUtils.split(LotterySsqFilterConfig.cannotSelectedTogethor[j], ",");
@@ -644,6 +643,59 @@ public class LotterySsqAlgorithm {
 	}
 
 	/**
+	 * 至少要中其中的一个号码
+	 * 
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isLeastSelectedOneCode(String[] lValues) {
+		if (LotterySsqFilterConfig.leastSelectedOneCode == null || LotterySsqFilterConfig.leastSelectedOneCode.length < 1) {
+			return true;
+		}
+		for (int i = 0; i < LotterySsqFilterConfig.leastSelectedOneCode.length; i++) {
+			int tempSelect = 0;
+			String[] code = LotterySsqFilterConfig.leastSelectedOneCode[i].split(",");
+			for (int k = 0; k < code.length; k++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if (StringUtils.equals(code[k], lValues[j])) {
+						tempSelect++;
+					}
+				}
+			}
+			if (tempSelect < 1) {
+				return false;
+			}
+		}
+		return true;
+	}
+	/**
+	 * 要中其中的一个号码
+	 * 
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isMustSelectedOneCode(String[] lValues) {
+		if (LotterySsqFilterConfig.mustSelectedOneCode == null || LotterySsqFilterConfig.mustSelectedOneCode.length < 1) {
+			return true;
+		}
+		for (int i = 0; i < LotterySsqFilterConfig.mustSelectedOneCode.length; i++) {
+			int tempSelect = 0;
+			String[] code = LotterySsqFilterConfig.mustSelectedOneCode[i].split(",");
+			for (int k = 0; k < code.length; k++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if (StringUtils.equals(code[k], lValues[j])) {
+						tempSelect++;
+					}
+				}
+			}
+			if (tempSelect == 1) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * 新浪媒体每注中4个的<3
 	 * 
 	 * @param lValues
@@ -728,6 +780,7 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 从文件中读取的号码中不能中四个以上的号码.
+	 * 
 	 * @param lValues
 	 * @param otherRedCodeList
 	 * @return
@@ -753,9 +806,8 @@ public class LotterySsqAlgorithm {
 		return true;
 	}
 
-	
-	//~~~~~~~~~~~~~~~~~~~~以下是初步过滤的方法~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
+	// ~~~~~~~~~~~~~~~~~~~~以下是初步过滤的方法~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	/**
 	 * 与配置文件无关，只要包含一个边号，即，返回True
 	 * 
@@ -866,6 +918,7 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 用户投注的前40个不回中超过4个。
+	 * 
 	 * @param lValues
 	 * @param cRedList
 	 * @return
@@ -873,25 +926,27 @@ public class LotterySsqAlgorithm {
 	@SuppressWarnings("unchecked")
 	public static boolean isRedFourCodeInCustomerResult(String[] lValues, List cRedList) {
 		for (Iterator iterator = cRedList.iterator(); iterator.hasNext();) {
-			int selected=0;
+			int selected = 0;
 			Map map = (Map) iterator.next();
-			String redCode=ObjectUtils.toString(map.get("redcode"));
-			String[] redCodes=StringUtils.split(redCode,",");
+			String redCode = ObjectUtils.toString(map.get("redcode"));
+			String[] redCodes = StringUtils.split(redCode, ",");
 			for (int i = 0; i < redCodes.length; i++) {
 				for (int j = 0; j < lValues.length; j++) {
-					if(StringUtils.equals(redCodes[i], lValues[j])){
+					if (StringUtils.equals(redCodes[i], lValues[j])) {
 						selected++;
 					}
 				}
 			}
-			if(selected>4){
+			if (selected > 4) {
 				return false;
 			}
 		}
 		return true;
 	}
+
 	/**
 	 * 用户投注的前20个不回中超过3个。
+	 * 
 	 * @param lValues
 	 * @param cRedList
 	 * @return
@@ -899,18 +954,18 @@ public class LotterySsqAlgorithm {
 	@SuppressWarnings("unchecked")
 	public static boolean isRedThreeCodeInCustomerResult(String[] lValues, List cRedList) {
 		for (Iterator iterator = cRedList.iterator(); iterator.hasNext();) {
-			int selected=0;
+			int selected = 0;
 			Map map = (Map) iterator.next();
-			String redCode=ObjectUtils.toString(map.get("redcode"));
-			String[] redCodes=StringUtils.split(redCode,",");
+			String redCode = ObjectUtils.toString(map.get("redcode"));
+			String[] redCodes = StringUtils.split(redCode, ",");
 			for (int i = 0; i < redCodes.length; i++) {
 				for (int j = 0; j < lValues.length; j++) {
-					if(StringUtils.equals(redCodes[i], lValues[j])){
+					if (StringUtils.equals(redCodes[i], lValues[j])) {
 						selected++;
 					}
 				}
 			}
-			if(selected>3){
+			if (selected > 3) {
 				return false;
 			}
 		}
