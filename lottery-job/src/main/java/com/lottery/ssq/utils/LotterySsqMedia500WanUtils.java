@@ -14,7 +14,7 @@ import org.dom4j.Node;
 
 import com.lottery.util.html.HttpHtmlService;
 
-public class LotterySsqMediaUtils {
+public class LotterySsqMedia500WanUtils {
 	/**
 	 * 解析红球
 	 * 

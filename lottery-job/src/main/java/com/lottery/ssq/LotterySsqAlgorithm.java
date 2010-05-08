@@ -668,8 +668,33 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+
 	/**
-	 * 要中其中的一个号码
+	 * 至少要中其中的两个号码
+	 * 
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isLeastSelectedTwoCode(String[] lValues, String[] redcodes) {
+		if (redcodes == null || redcodes.length < 1) {
+			return true;
+		}
+		int tempSelect=0;
+		for (int k = 0; k < redcodes.length; k++) {
+			for (int j = 0; j < lValues.length; j++) {
+				if (StringUtils.equals(redcodes[k], lValues[j])) {
+					tempSelect++;
+				}
+			}
+		}
+		if (tempSelect < 2) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 必须要中其中的一个号码
 	 * 
 	 * @param lValues
 	 * @return
@@ -812,7 +837,8 @@ public class LotterySsqAlgorithm {
 	 * 与配置文件无关，只要包含一个边号，即，返回True
 	 * 
 	 * @param lValues
-	 * @param preSideCode 边号集合
+	 * @param preSideCode
+	 *            边号集合
 	 * @return
 	 */
 	public static boolean isFilterRedIncludeSideCode(String[] lValues, String[] preSideCode) {
@@ -940,6 +966,31 @@ public class LotterySsqAlgorithm {
 			if (selected > 4) {
 				return false;
 			}
+		}
+		return true;
+	}
+
+	/**
+	 * 在redcodes不能中超过4个以上的号码
+	 * 
+	 * @param lValues
+	 * @param redcodes
+	 * @return
+	 */
+	public static boolean isRedFourCodeResult(String[] lValues, String[] redcodes) {
+		if (redcodes == null || redcodes.length < 1) {
+			return true;
+		}
+		int selected = 0;
+		for (int i = 0; i < redcodes.length; i++) {
+			for (int j = 0; j < lValues.length; j++) {
+				if (StringUtils.equals(redcodes[i], lValues[j])) {
+					selected++;
+				}
+			}
+		}
+		if (selected > 4) {
+			return false;
 		}
 		return true;
 	}

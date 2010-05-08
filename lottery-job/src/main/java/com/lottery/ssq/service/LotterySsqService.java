@@ -26,7 +26,9 @@ import com.lottery.ssq.LotterySsqAlgorithm;
 import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.LotterySsqFilterConfig;
 import com.lottery.ssq.dao.LotteryDao;
-import com.lottery.ssq.utils.LotterySsqMediaUtils;
+import com.lottery.ssq.utils.LotteryServiceUtils;
+import com.lottery.ssq.utils.LotterySsqMedia500WanUtils;
+import com.lottery.ssq.utils.LotteryUtils;
 
 public class LotterySsqService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotterySsqService.class);
@@ -34,40 +36,15 @@ public class LotterySsqService {
 	private boolean isSaveToDatabase = true;
 	private static List<String> danList = new ArrayList<String>();
 	private static List<String> sinaDanList = new ArrayList<String>();
-	private LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
 	private LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
 	private LotterySsqFileService lotterySsqFileService = null;
-	private LotterySsqCustomerDyjService lotterySsqCustomerDyjService = null;
-	private LotterySsqCustomer500WanService lotterySsqCustomer500WanService = null;
-	private LotterySsqThan20Service lotterySsqThan20Service = null;
-	private LotteryInitService lotteryInitService = null;
-
-	public void setLotteryInitService(LotteryInitService lotteryInitService) {
-		this.lotteryInitService = lotteryInitService;
-	}
-
-	public void setLotterySsqCustomer500WanService(LotterySsqCustomer500WanService lotterySsqCustomer500WanService) {
-		this.lotterySsqCustomer500WanService = lotterySsqCustomer500WanService;
-	}
-
-	public void setLotterySsqCustomerDyjService(LotterySsqCustomerDyjService lotterySsqCustomerDyjService) {
-		this.lotterySsqCustomerDyjService = lotterySsqCustomerDyjService;
-	}
 
 	public void setLotterySsqMediaSinaService(LotterySsqMediaSinaService lotterySsqMediaSinaService) {
 		this.lotterySsqMediaSinaService = lotterySsqMediaSinaService;
 	}
 
-	public void setLotterySsqMedia500WanService(LotterySsqMedia500WanService lotterySsqMedia500WanService) {
-		this.lotterySsqMedia500WanService = lotterySsqMedia500WanService;
-	}
-
 	public void setLotterySsqFileService(LotterySsqFileService lotterySsqFileService) {
 		this.lotterySsqFileService = lotterySsqFileService;
-	}
-
-	public void setLotterySsqThan20Service(LotterySsqThan20Service lotterySsqThan20Service) {
-		this.lotterySsqThan20Service = lotterySsqThan20Service;
 	}
 
 	public void setDao(LotteryDao dao) {
@@ -103,7 +80,7 @@ public class LotterySsqService {
 		if (StringUtils.isNotBlank(media500Wan) && media500Wan.length() > 100) {
 			try {
 				Document document = DocumentHelper.parseText(media500Wan);
-				redCodeList = LotterySsqMediaUtils.getMediaRedCode(document);
+				redCodeList = LotterySsqMedia500WanUtils.getMediaRedCode(document);
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
@@ -139,7 +116,7 @@ public class LotterySsqService {
 			Map obj = (Map) iterator.next();
 			danList.add(ObjectUtils.toString(obj.get("dan")));
 		}
-		// 用户投注过滤
+		// 用户投注过滤 --个号
 		List selectedList = this.dao.getSsqLotteryFetchResultSort();
 		List<String> customerMaxSelected = new ArrayList<String>();
 		for (Iterator iterator = selectedList.iterator(); iterator.hasNext();) {
@@ -158,8 +135,9 @@ public class LotterySsqService {
 				continue;
 			}
 		}
-		//用户投注最多的前30排行
+		//用户投注最多的前30排行 --组号
 		List cRedList=this.dao.getSsqLotteryCollectResultTopN(30);
+		String[] customerRedTop40 =LotteryServiceUtils.mergeRedCode(cRedList);
 		List<String> redList = new ArrayList<String>();
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
@@ -211,12 +189,12 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isCustomerDanFilter(lValues, danList)) {
 					continue;
 				}
-				if (!LotterySsqAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected.subList(0, 10))) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isCustomerRedCodeTop20Filter(lValues, customerMaxSelected.subList(0, 20))) {
-					continue;
-				}
+//				if (!LotterySsqAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected.subList(0, 10))) {
+//					continue;
+//				}
+//				if (!LotterySsqAlgorithm.isCustomerRedCodeTop20Filter(lValues, customerMaxSelected.subList(0, 20))) {
+//					continue;
+//				}
 				if (!LotterySsqAlgorithm.isFileRedCodeFourFilter(lValues, otherRedCodeList)) {
 					continue;
 				}
@@ -238,6 +216,18 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isSelectOneCode(lValues)) {
 					continue;
 				}
+//				if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues,cRedList)) {
+//					continue;
+//				}
+				if (!LotterySsqAlgorithm.isRedThreeCodeInCustomerResult(lValues,cRedList)) {
+					continue;
+				}
+				if(!LotterySsqAlgorithm.isRedFourCodeResult(lValues,customerRedTop40)){
+					continue;
+				}
+				if(!LotterySsqAlgorithm.isLeastSelectedTwoCode(lValues,customerRedTop40)){
+					continue;
+				}
 				if (!LotterySsqAlgorithm.isLeastSelectedOneCode(lValues)) {
 					continue;
 				}
@@ -245,9 +235,6 @@ public class LotterySsqService {
 					continue;
 				}
 				if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues,cRedList)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isRedThreeCodeInCustomerResult(lValues,cRedList.subList(0,20))) {
 					continue;
 				}
 				/*
@@ -582,6 +569,7 @@ public class LotterySsqService {
 	public void clearHisSsqData() {
 		this.lotterySsqFileService.clearCollectFile();
 		this.clearHisDanResult();
+		this.dao.deleteSsqLotteryFilterResult();
 	}
 
 	private void clearHisDanResult() {

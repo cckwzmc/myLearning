@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
-import com.lottery.ssq.utils.LotterySsqMediaUtils;
+import com.lottery.ssq.utils.LotterySsqMedia500WanUtils;
 import com.lottery.ssq.utils.LotteryUtils;
 import com.lottery.util.html.HttpHtmlService;
 
@@ -45,7 +45,7 @@ public class LotterySsqMedia500WanService {
 	 * @param document
 	 */
 	public List<String> parseCurrentMediaRedCode(Document document) {
-		List<String[]> redCode = LotterySsqMediaUtils.getMediaRedCode(document);
+		List<String[]> redCode = LotterySsqMedia500WanUtils.getMediaRedCode(document);
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = redCode.iterator(); iterator.hasNext();) {
 			String[] red = (String[]) iterator.next();
@@ -63,7 +63,7 @@ public class LotterySsqMedia500WanService {
 	 * @return
 	 */
 	public List<String> getCurrentMediaRedCode(Document document) {
-		List<String[]> redCode = LotterySsqMediaUtils.getMediaRedCode(document);
+		List<String[]> redCode = LotterySsqMedia500WanUtils.getMediaRedCode(document);
 		if(CollectionUtils.isEmpty(redCode)){
 			return null;
 		}
@@ -254,9 +254,9 @@ public class LotterySsqMedia500WanService {
 		} catch (DocumentException e) {
 			log.error("XML parse error");
 		}
-		this.saveHistoryMediaRedStat(expect, LotterySsqMediaUtils.getMediaRedCodeStat(document), StringUtils.join(LotterySsqMediaUtils
+		this.saveHistoryMediaRedStat(expect, LotterySsqMedia500WanUtils.getMediaRedCodeStat(document), StringUtils.join(LotterySsqMedia500WanUtils
 				.getHistoryOpenRedcode(document), ","));
-		this.saveHistoryMediaBlueStat(expect, LotterySsqMediaUtils.getMediaBlueCodeStat(document), LotterySsqMediaUtils.getHistoryOpenBlueCode(document));
+		this.saveHistoryMediaBlueStat(expect, LotterySsqMedia500WanUtils.getMediaBlueCodeStat(document), LotterySsqMedia500WanUtils.getHistoryOpenBlueCode(document));
 	}
 
 	/**

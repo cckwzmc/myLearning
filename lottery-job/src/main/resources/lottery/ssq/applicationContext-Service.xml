@@ -4,13 +4,8 @@
 	default-autowire="byName" default-lazy-init="false">
 	<bean id="lotteryService" class="com.lottery.ssq.service.LotterySsqService">
 		<property name="dao" ref="lotteryDao" />
-		<property name="lotterySsqMedia500WanService" ref="lotterySsqMedia500WanService"></property>
 		<property name="lotterySsqMediaSinaService" ref="lotterySsqMediaSinaService"></property>
 		<property name="lotterySsqFileService" ref="lotterySsqFileService"></property>
-		<property name="lotterySsqCustomerDyjService" ref="lotterySsqCustomerDyjService"></property>
-		<property name="lotterySsqCustomer500WanService" ref="lotterySsqCustomer500WanService"></property>
-		<property name="lotterySsqThan20Service" ref="lotterySsqThan20Service"></property>
-		<property name="lotteryInitService" ref="initLotteryService"></property>
 	</bean>
 	<bean id="initLotteryService" class="com.lottery.ssq.service.LotteryInitService">
 		<property name="dao" ref="lotteryDao" />

@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import com.lottery.ssq.LotteryConstant;
 import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
-import com.lottery.ssq.utils.LotterySsqMediaUtils;
+import com.lottery.ssq.utils.LotterySsqMedia500WanUtils;
 import com.lottery.ssq.utils.LotteryUtils;
 import com.lottery.util.html.HtmlParseUtils;
 import com.lottery.util.html.HttpHtmlService;
@@ -243,7 +243,7 @@ public class LotteryInitService {
 		}
 		expectInt--;
 		for (int i = expectInt; i > NumberUtils.toInt(hisExpect); i--) {
-			xmlContent = LotterySsqMediaUtils.getHistoryMediaXml(i < 10000 ? "0" + i : i + "");
+			xmlContent = LotterySsqMedia500WanUtils.getHistoryMediaXml(i < 10000 ? "0" + i : i + "");
 			if (i % 1000 > 158) {
 				i = i / 1000 * 1000 + 155;
 				continue;
@@ -291,7 +291,7 @@ public class LotteryInitService {
 		}
 		expectInt--;
 		for (int i = expectInt; i > NumberUtils.toInt(hisExpect); i--) {
-			xmlContent = LotterySsqMediaUtils.getHistoryMediaXml(i < 10000 ? "0" + i : i + "");
+			xmlContent = LotterySsqMedia500WanUtils.getHistoryMediaXml(i < 10000 ? "0" + i : i + "");
 			if (StringUtils.isNotBlank(xmlContent)) {
 				int sum = 0;
 				try {
@@ -308,14 +308,14 @@ public class LotteryInitService {
 					continue;
 				}
 
-				String[] redCode = LotterySsqMediaUtils.getHistoryOpenRedcode(document);
+				String[] redCode = LotterySsqMedia500WanUtils.getHistoryOpenRedcode(document);
 				if (redCode == null || redCode.length != 6) {
 					continue;
 				}
 				for (int j = 0; j < redCode.length; j++) {
 					sum += NumberUtils.toInt(redCode[j]);
 				}
-				this.dao.saveSsqLotteryHisOpenCode(LotterySsqMediaUtils.getHistoryOpenBlueCode(document), StringUtils.join(redCode, ","), sum, i < 10000 ? "0" + i : i + "");
+				this.dao.saveSsqLotteryHisOpenCode(LotterySsqMedia500WanUtils.getHistoryOpenBlueCode(document), StringUtils.join(redCode, ","), sum, i < 10000 ? "0" + i : i + "");
 			}
 		}
 
@@ -366,11 +366,11 @@ public class LotteryInitService {
 						logger.error(xmlContent);
 					}
 					int sum = 0;
-					String[] redCode = LotterySsqMediaUtils.getHistoryOpenRedcode(document);
+					String[] redCode = LotterySsqMedia500WanUtils.getHistoryOpenRedcode(document);
 					for (int j = 0; j < redCode.length; j++) {
 						sum += NumberUtils.toInt(redCode[j]);
 					}
-					this.dao.saveSsqLotteryHisOpenCode(LotterySsqMediaUtils.getHistoryOpenBlueCode(document), StringUtils.join(redCode, ","), sum, LotterySsqFetchConfig.expect);
+					this.dao.saveSsqLotteryHisOpenCode(LotterySsqMedia500WanUtils.getHistoryOpenBlueCode(document), StringUtils.join(redCode, ","), sum, LotterySsqFetchConfig.expect);
 				} catch (IOException e) {
 					logger.error(listFile[i].getName() + "===" + e.getMessage());
 				}
