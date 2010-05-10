@@ -153,6 +153,9 @@ public class LotterySsqService {
 				int qOne = 0;
 				int qTwo = 0;
 				int qThree = 0;
+				if("01,02,19,23,27,29".equals(ObjectUtils.toString(lValue.get("value")))){
+					System.out.println();
+				}
 				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
 					continue;
 				}
@@ -180,7 +183,7 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isSinaDanAllFilter(lValues, sinaDanList)) {
 					continue;
 				}
-				if (!LotterySsqAlgorithm.isSinaDanNoneFilter(lValues, sinaDanList, 7)) {
+				if (!LotterySsqAlgorithm.isSinaDanNoneFilter(lValues, sinaDanList, 5)) {
 					continue;
 				}
 				if (!LotterySsqAlgorithm.isSinaRedCodeXiaoFourFilter(lValues, mediaSinaList)) {
@@ -195,9 +198,9 @@ public class LotterySsqService {
 //				if (!LotterySsqAlgorithm.isCustomerRedCodeTop20Filter(lValues, customerMaxSelected.subList(0, 20))) {
 //					continue;
 //				}
-				if (!LotterySsqAlgorithm.isFileRedCodeFourFilter(lValues, otherRedCodeList)) {
-					continue;
-				}
+//				if (!LotterySsqAlgorithm.isFileRedCodeFourFilter(lValues, otherRedCodeList)) {
+//					continue;
+//				}
 				if (!LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
 					continue;
 				}
