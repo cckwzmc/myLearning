@@ -413,6 +413,7 @@ public class LotteryInitService {
 		map.put("net", "4");
 		map.put("expect", LotterySsqFetchConfig.expect);
 		map.put("proid", RandomUtils.nextInt(999999999) + "");
+		rsList.add(map);
 		this.dao.batchSaveSsqLotteryCollectFetch(rsList);
 
 	}
@@ -446,7 +447,6 @@ public class LotteryInitService {
 				logger.error(e.getMessage());
 			}
 			if (doc != null) {
-				this.dao.clearHisFetchProjectCode(LotterySsqFetchConfig.expect, "3");
 				List<String> sinaList = this.lotterySsqMedia500WanService.getCurrentMediaRedCode(doc);
 				List<Map<String, String>> rsList = new ArrayList<Map<String, String>>();
 				String code = "";
@@ -462,6 +462,7 @@ public class LotteryInitService {
 				map.put("net", "3");
 				map.put("expect", LotterySsqFetchConfig.expect);
 				map.put("proid", RandomUtils.nextInt(999999999) + "");
+				rsList.add(map);
 				this.dao.batchSaveSsqLotteryCollectFetch(rsList);
 			}
 			// }
@@ -481,6 +482,10 @@ public class LotteryInitService {
 			return;
 		}
 		this.lotterySsqMediaSinaService.saveCurrrentMediaDanRedCode(list);
+	}
+	public void tempDeleteMediaRedCodeFromFilter(){
+		this.lotterySsqMedia500WanService.deleteMedia500WanRedCode();
+		this.lotterySsqMediaSinaService.deleteMediaSinaRedCode();
 	}
 	public static void main(String[] args) {
 		LotteryInitService init=new LotteryInitService();

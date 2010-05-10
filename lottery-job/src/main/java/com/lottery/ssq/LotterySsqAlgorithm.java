@@ -1022,5 +1022,32 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+	/**
+	 * 用户投注的前10个不回中超过2个。
+	 * 
+	 * @param lValues
+	 * @param cRedList
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static boolean isRedTwoCodeInCustomerResult(String[] lValues, List cRedList) {
+		for (Iterator iterator = cRedList.iterator(); iterator.hasNext();) {
+			int selected = 0;
+			Map map = (Map) iterator.next();
+			String redCode = ObjectUtils.toString(map.get("redcode"));
+			String[] redCodes = StringUtils.split(redCode, ",");
+			for (int i = 0; i < redCodes.length; i++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if (StringUtils.equals(redCodes[i], lValues[j])) {
+						selected++;
+					}
+				}
+			}
+			if (selected > 2) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

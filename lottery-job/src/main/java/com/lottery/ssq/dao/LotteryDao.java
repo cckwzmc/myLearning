@@ -306,6 +306,11 @@ public class LotteryDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForInt(sql, new Object[] { expect, type });
 	}
 
+	/**
+	 * @param expect
+	 * @param type 0:500wan 1:sina
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public String getSsqLotteryMediaContentByExpect(String expect, String type) {
 		String sql = "select content from ssq_lottery_media t where t.expect=? and t.type=?";

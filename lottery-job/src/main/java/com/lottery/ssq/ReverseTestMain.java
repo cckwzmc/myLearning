@@ -8,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
+import com.lottery.ssq.service.LotterySsqConifgService;
 import com.lottery.ssq.service.LotterySsqService;
 
 /**
@@ -21,7 +22,12 @@ public class ReverseTestMain {
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml", "classpath:/lottery/ssq/applicationContext-database.xml", "classpath:/lottery/ssq/applicationContext-dao.xml",
 				"classpath:/lottery/ssq/applicationContext-service.xml" });
 		try {
+			LotterySsqConifgService lotterySsqConifgService = (LotterySsqConifgService) context.getBean("lotterySsqConifgService");
+			lotterySsqConifgService.initFetchConfig();
+			lotterySsqConifgService.initFilterConfig();
+			
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
+			initService.tempDeleteMediaRedCodeFromFilter();
 			Scanner scanner = new Scanner(System.in);
 			long currentTime = System.currentTimeMillis();
 			logger.info("按y开始开始初始化操作，按n跳过一步，60秒钟后默认开始初始化操作.....");

@@ -7,6 +7,9 @@ import java.util.List;
 import net.htmlparser.jericho.Element;
 
 import org.apache.commons.lang.StringUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,5 +114,16 @@ public class LotterySsqMediaSinaService {
 		if (StringUtils.isNotBlank(mediaContent) && mediaContent.length() > 100) {
 			this.saveCurrentMediaRedCodeToDb(this.getCurrentMediaRedCode(mediaContent), LotterySsqFetchConfig.expect);
 		}
+	}
+	/**
+	 * 从结果集中删除sina媒体号码
+	 */
+	public void deleteMediaSinaRedCode(){
+		String text=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "1");
+		if(StringUtils.isBlank(text)||text.length()<100){
+			return;
+		}
+		List<String> list=this.parseCurrentMediaRedCode(text);
+		this.dao.batchDelSsqLotteryFilterResult(list);
 	}
 }

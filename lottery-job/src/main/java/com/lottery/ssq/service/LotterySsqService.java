@@ -192,9 +192,9 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isCustomerDanFilter(lValues, danList)) {
 					continue;
 				}
-//				if (!LotterySsqAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected.subList(0, 10))) {
-//					continue;
-//				}
+				if (!LotterySsqAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected.subList(0, 10))) {
+					continue;
+				}
 //				if (!LotterySsqAlgorithm.isCustomerRedCodeTop20Filter(lValues, customerMaxSelected.subList(0, 20))) {
 //					continue;
 //				}
@@ -222,6 +222,9 @@ public class LotterySsqService {
 //				if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues,cRedList)) {
 //					continue;
 //				}
+				if (!LotterySsqAlgorithm.isRedTwoCodeInCustomerResult(lValues,cRedList.subList(0, 10))) {
+					continue;
+				}
 				if (!LotterySsqAlgorithm.isRedThreeCodeInCustomerResult(lValues,cRedList)) {
 					continue;
 				}

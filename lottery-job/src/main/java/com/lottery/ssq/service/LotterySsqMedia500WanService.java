@@ -287,4 +287,21 @@ public class LotterySsqMedia500WanService {
 			this.saveCurrentMediaRedCodeToDb(this.parseCurrentMediaRedCode(doc),LotterySsqFetchConfig.expect);
 		}
 	}
+	/**
+	 * 从结果集中删除500wan媒体号码
+	 */
+	public void deleteMedia500WanRedCode(){
+		String text=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "0");
+		if(StringUtils.isBlank(text)||text.length()<100){
+			return;
+		}
+		Document document=null;
+		try {
+			document=DocumentHelper.parseText(text);
+		} catch (DocumentException e) {
+			log.error(e.getMessage());
+		}
+		List<String> list=this.parseCurrentMediaRedCode(document);
+		this.dao.batchDelSsqLotteryFilterResult(list);
+	}
 }
