@@ -27,7 +27,7 @@ public class LotterySsqConifgService {
 	@SuppressWarnings("unchecked")
 	public boolean initFetchConfig() {
 		String expect = this.dao.getLotterySsqExpectConfig(0, 0);
-		if (StringUtils.isBlank(expect)) {
+		if (StringUtils.isBlank(expect)||this.dao.isGenLotteryResult("0", expect)) {
 			return false;
 		}
 		Map map = this.dao.getLotterySsqFetchConfig("init_filter_data");
