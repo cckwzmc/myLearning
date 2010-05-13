@@ -99,6 +99,10 @@ public class LotterySsqCustomerDyjService extends Thread {
 	public List<String> downloadDyjProject(String id, String playtype) {
 		List<String> list = new ArrayList<String>();
 		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@id@", id), "@playtype@", playtype);
+		if(!"3".equals(playtype)){
+//			download.asp/downcode.asp
+			url=StringUtils.replace(url, "download.asp", "downcode.asp");
+		}
 		logger.info(url);
 		String content = HttpHtmlService.getXmlContent(url, "GB2312");
 		try {
