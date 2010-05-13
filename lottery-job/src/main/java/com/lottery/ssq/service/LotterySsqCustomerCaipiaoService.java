@@ -1,6 +1,7 @@
 package com.lottery.ssq.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
@@ -22,12 +25,13 @@ import com.lottery.ssq.utils.LotteryUtils;
 import com.lottery.util.html.HttpHtmlService;
 
 /**
- * 大赢家用户购买/收集的数据处理
+ * 爱彩网用户购买/收集的数据处理
  * 
  * @author LIYI
  */
 public class LotterySsqCustomerCaipiaoService extends Thread {
 	private static final Logger logger = LoggerFactory.getLogger(LotterySsqCustomerCaipiaoService.class);
+	@Autowired
 	private LotteryDao dao = null;
 
 	public void setDao(LotteryDao dao) {
@@ -41,9 +45,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Map<String, String>> getCaipiaoProject() {
-		new LotterySsqConifgService();
 		String url = LotterySsqFetchConfig.caipiaoUrl;
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		int k = 0;
@@ -65,7 +67,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			{
 				list.addAll(gd05List);
 			}
-			if (CollectionUtils.isEmpty(list)) {
+			if (CollectionUtils.isEmpty(gd05List)) {
 				k++;
 			}
 			for (Element e:list) {
@@ -76,7 +78,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 					{
 						Map<String, String> map = new HashMap<String, String>();
 						String href=ea.getAttributeValue("href");
-						String id=StringUtils.substringBetween(href,"playNum=", "\"");
+						String id=StringUtils.substringAfter(href,"planNum=");
 						map.put("id", id);
 						map.put("proid",id);
 						retList.add(map);
@@ -101,7 +103,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 	 */
 	public List<String> downloadCaipiaoProject(String id, String playtype) {
 		List<String> list = new ArrayList<String>();
-		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@playNum@", id), "@playtype@", playtype);
+		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.caipiaoDowload, "@playNum@", id), "@playtype@", playtype);
 		logger.info(url);
 		String content = HttpHtmlService.getHtmlContent(url, "GB2312");
 		try {
@@ -115,7 +117,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			list.add("-1");
 			return null;
 		}
-		String codeContent=project.get(0).toString();
+		String codeContent=project.get(0).getContent().getTextExtractor().toString();
 		if (codeContent.indexOf("该方案") != -1||codeContent.indexOf("尚未截止")!=-1) {
 			list.add("-1");
 			return null;
@@ -130,15 +132,74 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 		content = StringUtils.replace(content, " \n", "\n");
 		content = StringUtils.replace(content, "\t", ",");
 		content = StringUtils.replace(content, ".", ",");
+		parserdownloadProjectHtml(content);
 		String[] contents = StringUtils.split(content, "\n");
 		for (int i = 0; i < contents.length; i++) {
 			list.add(StringUtils.replace(contents[i], " ", ",").trim());
 		}
 		return list;
 	}
-
+	/**
+	 * 解析html
+	 * 
+	 * @param content
+	 * @return
+	 */
+	private List<String> parserdownloadProjectHtml(String content) {
+		List<String> list = new ArrayList<String>();
+		Source source = new Source(content);
+		Element projectDetailList = source.getElementById("projectDetailList");
+		List<Element> detail = projectDetailList.getAllElementsByClass("num");
+		boolean isHaveDan=false;
+		for (Element e : detail) {
+			String code = e.getContent().getTextExtractor().toString();
+			if (code.indexOf("红球") != -1) {
+				code = StringUtils.replace(code, " ", "");
+				code = StringUtils.replace(code, "蓝球:", "+");
+				code = StringUtils.replace(code, "红球:", "");
+				code = StringUtils.replace(code, "蓝球", "+");
+				code = StringUtils.replace(code, "红球", "");
+			} else if (code.indexOf("胆") != -1) {
+				String[] dans = StringUtils.substringsBetween(code, "胆:", "拖:");
+				for (int i = 0; i < dans.length; i++) {
+					String dan = dans[i].replace(" ", "");
+					if (StringUtils.isNotBlank(dan)) {
+						list.add("--1," + dan);
+						isHaveDan=true;
+					}
+				}
+			} else if (code.indexOf("拖") != -1) {
+				continue;
+			} else {
+				code = StringUtils.replace(code, " ", "");
+				code = StringUtils.replace(code, "蓝球:", "+");
+				code = StringUtils.replace(code, "胆:", "");
+				code = StringUtils.replace(code, "拖:", ",");
+				code = sortCode(code);
+			}
+			list.add(code);
+		}
+		if(isHaveDan){
+			list.add("--1");
+		}
+		return list;
+	}
+	/**
+	 * 给红球排序
+	 * 
+	 * @param code
+	 * @return
+	 */
+	private String sortCode(String code) {
+		String[] codes = StringUtils.split(code, "+");
+		String[] redCode = StringUtils.split(codes[0], ",");
+		Arrays.sort(redCode);
+		code = StringUtils.join(redCode, ",") + "+" + codes[1];
+		return code;
+	}
+	
 	@SuppressWarnings("unchecked")
-	public void saveDyjProjectRedCode() {
+	public void saveCaipiaoProjectRedCode() {
 		List<String[]> resultList = new ArrayList<String[]>();
 		int last = 0;
 		int page = 200;
@@ -232,6 +293,6 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
-		logger.info("========"+"大赢家抓取完成..............................................");
+		logger.info("========"+"爱彩网抓取完成..............................................");
 	}
 }

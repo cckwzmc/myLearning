@@ -211,6 +211,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
+				String id=(String) map.get("id");
 				String code = ObjectUtils.toString(map.get("code"));
 				if(StringUtils.indexOf(code, "胆")!=-1){
 					String[] codes = StringUtils.split(code, "@@");
