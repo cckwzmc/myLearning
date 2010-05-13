@@ -9,9 +9,9 @@
 
 	<appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<Encoding>UTF-8</Encoding>
-		<File>../logs/cas-web.log</File>
+		<File>../logs/lottery-job.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>myselfproject.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>../logs/lottery_job_bak.%d{yyyy-MM-dd}.log</FileNamePattern>
 		</rollingPolicy>
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<pattern>%date [%thread] %-5level %logger{50} - %msg%n</pattern>
