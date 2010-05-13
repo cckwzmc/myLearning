@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd"
+	default-autowire="byName">
+	<bean class="com.lottery.ssq.job.LotterySsqJob" id="fetchLotterySsqService">
+	</bean>
+
+	<!--起动Bean-->
+	<bean id="lotterySsqJob"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="cronBeforeLotterySsqTrigger" />
+				<ref bean="cronFetch500WanLotterySsqTrigger" />
+				<ref bean="cronFetchDyjLotterySsqTrigger" />
+				<ref bean="cronLotteryFilterTrigger" />
+				<ref bean="cronLotteryGenTrigger" />
+			</list>
+		</property>
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.jobStore.class">
+					org.quartz.simpl.RAMJobStore
+				</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 每期开始前的准备 -->
+	<bean id="beforeLotterySsq"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="fetchLotterySsqService" />
+		</property>
+		<property name="targetMethod">
+			<value>beforeLotterySsqService</value>
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
+	<bean id="cronBeforeLotterySsqTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="beforeLotterySsq" />
+		</property>
+		<property name="cronExpression">
+			<!-- 周2，4，7的4点和13自动运行 -->
+			<value>0 0 2 ? * SUN,TUE,THU</value>
+		</property>
+	</bean>
+	<!-- 500wan抓取 -->
+	<bean id="fetch500WanLotterySsq"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="fetchLotterySsqService" />
+		</property>
+		<property name="targetMethod">
+			<value>fetch500WanLotterySsqService</value>
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
+	<bean id="cronFetch500WanLotterySsqTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="fetch500WanLotterySsq" />
+		</property>
+		<property name="cronExpression">
+			<!-- 周2，4，7的4点和13自动运行 -->
+			<value>0 35 5,14 ? * SUN,TUE,THU</value>
+		</property>
+	</bean>
+	<!-- 大赢家抓取 -->
+	<bean id="fetchDyjLotterySsq"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="fetchLotterySsqService" />
+		</property>
+		<property name="targetMethod">
+			<value>fetchDyjLotterySsqService</value>
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
+	<bean id="cronFetchDyjLotterySsqTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="fetchDyjLotterySsq" />
+		</property>
+		<property name="cronExpression">
+			<!-- 周2，4，7的4点和13自动运行 -->
+			<value>0 36 6,14 ? * SUN,TUE,THU</value>
+		</property>
+	</bean>
+	<!-- 第一步过滤号码 -->
+	<bean id="scheduledLotterySsqFilterDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="fetchLotterySsqService" />
+		</property>
+		<property name="targetMethod">
+			<value>parserFetchLotterySsqData</value>
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
+	<bean id="cronLotteryFilterTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="scheduledLotterySsqFilterDetail" />
+		</property>
+		<property name="cronExpression">
+			<!-- 周2，4，7的4点和13自动运行 -->
+			<value>0 0 15 ? * SUN,TUE,THU</value>
+		</property>
+	</bean>
+	
+	<bean id="scheduledLotterySsqGenDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="fetchLotterySsqService" />
+		</property>
+		<property name="targetMethod">
+			<value>genFilterRedCode</value>
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
+	<bean id="cronLotteryGenTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="scheduledLotterySsqGenDetail" />
+		</property>
+		<property name="cronExpression">
+			<!-- 周2，4，7的4点和13自动运行 -->
+			<value>0 0/1 11,16,17,18 ? * MON,WED,SUN,TUE,THU</value>
+		</property>
+	</bean>
+</beans>	
