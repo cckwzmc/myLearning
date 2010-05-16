@@ -263,6 +263,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 							logger.error("方案解析失败==" + ssq);
 							continue;
 						}
+						Arrays.sort(redCodes);
 						LotteryUtils.selectArray(6, redCodes, resultList);
 					}
 				}

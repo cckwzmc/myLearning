@@ -94,6 +94,9 @@ public class LotterySsqJob {
 		logger.info("清理历史数据(胆、文件收集、上期的过滤号码。)............................");
 		this.lotterySsqService.clearHisSsqData();
 		logger.info("清理历史数据结束............................");
+		logger.info("初始化Filter数据开始............................");
+		this.lotteryInitService.initFilterResult();
+		logger.info("初始化Filter数据结束............................");
 	}
 	/**
 	 * 500wan用户投注抓取
@@ -147,13 +150,8 @@ public class LotterySsqJob {
 		logger.info("Sina媒体推荐（（胆））抓取结束。。。。。。");
 		this.lotteryCollectService.collectResultDispose();
 		logger.info("抓取号码拆分结束........");
-		
-		// this.lotterySsqCustomer500WanService.save500WanProjectRedCode();
-		// this.lotterySsqCustomerDyjService.saveDyjProjectRedCode();
-		
 		this.lotterySsqService.filterCurrentRedCode();
 		logger.info("第一步号码过滤结束...........");
-		// this.lotterySsqFileService.clearFileContent();
 	}
 
 	/**

@@ -153,9 +153,6 @@ public class LotterySsqService {
 				int qOne = 0;
 				int qTwo = 0;
 				int qThree = 0;
-				if("01,02,19,23,27,29".equals(ObjectUtils.toString(lValue.get("value")))){
-					System.out.println();
-				}
 				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
 					continue;
 				}
@@ -313,13 +310,13 @@ public class LotterySsqService {
 	 */
 	@SuppressWarnings("unchecked")
 	public void filterCurrentRedCodeFirst() {
-		logger.info("开始从过滤号码中删除抓取的号码.............");
-		if(this.dao.getTotalLotteryFilterResult()==0)
-		{
-			logger.info("开始初始化过滤号码的最大集合(把AllResult的都转过来)........");
-//			this.lotteryInitService.saveAllRedResult("1");
-			this.initFilterResult();
-		}	
+//		logger.info("开始从过滤号码中删除抓取的号码.............");
+//		if(this.dao.getTotalLotteryFilterResult()==0)
+//		{
+//			logger.info("开始初始化过滤号码的最大集合(把AllResult的都转过来)........");
+////			this.lotteryInitService.saveAllRedResult("1");
+//			this.initFilterResult();
+//		}	
 		logger.info("开始从过滤号码中删除抓取号码........");
 		this.deleteSsqLotteryAllFilterResult();
 		int count = this.dao.getTotalLotteryAllResult();
@@ -333,19 +330,6 @@ public class LotterySsqService {
 		}
 		this.dao.saveLotteryGenLog("1", LotterySsqFetchConfig.expect, "1");
 		logger.info("第一步过滤号码完成...");
-	}
-
-	private void initFilterResult() {
-		int count = this.dao.getTotalLotteryAllResult();
-		int last = 0;
-		int page = 40000;
-		while (last < count) {
-			List list = this.dao.getLottoryAllResultLimit(last, page);
-			last += page;
-			if(CollectionUtils.isNotEmpty(list)){
-				this.dao.batchInitSaveSsqLotteryFilterResult(list);
-			}
-		}	
 	}
 
 	/**

@@ -27,7 +27,9 @@ public class ReverseTestMain {
 			lotterySsqConifgService.initFilterConfig();
 			
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
-			initService.tempDeleteMediaRedCodeFromFilter();
+//			initService.tempDeleteMediaRedCodeFromFilter();
+//			initService.initFilterResult();
+			initService.hisDrawsRedcode("02,03,13,19,20,23");
 			Scanner scanner = new Scanner(System.in);
 			long currentTime = System.currentTimeMillis();
 			logger.info("按y开始开始初始化操作，按n跳过一步，60秒钟后默认开始初始化操作.....");
@@ -38,8 +40,6 @@ public class ReverseTestMain {
 					break;
 				}
 				if ("y".equalsIgnoreCase(in) || currentTime + 60000 < System.currentTimeMillis()) {
-					// initService.saveAllRedResult();
-					// initService.initHistoryMediaStatForFile();
 					logger.info("开始抓取历史开奖号码..............");
 					initService.initHistoryOpenCode();
 					logger.info("开始抓取历史媒体推荐号码..............");

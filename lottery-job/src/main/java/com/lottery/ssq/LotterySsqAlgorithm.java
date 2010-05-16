@@ -503,7 +503,7 @@ public class LotterySsqAlgorithm {
 	}
 
 	/**
-	 * 与不能同时出现的号码类似，只是这是通过网上用户收集而来的。 1、一个胆不考虑 2、两个胆、三个胆的不能全中 3、大于三个的最多只能中3个
+	 * 与不能同时出现的号码类似，只是这是通过网上用户收集而来的。 1、一个胆不考虑 2、三个胆的不能全中 3、大于三个的最多只能中3个
 	 * 
 	 * @param lValues
 	 * @param sinaDanList
@@ -518,7 +518,7 @@ public class LotterySsqAlgorithm {
 				if (tmp.length < 2) {
 					continue;
 				}
-				if (tmp.length == 2 || tmp.length == 3) {
+				if (tmp.length == 3) {
 					tempSelect = 0;
 					for (int k = 0; k < tmp.length; k++) {
 						for (int i = 0; i < lValues.length; i++) {
@@ -608,7 +608,7 @@ public class LotterySsqAlgorithm {
 			}
 
 		}
-		if (count > 3) {
+		if (count > 1) {
 			return false;
 		}
 		return true;

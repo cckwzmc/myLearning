@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -490,5 +492,54 @@ public class LotteryInitService {
 	public static void main(String[] args) {
 		LotteryInitService init=new LotteryInitService();
 		init.saveLottoryResult("04,17,23,27,28,32");
+	}
+	/**
+	 * 把双色球的所有可能集合初始化如Filter
+	 */
+	@SuppressWarnings("unchecked")
+	public void initFilterResult() {
+		int count = this.dao.getTotalLotteryAllResult();
+		int last = 0;
+		int page = 40000;
+		while (last < count) {
+			List list = this.dao.getLottoryAllResultLimit(last, page);
+			last += page;
+			if(CollectionUtils.isNotEmpty(list)){
+				this.dao.batchInitSaveSsqLotteryFilterResult(list);
+			}
+		}	
+	}
+
+	/**
+	 * 用户投注的历史号码中奖情况
+	 */
+	public void hisDrawsRedcode(String redCode) {
+		String[] redcodes=redCode.split(",");
+		int first=0;
+		int page=40000;
+		
+		int count=this.dao.getTotalLotteryCollectResult();
+		while(first<count){
+			List list=this.dao.getSsqLotteryCollectResultLimit(first, page);
+			first+=page;
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				int tCount=0;
+				Map map = (Map) iterator.next();
+				//s.first,s.second,s.third,s.fourth,firth,sixth
+				String[] tmp=new String[]{ObjectUtils.toString(map.get("first")),ObjectUtils.toString(map.get("second")),ObjectUtils.toString(map.get("third")),ObjectUtils.toString(map.get("fourth")),ObjectUtils.toString(map.get("firth")),ObjectUtils.toString(map.get("sixth"))};
+				for (int i = 0; i < redcodes.length; i++) {
+					for (int j = 0; j < tmp.length; j++) {
+						if(StringUtils.equals(redcodes[i], tmp[j])){
+							tCount++;
+						}
+					}
+				}
+				if(tCount>4){
+					logger.info(StringUtils.join(tmp,",")+"中了"+tCount);
+				}
+			}
+		}
+		
+		
 	}
 }

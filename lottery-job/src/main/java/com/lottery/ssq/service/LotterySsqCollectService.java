@@ -91,10 +91,7 @@ public class LotterySsqCollectService {
 	 */
 	public void collectResultDispose() {
 		logger.info("每一期的第一次必须在抓取完成时使用这个方法............");
-//		if (this.dao.isGenLotteryResult("1", LotterySsqFetchConfig.expect)) {
-			this.dao.clearSsqLotteryFilterResult();
-			this.dao.clearSsqLotteryCollectResult();
-//		}
+		this.dao.clearSsqLotteryCollectResult();
 		this.lotterySsqCustomer500WanService.save500WanProjectRedCode();
 		this.lotterySsqCustomerDyjService.saveDyjProjectRedCode();
 		this.lotterySsqFileService.saveFileProjectRedCode();
