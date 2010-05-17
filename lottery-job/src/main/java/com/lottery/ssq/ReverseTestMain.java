@@ -29,7 +29,13 @@ public class ReverseTestMain {
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
 //			initService.tempDeleteMediaRedCodeFromFilter();
 //			initService.initFilterResult();
-			initService.hisDrawsRedcode("02,03,13,19,20,23");
+			//看中奖号码在用户投注中的表现
+//			initService.hisDrawsRedcode("02,03,13,19,20,23","10055");
+//			initService.hisDrawsRedcode("01,06,08,12,14,25","10054");
+			initService.hisDrawsRedcode("03,22,24,27,28,30","10053");
+			initService.hisDrawsRedcode("01,02,19,23,27,29","10055");
+			LotterySsqCollectService collectservice = (LotterySsqCollectService) context.getBean("lotteryCollectService");
+//			collectservice.fetchDyjCustomerProject();
 			Scanner scanner = new Scanner(System.in);
 			long currentTime = System.currentTimeMillis();
 			logger.info("按y开始开始初始化操作，按n跳过一步，60秒钟后默认开始初始化操作.....");
@@ -54,7 +60,7 @@ public class ReverseTestMain {
 				}
 				Thread.sleep(2000);
 			}
-			LotterySsqCollectService collectservice = (LotterySsqCollectService) context.getBean("lotteryCollectService");
+			
 			currentTime = System.currentTimeMillis();
 			logger.info("按y开始开始抓取大赢家的用户投注，按n跳过这一步，60秒钟后默认开始抓取大赢家用户投注.....");
 			in = scanner.nextLine();

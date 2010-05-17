@@ -570,4 +570,13 @@ public class LotteryDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
+	public int getTotalLotteryCollectResult(String expect) {
+		return this.getJdbcTemplate().queryForInt("select count(*) from ssq_lottery_collect_result_"+expect);
+	}
+
+	public List getSsqLotteryCollectResultLimit(int first, int page, String expect) {
+		String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result_"+expect+" t  limit " + first + "," + page;
+		return this.getJdbcTemplate().queryForList(sql);
+	}
+
 }

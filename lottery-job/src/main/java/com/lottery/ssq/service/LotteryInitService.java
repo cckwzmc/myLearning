@@ -513,14 +513,15 @@ public class LotteryInitService {
 	/**
 	 * 用户投注的历史号码中奖情况
 	 */
-	public void hisDrawsRedcode(String redCode) {
+	public void hisDrawsRedcode(String redCode,String expect) {
+		logger.info("第"+expect+"期开始计算...");
 		String[] redcodes=redCode.split(",");
 		int first=0;
 		int page=40000;
 		
-		int count=this.dao.getTotalLotteryCollectResult();
+		int count=this.dao.getTotalLotteryCollectResult(expect);
 		while(first<count){
-			List list=this.dao.getSsqLotteryCollectResultLimit(first, page);
+			List list=this.dao.getSsqLotteryCollectResultLimit(first, page,expect);
 			first+=page;
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				int tCount=0;
