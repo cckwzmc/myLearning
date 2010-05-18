@@ -9,6 +9,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
+import com.lottery.ssq.service.LotterySsqCustomer500WanService;
+import com.lottery.ssq.service.LotterySsqCustomerCaipiaoService;
 import com.lottery.ssq.service.LotterySsqService;
 
 /**
@@ -27,13 +29,18 @@ public class ReverseTestMain {
 			lotterySsqConifgService.initFilterConfig();
 			
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
+			initService.deleteMediaFetch();
+//			LotterySsqCustomerCaipiaoService caipiao = (LotterySsqCustomerCaipiaoService) context.getBean("lotterySsqCustomerCaipiaoService");
+//			caipiao.fetchCaipiaoProjectCode();
+//			initService.fetchMediaSinaContent();
+//			initService.fetchMedia500WanContent();
 //			initService.tempDeleteMediaRedCodeFromFilter();
 //			initService.initFilterResult();
 			//看中奖号码在用户投注中的表现
 //			initService.hisDrawsRedcode("02,03,13,19,20,23","10055");
 //			initService.hisDrawsRedcode("01,06,08,12,14,25","10054");
-			initService.hisDrawsRedcode("03,22,24,27,28,30","10053");
-			initService.hisDrawsRedcode("01,02,19,23,27,29","10055");
+//			initService.hisDrawsRedcode("03,22,24,27,28,30","10053");
+//			initService.hisDrawsRedcode("01,02,19,23,27,29","10055");
 			LotterySsqCollectService collectservice = (LotterySsqCollectService) context.getBean("lotteryCollectService");
 //			collectservice.fetchDyjCustomerProject();
 			Scanner scanner = new Scanner(System.in);
