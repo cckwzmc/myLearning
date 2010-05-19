@@ -10,6 +10,7 @@ import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
 import com.lottery.ssq.service.LotterySsqCustomer500WanService;
+import com.lottery.ssq.service.LotterySsqCustomerCaipiaoService;
 import com.lottery.ssq.service.LotterySsqCustomerDyjService;
 import com.lottery.ssq.service.LotterySsqFileService;
 import com.lottery.ssq.service.LotterySsqService;
@@ -21,8 +22,15 @@ public class LotterySsqJob {
 	LotterySsqFileService lotterySsqFileService = null;
 	LotterySsqService lotterySsqService = null;
 	LotteryInitService lotteryInitService = null;
+	LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService=null;
+	
 	private LotterySsqCollectService lotteryCollectService = null;
 	private LotterySsqConifgService lotterySsqConifgService = null;
+
+	
+	public void setLotterySsqCustomerCaipiaoService(LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService) {
+		this.lotterySsqCustomerCaipiaoService = lotterySsqCustomerCaipiaoService;
+	}
 
 	public void setLotterySsqConifgService(LotterySsqConifgService lotterySsqConifgService) {
 		this.lotterySsqConifgService = lotterySsqConifgService;
@@ -76,6 +84,9 @@ public class LotterySsqJob {
 		if (this.lotterySsqConifgService == null) {
 			this.lotterySsqConifgService = (LotterySsqConifgService) context.getBean("lotterySsqConifgService");
 		}
+		if (this.lotterySsqCustomerCaipiaoService == null) {
+			this.lotterySsqCustomerCaipiaoService = (LotterySsqCustomerCaipiaoService) context.getBean("lotterySsqCustomerCaipiaoService");
+		}
 	}
 
 	/**
@@ -125,6 +136,20 @@ public class LotterySsqJob {
 		logger.info("抓取大赢家用户投注开始....................");
 		this.lotterySsqCustomerDyjService.fetchDyjProjectCode();
 		logger.info("抓取大赢家用户投注结束....................");
+	}
+	/**
+	 * 爱彩网用户投注抓取
+	 */
+	public void fetchCaipiaoLotterySsqService() {
+		initService();
+		if (!this.lotterySsqConifgService.initFetchConfig()) {
+			logger.info("爱彩网抓取配置初始化失败....................");
+			return;
+		}
+		logger.info("爱彩网用户后台抓取任务开始...........");
+		logger.info("抓取爱彩网用户投注开始....................");
+		this.lotterySsqCustomerCaipiaoService.fetchCaipiaoProjectCode();
+		logger.info("抓取爱彩网用户投注结束....................");
 	}
 	/**
 	 * 计算抓取的数据，并完成初步过滤。 每天下午4点开始

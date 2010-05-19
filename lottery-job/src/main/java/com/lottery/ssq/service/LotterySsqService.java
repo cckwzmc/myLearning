@@ -156,12 +156,18 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
 					continue;
 				}
+				//是否需要胆
 				if (!LotterySsqAlgorithm.isRedIncludeRequiredCode(lValues)) {
 					continue;
 				}
-				if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
+				//是否包含上一期的号码
+				if(!LotterySsqAlgorithm.isRedIncludePreRedCode(lValues)){
 					continue;
 				}
+				
+//				if (!LotterySsqAlgorithm.isRedIncludeAnyOneCode(lValues)) {
+//					continue;
+//				}
 				if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues)) {
 					continue;
 				}
@@ -412,7 +418,7 @@ public class LotterySsqService {
 			if (!LotterySsqAlgorithm.isFilterRedNumericInRange(lValues)) {
 				redList.add(lValue);
 			}
-			if (!LotterySsqAlgorithm.isFilterRedIncludeSideCode(lValues, LotterySsqFetchConfig.preSideCode) && !LotterySsqAlgorithm.isFilterRedIncludeEvenIn(lValues) && !LotterySsqAlgorithm.isFilterIncludePreCode(lValues, LotterySsqFetchConfig.preRedCode)) {
+			if (!LotterySsqAlgorithm.isFilterRedIncludeSideCode(lValues, LotterySsqFetchConfig.preSideCode)  && !LotterySsqAlgorithm.isFilterIncludePreCode(lValues, LotterySsqFetchConfig.preRedCode)) {
 				redList.add(lValue);
 			}
 

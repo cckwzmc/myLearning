@@ -129,4 +129,12 @@ public class LotterySsqConifgService {
 		LotterySsqFilterConfig.mustSelectedOneCode =StringUtils.isNotBlank(ObjectUtils.toString(map.get("mustSelectedOneCode")))?StringUtils.split(ObjectUtils.toString(map.get("mustSelectedOneCode")),"|"):null;
 		return true;
 	}
+	/**
+	 * 过滤中各种条件的配置。
+	 * 如：可以种胆中的几个号码等条件。
+	 * @return
+	 */
+	public boolean getLotterySsqFilterCondictionConfig(){
+		return true;
+	}
 }

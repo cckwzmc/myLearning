@@ -198,7 +198,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 		List<String[]> resultList = new ArrayList<String[]>();
 		int last = 0;
 		int page = 200;
-		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
+		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "5");
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
@@ -212,18 +212,21 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 						logger.error("方案解析失败==" + ssq);
 						continue;
 					}
+					Arrays.sort(redCodes);
 					LotteryUtils.selectArray(6, redCodes, resultList);
 					if (resultList.size() > 2000) {
 						this.dao.saveSsqLotteryCollectRedCod(resultList);
+						logger.info("看看是否拆分了爱彩网的数据.....");
 						resultList.clear();
 					}
 				}
 			}
 			last += page;
-			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
+			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "5");
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
+			logger.info("看看是否拆分了爱彩网的数据.....");
 			resultList.clear();
 		}
 	}

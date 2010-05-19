@@ -25,6 +25,7 @@ public class LotterySsqCollectService {
 	LotteryDao dao = null;
 	LotterySsqCustomerDyjService lotterySsqCustomerDyjService = null;
 	LotterySsqCustomer500WanService lotterySsqCustomer500WanService = null;
+	LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService = null;
 	LotterySsqFileService lotterySsqFileService = null;
 	LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
 	LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
@@ -47,6 +48,11 @@ public class LotterySsqCollectService {
 
 	public void setLotterySsqCustomer500WanService(LotterySsqCustomer500WanService lotterySsqCustomer500WanService) {
 		this.lotterySsqCustomer500WanService = lotterySsqCustomer500WanService;
+	}
+
+	
+	public void setLotterySsqCustomerCaipiaoService(LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService) {
+		this.lotterySsqCustomerCaipiaoService = lotterySsqCustomerCaipiaoService;
 	}
 
 	public void setDao(LotteryDao dao) {
@@ -97,6 +103,7 @@ public class LotterySsqCollectService {
 		this.lotterySsqFileService.saveFileProjectRedCode();
 		this.lotterySsqMedia500WanService.saveMedia500WanRedCode();
 		this.lotterySsqMediaSinaService.saveMediaSinaRedCode();
+		this.lotterySsqCustomerCaipiaoService.saveCaipiaoProjectRedCode();
 	}
 
 	@SuppressWarnings("unchecked")

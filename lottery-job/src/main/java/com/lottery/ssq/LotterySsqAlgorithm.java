@@ -62,8 +62,10 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedIncludeAnyOneCode(String[] lValues) {
+		if(LotterySsqFilterConfig.includePreRedNum==-1){
+			return true;
+		}
 		int tempSelect = 0;
-
 		for (int j = 0; j < lValues.length; j++) {
 			for (int k = 0; k < LotterySsqFetchConfig.preRedCode.length; k++) {
 				if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preRedCode[k])) {
@@ -76,16 +78,18 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
-
 	/**
-	 * 是否至少包含上一期的一个号码
-	 * 
+	 * 是否包含上一期的号码
+	 * LotterySsqFilterConfig.includePreRedNum==0号码中不能包含一个上一期的号码
+	 * 包含 至少LotterySsqFilterConfig.includePreRedNum个以上的号码
 	 * @param lValues
 	 * @return
 	 */
-	public static boolean isIncludePreCode(String[] lValues) {
+	public static boolean isRedIncludePreRedCode(String[] lValues) {
+		if(LotterySsqFilterConfig.includePreRedNum==-1){
+			return true;
+		}
 		int tempSelect = 0;
-
 		for (int j = 0; j < lValues.length; j++) {
 			for (int k = 0; k < LotterySsqFetchConfig.preRedCode.length; k++) {
 				if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preRedCode[k])) {
@@ -93,11 +97,15 @@ public class LotterySsqAlgorithm {
 				}
 			}
 		}
-		if (tempSelect < 1) {
-			return false;
+		if(LotterySsqFilterConfig.includePreRedNum==0&&tempSelect==0){
+			return true;
 		}
-		return true;
+		if (LotterySsqFilterConfig.includePreRedNum>0&&tempSelect >= LotterySsqFilterConfig.includePreRedNum) {
+			return true;
+		}
+		return false;
 	}
+
 
 	/**
 	 * // 必须包含其中的任意一个数字(边号) 并且不能超过2个
@@ -107,10 +115,10 @@ public class LotterySsqAlgorithm {
 	 */
 	public static boolean isRedIncludeSideCode(String[] lValues) {
 		int tempSelect = 0;
-		if (LotterySsqFetchConfig.preSideCode == null) {
+		if (LotterySsqFetchConfig.preSideCode == null||LotterySsqFilterConfig.haveSideCode==-1) {
 			return true;
 		}
-		if (LotterySsqFetchConfig.preSideCode.length > 0) {
+		if (LotterySsqFetchConfig.preSideCode.length > 0&&LotterySsqFilterConfig.haveSideCode>0) {
 			for (int j = 0; j < lValues.length; j++) {
 				for (int k = 0; k < LotterySsqFetchConfig.preSideCode.length; k++) {
 					if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preSideCode[k])) {
@@ -121,7 +129,7 @@ public class LotterySsqAlgorithm {
 			if (tempSelect == 0 || tempSelect > 2) {
 				return false;
 			}
-		} else if (LotterySsqFetchConfig.preSideCode.length == 0) {
+		} else if (LotterySsqFilterConfig.haveSideCode == 0) {
 			for (int j = 0; j < lValues.length; j++) {
 				for (int k = 0; k < LotterySsqFetchConfig.preSideCode.length; k++) {
 					if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preSideCode[k])) {
@@ -214,11 +222,8 @@ public class LotterySsqAlgorithm {
 					}
 				}
 				if (tempSelect > 0) {
-					break;
+					return false;
 				}
-			}
-			if (tempSelect > 0) {
-				return false;
 			}
 		}
 		return true;
@@ -231,7 +236,7 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedInTheCodes(String[] lValues) {
-		if (LotterySsqFilterConfig.selectCode != null && LotterySsqFilterConfig.selectCode.length >= 1) {
+		if (LotterySsqFilterConfig.selectCode != null && LotterySsqFilterConfig.selectCode.length >=6) {
 			int tempSelect = 0;
 			for (int i = 0; i < lValues.length; i++) {
 				for (int j = 0; j < LotterySsqFilterConfig.selectCode.length; j++) {
@@ -256,7 +261,6 @@ public class LotterySsqAlgorithm {
 	public static boolean isRedTogethorCode(String[] lValues) {
 		int tempSelect = 0;
 		if (LotterySsqFilterConfig.cannotSelectedTogethor != null && LotterySsqFilterConfig.cannotSelectedTogethor.length >= 1) {
-			boolean breakFlag = false;
 			for (int j = 0; j < LotterySsqFilterConfig.cannotSelectedTogethor.length; j++) {
 				String[] tmp = StringUtils.split(LotterySsqFilterConfig.cannotSelectedTogethor[j], ",");
 				tempSelect = 0;
@@ -268,12 +272,8 @@ public class LotterySsqAlgorithm {
 					}
 				}
 				if (tmp.length == tempSelect) {
-					breakFlag = true;
-					break;
+					return false;
 				}
-			}
-			if (breakFlag) {
-				return false;
 			}
 		}
 		return true;
@@ -442,7 +442,6 @@ public class LotterySsqAlgorithm {
 	public static boolean isSinaDanTogethorFilter(String[] lValues, List<String> sinaDanList) {
 		int tempSelect = 0;
 		if (CollectionUtils.isNotEmpty(sinaDanList)) {
-			boolean breakFlag = false;
 			for (int j = 0; j < sinaDanList.size(); j++) {
 				String[] tmp = StringUtils.split(ObjectUtils.toString(sinaDanList.get(j)), ",");
 				tempSelect = 0;
@@ -454,12 +453,8 @@ public class LotterySsqAlgorithm {
 					}
 				}
 				if (tmp.length == tempSelect) {
-					breakFlag = true;
-					break;
+					return false;
 				}
-			}
-			if (breakFlag) {
-				return false;
 			}
 		}
 		return true;
@@ -503,7 +498,8 @@ public class LotterySsqAlgorithm {
 	}
 
 	/**
-	 * 与不能同时出现的号码类似，只是这是通过网上用户收集而来的。 1、一个胆不考虑 2、三个胆的不能全中 3、大于三个的最多只能中3个
+	 * 与不能同时出现的号码类似，只是这是通过网上用户收集而来的。
+	 * 1、一个胆不考虑 2、三个胆的不能全中 3、大于三个的最多只能中3个
 	 * 
 	 * @param lValues
 	 * @param sinaDanList
@@ -830,118 +826,6 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
-
-	// ~~~~~~~~~~~~~~~~~~~~以下是初步过滤的方法~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	/**
-	 * 与配置文件无关，只要包含一个边号，即，返回True
-	 * 
-	 * @param lValues
-	 * @param preSideCode
-	 *            边号集合
-	 * @return
-	 */
-	public static boolean isFilterRedIncludeSideCode(String[] lValues, String[] preSideCode) {
-		int tempSelect = 0;
-		if (preSideCode == null || preSideCode.length < 1) {
-			return true;
-		}
-		for (int j = 0; j < lValues.length; j++) {
-			for (int k = 0; k < preSideCode.length; k++) {
-				if (StringUtils.equals(lValues[j], preSideCode[k])) {
-					tempSelect++;
-				}
-			}
-		}
-		if (tempSelect == 0) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 与配置文件无关，只要包含一个连号，即，返回True
-	 * 
-	 * @param lValues
-	 * @return
-	 */
-	public static boolean isFilterRedIncludeEvenIn(String[] lValues) {
-		int tempSelect2 = 0;
-		for (int j = 0; j < lValues.length; j++) {
-			int rValue = NumberUtils.toInt(lValues[j]);
-			int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-			if (nextValue != -1 && nextValue - rValue == 1) {
-				tempSelect2++;
-			}
-		}
-		if (tempSelect2 == 0) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 与配置文件无关，只要包含一个上一期的号码，即，返回True
-	 * 
-	 * @param lValues
-	 * @return
-	 */
-	public static boolean isFilterIncludePreCode(String[] lValues, String[] preRedCode) {
-		int tempSelect = 0;
-
-		for (int j = 0; j < lValues.length; j++) {
-			for (int k = 0; k < preRedCode.length; k++) {
-				if (StringUtils.equals(lValues[j], preRedCode[k])) {
-					tempSelect++;
-				}
-			}
-		}
-		if (tempSelect < 1) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 第一步过滤使用
-	 * 
-	 * @param lValues
-	 * @return
-	 */
-	public static boolean isFilterRedNumericInRange(String[] redCode) {
-		if (NumberUtils.toInt(redCode[0]) > LotterySsqFetchConfig.firstMaxCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[0]) < LotterySsqFetchConfig.firstMinCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[1]) > LotterySsqFetchConfig.secondMaxCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[1]) < LotterySsqFetchConfig.secondMinCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[2]) > LotterySsqFetchConfig.thirdMaxCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[2]) < LotterySsqFetchConfig.thirdMinCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[3]) > LotterySsqFetchConfig.fourthMaxCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[3]) < LotterySsqFetchConfig.fourthMinCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[5]) < LotterySsqFetchConfig.lastMinCode) {
-			return false;
-		}
-		if (NumberUtils.toInt(redCode[5]) > LotterySsqFetchConfig.lastMaxCode) {
-			return false;
-		}
-		return true;
-	}
-
 	/**
 	 * 用户投注的前40个不回中超过4个。
 	 * 
@@ -1050,4 +934,95 @@ public class LotterySsqAlgorithm {
 		return true;
 	}
 
+	
+	
+	
+	// ~~~~~~~~~~~~~~~~~~~~以下是初步过滤的方法~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	/**
+	 * 与配置文件无关，只要包含一个边号，即，返回True
+	 * 
+	 * @param lValues
+	 * @param preSideCode
+	 *            边号集合
+	 * @return
+	 */
+	public static boolean isFilterRedIncludeSideCode(String[] lValues, String[] preSideCode) {
+		int tempSelect = 0;
+		if (preSideCode == null || preSideCode.length < 1) {
+			return true;
+		}
+		for (int j = 0; j < lValues.length; j++) {
+			for (int k = 0; k < preSideCode.length; k++) {
+				if (StringUtils.equals(lValues[j], preSideCode[k])) {
+					tempSelect++;
+				}
+			}
+		}
+		if (tempSelect == 0) {
+			return false;
+		}
+		return true;
+	}
+	/**
+	 * 与配置文件无关，只要包含一个上一期的号码，即，返回True
+	 * 
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isFilterIncludePreCode(String[] lValues, String[] preRedCode) {
+		int tempSelect = 0;
+
+		for (int j = 0; j < lValues.length; j++) {
+			for (int k = 0; k < preRedCode.length; k++) {
+				if (StringUtils.equals(lValues[j], preRedCode[k])) {
+					tempSelect++;
+				}
+			}
+		}
+		if (tempSelect < 1) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 第一步过滤使用
+	 * 
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isFilterRedNumericInRange(String[] redCode) {
+		if (NumberUtils.toInt(redCode[0]) > LotterySsqFetchConfig.firstMaxCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[0]) < LotterySsqFetchConfig.firstMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[1]) > LotterySsqFetchConfig.secondMaxCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[1]) < LotterySsqFetchConfig.secondMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[2]) > LotterySsqFetchConfig.thirdMaxCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[2]) < LotterySsqFetchConfig.thirdMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[3]) > LotterySsqFetchConfig.fourthMaxCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[3]) < LotterySsqFetchConfig.fourthMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[5]) < LotterySsqFetchConfig.lastMinCode) {
+			return false;
+		}
+		if (NumberUtils.toInt(redCode[5]) > LotterySsqFetchConfig.lastMaxCode) {
+			return false;
+		}
+		return true;
+	}
 }
