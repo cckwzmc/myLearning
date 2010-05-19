@@ -268,7 +268,12 @@ public class LotterySsqService {
 				}
 			}
 		}
-		writeFile(redList, "d:/myproject/current.xml", false);
+		String f=System.currentTimeMillis()+"_"+LotterySsqFetchConfig.expect+".xml";
+		String rsFileName="D:/Apache2.2/htdocs/lottery_rs/"+f;
+		writeFile(redList, rsFileName, false);
+		String lotteryHtml="D:/Apache2.2/htdocs/lottery_rs/index_"+LotterySsqFetchConfig.expect+".htm";
+		String tmp="<li><a href='"+f+"'>"+f+"</a></li>";
+		writeFile(tmp,lotteryHtml,true);
 	}
 
 	/**
@@ -290,6 +295,20 @@ public class LotterySsqService {
 				filerRed = (i == redList.size() - 1) ? filerRed : filerRed + "\n";
 				writer.write(filerRed);
 			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private void writeFile(String content, String fileName, boolean isAppend) {
+		try {
+			File file = new File(fileName);
+			if (!file.exists()) {
+				file.createNewFile();
+			} else {
+			}
+			FileWriter writer = new FileWriter(file, isAppend);
+			writer.write(content);
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
