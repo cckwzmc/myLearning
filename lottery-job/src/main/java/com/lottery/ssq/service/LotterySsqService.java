@@ -246,6 +246,10 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues,cRedList)) {
 					continue;
 				}
+				//在用户投注中5个的不能超过10个
+				if(selectedRedCodeGtFive(lValues)){
+					continue;
+				}
 				/*
 				 * 即我认为这些号码是不可能中奖的， 推荐使用文本方式保存的号码使用
 				 */
@@ -268,12 +272,44 @@ public class LotterySsqService {
 				}
 			}
 		}
-		String f=System.currentTimeMillis()+"_"+LotterySsqFetchConfig.expect+".xml";
+		String f=System.currentTimeMillis()+"_"+LotterySsqFetchConfig.expect+".txt";
 		String rsFileName="D:/Apache2.2/htdocs/lottery_rs/"+f;
 		writeFile(redList, rsFileName, false);
 		String lotteryHtml="D:/Apache2.2/htdocs/lottery_rs/index_"+LotterySsqFetchConfig.expect+".htm";
 		String tmp="<li><a href='"+f+"'>"+f+"</a></li>";
 		writeFile(tmp,lotteryHtml,true);
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean selectedRedCodeGtFive(String[] lValues) {
+		int first=0;
+		int page=40000;
+		int totalCount=0;
+		int count=this.dao.getTotalLotteryCollectResult();
+		while(first<count){
+			List list=this.dao.getSsqLotteryCollectResultLimit(first, page);
+			first+=page;
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				int tCount=0;
+				Map map = (Map) iterator.next();
+				//s.first,s.second,s.third,s.fourth,firth,sixth
+				String[] tmp=new String[]{ObjectUtils.toString(map.get("first")),ObjectUtils.toString(map.get("second")),ObjectUtils.toString(map.get("third")),ObjectUtils.toString(map.get("fourth")),ObjectUtils.toString(map.get("firth")),ObjectUtils.toString(map.get("sixth"))};
+				for (int i = 0; i < lValues.length; i++) {
+					for (int j = 0; j < tmp.length; j++) {
+						if(StringUtils.equals(lValues[i], tmp[j])){
+							tCount++;
+						}
+					}
+				}
+				if(tCount>4){
+					totalCount++;
+				}
+			}
+		}
+		if(totalCount>10){
+			return true;
+		}
+		return false;
 	}
 
 	/**

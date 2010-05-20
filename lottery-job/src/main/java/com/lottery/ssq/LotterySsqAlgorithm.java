@@ -691,7 +691,7 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 必须要中其中的一个号码
-	 * 
+	 * 选且只选其中一个号码
 	 * @param lValues
 	 * @return
 	 */
@@ -710,10 +710,10 @@ public class LotterySsqAlgorithm {
 				}
 			}
 			if (tempSelect == 1) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	/**
