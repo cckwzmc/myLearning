@@ -94,7 +94,7 @@ public class LotterySsqJob {
 	 */
 	public void beforeLotterySsqService() {
 		initService();
-		logger.info("后台抓取任务开始...........");
+		logger.info("后台备份历史数据任务开始...........");
 		if (!this.lotterySsqConifgService.initFetchConfig()) {
 			logger.info("抓取配置初始化失败....................");
 			return;

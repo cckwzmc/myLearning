@@ -9,8 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
-import com.lottery.ssq.service.LotterySsqCustomer500WanService;
-import com.lottery.ssq.service.LotterySsqCustomerCaipiaoService;
+import com.lottery.ssq.service.LotterySsqFileService;
 import com.lottery.ssq.service.LotterySsqService;
 
 /**
@@ -29,7 +28,9 @@ public class ReverseTestMain {
 			lotterySsqConifgService.initFilterConfig();
 			
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
-			initService.deleteMediaFetch();
+			LotterySsqFileService lotterySsqFileService = (LotterySsqFileService) context.getBean("lotterySsqFileService");
+//			lotterySsqFileService.deleteFileRedCode();
+//			initService.deleteMediaFetch();
 //			LotterySsqCustomerCaipiaoService caipiao = (LotterySsqCustomerCaipiaoService) context.getBean("lotterySsqCustomerCaipiaoService");
 //			caipiao.fetchCaipiaoProjectCode();
 //			initService.fetchMediaSinaContent();
@@ -42,7 +43,12 @@ public class ReverseTestMain {
 //			initService.hisDrawsRedcode("03,22,24,27,28,30","10053");
 //			initService.hisDrawsRedcode("01,02,19,23,27,29","10055");
 			LotterySsqCollectService collectservice = (LotterySsqCollectService) context.getBean("lotteryCollectService");
+			LotterySsqService service = (LotterySsqService) context.getBean("lotteryService");
 //			collectservice.fetchDyjCustomerProject();
+			collectservice.collectResultDispose();
+			logger.info("抓取号码拆分结束........");
+			service.filterCurrentRedCode();
+			logger.info("第一步号码过滤结束...........");
 			Scanner scanner = new Scanner(System.in);
 			long currentTime = System.currentTimeMillis();
 			logger.info("按y开始开始初始化操作，按n跳过一步，60秒钟后默认开始初始化操作.....");
@@ -118,7 +124,7 @@ public class ReverseTestMain {
 				Thread.sleep(2000);
 			}
 //			collectservice.deleteFilterResultFromCollect();
-			LotterySsqService service = (LotterySsqService) context.getBean("lotteryService");
+//			LotterySsqService service = (LotterySsqService) context.getBean("lotteryService");
 			// service.getCurrentExpertMergeResult();
 			currentTime = System.currentTimeMillis();
 			logger.info("开始生成过滤号码，按y开始，按n跳过这一步，60秒钟后默认自动开始.....");

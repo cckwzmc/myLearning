@@ -489,5 +489,28 @@ public class LotterySsqFileService extends Thread {
 			this.clearFileContent();
 		}
 	}
-
+	/**
+	 * 删除文件收集中的红球号码，一般用于意外情况的使用。
+	 */
+	public void deleteFileRedCode(){
+		Set<String> rSet=this.getRedCodeFromFile();
+		List<String> resultList=new ArrayList<String>();
+		for (Iterator<String> iterator = rSet.iterator(); iterator.hasNext();) {
+			String redCode = (String) iterator.next();
+			String[] redCodes=redCode.split(",");
+			if(redCodes.length>20){
+				this.lotterySsqThan20Service.select(6, redCodes, true);
+				continue;
+			}
+			LotteryUtils.select(6, redCodes, resultList);
+			if(resultList.size()>5000){
+				this.dao.deleteSsqLotteryFilterResult(resultList);
+				resultList.clear();
+			}
+		}
+		if(CollectionUtils.isNotEmpty(resultList)){
+			this.dao.deleteSsqLotteryFilterResult(resultList);
+			resultList.clear();
+		}
+	}
 }
