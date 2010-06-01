@@ -476,16 +476,15 @@ public class LotteryDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void backupSsqLotteryCollectResult(String expect) {
-		try{
-			String sql="select * from  ssq_lottery_collect_result_"+expect+" t limit 0,1";
-			List list=this.getJdbcTemplate().queryForList(sql);
-		}catch(Exception e)
-		{
-			String sql="create table ssq_lottery_collect_result_"+expect+" as select * from ssq_lottery_collect_result";
+//		try{
+//			String sql="select * from  ssq_lottery_collect_result_"+expect+" t limit 0,1";
+//			List list=this.getJdbcTemplate().queryForList(sql);
+//		}catch(Exception e)
+//		{
+			String sql="create table if not exists ssq_lottery_collect_result_"+expect+" as select * from ssq_lottery_collect_result";
 			this.getJdbcTemplate().execute(sql);
-		}
+//		}
 	}
 
 	@SuppressWarnings("unchecked")

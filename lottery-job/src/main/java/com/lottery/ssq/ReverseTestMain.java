@@ -44,11 +44,9 @@ public class ReverseTestMain {
 //			initService.hisDrawsRedcode("01,02,19,23,27,29","10055");
 			LotterySsqCollectService collectservice = (LotterySsqCollectService) context.getBean("lotteryCollectService");
 			LotterySsqService service = (LotterySsqService) context.getBean("lotteryService");
+			logger.info("初始化Filter数据开始............................");
+			initService.initFilterResult();
 //			collectservice.fetchDyjCustomerProject();
-			collectservice.collectResultDispose();
-			logger.info("抓取号码拆分结束........");
-			service.filterCurrentRedCode();
-			logger.info("第一步号码过滤结束...........");
 			Scanner scanner = new Scanner(System.in);
 			long currentTime = System.currentTimeMillis();
 			logger.info("按y开始开始初始化操作，按n跳过一步，60秒钟后默认开始初始化操作.....");

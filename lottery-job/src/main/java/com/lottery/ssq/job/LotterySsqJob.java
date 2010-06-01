@@ -99,15 +99,15 @@ public class LotterySsqJob {
 			logger.info("抓取配置初始化失败....................");
 			return;
 		}
-		logger.info("备份历史抓取结果开始....................");
-		this.lotteryCollectService.backHisSsqCollectResult();
-		logger.info("备份历史抓取结果结束....................");
 		logger.info("清理历史数据(胆、文件收集、上期的过滤号码。)............................");
 		this.lotterySsqService.clearHisSsqData();
 		logger.info("清理历史数据结束............................");
 		logger.info("初始化Filter数据开始............................");
 		this.lotteryInitService.initFilterResult();
 		logger.info("初始化Filter数据结束............................");
+		logger.info("备份历史抓取结果开始....................");
+		this.lotteryCollectService.backHisSsqCollectResult();
+		logger.info("备份历史抓取结果结束....................");
 	}
 	/**
 	 * 500wan用户投注抓取
