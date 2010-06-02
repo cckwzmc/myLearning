@@ -59,29 +59,6 @@ public class LotterySsqAlgorithm {
 	}
 
 	/**
-	 * 必须至少包含其中的任意一个数字
-	 * 
-	 * @param lValues
-	 * @return
-	 */
-	public static boolean isRedIncludeAnyOneCode(String[] lValues) {
-		if(LotterySsqFilterConfig.includePreRedNum==-1){
-			return true;
-		}
-		int tempSelect = 0;
-		for (int j = 0; j < lValues.length; j++) {
-			for (int k = 0; k < LotterySsqFetchConfig.preRedCode.length; k++) {
-				if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preRedCode[k])) {
-					tempSelect++;
-				}
-			}
-		}
-		if (tempSelect < LotterySsqFilterConfig.includePreRedNum) {
-			return false;
-		}
-		return true;
-	}
-	/**
 	 * 是否包含上一期的号码
 	 * LotterySsqFilterConfig.includePreRedNum==0号码中不能包含一个上一期的号码
 	 * 包含 至少LotterySsqFilterConfig.includePreRedNum个以上的号码
@@ -783,27 +760,7 @@ public class LotterySsqAlgorithm {
 		return true;
 	}
 
-	/**
-	 * 对用户选择的前20个号码进行过滤 不能存在前20中的4以上号码
-	 * 
-	 * @param lValues
-	 * @param customerMaxSelected
-	 * @return
-	 */
-	public static boolean isCustomerRedCodeTop20Filter(String[] lValues, List<String> customerMaxSelected) {
-		int selected = 0;
-		for (String redCode : customerMaxSelected) {
-			for (int i = 0; i < lValues.length; i++) {
-				if (StringUtils.equals(lValues[i], redCode)) {
-					selected++;
-				}
-			}
-		}
-		if (selected > 4) {
-			return false;
-		}
-		return true;
-	}
+
 
 	/**
 	 * 从文件中读取的号码中不能中四个以上的号码.
