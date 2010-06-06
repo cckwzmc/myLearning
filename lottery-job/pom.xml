@@ -369,4 +369,5 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 	</dependencies>
+    <name>lottery-job</name>
 </project>

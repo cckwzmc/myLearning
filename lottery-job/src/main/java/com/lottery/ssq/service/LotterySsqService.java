@@ -175,15 +175,19 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isSinaDanNoneFilter(lValues, sinaDanList, 5)) {
 					continue;
 				}
+				//新浪媒体投注号码
 				if (!LotterySsqAlgorithm.isSinaRedCodeXiaoFourFilter(lValues, mediaSinaList)) {
 					continue;
 				}
+				//用户投注的胆
 				if (!LotterySsqAlgorithm.isCustomerDanFilter(lValues, danList)) {
 					continue;
 				}
+				//收集号码的排行中的前10个
 				if (!LotterySsqAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected.subList(0, 10))) {
 					continue;
 				}
+				//收集号码的排行中的前20个
 				if (!LotterySsqCollectResultAlgorithm.isCustomerRedCodeTop20Filter(lValues, customerMaxSelected.subList(0, 20))) {
 					 continue;
 				 }

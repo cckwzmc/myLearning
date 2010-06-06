@@ -18,7 +18,7 @@ import com.lottery.ssq.LotterySsqFilterConfig;
  * 针对sina媒体使用的算法
  * @author 
  */
-public class LotterySsqSinaAlgorithm {
+public class LotterySsqMediaSinaAlgorithm {
 	/**
 	 * 与不能同时出现的号码类似，只是这是通过sina擂台网上收集而来的。
 	 * 
