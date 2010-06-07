@@ -18,7 +18,7 @@ import com.lottery.ssq.LotterySsqFilterConfig;
  * 针对sina媒体使用的算法
  * @author 
  */
-public class LotterySsqMediaSinaAlgorithm {
+public class LotterySsqMediaAlgorithm {
 	/**
 	 * 与不能同时出现的号码类似，只是这是通过sina擂台网上收集而来的。
 	 * 
@@ -522,4 +522,32 @@ public class LotterySsqMediaSinaAlgorithm {
 		return true;
 	}
 
+	/**
+	 * 媒体一般情况下不会中4个以上的红球，这里排除一下
+	 * 
+	 * @param lValues
+	 * @param redCodeList
+	 * @return
+	 */
+	public static boolean isRedIncludeFourCode(String[] lValues, List<String[]> redCodeList) {
+		if(CollectionUtils.isEmpty(redCodeList)){
+			return true;
+		}
+		for (Iterator<String[]> iterator2 = redCodeList.iterator(); iterator2.hasNext();) {
+			int tempSelect = 0;
+			String[] mediaRedCode = (String[]) iterator2.next();
+			for (int i = 0; i < mediaRedCode.length; i++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if (StringUtils.equals(mediaRedCode[i], lValues[j])) {
+						tempSelect++;
+					}
+				}
+			}
+			if (tempSelect > 4) {
+				return false;
+			}
+
+		}
+		return true;
+	}
 }

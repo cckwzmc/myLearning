@@ -23,6 +23,7 @@ import com.lottery.ssq.LotterySsqFilterConfig;
 import com.lottery.ssq.Algorithm.LotterySsqAlgorithm;
 import com.lottery.ssq.Algorithm.LotterySsqCollectResultAlgorithm;
 import com.lottery.ssq.Algorithm.LotterySsqFirstFilterAlgorithm;
+import com.lottery.ssq.Algorithm.LotterySsqMediaAlgorithm;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotteryServiceUtils;
 import com.lottery.ssq.utils.LotterySsqMedia500WanUtils;
@@ -125,8 +126,20 @@ public class LotterySsqService {
 			}
 		}
 		// 用户投注最多的前30排行 --组号
-		List cRedList = this.dao.getSsqLotteryCollectResultTopN(30);
+		List cRedList = this.dao.getSsqLotteryCollectResultCountLessThan5();//this.dao.getSsqLotteryCollectResultTopN(30);
 		String[] customerRedTop40 = LotteryServiceUtils.mergeRedCode(cRedList);
+		List firstRedCodeList=this.dao.getSsqLotteryCollectResult("first",0,20);
+		String[] firstRedCode=LotteryServiceUtils.mergeRedCode(firstRedCodeList);
+		List secondRedCodeList=this.dao.getSsqLotteryCollectResult("second",0,20);
+		String[] secondRedCode=LotteryServiceUtils.mergeRedCode(secondRedCodeList);
+		List thirdRedCodeList=this.dao.getSsqLotteryCollectResult("third",0,20);
+		String[] thirdRedCode=LotteryServiceUtils.mergeRedCode(thirdRedCodeList);
+		List fourthRedCodeList=this.dao.getSsqLotteryCollectResult("fourth",0,20);
+		String[] fourthRedCode=LotteryServiceUtils.mergeRedCode(fourthRedCodeList);
+		List firthRedCodeList=this.dao.getSsqLotteryCollectResult("firth",0,20);
+		String[] firthRedCode=LotteryServiceUtils.mergeRedCode(firthRedCodeList);
+		List sixthRedCodeList=this.dao.getSsqLotteryCollectResult("sixth",0,20);
+		String[] sixthRedCode=LotteryServiceUtils.mergeRedCode(sixthRedCodeList);
 		List<String> redList = new ArrayList<String>();
 		int count = this.dao.getTotalLotteryFilterResult();
 		int last = 0;
@@ -142,6 +155,9 @@ public class LotterySsqService {
 				int qOne = 0;
 				int qTwo = 0;
 				int qThree = 0;
+				
+				//~~~~~~~~~~~~~~~~~~~~~基本过滤的一些方法~~~~~~~~~~~~~~~
+				//数字的范围
 				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
 					continue;
 				}
@@ -153,47 +169,22 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isRedIncludePreRedCode(lValues)) {
 					continue;
 				}
-
+				//是否包括边号
 				if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues)) {
 					continue;
 				}
+				//不能出现的号码
 				if (!LotterySsqAlgorithm.isRedNotIncludeTheCode(lValues)) {
 					continue;
 				}
+				//在指定的一系列号码中选取6个
 				if (!LotterySsqAlgorithm.isRedInTheCodes(lValues)) {
 					continue;
 				}
+				//不能同时出现的号码多组用"|"分割
 				if (!LotterySsqAlgorithm.isRedTogethorCode(lValues)) {
 					continue;
 				}
-				if (!LotterySsqAlgorithm.isSinaDanTogethorFilter(lValues, sinaDanList)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isSinaDanAllFilter(lValues, sinaDanList)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isSinaDanNoneFilter(lValues, sinaDanList, 5)) {
-					continue;
-				}
-				//新浪媒体投注号码
-				if (!LotterySsqAlgorithm.isSinaRedCodeXiaoFourFilter(lValues, mediaSinaList)) {
-					continue;
-				}
-				//用户投注的胆
-				if (!LotterySsqAlgorithm.isCustomerDanFilter(lValues, danList)) {
-					continue;
-				}
-				//收集号码的排行中的前10个
-				if (!LotterySsqAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected.subList(0, 10))) {
-					continue;
-				}
-				//收集号码的排行中的前20个
-				if (!LotterySsqCollectResultAlgorithm.isCustomerRedCodeTop20Filter(lValues, customerMaxSelected.subList(0, 20))) {
-					 continue;
-				 }
-				// if (!LotterySsqAlgorithm.isFileRedCodeFourFilter(lValues, otherRedCodeList)) {
-				// continue;
-				// }
 				//是否包含两连号
 				if (!LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
 					continue;
@@ -206,39 +197,98 @@ public class LotterySsqService {
 				if (!LotterySsqAlgorithm.isRedIncludeDifferCode(lValues)) {
 					continue;
 				}
-				if (!LotterySsqAlgorithm.isRedIncludeFourCode(lValues, redCodeList)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isRedIncludeMediaThreeCode(lValues, sinaRedCodeList)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isSelectOneCode(lValues)) {
-					continue;
-				}
-				// if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues,cRedList)) {
-				// continue;
-				// }
-				if (!LotterySsqAlgorithm.isRedTwoCodeInCustomerResult(lValues, cRedList.subList(0, 10))) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isRedThreeCodeInCustomerResult(lValues, cRedList)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isRedFourCodeResult(lValues, customerRedTop40)) {
-					continue;
-				}
-				if (!LotterySsqAlgorithm.isLeastSelectedTwoCode(lValues, customerRedTop40)) {
-					continue;
-				}
+				//至少中其中的一个号码
 				if (!LotterySsqAlgorithm.isLeastSelectedOneCode(lValues)) {
 					continue;
 				}
+				//必须选择一个/是并的关系而不是或得关系
 				if (!LotterySsqAlgorithm.isMustSelectedOneCode(lValues)) {
 					continue;
 				}
-				if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues, cRedList)) {
+				//最多只能其中的一个号码
+				if (!LotterySsqAlgorithm.isSelectOneCode(lValues)) {
 					continue;
 				}
+				/**新浪媒体擂台**/
+				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+				if (!LotterySsqMediaAlgorithm.isSinaDanTogethorFilter(lValues, sinaDanList)) {
+					continue;
+				}
+				if (!LotterySsqMediaAlgorithm.isSinaDanAllFilter(lValues, sinaDanList)) {
+					continue;
+				}
+				if (!LotterySsqMediaAlgorithm.isSinaDanNoneFilter(lValues, sinaDanList, 5)) {
+					continue;
+				}
+				if (!LotterySsqMediaAlgorithm.isSinaRedCodeXiaoFourFilter(lValues, mediaSinaList)) {
+					continue;
+				}
+				if (!LotterySsqMediaAlgorithm.isRedIncludeFourCode(lValues, redCodeList)) {
+					continue;
+				}
+				if (!LotterySsqMediaAlgorithm.isRedIncludeMediaThreeCode(lValues, sinaRedCodeList)) {
+					continue;
+				}
+				/**用户投注号码**/
+				boolean locationFlag=true;
+				for(int j=2;j<6;j++)
+				{
+					String[] tmp=null;
+					if(j==2){
+						tmp=thirdRedCode;
+					}
+					if(j==3){
+						tmp=fourthRedCode;
+					}
+					if(j==4){
+						tmp=firthRedCode;
+					}
+					if(j==5){
+						tmp=sixthRedCode;
+					}
+					if(!LotterySsqCollectResultAlgorithm.isIncludeLocationRedCode(lValues[j],tmp)){
+						locationFlag=false;
+						break;
+					}
+				}
+				if(!locationFlag){
+					continue;
+				}
+				//用户投注的胆
+				if (!LotterySsqCollectResultAlgorithm.isCustomerDanFilter(lValues, danList)) {
+					continue;
+				}
+				//用户投注不能中4一个以上的号码
+				 if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues,cRedList)) {
+					 continue;
+				 }
+				//收集号码的排行中的前10个
+				//if (!LotterySsqCollectResultAlgorithm.isCustomerRedCodeTop10Filter(lValues, customerMaxSelected.subList(0, 10))) {
+				//	continue;
+				//}
+				//收集号码的排行中的前20个
+				//if (!LotterySsqCollectResultAlgorithm.isCustomerRedCodeTop20Filter(lValues, customerMaxSelected.subList(0, 20))) {
+				//	 continue;
+				// }
+				// if (!LotterySsqAlgorithm.isFileRedCodeFourFilter(lValues, otherRedCodeList)) {
+				// continue;
+				// }
+				
+				//if (!LotterySsqAlgorithm.isRedTwoCodeInCustomerResult(lValues, cRedList.subList(0, 10))) {
+				//	continue;
+				//}
+				//if (!LotterySsqAlgorithm.isRedThreeCodeInCustomerResult(lValues, cRedList)) {
+				//	continue;
+				//}
+				// if (!LotterySsqAlgorithm.isRedFourCodeResult(lValues, customerRedTop40)) {
+				// continue;
+				// }
+				//if (!LotterySsqAlgorithm.isLeastSelectedTwoCode(lValues, customerRedTop40)) {
+				//	continue;
+				//}
+				// if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues, cRedList)) {
+				// continue;
+				// }
 				// 在用户投注中5个的不能超过10个
 				// if(selectedRedCodeGtFive(lValues)){
 				// continue;

@@ -337,34 +337,6 @@ public class LotterySsqAlgorithm {
 		return true;
 	}
 
-	/**
-	 * 媒体一般情况下不会中4个以上的红球，这里排除一下
-	 * 
-	 * @param lValues
-	 * @param redCodeList
-	 * @return
-	 */
-	public static boolean isRedIncludeFourCode(String[] lValues, List<String[]> redCodeList) {
-		if(CollectionUtils.isEmpty(redCodeList)){
-			return true;
-		}
-		for (Iterator<String[]> iterator2 = redCodeList.iterator(); iterator2.hasNext();) {
-			int tempSelect = 0;
-			String[] mediaRedCode = (String[]) iterator2.next();
-			for (int i = 0; i < mediaRedCode.length; i++) {
-				for (int j = 0; j < lValues.length; j++) {
-					if (StringUtils.equals(mediaRedCode[i], lValues[j])) {
-						tempSelect++;
-					}
-				}
-			}
-			if (tempSelect > 4) {
-				return false;
-			}
-
-		}
-		return true;
-	}
 
 	/**
 	 * 是否符合在区域的号码分布
@@ -405,196 +377,9 @@ public class LotterySsqAlgorithm {
 		return false;
 	}
 
-	/**
-	 * 不能有超过5个的相同号码， 即我认为这些号码是不可能中奖的， 推荐使用文本方式保存的号码使用
-	 * 
-	 * @return
-	 */
-	public static boolean isRedCodeHaveSix(Set<String> sixRedCode, String[] lValues) {
-		int count = 0;
-		return false;
-	}
 
 	/**
-	 * 与不能同时出现的号码类似，只是这是通过sina擂台网上收集而来的。
-	 * 
-	 * @param lValues
-	 * @param sinaDanList
-	 * @return
-	 */
-	public static boolean isSinaDanTogethorFilter(String[] lValues, List<String> sinaDanList) {
-		int tempSelect = 0;
-		if (CollectionUtils.isNotEmpty(sinaDanList)) {
-			for (int j = 0; j < sinaDanList.size(); j++) {
-				String[] tmp = StringUtils.split(ObjectUtils.toString(sinaDanList.get(j)), ",");
-				tempSelect = 0;
-				for (int k = 0; k < tmp.length; k++) {
-					for (int i = 0; i < lValues.length; i++) {
-						if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
-							tempSelect++;
-						}
-					}
-				}
-				if (tmp.length == tempSelect) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * 其中至少有num注以上不会中一个号码
-	 * 
-	 * @param lValues
-	 * @param sinaDanList
-	 * @return
-	 */
-	public static boolean isSinaDanNoneFilter(String[] lValues, List<String> sinaDanList, int num) {
-		int noneNum = sinaDanList.size() - num;
-		int tempSelect = 0;
-		if (CollectionUtils.isEmpty(sinaDanList)) {
-			return true;
-		}
-		if (CollectionUtils.isNotEmpty(sinaDanList)) {
-			tempSelect = 0;
-			for (int j = 0; j < sinaDanList.size(); j++) {
-				boolean breakFlag = false;
-				String[] tmp = StringUtils.split(ObjectUtils.toString(sinaDanList.get(j)), ",");
-				for (int k = 0; k < tmp.length; k++) {
-					for (int i = 0; i < lValues.length; i++) {
-						if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
-							tempSelect++;
-							breakFlag = true;
-						}
-					}
-					if (breakFlag) {
-						break;
-					}
-				}
-			}
-		}
-		if (tempSelect >= noneNum) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 与不能同时出现的号码类似，只是这是通过网上用户收集而来的。
-	 * 1、一个胆不考虑 2、三个胆的不能全中 3、大于三个的最多只能中3个
-	 * 
-	 * @param lValues
-	 * @param sinaDanList
-	 * @return
-	 */
-	public static boolean isCustomerDanFilter(String[] lValues, List<String> danList) {
-		int tempSelect = 0;
-		if (CollectionUtils.isNotEmpty(danList)) {
-			boolean breakFlag = false;
-			for (int j = 0; j < danList.size(); j++) {
-				String[] tmp = StringUtils.split(ObjectUtils.toString(danList.get(j)), ",");
-				if (tmp.length < 2) {
-					continue;
-				}
-				if (tmp.length == 3) {
-					tempSelect = 0;
-					for (int k = 0; k < tmp.length; k++) {
-						for (int i = 0; i < lValues.length; i++) {
-							if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
-								tempSelect++;
-							}
-						}
-					}
-					if (tmp.length == tempSelect) {
-						breakFlag = true;
-						break;
-					}
-				} else {
-					tempSelect = 0;
-					for (int k = 0; k < tmp.length; k++) {
-						for (int i = 0; i < lValues.length; i++) {
-							if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
-								tempSelect++;
-							}
-						}
-					}
-					if (tempSelect > 3) {
-						breakFlag = true;
-						break;
-					}
-				}
-			}
-			if (breakFlag) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * sina 媒体推荐的红胆总和中不能超过4个<=4
-	 * 
-	 * @param lValues
-	 * @param sinaDanList
-	 * @return
-	 */
-	public static boolean isSinaDanAllFilter(String[] lValues, List<String> sinaDanList) {
-		Set<String> danSet = new HashSet<String>();
-		for (Iterator<String> iterator = sinaDanList.iterator(); iterator.hasNext();) {
-			String[] dans = iterator.next().split(",");
-			for (int i = 0; i < dans.length; i++) {
-				danSet.add(dans[i]);
-			}
-		}
-		String[] danRedCode = danSet.toArray(new String[danSet.size()]);
-		int tempSelect = 0;
-		for (int i = 0; i < danRedCode.length; i++) {
-			for (int j = 0; j < lValues.length; j++) {
-				if (StringUtils.equals(danRedCode[i], lValues[j])) {
-					tempSelect++;
-				}
-			}
-		}
-		if (tempSelect > 4) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * 新浪推荐最多有3个推荐会中4个或4个以上
-	 * 
-	 * @param lValues
-	 * @param sinaRedCodeList
-	 * @return
-	 */
-	public static boolean isRedIncludeMediaThreeCode(String[] lValues, List<String[]> sinaRedCodeList) {
-		int count = 0;
-		for (Iterator<String[]> iterator2 = sinaRedCodeList.iterator(); iterator2.hasNext();) {
-			int tempSelect = 0;
-			String[] mediaRedCode = (String[]) iterator2.next();
-			for (int i = 0; i < mediaRedCode.length; i++) {
-				for (int j = 0; j < lValues.length; j++) {
-					if (StringUtils.equals(mediaRedCode[i], lValues[j])) {
-						tempSelect++;
-					}
-				}
-			}
-			if (tempSelect > 3) {
-				count++;
-			}
-
-		}
-		if (count > 1) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 最多只能中其中的一个///只要是新浪推荐的号码中大于等于6的号码
+	 * 最多只能中其中的一个///如：新浪推荐的号码中大于等于6的号码
 	 * 
 	 * @param lValues
 	 * @param sinaRedCodeList
@@ -692,73 +477,13 @@ public class LotterySsqAlgorithm {
 					}
 				}
 			}
-			if (tempSelect == 1) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * 新浪媒体每注中4个的<3
-	 * 
-	 * @param lValues
-	 * @param mediaSinaList
-	 * @return
-	 */
-	public static boolean isSinaRedCodeXiaoFourFilter(String[] lValues, List<String> mediaSinaList) {
-		int count = 0;
-		for (String redCode : mediaSinaList) {
-			int tempSelect = 0;
-			String[] sinaRedCodes = redCode.split(",");
-			for (int i = 0; i < sinaRedCodes.length; i++) {
-				for (int j = 0; j < lValues.length; j++) {
-					if (StringUtils.equals(sinaRedCodes[i], lValues[j])) {
-						tempSelect++;
-					}
-				}
-			}
-			if (tempSelect > 4) {
+			if (tempSelect != 1) {
 				return false;
 			}
-			if (tempSelect == 4) {
-				count++;
-			}
-		}
-		if (count > 2) {
-			return false;
 		}
 		return true;
 	}
 
-	/**
-	 * 对用户选择的前10个号码进行过滤 不能存在前2的号码 不能存在前10中的2以上号码
-	 * 
-	 * @param lValues
-	 * @param customerMaxSelected
-	 * @return
-	 */
-	public static boolean isCustomerRedCodeTop10Filter(String[] lValues, List<String> customerMaxSelected) {
-		String no1 = customerMaxSelected.get(0);
-		String no2 = customerMaxSelected.get(1);
-		for (int i = 0; i < lValues.length; i++) {
-			if (StringUtils.equals(lValues[i], no1) || StringUtils.equals(lValues[i], no2)) {
-				return false;
-			}
-		}
-		int selected = 0;
-		for (String redCode : customerMaxSelected) {
-			for (int i = 0; i < lValues.length; i++) {
-				if (StringUtils.equals(lValues[i], redCode)) {
-					selected++;
-				}
-			}
-		}
-		if (selected > 2) {
-			return false;
-		}
-		return true;
-	}
 
 
 
