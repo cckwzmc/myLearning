@@ -6,8 +6,8 @@ import com.lottery.ssq.LotterySsqFetchConfig;
 
 public class SsqLotterySinaFetchImplTest extends TestCase{
 	public void testGetSsqLotteryIndexList(){
-		SsqLottery163FetchImpl test=new SsqLottery163FetchImpl();
-		new LotterySsqFetchConfig().expect="10065"; 
+		ISsqLotteryFetch test=new SsqLotterySinaFetchImpl();
+		new LotterySsqFetchConfig().expect="10066"; 
 		test.getSsqLotteryIndexList();
 	}
 }

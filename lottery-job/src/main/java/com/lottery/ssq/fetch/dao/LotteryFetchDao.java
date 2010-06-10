@@ -11,8 +11,8 @@ public class LotteryFetchDao extends JdbcBaseDao {
 		
 	}
 	@SuppressWarnings("unchecked")
-	public List getSsqLotteryWebFetchList(){
-		String sql="select * from ssq_lottery_web_fetch_list t ";
-		return this.getJdbcTemplate().queryForList(sql);
+	public List getSsqLotteryWebFetchList(int flag){
+		String sql="select * from ssq_lottery_web_fetch_list t where web_flag=?";
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{flag});
 	}
 }

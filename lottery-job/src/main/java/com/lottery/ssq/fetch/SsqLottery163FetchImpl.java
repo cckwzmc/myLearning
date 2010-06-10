@@ -28,7 +28,7 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 	@Override
     public String getSsqLotteryDetail(String url, String title) {
     	List<String[]> ssqList=this.getSsqLotteryIndexList();
-    	List webList=this.lotteryFetchDao.getSsqLotteryWebFetchList();
+    	List webList=this.lotteryFetchDao.getSsqLotteryWebFetchList(1);
     	for(String[] detail:ssqList){
     		for (Iterator iterator = webList.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
