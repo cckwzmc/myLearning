@@ -497,39 +497,6 @@ public class LotteryDao extends JdbcBaseDao {
 		return "";
 	}
 
-	/**
-	 * @param type '0:双色球；1：足彩',
-	 * @param is_complet '是否已完成；0：未完成；1：已完成',
-	 * @return
-	 */
-	public String getLotterySsqExpectConfig(int type, int is_complete) {
-		String sql = "select max(expect) expect from lottery_fetch_job where type=? and is_complete=?";
-		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { type, is_complete });
-		if (CollectionUtils.isNotEmpty(list)) {
-			return (String) ((Map) list.get(0)).get("expect");
-		}
-		return "";
-	}
-
-	/**
-	 * @param config_name init_filter_date:初始化数据；gen_data：生成投注号码
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public Map getLotterySsqFetchConfig(String config_name) {
-		String sql = "select * from ssq_lottery_config t where t.config_name=? and is_reFilter=0";
-		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { config_name });
-		if (CollectionUtils.isNotEmpty(list)) {
-			return (Map) list.get(0);
-		}
-		return null;
-	}
-
-	public void updateLotterySsqConfig(String configName) {
-		String sql = "update ssq_lottery_config set is_reFilter=1 where config_name=?";
-		this.getJdbcTemplate().update(sql, new Object[] { configName });
-	}
-
 	public void batchInitSaveSsqLotteryFilterResult(final List list) {
 		if (CollectionUtils.isEmpty(list)) {
 			return;
@@ -609,4 +576,13 @@ public class LotteryDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
+	/**
+	 * 更新LotterySSqFILTERCONFIG
+	 * @param cfgValue
+	 * @param cfgName
+	 */
+	public void updateLotterySsqFilterConfig(String cfgValue,String cfgName) {
+		String sql = "update ssq_lottery_config set config_value=? where config_name=?";
+		this.getJdbcTemplate().update(sql, new Object[] {cfgValue,cfgName});
+	}
 }

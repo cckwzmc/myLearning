@@ -16,7 +16,7 @@ import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.lottery.ssq.LotterySsqFetchConfig;
+import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotterySsqMedia500WanUtils;
 import com.lottery.ssq.utils.LotteryUtils;
@@ -276,7 +276,7 @@ public class LotterySsqMedia500WanService {
 	 * 保存到收集号码表
 	 */
 	public void saveMedia500WanRedCode() {
-		String mediaContent=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "0");
+		String mediaContent=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConfig.expect, "0");
 		if(StringUtils.isNotBlank(mediaContent)&&mediaContent.length()>100){
 			Document doc=null;
 			try {
@@ -284,14 +284,14 @@ public class LotterySsqMedia500WanService {
 			} catch (DocumentException e) {
 				log.error(e.getMessage());
 			}
-			this.saveCurrentMediaRedCodeToDb(this.parseCurrentMediaRedCode(doc),LotterySsqFetchConfig.expect);
+			this.saveCurrentMediaRedCodeToDb(this.parseCurrentMediaRedCode(doc),LotterySsqConfig.expect);
 		}
 	}
 	/**
 	 * 从结果集中删除500wan媒体号码
 	 */
 	public void deleteMedia500WanRedCode(){
-		String text=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqFetchConfig.expect, "0");
+		String text=this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConfig.expect, "0");
 		if(StringUtils.isBlank(text)||text.length()<100){
 			return;
 		}

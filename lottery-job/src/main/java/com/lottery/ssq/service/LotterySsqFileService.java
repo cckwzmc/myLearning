@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
-import com.lottery.ssq.LotterySsqFetchConfig;
+import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotteryUtils;
 
@@ -329,7 +329,7 @@ public class LotterySsqFileService extends Thread {
 	 * 文件收集号码
 	 */
 	public void collectFileCode() {
-		this.dao.clearHisFetchProjectCode(LotterySsqFetchConfig.expect, "2");
+		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "2");
 		Set<String[]> fileCode = this.getCodeFromFile("lottery/ssq/excluderedfile.txt");
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
 		int i = 0;
@@ -350,7 +350,7 @@ public class LotterySsqFileService extends Thread {
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("code", sCode);
 				map.put("net", "2");
-				map.put("expect", LotterySsqFetchConfig.expect);
+				map.put("expect", LotterySsqConfig.expect);
 				map.put("proid", RandomUtils.nextInt(999999999) + "");
 				resultList.add(map);
 				i = 0;
@@ -365,7 +365,7 @@ public class LotterySsqFileService extends Thread {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("code", sCode);
 			map.put("net", "2");
-			map.put("expect", LotterySsqFetchConfig.expect);
+			map.put("expect", LotterySsqConfig.expect);
 			map.put("proid", RandomUtils.nextInt(999999999) + "");
 			resultList.add(map);
 		}
@@ -467,7 +467,7 @@ public class LotterySsqFileService extends Thread {
 				String filePath = url.getPath().substring(1);
 				File file = new File(filePath);
 				if (file.exists()) {
-					file.renameTo(new File(filePath + "." + LotterySsqFetchConfig.expect));
+					file.renameTo(new File(filePath + "." + LotterySsqConfig.expect));
 					file.createNewFile();
 				}
 			}

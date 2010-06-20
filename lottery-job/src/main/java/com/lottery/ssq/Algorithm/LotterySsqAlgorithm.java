@@ -12,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 import com.lottery.ssq.LotterySsqFetchConfig;
-import com.lottery.ssq.LotterySsqFilterConfig;
+import com.lottery.ssq.config.LotterySsqFilterConfig;
 
 /**
  * @author Administrator
@@ -386,12 +386,12 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isSelectOneCode(String[] lValues) {
-		if (LotterySsqFilterConfig.selectedOneCode == null || LotterySsqFilterConfig.selectedOneCode.length < 1) {
+		if (LotterySsqFilterConfig.zuiduoSelectedOneCode == null || LotterySsqFilterConfig.zuiduoSelectedOneCode.length < 1) {
 			return true;
 		}
-		for (int i = 0; i < LotterySsqFilterConfig.selectedOneCode.length; i++) {
+		for (int i = 0; i < LotterySsqFilterConfig.zuiduoSelectedOneCode.length; i++) {
 			int tempSelect = 0;
-			String[] code = LotterySsqFilterConfig.selectedOneCode[i].split(",");
+			String[] code = LotterySsqFilterConfig.zuiduoSelectedOneCode[i].split(",");
 			for (int k = 0; k < code.length; k++) {
 				for (int j = 0; j < lValues.length; j++) {
 					if (StringUtils.equals(code[k], lValues[j])) {

@@ -7,11 +7,13 @@
 		<property name="lotterySsqMediaSinaService" ref="lotterySsqMediaSinaService"></property>
 		<property name="lotterySsqFileService" ref="lotterySsqFileService"></property>
 	</bean>
+	<bean id="fetchDao" class="com.lottery.ssq.fetch.dao.LotteryFetchDao"></bean>
 	<bean id="initLotteryService" class="com.lottery.ssq.service.LotteryInitService">
 		<property name="dao" ref="lotteryDao" />
 		<property name="lotterySsqMedia500WanService" ref="lotterySsqMedia500WanService"></property>
 	</bean>
 	<bean id="lotterySsqConfigService" class="com.lottery.ssq.service.LotterySsqConifgService">
+		<property name="fetchDao" ref="fetchDao"></property>
 	</bean>
 	<bean id="lotterySsqMedia500WanService" class="com.lottery.ssq.service.LotterySsqMedia500WanService">
 		<property name="dao" ref="lotteryDao" />

@@ -18,7 +18,8 @@ import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.lottery.ssq.LotterySsqFetchConfig;
+import com.lottery.ssq.config.LotterySsqConfig;
+import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotteryUtils;
 import com.lottery.util.html.HttpHtmlService;
@@ -190,7 +191,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 	 * 大赢家用户投注抓取
 	 */
 	public void fetchDyjProjectCode() {
-		this.dao.clearHisFetchProjectCode(LotterySsqFetchConfig.expect, "1");
+		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "1");
 		List<Map<String, String>> list = this.getDyjProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
 		for (Map<String, String> map : list) {
@@ -208,7 +209,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 			if(CollectionUtils.isNotEmpty(pList)&&"-1".equals(pList.get(0))){
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "1");
-				tmpMap.put("expect", LotterySsqFetchConfig.expect);
+				tmpMap.put("expect", LotterySsqConfig.expect);
 				tmpMap.put("code", "-1");
 				tmpMap.put("isfail", "1");
 				continue;
@@ -216,7 +217,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 			String[] codes = pList.toArray(new String[pList.size()]);
 			tmpMap.put("proid", map.get("proid"));
 			tmpMap.put("net", "1");
-			tmpMap.put("expect", LotterySsqFetchConfig.expect);
+			tmpMap.put("expect", LotterySsqConfig.expect);
 			tmpMap.put("code", StringUtils.join(codes, "@@"));
 			tmpMap.put("isfail", "0");
 			resultList.add(tmpMap);

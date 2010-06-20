@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.lottery.ssq.LotterySsqFetchConfig;
+import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
@@ -188,7 +188,7 @@ public class LotterySsqJob {
 			logger.info("抓取配置/过滤配置初始化失败....................");
 			return;
 		}
-		if (this.lotterySsqService.isGenLotteryResult("1", LotterySsqFetchConfig.expect)) {
+		if (this.lotterySsqService.isGenLotteryResult("1", LotterySsqConfig.expect)) {
 			logger.info("后台任务生成过滤号码....");
 			this.lotterySsqService.getCurrentExpertSingleResult();
 			this.lotterySsqService.completCurrentGenCode();
