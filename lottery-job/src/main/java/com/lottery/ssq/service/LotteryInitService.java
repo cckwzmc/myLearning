@@ -514,21 +514,26 @@ public class LotteryInitService {
 	/**
 	 * 用户投注的历史号码中奖情况
 	 */
+	@SuppressWarnings("unchecked")
 	public void hisDrawsRedcode(String redCode,String expect) {
 		logger.info("第"+expect+"期开始计算...");
 		String[] redcodes=redCode.split(",");
 		int first=0;
 		int page=40000;
 		
-		int count=this.dao.getTotalLotteryCollectResult(expect);
-		while(first<count){
-			List list=this.dao.getSsqLotteryCollectResultLimit(first, page,expect);
+//		int count=this.dao.getTotalLotteryCollectResult(expect);
+		List list=null;
+		while(true){
+			list=this.dao.getSsqLotteryCollectResultLimit(first, page,expect);
 			first+=page;
+			if(CollectionUtils.isEmpty(list)){
+				break;
+			}
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				int tCount=0;
 				Map map = (Map) iterator.next();
 				//s.first,s.second,s.third,s.fourth,firth,sixth
-				String[] tmp=new String[]{ObjectUtils.toString(map.get("first")),ObjectUtils.toString(map.get("second")),ObjectUtils.toString(map.get("third")),ObjectUtils.toString(map.get("fourth")),ObjectUtils.toString(map.get("firth")),ObjectUtils.toString(map.get("sixth"))};
+				String[] tmp=ObjectUtils.toString(map.get("redcode")).split(",");//new String[]{ObjectUtils.toString(map.get("first")),ObjectUtils.toString(map.get("second")),ObjectUtils.toString(map.get("third")),ObjectUtils.toString(map.get("fourth")),ObjectUtils.toString(map.get("firth")),ObjectUtils.toString(map.get("sixth"))};
 				for (int i = 0; i < redcodes.length; i++) {
 					for (int j = 0; j < tmp.length; j++) {
 						if(StringUtils.equals(redcodes[i], tmp[j])){
@@ -537,7 +542,7 @@ public class LotteryInitService {
 					}
 				}
 				if(tCount>4){
-					logger.info(StringUtils.join(tmp,",")+"中了"+tCount);
+					logger.info(StringUtils.join(tmp,",")+"("+ObjectUtils.toString(map.get("c"))+")"+"中了"+tCount);
 				}
 			}
 		}

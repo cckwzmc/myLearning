@@ -58,8 +58,10 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	/**
-	 * @param type 1:ssq 2:football
-	 * @param lotteryQh 期号 is_gen=0为生成 1:已生成
+	 * @param type
+	 *            1:ssq 2:football
+	 * @param lotteryQh
+	 *            期号 is_gen=0为生成 1:已生成
 	 * @return
 	 */
 	public void saveLotteryGenLog(String type, String lotteryQh, String isGen) {
@@ -68,8 +70,10 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	/**
-	 * @param type 1:ssq 2:football
-	 * @param lotteryQh 期号 is_gen=0为生成 1:已生成
+	 * @param type
+	 *            1:ssq 2:football
+	 * @param lotteryQh
+	 *            期号 is_gen=0为生成 1:已生成
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -309,7 +313,8 @@ public class LotteryDao extends JdbcBaseDao {
 
 	/**
 	 * @param expect
-	 * @param type 0:500wan 1:sina
+	 * @param type
+	 *            0:500wan 1:sina
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -413,7 +418,8 @@ public class LotteryDao extends JdbcBaseDao {
 
 	/**
 	 * @param danSet
-	 * @param type 0:专业媒体;1用户
+	 * @param type
+	 *            0:专业媒体;1用户
 	 */
 	public void batchSqqLotteryDanResult(final List<String> danSet, final String type) {
 		if (CollectionUtils.isEmpty(danSet)) {
@@ -533,12 +539,28 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	public int getTotalLotteryCollectResult(String expect) {
-		return this.getJdbcTemplate().queryForInt("select count(*) from ssq_lottery_collect_result_" + expect);
+		try {
+			return this.getJdbcTemplate().queryForInt("select count(*) from ssq_lottery_collect_result_" + expect);
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectResultLimit(int first, int page, String expect) {
-		String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result_" + expect + " t  limit " + first + "," + page;
-		return this.getJdbcTemplate().queryForList(sql);
+		// try {
+		// String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result_" + expect + " t  limit " + first + "," + page;
+		// return this.getJdbcTemplate().queryForList(sql);
+		// } catch (Exception e) {
+		// return null;
+		// }
+		//	
+		try {
+			String sql = "select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result_" + expect + " s ) t group by t.redcode order by c  limit " + first + "," + page;
+			return this.getJdbcTemplate().queryForList(sql);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public List getSsqLotteryCollectResult(String location, int start, int end) {
@@ -561,7 +583,7 @@ public class LotteryDao extends JdbcBaseDao {
 		if ("sixth".equals(location)) {
 			sql = "select t.sixth redcode,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc limit " + start + "," + end;
 		}
-		if("".equals(sql)){
+		if ("".equals(sql)) {
 			return null;
 		}
 		return this.getJdbcTemplate().queryForList(sql);
@@ -569,20 +591,29 @@ public class LotteryDao extends JdbcBaseDao {
 
 	/**
 	 * 投注的统计大于5个以上的红球号码
+	 * 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectResultCountLessThan5() {
 		String sql = "select * from (select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result s ) t group by t.redcode order by c desc ) t where t.c>5";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getSsqLotteryCollectFetchByType(String net) {
+		String sql = "select * from ssq_lottery_collect_fetch t where t.net=?";
+		return this.getJdbcTemplate().queryForList(sql, new Object[] { net });
+	}
+
 	/**
 	 * 更新LotterySSqFILTERCONFIG
+	 * 
 	 * @param cfgValue
 	 * @param cfgName
 	 */
-	public void updateLotterySsqFilterConfig(String cfgValue,String cfgName) {
+	public void updateLotterySsqFilterConfig(String cfgValue, String cfgName) {
 		String sql = "update ssq_lottery_config set config_value=? where config_name=?";
-		this.getJdbcTemplate().update(sql, new Object[] {cfgValue,cfgName});
+		this.getJdbcTemplate().update(sql, new Object[] { cfgValue, cfgName });
 	}
 }

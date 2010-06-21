@@ -47,6 +47,6 @@
 		<property name="lotterySsqMediaSinaService" ref="lotterySsqMediaSinaService"></property>
 	</bean>
 	<bean id="lotterySsqConifgService" class="com.lottery.ssq.service.LotterySsqConifgService">
-		<property name="dao" ref="lotteryDao" />
+		<property name="fetchDao" ref="fetchDao" />
 	</bean>
 </beans>	

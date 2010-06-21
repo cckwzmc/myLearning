@@ -167,36 +167,6 @@ public class LotterySsqMediaAlgorithm {
 	}
 
 	/**
-	 * 新浪推荐最多有3个推荐会中4个或4个以上
-	 * 
-	 * @param lValues
-	 * @param sinaRedCodeList
-	 * @return
-	 */
-	public static boolean isRedIncludeMediaThreeCode(String[] lValues, List<String[]> sinaRedCodeList) {
-		int count = 0;
-		for (Iterator<String[]> iterator2 = sinaRedCodeList.iterator(); iterator2.hasNext();) {
-			int tempSelect = 0;
-			String[] mediaRedCode = (String[]) iterator2.next();
-			for (int i = 0; i < mediaRedCode.length; i++) {
-				for (int j = 0; j < lValues.length; j++) {
-					if (StringUtils.equals(mediaRedCode[i], lValues[j])) {
-						tempSelect++;
-					}
-				}
-			}
-			if (tempSelect > 3) {
-				count++;
-			}
-
-		}
-		if (count > 1) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
 	 * 最多只能中其中的一个///只要是新浪推荐的号码中大于等于6的号码
 	 * 
 	 * @param lValues
@@ -303,20 +273,19 @@ public class LotterySsqMediaAlgorithm {
 	}
 
 	/**
-	 * 新浪媒体每注中4个的<3
+	 * 新浪媒体   每注中4个的媒体<4个且没有中4个以上号码的媒体
 	 * 
 	 * @param lValues
 	 * @param mediaSinaList
 	 * @return
 	 */
-	public static boolean isSinaRedCodeXiaoFourFilter(String[] lValues, List<String> mediaSinaList) {
+	public static boolean isSinaRedCodeXiaoFourFilter(String[] lValues, List<String[]> mediaSinaList) {
 		int count = 0;
-		for (String redCode : mediaSinaList) {
+		for (String[] redCode : mediaSinaList) {
 			int tempSelect = 0;
-			String[] sinaRedCodes = redCode.split(",");
-			for (int i = 0; i < sinaRedCodes.length; i++) {
+			for (int i = 0; i < redCode.length; i++) {
 				for (int j = 0; j < lValues.length; j++) {
-					if (StringUtils.equals(sinaRedCodes[i], lValues[j])) {
+					if (StringUtils.equals(redCode[i], lValues[j])) {
 						tempSelect++;
 					}
 				}
@@ -328,7 +297,7 @@ public class LotterySsqMediaAlgorithm {
 				count++;
 			}
 		}
-		if (count > 2) {
+		if (count > 3) {
 			return false;
 		}
 		return true;
@@ -529,7 +498,7 @@ public class LotterySsqMediaAlgorithm {
 	 * @param redCodeList
 	 * @return
 	 */
-	public static boolean isRedIncludeFourCode(String[] lValues, List<String[]> redCodeList) {
+	public static boolean isRedIncludeFourCode(String[] lValues, Set<String[]> redCodeList) {
 		if(CollectionUtils.isEmpty(redCodeList)){
 			return true;
 		}

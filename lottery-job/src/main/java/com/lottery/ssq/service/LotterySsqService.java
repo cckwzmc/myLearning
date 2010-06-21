@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +14,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
 import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.Algorithm.LotterySsqAlgorithm;
@@ -23,11 +21,9 @@ import com.lottery.ssq.Algorithm.LotterySsqCollectResultAlgorithm;
 import com.lottery.ssq.Algorithm.LotterySsqFirstFilterAlgorithm;
 import com.lottery.ssq.Algorithm.LotterySsqMediaAlgorithm;
 import com.lottery.ssq.config.LotterySsqConfig;
-import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.config.LotterySsqFilterConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotteryServiceUtils;
-import com.lottery.ssq.utils.LotterySsqMedia500WanUtils;
 
 public class LotterySsqService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotterySsqService.class);
@@ -61,36 +57,25 @@ public class LotterySsqService {
 	@SuppressWarnings("unchecked")
 	public void getCurrentExpertSingleResult() {
 		/* 媒体推荐号码 */
-		String media500Wan = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConfig.expect, "0");
-		String mediaSina = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConfig.expect, "1");
-		if (StringUtils.isBlank(media500Wan)) {
-			return;
-		}
-		List<String[]> redCodeList = new ArrayList<String[]>();
+		List wanList=this.dao.getSsqLotteryCollectFetchByType("3");
+		List sinaList=this.dao.getSsqLotteryCollectFetchByType("4");
 		List<String[]> sinaRedCodeList = new ArrayList<String[]>();
-		if (StringUtils.isNotBlank(media500Wan) && media500Wan.length() > 100) {
-			try {
-				Document document = DocumentHelper.parseText(media500Wan);
-				redCodeList = LotterySsqMedia500WanUtils.getMediaRedCode(document);
-			} catch (DocumentException e) {
-				e.printStackTrace();
+		Set<String[]> redCodeList = new HashSet<String[]>();
+		if(CollectionUtils.isNotEmpty(wanList))
+		{	
+			Map map=(Map) wanList.get(0);
+			String[] wan=ObjectUtils.toString(map.get("code")).split("@@");
+			for(String code:wan){
+				redCodeList.add(StringUtils.split(code,"+")[0].split(","));
 			}
 		}
-		List<String> mediaSinaList = new ArrayList<String>();
-		if (StringUtils.isNotBlank(mediaSina) && mediaSina.length() > 100) {
-			mediaSinaList = this.lotterySsqMediaSinaService.getCurrentMediaRedCode(mediaSina);
-			if (CollectionUtils.isNotEmpty(mediaSinaList)) {
-				for (String ssq : mediaSinaList) {
-					sinaRedCodeList.add(ssq.split(","));
-				}
-				redCodeList.addAll(sinaRedCodeList);
-			}
-		}
-		for (int i = 0; CollectionUtils.isNotEmpty(redCodeList) && i < redCodeList.size(); i++) {
-			String[] ssq = redCodeList.get(i);
-			if (ssq.length > 15) {
-				redCodeList.remove(i);
-				i--;
+		if(CollectionUtils.isNotEmpty(sinaList))
+		{
+			Map map=(Map) sinaList.get(0);
+			String[] sina=ObjectUtils.toString(map.get("code")).split("@@");
+			for(String code:sina){
+				sinaRedCodeList.add(StringUtils.split(code,"+")[0].split(","));
+				redCodeList.add(StringUtils.split(code,"+")[0].split(","));
 			}
 		}
 		/** 文本收集的号码 ***/
@@ -221,13 +206,10 @@ public class LotterySsqService {
 				if (!LotterySsqMediaAlgorithm.isSinaDanNoneFilter(lValues, sinaDanList, 5)) {
 					continue;
 				}
-				if (!LotterySsqMediaAlgorithm.isSinaRedCodeXiaoFourFilter(lValues, mediaSinaList)) {
+				if (!LotterySsqMediaAlgorithm.isSinaRedCodeXiaoFourFilter(lValues, sinaRedCodeList)) {
 					continue;
 				}
 				if (!LotterySsqMediaAlgorithm.isRedIncludeFourCode(lValues, redCodeList)) {
-					continue;
-				}
-				if (!LotterySsqMediaAlgorithm.isRedIncludeMediaThreeCode(lValues, sinaRedCodeList)) {
 					continue;
 				}
 				/** 用户投注号码 **/
