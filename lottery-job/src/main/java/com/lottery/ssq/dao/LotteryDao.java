@@ -470,6 +470,7 @@ public class LotteryDao extends JdbcBaseDao {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List getSsqLotteryFetchResultSort() {
 		String sql = "select first redcode ,sum(c) cc from (select * from (select first,count(*) c from ssq_lottery_collect_result t group by t.first order by c desc) t where c>20000 union all"
 				+ " select * from (select second,count(*) c from ssq_lottery_collect_result t group by t.second order by c desc) t   union all" + " select * from (select third,count(*) c from ssq_lottery_collect_result t group by t.third order by c desc) t   union all "
@@ -615,5 +616,14 @@ public class LotteryDao extends JdbcBaseDao {
 	public void updateLotterySsqFilterConfig(String cfgValue, String cfgName) {
 		String sql = "update ssq_lottery_config set config_value=? where config_name=?";
 		this.getJdbcTemplate().update(sql, new Object[] { cfgValue, cfgName });
+	}
+
+	/**
+	 * 动态过滤方法查询
+	 * @return
+	 */
+	public List getSsqLotteryDynamicFilterMethod() {
+		String sql="select * from ssq_lottery_dynamic_filter_method t where t.enabled=1";
+		return this.getJdbcTemplate().queryForList(sql);
 	}
 }

@@ -1,17 +1,16 @@
 package com.lottery.ssq.Algorithm;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
-import com.lottery.ssq.LotterySsqFetchConfig;
+import com.lottery.ssq.config.LotterySsqConfig;
+import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.config.LotterySsqFilterConfig;
 
 /**
@@ -63,16 +62,17 @@ public class LotterySsqAlgorithm {
 	 * LotterySsqFilterConfig.includePreRedNum==0号码中不能包含一个上一期的号码
 	 * 包含 至少LotterySsqFilterConfig.includePreRedNum个以上的号码
 	 * @param lValues
+	 * 最多包含zuoduoNum个号码
 	 * @return
 	 */
-	public static boolean isRedIncludePreRedCode(String[] lValues) {
+	public static boolean isRedIncludePreRedCode(String[] lValues,int zuiduoNum) {
 		if(LotterySsqFilterConfig.includePreRedNum==-1){
 			return true;
 		}
 		int tempSelect = 0;
 		for (int j = 0; j < lValues.length; j++) {
-			for (int k = 0; k < LotterySsqFetchConfig.preRedCode.length; k++) {
-				if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preRedCode[k])) {
+			for (int k = 0; k < LotterySsqConfig.preRedCode.length; k++) {
+				if (StringUtils.equals(lValues[j], LotterySsqConfig.preRedCode[k])) {
 					tempSelect++;
 				}
 			}
@@ -80,7 +80,7 @@ public class LotterySsqAlgorithm {
 		if(LotterySsqFilterConfig.includePreRedNum==0&&tempSelect==0){
 			return true;
 		}
-		if (LotterySsqFilterConfig.includePreRedNum>0&&tempSelect >= LotterySsqFilterConfig.includePreRedNum) {
+		if (LotterySsqFilterConfig.includePreRedNum>0&&tempSelect <= zuiduoNum) {
 			return true;
 		}
 		return false;
@@ -93,26 +93,26 @@ public class LotterySsqAlgorithm {
 	 * @param lValues
 	 * @return
 	 */
-	public static boolean isRedIncludeSideCode(String[] lValues) {
+	public static boolean isRedIncludeSideCode(String[] lValues,int zuiduoNum) {
 		int tempSelect = 0;
-		if (LotterySsqFetchConfig.preSideCode == null||LotterySsqFilterConfig.haveSideCode==-1) {
+		if (LotterySsqConfig.preSideCode == null||LotterySsqFilterConfig.haveSideCode==-1) {
 			return true;
 		}
-		if (LotterySsqFetchConfig.preSideCode.length > 0&&LotterySsqFilterConfig.haveSideCode>0) {
+		if (LotterySsqConfig.preSideCode.length > 0&&LotterySsqFilterConfig.haveSideCode>0) {
 			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < LotterySsqFetchConfig.preSideCode.length; k++) {
-					if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preSideCode[k])) {
+				for (int k = 0; k < LotterySsqConfig.preSideCode.length; k++) {
+					if (StringUtils.equals(lValues[j], LotterySsqConfig.preSideCode[k])) {
 						tempSelect++;
 					}
 				}
 			}
-			if (tempSelect == 0 || tempSelect > 2) {
+			if (tempSelect == 0 || tempSelect >zuiduoNum) {
 				return false;
 			}
 		} else if (LotterySsqFilterConfig.haveSideCode == 0) {
 			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < LotterySsqFetchConfig.preSideCode.length; k++) {
-					if (StringUtils.equals(lValues[j], LotterySsqFetchConfig.preSideCode[k])) {
+				for (int k = 0; k < LotterySsqConfig.preSideCode.length; k++) {
+					if (StringUtils.equals(lValues[j], LotterySsqConfig.preSideCode[k])) {
 						tempSelect++;
 					}
 				}

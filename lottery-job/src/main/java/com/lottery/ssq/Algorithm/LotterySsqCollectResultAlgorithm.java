@@ -55,6 +55,39 @@ public class LotterySsqCollectResultAlgorithm {
 		}
 		return true;
 	}
+	/**
+	 * @param firstRedCode
+	 * @param secondRedCode
+	 * @param thirdRedCode
+	 * @param fourthRedCode
+	 * @param firthRedCode
+	 * @param sixthRedCode
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isIncludeLocationRedCode(String[]firstRedCode,String[] secondRedCode, String[] thirdRedCode, String[] fourthRedCode, String[] firthRedCode, String[] sixthRedCode, String[] lValues) {
+		boolean locationFlag = true;
+		for (int j = 2; j < 6; j++) {
+			String[] tmp = null;
+			if (j == 2) {
+				tmp = thirdRedCode;
+			}
+			if (j == 3) {
+				tmp = fourthRedCode;
+			}
+			if (j == 4) {
+				tmp = firthRedCode;
+			}
+			if (j == 5) {
+				tmp = sixthRedCode;
+			}
+			if (!LotterySsqCollectResultAlgorithm.isIncludeLocationRedCode(lValues[j], tmp)) {
+				locationFlag = false;
+				break;
+			}
+		}
+		return locationFlag;
+	}
 
 	/**
 	 * 与不能同时出现的号码类似，只是这是通过网上用户收集而来的。

@@ -3,7 +3,7 @@ package com.lottery.ssq.Algorithm;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
-import com.lottery.ssq.LotterySsqFetchConfig;
+import com.lottery.ssq.config.LotterySsqFetchConfig;
 
 /**
  * @author Administrator

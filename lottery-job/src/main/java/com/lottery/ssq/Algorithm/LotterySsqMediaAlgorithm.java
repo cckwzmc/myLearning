@@ -9,9 +9,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 
-import com.lottery.ssq.LotterySsqFetchConfig;
 import com.lottery.ssq.config.LotterySsqFilterConfig;
 
 /**
