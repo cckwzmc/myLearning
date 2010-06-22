@@ -22,12 +22,11 @@ public class LotterySsqJob {
 	LotterySsqFileService lotterySsqFileService = null;
 	LotterySsqService lotterySsqService = null;
 	LotteryInitService lotteryInitService = null;
-	LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService=null;
-	
+	LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService = null;
+
 	private LotterySsqCollectService lotteryCollectService = null;
 	private LotterySsqConifgService lotterySsqConifgService = null;
 
-	
 	public void setLotterySsqCustomerCaipiaoService(LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService) {
 		this.lotterySsqCustomerCaipiaoService = lotterySsqCustomerCaipiaoService;
 	}
@@ -61,13 +60,17 @@ public class LotterySsqJob {
 	}
 
 	public void initService() {
-		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml", "classpath:/lottery/ssq/applicationContext-database.xml", "classpath:/lottery/ssq/applicationContext-dao.xml",
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {
+				"classpath:/spring/applicationContext.xml", "classpath:/lottery/ssq/applicationContext-database.xml",
+				"classpath:/lottery/ssq/applicationContext-dao.xml",
 				"classpath:/lottery/ssq/applicationContext-service.xml" });
 		if (this.lotterySsqCustomer500WanService == null) {
-			this.lotterySsqCustomer500WanService = (LotterySsqCustomer500WanService) context.getBean("lotterySsqCustomer500WanService");
+			this.lotterySsqCustomer500WanService = (LotterySsqCustomer500WanService) context
+					.getBean("lotterySsqCustomer500WanService");
 		}
 		if (this.lotterySsqCustomerDyjService == null) {
-			this.lotterySsqCustomerDyjService = (LotterySsqCustomerDyjService) context.getBean("lotterySsqCustomerDyjService");
+			this.lotterySsqCustomerDyjService = (LotterySsqCustomerDyjService) context
+					.getBean("lotterySsqCustomerDyjService");
 		}
 		if (this.lotterySsqService == null) {
 			this.lotterySsqService = (LotterySsqService) context.getBean("lotteryService");
@@ -85,8 +88,10 @@ public class LotterySsqJob {
 			this.lotterySsqConifgService = (LotterySsqConifgService) context.getBean("lotterySsqConifgService");
 		}
 		if (this.lotterySsqCustomerCaipiaoService == null) {
-			this.lotterySsqCustomerCaipiaoService = (LotterySsqCustomerCaipiaoService) context.getBean("lotterySsqCustomerCaipiaoService");
+			this.lotterySsqCustomerCaipiaoService = (LotterySsqCustomerCaipiaoService) context
+					.getBean("lotterySsqCustomerCaipiaoService");
 		}
+		this.lotterySsqConifgService.initSsqConfig();
 	}
 
 	/**
@@ -109,6 +114,7 @@ public class LotterySsqJob {
 		this.lotteryCollectService.backHisSsqCollectResult();
 		logger.info("备份历史抓取结果结束....................");
 	}
+
 	/**
 	 * 500wan用户投注抓取
 	 */
@@ -123,6 +129,7 @@ public class LotterySsqJob {
 		this.lotterySsqCustomer500WanService.fetch500WanProjectRedCode();
 		logger.info("抓取500wan用户投注结束....................");
 	}
+
 	/**
 	 * 大赢家用户投注抓取
 	 */
@@ -137,6 +144,7 @@ public class LotterySsqJob {
 		this.lotterySsqCustomerDyjService.fetchDyjProjectCode();
 		logger.info("抓取大赢家用户投注结束....................");
 	}
+
 	/**
 	 * 爱彩网用户投注抓取
 	 */
@@ -151,12 +159,12 @@ public class LotterySsqJob {
 		this.lotterySsqCustomerCaipiaoService.fetchCaipiaoProjectCode();
 		logger.info("抓取爱彩网用户投注结束....................");
 	}
+
 	/**
 	 * 计算抓取的数据，并完成初步过滤。 每天下午4点开始
 	 */
 	public void parserFetchLotterySsqData() {
 		initService();
-		
 		if (!this.lotterySsqConifgService.initFetchConfig()) {
 			logger.info("抓取配置初始化失败....................");
 			return;

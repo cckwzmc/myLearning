@@ -124,7 +124,8 @@ public class LotteryDao extends JdbcBaseDao {
 	 * @param fen
 	 * @param isTrue
 	 */
-	public void saveSsqLotteryHistoryStat(String expect, String type, String code, String num, String fen, boolean isTrue) {
+	public void saveSsqLotteryHistoryStat(String expect, String type, String code, String num, String fen,
+			boolean isTrue) {
 		String sql = "insert into ssq_lottery_his_media_stat values(?,?,?,?,?,?)";
 		this.getJdbcTemplate().update(sql, new Object[] { expect, type, code, num, fen, isTrue ? 1 : 0 });
 	}
@@ -401,13 +402,15 @@ public class LotteryDao extends JdbcBaseDao {
 
 	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectFetchLimit(int first, int page, String net) {
-		String sql = "select id,code from ssq_lottery_collect_fetch t where t.net=? and code!='-1'  limit " + first + "," + page;
+		String sql = "select id,code from ssq_lottery_collect_fetch t where t.net=? and code!='-1'  limit " + first
+				+ "," + page;
 		return this.getJdbcTemplate().queryForList(sql, new Object[] { net });
 	}
 
 	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectResultLimit(int first, int page) {
-		String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result t  limit " + first + "," + page;
+		String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result t  limit " + first
+				+ "," + page;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
@@ -459,9 +462,12 @@ public class LotteryDao extends JdbcBaseDao {
 
 	public List getSsqLotteryFilterResultTop10() {
 		String sql = "select first redcode ,sum(c) cc from (select * from (select first,count(*) c from ssq_lottery_collect_result t group by t.first order by c desc) t where c>20000 union all"
-				+ " select * from (select second,count(*) c from ssq_lottery_collect_result t group by t.second order by c desc) t   union all" + " select * from (select third,count(*) c from ssq_lottery_collect_result t group by t.third order by c desc) t   union all "
-				+ " select * from (select fourth,count(*) c from ssq_lottery_collect_result t group by t.fourth order by c desc) t   union all " + " select * from (select firth,count(*) c from ssq_lottery_collect_result t group by t.firth order by c desc) t   union all "
-				+ " select * from (select sixth,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc) t  )" + " ccc group by first   order by cc desc  limit 0,10";
+				+ " select * from (select second,count(*) c from ssq_lottery_collect_result t group by t.second order by c desc) t   union all"
+				+ " select * from (select third,count(*) c from ssq_lottery_collect_result t group by t.third order by c desc) t   union all "
+				+ " select * from (select fourth,count(*) c from ssq_lottery_collect_result t group by t.fourth order by c desc) t   union all "
+				+ " select * from (select firth,count(*) c from ssq_lottery_collect_result t group by t.firth order by c desc) t   union all "
+				+ " select * from (select sixth,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc) t  )"
+				+ " ccc group by first   order by cc desc  limit 0,10";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
@@ -473,9 +479,12 @@ public class LotteryDao extends JdbcBaseDao {
 	@SuppressWarnings("unchecked")
 	public List getSsqLotteryFetchResultSort() {
 		String sql = "select first redcode ,sum(c) cc from (select * from (select first,count(*) c from ssq_lottery_collect_result t group by t.first order by c desc) t where c>20000 union all"
-				+ " select * from (select second,count(*) c from ssq_lottery_collect_result t group by t.second order by c desc) t   union all" + " select * from (select third,count(*) c from ssq_lottery_collect_result t group by t.third order by c desc) t   union all "
-				+ " select * from (select fourth,count(*) c from ssq_lottery_collect_result t group by t.fourth order by c desc) t   union all " + " select * from (select firth,count(*) c from ssq_lottery_collect_result t group by t.firth order by c desc) t   union all "
-				+ " select * from (select sixth,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc) t  )" + " ccc group by first   order by cc desc ";
+				+ " select * from (select second,count(*) c from ssq_lottery_collect_result t group by t.second order by c desc) t   union all"
+				+ " select * from (select third,count(*) c from ssq_lottery_collect_result t group by t.third order by c desc) t   union all "
+				+ " select * from (select fourth,count(*) c from ssq_lottery_collect_result t group by t.fourth order by c desc) t   union all "
+				+ " select * from (select firth,count(*) c from ssq_lottery_collect_result t group by t.firth order by c desc) t   union all "
+				+ " select * from (select sixth,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc) t  )"
+				+ " ccc group by first   order by cc desc ";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
@@ -485,7 +494,8 @@ public class LotteryDao extends JdbcBaseDao {
 		// List list=this.getJdbcTemplate().queryForList(sql);
 		// }catch(Exception e)
 		// {
-		String sql = "create table if not exists ssq_lottery_collect_result_" + expect + " as select * from ssq_lottery_collect_result";
+		String sql = "create table if not exists ssq_lottery_collect_result_" + expect
+				+ " as select * from ssq_lottery_collect_result";
 		this.getJdbcTemplate().execute(sql);
 		// }
 	}
@@ -535,7 +545,8 @@ public class LotteryDao extends JdbcBaseDao {
 	}
 
 	public List getSsqLotteryCollectResultTopN(int n) {
-		String sql = "select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result s ) t group by t.redcode order by c desc limit 0," + n;
+		String sql = "select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result s ) t group by t.redcode order by c desc limit 0,"
+				+ n;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
@@ -550,14 +561,16 @@ public class LotteryDao extends JdbcBaseDao {
 	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectResultLimit(int first, int page, String expect) {
 		// try {
-		// String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result_" + expect + " t  limit " + first + "," + page;
+		// String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result_" + expect +
+		// " t  limit " + first + "," + page;
 		// return this.getJdbcTemplate().queryForList(sql);
 		// } catch (Exception e) {
 		// return null;
 		// }
 		//	
 		try {
-			String sql = "select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result_" + expect + " s ) t group by t.redcode order by c  limit " + first + "," + page;
+			String sql = "select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result_"
+					+ expect + " s ) t group by t.redcode order by c  limit " + first + "," + page;
 			return this.getJdbcTemplate().queryForList(sql);
 		} catch (Exception e) {
 			return null;
@@ -567,22 +580,28 @@ public class LotteryDao extends JdbcBaseDao {
 	public List getSsqLotteryCollectResult(String location, int start, int end) {
 		String sql = "";
 		if ("first".equals(location)) {
-			sql = "select t.first redcode,count(*) c from ssq_lottery_collect_result t group by t.first order by c desc limit " + start + "," + end;
+			sql = "select t.first redcode,count(*) c from ssq_lottery_collect_result t group by t.first order by c desc limit "
+					+ start + "," + end;
 		}
 		if ("second".equals(location)) {
-			sql = "select t.second redcode,count(*) c from ssq_lottery_collect_result t group by t.second order by c desc limit " + start + "," + end;
+			sql = "select t.second redcode,count(*) c from ssq_lottery_collect_result t group by t.second order by c desc limit "
+					+ start + "," + end;
 		}
 		if ("third".equals(location)) {
-			sql = "select t.third redcode,count(*) c from ssq_lottery_collect_result t group by t.third order by c desc limit " + start + "," + end;
+			sql = "select t.third redcode,count(*) c from ssq_lottery_collect_result t group by t.third order by c desc limit "
+					+ start + "," + end;
 		}
 		if ("fourth".equals(location)) {
-			sql = "select t.fourth redcode,count(*) c from ssq_lottery_collect_result t group by t.fourth order by c desc limit " + start + "," + end;
+			sql = "select t.fourth redcode,count(*) c from ssq_lottery_collect_result t group by t.fourth order by c desc limit "
+					+ start + "," + end;
 		}
 		if ("firth".equals(location)) {
-			sql = "select t.firth redcode,count(*) c from ssq_lottery_collect_result t group by t.firth order by c desc limit " + start + "," + end;
+			sql = "select t.firth redcode,count(*) c from ssq_lottery_collect_result t group by t.firth order by c desc limit "
+					+ start + "," + end;
 		}
 		if ("sixth".equals(location)) {
-			sql = "select t.sixth redcode,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc limit " + start + "," + end;
+			sql = "select t.sixth redcode,count(*) c from ssq_lottery_collect_result t group by t.sixth order by c desc limit "
+					+ start + "," + end;
 		}
 		if ("".equals(sql)) {
 			return null;
@@ -614,16 +633,17 @@ public class LotteryDao extends JdbcBaseDao {
 	 * @param cfgName
 	 */
 	public void updateLotterySsqFilterConfig(String cfgValue, String cfgName) {
-		String sql = "update ssq_lottery_config set config_value=? where config_name=?";
+		String sql = "update ssq_lottery_filter_config set config_value=? where config_name=?";
 		this.getJdbcTemplate().update(sql, new Object[] { cfgValue, cfgName });
 	}
 
 	/**
 	 * 动态过滤方法查询
+	 * 
 	 * @return
 	 */
 	public List getSsqLotteryDynamicFilterMethod() {
-		String sql="select * from ssq_lottery_dynamic_filter_method t where t.enabled=1";
+		String sql = "select * from ssq_lottery_dynamic_filter_method t where t.enabled=1";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 }
