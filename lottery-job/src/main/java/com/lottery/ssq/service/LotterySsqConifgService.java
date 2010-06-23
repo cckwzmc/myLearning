@@ -23,7 +23,6 @@ import com.lottery.ssq.fetch.dao.LotteryFetchDao;
 public class LotterySsqConifgService {
 	private LotteryFetchDao fetchDao = null;
 
-
 	public void setFetchDao(LotteryFetchDao fetchDao) {
 		this.fetchDao = fetchDao;
 	}
@@ -47,9 +46,12 @@ public class LotterySsqConifgService {
 			for (int i = 0; i < LotterySsqConfig.preRedCode.length; i++) {
 				int tmpInt = NumberUtils.toInt(LotterySsqConfig.preRedCode[i]);
 				if ("".equals(temp)) {
-					temp = tmpInt == 1 ? "02" : (((tmpInt - 1) < 10 ? "0" + (tmpInt - 1) : (tmpInt - 1)) + "," + ((tmpInt + 1) < 10 ? "0" + (tmpInt + 1) : (tmpInt + 1)));
+					temp = tmpInt == 1 ? "02"
+							: (((tmpInt - 1) < 10 ? "0" + (tmpInt - 1) : (tmpInt - 1)) + "," + ((tmpInt + 1) < 10 ? "0"
+									+ (tmpInt + 1) : (tmpInt + 1)));
 				} else {
-					String tmpSideCode = tmpInt == 1 ? "02" : (((tmpInt - 1) < 10 ? "0" + (tmpInt - 1) : (tmpInt - 1)) + "," + ((tmpInt + 1) < 10 ? "0" + (tmpInt + 1) : (tmpInt + 1)));
+					String tmpSideCode = tmpInt == 1 ? "02" : (((tmpInt - 1) < 10 ? "0" + (tmpInt - 1) : (tmpInt - 1))
+							+ "," + ((tmpInt + 1) < 10 ? "0" + (tmpInt + 1) : (tmpInt + 1)));
 					if (temp.indexOf(tmpSideCode) == -1) {
 						temp += "," + tmpSideCode;
 					}
@@ -100,39 +102,48 @@ public class LotterySsqConifgService {
 			}
 			if (StringUtils.equals(cfgName, "media500WanUrl")) {
 				LotterySsqFetchConfig.media500WanUrl = cfgValue;
-				LotterySsqFetchConfig.media500WanUrl = StringUtils.replace(LotterySsqFetchConfig.media500WanUrl, "@expect@", LotterySsqConfig.expect);
+				LotterySsqFetchConfig.media500WanUrl = StringUtils.replace(LotterySsqFetchConfig.media500WanUrl,
+						"@expect@", LotterySsqConfig.expect);
 			}
 			if (StringUtils.equals(cfgName, "mediaSinaUrl")) {
 				LotterySsqFetchConfig.mediaSinaUrl = cfgValue;
-				LotterySsqFetchConfig.mediaSinaUrl = StringUtils.replace(LotterySsqFetchConfig.mediaSinaUrl, "@expect@", LotterySsqConfig.expect);
+				LotterySsqFetchConfig.mediaSinaUrl = StringUtils.replace(LotterySsqFetchConfig.mediaSinaUrl,
+						"@expect@", LotterySsqConfig.expect);
 			}
 			if (StringUtils.equals(cfgName, "dyjUrl")) {
 				LotterySsqFetchConfig.dyjUrl = cfgValue;
-				LotterySsqFetchConfig.dyjUrl = StringUtils.replace(LotterySsqFetchConfig.dyjUrl, "@expect@", LotterySsqConfig.expect);
+				LotterySsqFetchConfig.dyjUrl = StringUtils.replace(LotterySsqFetchConfig.dyjUrl, "@expect@",
+						LotterySsqConfig.expect);
 			}
 			if (StringUtils.equals(cfgName, "dyjDowload")) {
 				LotterySsqFetchConfig.dyjDowload = cfgValue;
-				LotterySsqFetchConfig.dyjDowload = StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@expect@", LotterySsqConfig.expect);
+				LotterySsqFetchConfig.dyjDowload = StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@expect@",
+						LotterySsqConfig.expect);
 			}
 			if (StringUtils.equals(cfgName, "www500wanUrl")) {
 				LotterySsqFetchConfig.www500wanUrl = cfgValue;
-				LotterySsqFetchConfig.www500wanUrl = StringUtils.replace(LotterySsqFetchConfig.www500wanUrl, "@expect@", LotterySsqConfig.expect);
+				LotterySsqFetchConfig.www500wanUrl = StringUtils.replace(LotterySsqFetchConfig.www500wanUrl,
+						"@expect@", LotterySsqConfig.expect);
 			}
 			if (StringUtils.equals(cfgName, "www500wanDowload")) {
 				LotterySsqFetchConfig.www500wanDowload = cfgValue;
-				LotterySsqFetchConfig.www500wanDowload = StringUtils.replace(LotterySsqFetchConfig.www500wanDowload, "@expect@", LotterySsqConfig.expect);
+				LotterySsqFetchConfig.www500wanDowload = StringUtils.replace(LotterySsqFetchConfig.www500wanDowload,
+						"@expect@", LotterySsqConfig.expect);
 			}
 			if (StringUtils.equals(cfgName, "caipiaoUrl")) {
 				LotterySsqFetchConfig.caipiaoUrl = cfgValue;
-				LotterySsqFetchConfig.caipiaoUrl = StringUtils.replace(LotterySsqFetchConfig.caipiaoUrl, "@expect@", LotterySsqConfig.expect);
+				LotterySsqFetchConfig.caipiaoUrl = StringUtils.replace(LotterySsqFetchConfig.caipiaoUrl, "@expect@",
+						LotterySsqConfig.expect);
 			}
 			if (StringUtils.equals(cfgName, "caipiaoDowload")) {
 				LotterySsqFetchConfig.caipiaoDowload = cfgValue;
-				LotterySsqFetchConfig.caipiaoDowload = StringUtils.replace(LotterySsqFetchConfig.caipiaoDowload, "@expect@", LotterySsqConfig.expect);
+				LotterySsqFetchConfig.caipiaoDowload = StringUtils.replace(LotterySsqFetchConfig.caipiaoDowload,
+						"@expect@", LotterySsqConfig.expect);
 			}
 			if (StringUtils.equals(cfgName, "buywanUrl")) {
 				LotterySsqFetchConfig.buywanUrl = cfgValue;
-				// LotterySsqFetchConfig. = StringUtils.replace(LotterySsqFetchConfig.caipiaoDowload, "@expect@", LotterySsqConfig.expect);
+				// LotterySsqFetchConfig. = StringUtils.replace(LotterySsqFetchConfig.caipiaoDowload, "@expect@",
+				// LotterySsqConfig.expect);
 			}
 		}
 		return true;
@@ -143,7 +154,7 @@ public class LotterySsqConifgService {
 		if (StringUtils.isBlank(LotterySsqConfig.expect)) {
 			return false;
 		}
-		List list=this.fetchDao.getLotterySsqFilterConfig();
+		List list = this.fetchDao.getLotterySsqFilterConfig();
 		if (CollectionUtils.isEmpty(list)) {
 			return false;
 		}
@@ -229,31 +240,42 @@ public class LotterySsqConifgService {
 			}
 			if (StringUtils.equals(cfgName, "cannotSelectedTogethor")) {
 				// 不能同时出现的号码
-				LotterySsqFilterConfig.cannotSelectedTogethor = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|") : null;
+				LotterySsqFilterConfig.cannotSelectedTogethor = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null;
 			}
 			if (StringUtils.equals(cfgName, "haveSideCode")) {
 				// 是否有边号
 				LotterySsqFilterConfig.haveSideCode = NumberUtils.toInt(cfgValue);
 			}
-			//最多中其中一个
+			// 最多中其中一个
 			if (StringUtils.equals(cfgName, "zuiduoSelectedOneCode")) {
-				LotterySsqFilterConfig.zuiduoSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|") : null;
+				LotterySsqFilterConfig.zuiduoSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null;
 			}
-			//至少选择一个
+			// 至少选择一个
 			if (StringUtils.equals(cfgName, "leastSelectedOneCode")) {
-				LotterySsqFilterConfig.leastSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|") : null;
+				LotterySsqFilterConfig.leastSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null;
 			}
-//			必须选择其中的一个
+			// 必须选择其中的一个
 			if (StringUtils.equals(cfgName, "mustSelectedOneCode")) {
-				LotterySsqFilterConfig.mustSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|") : null;
+				LotterySsqFilterConfig.mustSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null;
 			}
-			//至少选其中的两个
+			// 必须选其中的两个
 			if (StringUtils.equals(cfgName, "mustSelectedTwoCode")) {
-				LotterySsqFilterConfig.mustSelectedTwoCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|") : null;
+				LotterySsqFilterConfig.mustSelectedTwoCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null;
 			}
-			//至少选其中的三个
-			if (StringUtils.equals(cfgName, "mustSelectedThreeCode")) {
-				LotterySsqFilterConfig.mustSelectedThreeCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|") : null;
+			// 至少选其中的两个
+			if (StringUtils.equals(cfgName, "leastSelectedTwoCode")) {
+				LotterySsqFilterConfig.leastSelectedTwoCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null;
+			}
+			// 至少选其中的三个
+			if (StringUtils.equals(cfgName, "leastSelectedThreeCode")) {
+				LotterySsqFilterConfig.leastSelectedThreeCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null;
 			}
 		}
 		return true;

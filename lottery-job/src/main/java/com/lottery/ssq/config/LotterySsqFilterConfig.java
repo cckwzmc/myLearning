@@ -1,7 +1,6 @@
 package com.lottery.ssq.config;
 
-
-public class LotterySsqFilterConfig extends LotterySsqConfig{
+public class LotterySsqFilterConfig extends LotterySsqConfig {
 
 	public static int quOne = -1;
 	public static int quTwo = -1;
@@ -42,15 +41,17 @@ public class LotterySsqFilterConfig extends LotterySsqConfig{
 	public static int thirdMaxCode = 29;
 	public static int fourthMinCode = 4;
 	public static int fourthMaxCode = 33;
-	//最多选择其中的一个
-	public static String[] zuiduoSelectedOneCode = new String[]{};
-	//至少选其中的一个
-	public static String[] leastSelectedOneCode=new String[]{};
-	//必须选择其中的一个
-	public static String[] mustSelectedOneCode=new String[]{};
-	//至少选其中的两个
-	public static String[] mustSelectedTwoCode=new String[]{};
-	//至少选中其中的三个
-	public static String[] mustSelectedThreeCode =new String[]{};
+	// 最多选择其中的一个
+	public static String[] zuiduoSelectedOneCode = new String[] {};
+	// 至少选其中的一个
+	public static String[] leastSelectedOneCode = new String[] {};
+	// 必须选择其中的一个
+	public static String[] mustSelectedOneCode = new String[] {};
+	// 必须选其中的两个
+	public static String[] mustSelectedTwoCode = new String[] {};
+	// 至少选其中的两个
+	public static String[] leastSelectedTwoCode = new String[] {};
+	// 至少选中其中的三个
+	public static String[] leastSelectedThreeCode = new String[] {};
 
 }

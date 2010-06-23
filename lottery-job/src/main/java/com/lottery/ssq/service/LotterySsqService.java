@@ -128,58 +128,23 @@ public class LotterySsqService {
 				int qThree = 0;
 
 				// ~~~~~~~~~~~~~~~~~~~~~基本过滤的一些方法~~~~~~~~~~~~~~~
-				// 数字的范围
-				if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
+				if (CollectionUtils.isEmpty(methodList)) {
 					continue;
 				}
-				// 是否需要胆
-				if (!LotterySsqAlgorithm.isRedIncludeRequiredCode(lValues)) {
+				boolean isContinue = true;
+				for (int i = 0; i < methodList.size(); i++) {
+					Map methodMap = (Map) methodList.get(i);
+					String methodName = (String) methodMap.get("method_name");
+					String arg = (String) methodMap.get("args1");
+					if (!standardFilterMethod(methodName, arg, lValues)) {
+						isContinue = false;
+						break;
+					}
+				}
+				if (!isContinue) {
 					continue;
 				}
-				// 是否包含上一期的号码
-				if (!LotterySsqAlgorithm.isRedIncludePreRedCode(lValues, 2)) {
-					continue;
-				}
-				// 是否包括边号
-				if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues, 2)) {
-					continue;
-				}
-				// 不能出现的号码
-				if (!LotterySsqAlgorithm.isRedNotIncludeTheCode(lValues)) {
-					continue;
-				}
-				// 在指定的一系列号码中选取6个
-				if (!LotterySsqAlgorithm.isRedInTheCodes(lValues)) {
-					continue;
-				}
-				// 不能同时出现的号码多组用"|"分割
-				if (!LotterySsqAlgorithm.isRedTogethorCode(lValues)) {
-					continue;
-				}
-				// 是否包含两连号
-				if (!LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
-					continue;
-				}
-				// 是否包含三连号
-				if (!LotterySsqAlgorithm.isRedIncludeThreeEvenIn(lValues)) {
-					continue;
-				}
-				// 是否包含隔号
-				if (!LotterySsqAlgorithm.isRedIncludeDifferCode(lValues)) {
-					continue;
-				}
-				// 至少中其中的一个号码
-				if (!LotterySsqAlgorithm.isLeastSelectedOneCode(lValues)) {
-					continue;
-				}
-				// 必须选择一个/是并的关系而不是或得关系
-				if (!LotterySsqAlgorithm.isMustSelectedOneCode(lValues)) {
-					continue;
-				}
-				// 最多只能其中的一个号码
-				if (!LotterySsqAlgorithm.isSelectOneCode(lValues)) {
-					continue;
-				}
+
 				/** 新浪媒体擂台 **/
 				// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				if (!LotterySsqMediaAlgorithm.isSinaDanTogethorFilter(lValues, sinaDanList)) {
@@ -276,6 +241,106 @@ public class LotterySsqService {
 		String lotteryHtml = "D:/Apache2.2/htdocs/lottery_rs/index_" + LotterySsqConfig.expect + ".htm";
 		String tmp = "<li><a href='" + f + "'>" + f + "</a></li>";
 		writeFile(tmp, lotteryHtml, true);
+	}
+
+	/**
+	 * 基本过滤方法
+	 * 
+	 * @param methodName
+	 * @param arg
+	 * @param lValues
+	 * @return
+	 */
+	private boolean standardFilterMethod(String methodName, String arg, String[] lValues) {
+
+		String[] args = StringUtils.split(arg, "|");
+		if ("isRedNumericInRange".equals(methodName)) {
+			// 数字的范围
+			if (!LotterySsqAlgorithm.isRedNumericInRange(lValues)) {
+				return false;
+			}
+		}
+		if ("isRedIncludeRequiredCode".equals(methodName)) {
+			// 是否需要胆
+			if (!LotterySsqAlgorithm.isRedIncludeRequiredCode(lValues)) {
+				return false;
+			}
+		}
+		if ("isRedIncludePreRedCode".equals(methodName)) {
+			// 是否包含上一期的号码
+			if (!LotterySsqAlgorithm.isRedIncludePreRedCode(lValues, NumberUtils.toInt(args[0]))) {
+				return false;
+			}
+		}
+		if ("isRedIncludeSideCode".equals(methodName)) {
+			// 是否包括边号
+			if (!LotterySsqAlgorithm.isRedIncludeSideCode(lValues, NumberUtils.toInt(args[0]))) {
+				return false;
+			}
+		}
+		if ("isRedNotIncludeTheCode".equals(methodName)) {
+			// 不能出现的号码
+			if (!LotterySsqAlgorithm.isRedNotIncludeTheCode(lValues)) {
+				return false;
+			}
+		}
+		if ("isRedInTheCodes".equals(methodName)) {
+			// 在指定的一系列号码中选取6个
+			if (!LotterySsqAlgorithm.isRedInTheCodes(lValues)) {
+				return false;
+			}
+		}
+		if ("isRedTogethorCode".equals(methodName)) {
+			// 不能同时出现的号码多组用"|"分割
+			if (!LotterySsqAlgorithm.isRedTogethorCode(lValues)) {
+				return false;
+			}
+		}
+		if ("isRedIncludeEvenIn".equals(methodName)) {
+			// 是否包含两连号
+			if (!LotterySsqAlgorithm.isRedIncludeEvenIn(lValues)) {
+				return false;
+			}
+		}
+		if ("isRedIncludeThreeEvenIn".equals(methodName)) {
+			// 是否包含三连号
+			if (!LotterySsqAlgorithm.isRedIncludeThreeEvenIn(lValues)) {
+				return false;
+			}
+		}
+		if ("isRedIncludeDifferCode".equals(methodName)) {
+			// 是否包含隔号
+			if (!LotterySsqAlgorithm.isRedIncludeDifferCode(lValues)) {
+				return false;
+			}
+		}
+		if ("isLeastSelectedOneCode".equals(methodName)) {
+			// 至少中其中的一个号码
+			if (!LotterySsqAlgorithm.isLeastSelectedOneCode(lValues)) {
+				return false;
+			}
+		}
+		if ("isMustSelectedOneCode".equals(methodName)) {
+			// 必须选择一个/是并的关系而不是或得关系
+			if (!LotterySsqAlgorithm.isMustSelectedOneCode(lValues)) {
+				return false;
+			}
+		}
+		if ("isSelectOneCode".equals(methodName)) {
+			// 最多只能其中的一个号码
+			if (!LotterySsqAlgorithm.isSelectOneCode(lValues)) {
+				return false;
+			}
+		}
+		if ("isSelectOneCode".equals(methodName)) {
+			// 最多只能其中的一个号码
+			if (!LotterySsqAlgorithm.isSelectOneCode(lValues)) {
+				return false;
+			}
+		}
+		// 必须选其中的两个
+		// 至少选其中的两个.// 至少选其中的三个
+		return true;
 	}
 
 	/**
