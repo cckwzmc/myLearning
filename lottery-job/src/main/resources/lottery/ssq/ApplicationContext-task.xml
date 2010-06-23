@@ -153,7 +153,7 @@
 		</property>
 		<property name="cronExpression">
 			<!-- 周2，4，7的4点和13自动运行 -->
-			<value>0 0/1 11,16,17,18 ? * MON,WED,SUN,TUE,THU</value>
+			<value>0 0/2 11,16,17,18 ? * WED,SUN,TUE,THU</value>
 		</property>
 	</bean>
 </beans>	

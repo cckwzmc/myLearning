@@ -154,7 +154,7 @@ public class LotterySsqConifgService {
 		if (StringUtils.isBlank(LotterySsqConfig.expect)) {
 			return false;
 		}
-		List list = this.fetchDao.getLotterySsqFilterConfig();
+		List list=this.fetchDao.getLotterySsqFilterConfig("is_reFilter");
 		if (CollectionUtils.isEmpty(list)) {
 			return false;
 		}

@@ -71,9 +71,9 @@ public class LotteryFetchDao extends JdbcBaseDao {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List getLotterySsqFilterConfig() {
-		String sql="select * from ssq_lottery_filter_config t where t.enabled=1";
-		return this.getJdbcTemplate().queryForList(sql);
+	public List getLotterySsqFilterConfig(String configName) {
+		String sql="select * from ssq_lottery_filter_config t where t.enabled=1 and t.config_name=''";
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{configName});
 	}
 	/**
 	 * 更新LotterySSqFILTERCONFIG
