@@ -53,5 +53,10 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	public static String[] leastSelectedTwoCode = new String[] {};
 	// 至少选中其中的三个
 	public static String[] leastSelectedThreeCode = new String[] {};
+	//三个尾数相同的号码
+	public static int mantissaThreeSame;
+	//三个两倍数的号码
+	public static int haveThree2Multiple;
+	public static int haveThree3Multiple;
 
 }

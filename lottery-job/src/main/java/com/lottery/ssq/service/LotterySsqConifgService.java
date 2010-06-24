@@ -277,6 +277,18 @@ public class LotterySsqConifgService {
 				LotterySsqFilterConfig.leastSelectedThreeCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
 						cfgValue, "|") : null;
 			}
+			// 三个尾数相同的号码
+			if (StringUtils.equals(cfgName, "mantissaThreeSame")) {
+				LotterySsqFilterConfig.mantissaThreeSame = NumberUtils.toInt(cfgValue);
+			}
+			// 三个2倍数的号码
+			if (StringUtils.equals(cfgName, "haveThree2Multiple")) {
+				LotterySsqFilterConfig.haveThree2Multiple = NumberUtils.toInt(cfgValue);
+			}
+			// 三个3倍数的号码
+			if (StringUtils.equals(cfgName, "haveThree3Multiple")) {
+				LotterySsqFilterConfig.haveThree3Multiple = NumberUtils.toInt(cfgValue);
+			}
 		}
 		return true;
 	}

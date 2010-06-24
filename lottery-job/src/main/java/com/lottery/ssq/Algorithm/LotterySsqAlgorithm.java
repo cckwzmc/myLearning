@@ -622,5 +622,160 @@ public class LotterySsqAlgorithm {
 		return true;
 	}
 
+	/**
+	 * 必须选择其中的两个号码
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean mustSelectedTwoRedCode(String[] lValues) {
+		if(LotterySsqFilterConfig.mustSelectedTwoCode==null||LotterySsqFilterConfig.mustSelectedTwoCode.length==0){
+			return true;
+		}
+		int selectedCode=0;
+		for (int i = 0; i < lValues.length; i++) {
+			for (int j = 0; j < LotterySsqFilterConfig.mustSelectedTwoCode.length; j++) {
+				if(StringUtils.equals(lValues[i], LotterySsqFilterConfig.mustSelectedTwoCode[j])){
+					selectedCode++;
+				}
+			}
+			
+		}
+		if(selectedCode!=2){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 至少选择其中的两个号码
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean leastSelectedTwoRedCode(String[] lValues) {
+		if(LotterySsqFilterConfig.leastSelectedTwoCode==null||LotterySsqFilterConfig.leastSelectedTwoCode.length==0){
+			return true;
+		}
+		int selectedCode=0;
+		for (int i = 0; i < lValues.length; i++) {
+			for (int j = 0; j < LotterySsqFilterConfig.leastSelectedTwoCode.length; j++) {
+				if(StringUtils.equals(lValues[i], LotterySsqFilterConfig.leastSelectedTwoCode[j])){
+					selectedCode++;
+				}
+			}
+		}
+		if(selectedCode<2){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 至少选中其中三个号码
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean leastSelectedThreeRedCode(String[] lValues) {
+		if(LotterySsqFilterConfig.leastSelectedThreeCode==null||LotterySsqFilterConfig.leastSelectedThreeCode.length==0){
+			return true;
+		}
+		int selectedCode=0;
+		for (int i = 0; i < lValues.length; i++) {
+			for (int j = 0; j < LotterySsqFilterConfig.leastSelectedThreeCode.length; j++) {
+				if(StringUtils.equals(lValues[i], LotterySsqFilterConfig.leastSelectedThreeCode[j])){
+					selectedCode++;
+				}
+			}
+		}
+		if(selectedCode<2){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 三个尾数相同的号码
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean mantissaThreeSame(String[] lValues) {
+		if(LotterySsqFilterConfig.mantissaThreeSame==-1){
+			return true;
+		}
+		for (int i = 0; i < lValues.length; i++) {
+			int selectedCode=0;
+			int tmp1=NumberUtils.toInt(StringUtils.substring(lValues[i], 1));
+			for (int j = 0; j < lValues.length; j++) {
+				int tmp2=NumberUtils.toInt(StringUtils.substring(lValues[j], 1));
+				if(tmp1==tmp2){
+					selectedCode++;
+				}
+			}
+			if(selectedCode>=3){
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+	/**
+	 * 三个以上包含三个2倍数的号码
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean haveThree2Multiple(String[] lValues) {
+		if(LotterySsqFilterConfig.haveThree2Multiple==-1){
+			return true;
+		}
+		for (int i = 0; i < lValues.length; i++) {
+			int selectedCode=0;
+			int tmp=NumberUtils.toInt(lValues[i]);
+			int tmp1=tmp*2;
+			int tmp2=tmp*4;
+			for (int j = 0; j < lValues.length; j++) {
+				if(tmp1==NumberUtils.toInt(lValues[j])){
+					selectedCode++;
+				}
+				if(tmp2==NumberUtils.toInt(lValues[j])){
+					selectedCode++;
+				}
+			}
+			if(selectedCode>=2){
+				return false;
+			}
+		}
+		return true;
+
+	}
+	/**
+	 * 三个以上包含三个3倍数的号码
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean haveThree3Multiple(String[] lValues) {
+		if(LotterySsqFilterConfig.haveThree3Multiple==-1){
+			return true;
+		}
+		for (int i = 0; i < lValues.length; i++) {
+			int selectedCode=0;
+			int tmp=NumberUtils.toInt(lValues[i]);
+			int tmp1=tmp*3;
+			int tmp2=tmp*9;
+			for (int j = 0; j < lValues.length; j++) {
+				if(tmp1==NumberUtils.toInt(lValues[j])){
+					selectedCode++;
+				}
+				if(tmp2==NumberUtils.toInt(lValues[j])){
+					selectedCode++;
+				}
+			}
+			if(selectedCode>=2){
+				return false;
+			}
+		}
+		return true;
+		
+	}
+
 	
 }
