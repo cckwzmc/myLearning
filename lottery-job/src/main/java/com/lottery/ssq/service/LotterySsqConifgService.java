@@ -154,7 +154,7 @@ public class LotterySsqConifgService {
 		if (StringUtils.isBlank(LotterySsqConfig.expect)) {
 			return false;
 		}
-		List list=this.fetchDao.getLotterySsqFilterConfig("is_reFilter");
+		List list = this.fetchDao.getLotterySsqFilterConfig("is_reFilter");
 		if (CollectionUtils.isEmpty(list)) {
 			return false;
 		}
@@ -288,6 +288,14 @@ public class LotterySsqConifgService {
 			// 三个3倍数的号码
 			if (StringUtils.equals(cfgName, "haveThree3Multiple")) {
 				LotterySsqFilterConfig.haveThree3Multiple = NumberUtils.toInt(cfgValue);
+			}
+			// 连续4个奇数或偶数
+			if (StringUtils.equals(cfgName, "continueFourOddOreven")) {
+				LotterySsqFilterConfig.continueFourOddOreven = NumberUtils.toInt(cfgValue);
+			}
+			// 5个以上奇数或偶数
+			if (StringUtils.equals(cfgName, "geFiveOddOrEven")) {
+				LotterySsqFilterConfig.geFiveOddOrEven = NumberUtils.toInt(cfgValue);
 			}
 		}
 		return true;

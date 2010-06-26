@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.dao.LotteryDao;
-import com.lottery.ssq.utils.LotteryUtils;
+import com.lottery.ssq.utils.LotterySsqUtils;
 import com.lottery.util.html.HtmlParseUtils;
 
 /**
@@ -39,7 +39,7 @@ public class LotterySsqMediaSinaService {
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String> iterator = redCode.iterator(); iterator.hasNext();) {
 			String[] red = iterator.next().split(",");
-			LotteryUtils.select(6, red, resultList);
+			LotterySsqUtils.select(6, red, resultList);
 		}
 		return resultList;
 	}

@@ -24,7 +24,7 @@ import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotterySsqMedia500WanUtils;
-import com.lottery.ssq.utils.LotteryUtils;
+import com.lottery.ssq.utils.LotterySsqUtils;
 import com.lottery.util.html.HtmlParseUtils;
 import com.lottery.util.html.HttpHtmlService;
 
@@ -337,7 +337,7 @@ public class LotteryInitService {
 		if (listFile != null) {
 			for (int i = 0; i < listFile.length; i++) {
 				try {
-					String xmlContent = LotteryUtils.getFileContent(listFile[i]);
+					String xmlContent = LotterySsqUtils.getFileContent(listFile[i]);
 					this.lotterySsqMedia500WanService.saveHistoryMediaStat(xmlContent, LotterySsqConfig.expect);
 				} catch (IOException e) {
 					logger.error(listFile[i].getName() + "===" + e.getMessage());
@@ -359,7 +359,7 @@ public class LotteryInitService {
 		if (listFile != null) {
 			for (int i = 0; i < listFile.length; i++) {
 				try {
-					String xmlContent = LotteryUtils.getFileContent(listFile[i]);
+					String xmlContent = LotterySsqUtils.getFileContent(listFile[i]);
 					Document document = null;
 					try {
 						document = DocumentHelper.parseText(xmlContent);
@@ -580,7 +580,7 @@ public class LotteryInitService {
 			if (doc != null) {
 				List<String> wList = this.lotterySsqMedia500WanService.getCurrentMediaRedCode(doc);
 				for(String redCode:wList){
-					LotteryUtils.select(6, redCode, resultList);
+					LotterySsqUtils.select(6, redCode, resultList);
 					if(resultList.size()>2000){
 						this.dao.deleteSsqLotteryFilterResult(resultList);
 						resultList.clear();
@@ -607,7 +607,7 @@ public class LotteryInitService {
 		List<String> sinaList = this.lotterySsqMediaSinaService.getCurrentMediaRedCode(mediaContent);
 		
 		for(String redCode:sinaList){
-			LotteryUtils.select(6, redCode, resultList);
+			LotterySsqUtils.select(6, redCode, resultList);
 			if(resultList.size()>2000){
 				this.dao.deleteSsqLotteryFilterResult(resultList);
 				resultList.clear();

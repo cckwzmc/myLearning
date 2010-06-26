@@ -6,15 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.Source;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,58 +27,56 @@ import com.lottery.util.html.HttpHtmlService;
  * 
  * @author LIYI
  */
-public class LotterySsqCustomerDyjService extends Thread {
-	private static final Logger logger = LoggerFactory.getLogger(LotterySsqCustomerDyjService.class);
+public class LotterySsqCustomerBuyService extends Thread {
+	private static final Logger logger = LoggerFactory.getLogger(LotterySsqCustomerBuyService.class);
 	private LotteryDao dao = null;
 
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
-	public void run(){
-		this.fetchDyjProjectCode();
+
+	public void run() {
+		this.fetchBetzcProjectCode();
 	}
+
 	/**
 	 * 获取用户的各种方案
 	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Map<String, String>> getDyjProject() {
+	public List<Map<String, String>> getBetzcProject() {
 		new LotterySsqConifgService();
-		String url = LotterySsqFetchConfig.dyjUrl;
+		String url = LotterySsqFetchConfig.buywanUrl;
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		int k = 0;
 		for (int i = 1; i < 100; i++) {
 			if (k > 3) {
 				break;
 			}
-			String dyjXmlData = HttpHtmlService.getXmlContent(StringUtils.replace(StringUtils.replace(url, "@pageno@", i + ""), "@random@", this.genRandom()), "GB2312");
-			logger.info(StringUtils.replace(StringUtils.replace(url, "@pageno@", i + ""), "@random@", this.genRandom()));
-			Document document = null;
-			try {
-				document = DocumentHelper.parseText(dyjXmlData);
-			} catch (DocumentException e) {
-				logger.error("parser xml error===" + e.getMessage());
-				logger.error(dyjXmlData);
+			String betzcHtmlData = HttpHtmlService.getHtmlContent(StringUtils.replace(StringUtils.replace(url,
+					"@page@", i + ""), "@random@", this.genRandom()), "utf-8");
+			logger.info(StringUtils.replace(StringUtils.replace(url, "@page@", i + ""), "@random@", this.genRandom()));
+			Source source = new Source(betzcHtmlData);
+			List<Element> betzc = source.getAllElementsByClass("tablegraybg");
+			if (betzc == null || betzc.size() != 1) {
+				return null;
 			}
-			List list = new ArrayList();
-			try {
-				list = document.selectNodes("//xml/row");
-			} catch (Exception e) {
+			for (Element el : betzc) {
+				List<Element> tr = el.getAllElements("tr");
+				for (Element etr : tr.subList(1, tr.size())) {
+					List<Element> tdList = etr.getAllElements("td");
+					Element codeTd = tdList.get(8);
+					Element aE = codeTd.getFirstElement("a");
+					if (aE == null || aE.length() == 0 || aE.isEmpty()) {
+						continue;
+					}
+					String href = aE.getAttributeValue("href");
+					String projectUrl = href;
+				}
+				break;
 			}
-			if (CollectionUtils.isEmpty(list)) {
-				k++;
-			}
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Node node = (Node) iterator.next();
-				Element e = (Element) node;
-				Map<String, String> map = new HashMap<String, String>();
-				map.put("id", e.attributeValue("id"));
-				map.put("proid", e.attributeValue("proid"));
-				map.put("playtype", e.attributeValue("playtype"));
-				map.put("isupload", e.attributeValue("isupload"));
-				retList.add(map);
-			}
+
 			try {
 				sleep(6000);
 			} catch (InterruptedException e) {
@@ -99,11 +95,8 @@ public class LotterySsqCustomerDyjService extends Thread {
 	 */
 	public List<String> downloadDyjProject(String id, String playtype) {
 		List<String> list = new ArrayList<String>();
-		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@id@", id), "@playtype@", playtype);
-		if(!"3".equals(playtype)){
-//			download.asp/downcode.asp
-			url=StringUtils.replace(url, "download.asp", "downcode.asp");
-		}
+		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.buywanUrl, "@id@", id),
+				"@playtype@", playtype);
 		logger.info(url);
 		String content = HttpHtmlService.getXmlContent(url, "GB2312");
 		try {
@@ -111,7 +104,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		} catch (InterruptedException e) {
 			notify();
 		}
-		if (content.indexOf("该方案") != -1||content.indexOf("尚未截止")!=-1) {
+		if (content.indexOf("该方案") != -1 || content.indexOf("尚未截止") != -1) {
 			list.add("-1");
 			return null;
 		}
@@ -142,7 +135,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
-				code=StringUtils.replace(code, "|", "+");
+				code = StringUtils.replace(code, "|", "+");
 				String[] codes = StringUtils.split(code, "@@");
 				for (String ssq : codes) {
 					String redCode = StringUtils.split(ssq, "+")[0];
@@ -188,11 +181,11 @@ public class LotterySsqCustomerDyjService extends Thread {
 	}
 
 	/**
-	 * 大赢家用户投注抓取
+	 * 盈彩网用户投注抓取
 	 */
-	public void fetchDyjProjectCode() {
+	public void fetchBetzcProjectCode() {
 		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "1");
-		List<Map<String, String>> list = this.getDyjProject();
+		List<Map<String, String>> list = null;// this.getBetzcProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
 		for (Map<String, String> map : list) {
 			if ("0".equals(map.get("isupload"))) {
@@ -206,7 +199,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 				continue;
 			}
 			Map<String, String> tmpMap = new HashMap<String, String>();
-			if(CollectionUtils.isNotEmpty(pList)&&"-1".equals(pList.get(0))){
+			if (CollectionUtils.isNotEmpty(pList) && "-1".equals(pList.get(0))) {
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "1");
 				tmpMap.put("expect", LotterySsqConfig.expect);
@@ -230,6 +223,12 @@ public class LotterySsqCustomerDyjService extends Thread {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
-		logger.info("========"+"大赢家抓取完成..............................................");
+		logger.info("========" + "盈彩网抓取完成..............................................");
+	}
+
+	public static void main(String[] args) {
+		LotterySsqCustomerBuyService test = new LotterySsqCustomerBuyService();
+		new LotterySsqFetchConfig().buywanUrl = "http://buy.betzc.com/ssq/hemai.html?page.pageNo=@page@";
+		test.getBetzcProject();
 	}
 }

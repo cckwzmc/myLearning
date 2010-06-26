@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
-import com.lottery.ssq.utils.LotteryUtils;
+import com.lottery.ssq.utils.LotterySsqUtils;
 import com.lottery.util.html.HttpHtmlService;
 
 /**
@@ -213,7 +213,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 						continue;
 					}
 					Arrays.sort(redCodes);
-					LotteryUtils.selectArray(6, redCodes, resultList);
+					LotterySsqUtils.selectArray(6, redCodes, resultList);
 					if (resultList.size() > 2000) {
 						this.dao.saveSsqLotteryCollectRedCod(resultList);
 						logger.info("看看是否拆分了爱彩网的数据.....");

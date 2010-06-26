@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
-import com.lottery.ssq.utils.LotteryUtils;
+import com.lottery.ssq.utils.LotterySsqUtils;
 import com.lottery.util.html.HttpHtmlService;
 
 /**
@@ -234,7 +234,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 						String dan=StringUtils.substring(redCode, 0, StringUtils.indexOf(redCode, "|"));
 						String tuo=StringUtils.substring(redCode, StringUtils.indexOf(redCode, "|")+1, StringUtils.indexOf(redCode, "#"));
 						String[] dans=dan.split(",");
-						LotteryUtils.selectDanArray(6, dan,tuo, danList);
+						LotterySsqUtils.selectDanArray(6, dan,tuo, danList);
 						for(String[] danCode:danList){
 							String[] rsDanCode=(StringUtils.join(dans, ",")+","+StringUtils.join(danCode, ",")).split(",");
 							if(rsDanCode.length!=6){
@@ -265,7 +265,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 							continue;
 						}
 						Arrays.sort(redCodes);
-						LotteryUtils.selectArray(6, redCodes, resultList);
+						LotterySsqUtils.selectArray(6, redCodes, resultList);
 					}
 				}
 				if (resultList.size() > 2000) {

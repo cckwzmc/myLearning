@@ -646,4 +646,14 @@ public class LotteryDao extends JdbcBaseDao {
 		String sql = "select * from ssq_lottery_dynamic_filter_method t where t.enabled=1";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
+
+	/**
+	 * 有且仅有一个组红球
+	 * 
+	 * @return
+	 */
+	public List getSsqLotteryCollectResultCountLe3() {
+		String sql = "select * from (select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result s ) t group by t.redcode order by c desc ) t where t.c<=3";
+		return this.getJdbcTemplate().queryForList(sql);
+	}
 }

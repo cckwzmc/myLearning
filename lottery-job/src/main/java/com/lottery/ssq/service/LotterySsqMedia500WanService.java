@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.utils.LotterySsqMedia500WanUtils;
-import com.lottery.ssq.utils.LotteryUtils;
+import com.lottery.ssq.utils.LotterySsqUtils;
 import com.lottery.util.html.HttpHtmlService;
 
 /**
@@ -53,7 +53,7 @@ public class LotterySsqMedia500WanService {
 				this.lotterySsqThan20Service.select(6, red, true);
 				continue;
 			}
-			LotteryUtils.select(6, red, resultList);
+			LotterySsqUtils.select(6, red, resultList);
 		}
 		return resultList;
 	}
@@ -83,7 +83,7 @@ public class LotterySsqMedia500WanService {
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = redList.iterator(); iterator.hasNext();) {
 			String[] red = (String[]) iterator.next();
-			LotteryUtils.select(6, red, resultList);
+			LotterySsqUtils.select(6, red, resultList);
 		}
 		return resultList;
 	}

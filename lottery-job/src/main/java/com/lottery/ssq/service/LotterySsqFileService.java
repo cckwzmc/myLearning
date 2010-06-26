@@ -28,7 +28,7 @@ import org.springframework.util.ClassUtils;
 
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.dao.LotteryDao;
-import com.lottery.ssq.utils.LotteryUtils;
+import com.lottery.ssq.utils.LotterySsqUtils;
 
 /**
  * 通过其他方式收集的数据处理
@@ -225,7 +225,7 @@ public class LotterySsqFileService extends Thread {
 		List<String[]> resultList = new ArrayList<String[]>();
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
-			LotteryUtils.selectArray(6, code[0].split(","), resultList);
+			LotterySsqUtils.selectArray(6, code[0].split(","), resultList);
 			if (resultList.size() > 2000) {
 				this.dao.saveSsqLotteryCollectRedCod(resultList);
 				resultList.clear();
@@ -247,7 +247,7 @@ public class LotterySsqFileService extends Thread {
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
-			LotteryUtils.select(6, code[0], resultList);
+			LotterySsqUtils.select(6, code[0], resultList);
 		}
 		return resultList;
 	}
@@ -260,7 +260,7 @@ public class LotterySsqFileService extends Thread {
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
-			LotteryUtils.select(6, code[0], resultList);
+			LotterySsqUtils.select(6, code[0], resultList);
 		}
 		return resultList;
 	}
@@ -281,7 +281,7 @@ public class LotterySsqFileService extends Thread {
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = fileList.iterator(); iterator.hasNext();) {
 			String[] code = (String[]) iterator.next();
-			LotteryUtils.select(6, code[0], resultList);
+			LotterySsqUtils.select(6, code[0], resultList);
 			if (resultList.size() > 2000) {
 				saveCurrentFileRedCode(resultList, expect);
 				resultList.clear();
@@ -402,7 +402,7 @@ public class LotterySsqFileService extends Thread {
 						logger.error("方案解析失败==" + ssq);
 						continue;
 					}
-					LotteryUtils.selectArray(6, redCodes, resultList);
+					LotterySsqUtils.selectArray(6, redCodes, resultList);
 				}
 				if (resultList.size() > 2000) {
 					this.dao.saveSsqLotteryCollectRedCod(resultList);
@@ -502,7 +502,7 @@ public class LotterySsqFileService extends Thread {
 				this.lotterySsqThan20Service.select(6, redCodes, true);
 				continue;
 			}
-			LotteryUtils.select(6, redCodes, resultList);
+			LotterySsqUtils.select(6, redCodes, resultList);
 			if(resultList.size()>5000){
 				this.dao.deleteSsqLotteryFilterResult(resultList);
 				resultList.clear();

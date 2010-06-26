@@ -124,7 +124,7 @@ public class LotterySsqMedia500WanUtils {
 		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String[]> iterator = redList.iterator(); iterator.hasNext();) {
 			String[] red = (String[]) iterator.next();
-			LotteryUtils.select(6, red, resultList);
+			LotterySsqUtils.select(6, red, resultList);
 		}
 		return resultList;
 	}
