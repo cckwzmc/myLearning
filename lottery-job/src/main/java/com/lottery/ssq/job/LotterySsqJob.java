@@ -10,6 +10,7 @@ import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
 import com.lottery.ssq.service.LotterySsqCustomer500WanService;
+import com.lottery.ssq.service.LotterySsqCustomerBetzcService;
 import com.lottery.ssq.service.LotterySsqCustomerCaipiaoService;
 import com.lottery.ssq.service.LotterySsqCustomerDyjService;
 import com.lottery.ssq.service.LotterySsqFileService;
@@ -26,9 +27,13 @@ public class LotterySsqJob {
 
 	private LotterySsqCollectService lotteryCollectService = null;
 	private LotterySsqConifgService lotterySsqConifgService = null;
-
+	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService=null;
 	public void setLotterySsqCustomerCaipiaoService(LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService) {
 		this.lotterySsqCustomerCaipiaoService = lotterySsqCustomerCaipiaoService;
+	}
+
+	public void setLotterySsqCustomerBetzcService(LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService) {
+		this.lotterySsqCustomerBetzcService = lotterySsqCustomerBetzcService;
 	}
 
 	public void setLotterySsqConifgService(LotterySsqConifgService lotterySsqConifgService) {
@@ -86,6 +91,9 @@ public class LotterySsqJob {
 		}
 		if (this.lotterySsqConifgService == null) {
 			this.lotterySsqConifgService = (LotterySsqConifgService) context.getBean("lotterySsqConifgService");
+		}
+		if (this.lotterySsqCustomerBetzcService == null) {
+			this.lotterySsqCustomerBetzcService = (LotterySsqCustomerBetzcService) context.getBean("lotterySsqCustomerBetzcService");
 		}
 		if (this.lotterySsqCustomerCaipiaoService == null) {
 			this.lotterySsqCustomerCaipiaoService = (LotterySsqCustomerCaipiaoService) context
@@ -158,6 +166,20 @@ public class LotterySsqJob {
 		logger.info("抓取爱彩网用户投注开始....................");
 		this.lotterySsqCustomerCaipiaoService.fetchCaipiaoProjectCode();
 		logger.info("抓取爱彩网用户投注结束....................");
+	}
+	/**
+	 * 盈彩网用户投注抓取
+	 */
+	public void fetchBetzcLotterySsqService() {
+		initService();
+		if (!this.lotterySsqConifgService.initFetchConfig()) {
+			logger.info("盈彩网抓取配置初始化失败....................");
+			return;
+		}
+		logger.info("盈彩网用户后台抓取任务开始...........");
+		logger.info("抓取盈彩网用户投注开始....................");
+		this.lotterySsqCustomerBetzcService.fetchBetzcProjectCode();
+		logger.info("抓取盈彩网用户投注结束....................");
 	}
 
 	/**

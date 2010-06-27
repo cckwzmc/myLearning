@@ -35,6 +35,9 @@
 	<bean id="lotterySsqCustomerCaipiaoService" class="com.lottery.ssq.service.LotterySsqCustomerCaipiaoService">
 		<property name="dao" ref="lotteryDao" />
 	</bean>
+	<bean id="lotterySsqCustomerBetzcService" class="com.lottery.ssq.service.LotterySsqCustomerBetzcService">
+		<property name="dao" ref="lotteryDao" />
+	</bean>
 	<bean id="lotterySsqThan20Service" class="com.lottery.ssq.service.LotterySsqThan20Service">
 		<property name="dao" ref="lotteryDao" />
 	</bean>

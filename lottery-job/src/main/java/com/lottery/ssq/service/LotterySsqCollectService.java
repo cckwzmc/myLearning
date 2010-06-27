@@ -27,6 +27,7 @@ public class LotterySsqCollectService {
 	LotterySsqFileService lotterySsqFileService = null;
 	LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
 	LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
+	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService=null;
 
 	public void setLotterySsqMedia500WanService(LotterySsqMedia500WanService lotterySsqMedia500WanService) {
 		this.lotterySsqMedia500WanService = lotterySsqMedia500WanService;
@@ -49,6 +50,10 @@ public class LotterySsqCollectService {
 	}
 
 	
+	public void setLotterySsqCustomerBetzcService(LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService) {
+		this.lotterySsqCustomerBetzcService = lotterySsqCustomerBetzcService;
+	}
+
 	public void setLotterySsqCustomerCaipiaoService(LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService) {
 		this.lotterySsqCustomerCaipiaoService = lotterySsqCustomerCaipiaoService;
 	}
@@ -102,6 +107,7 @@ public class LotterySsqCollectService {
 		this.lotterySsqMedia500WanService.saveMedia500WanRedCode();
 		this.lotterySsqMediaSinaService.saveMediaSinaRedCode();
 		this.lotterySsqCustomerCaipiaoService.saveCaipiaoProjectRedCode();
+		this.lotterySsqCustomerBetzcService.saveBetzcProjectRedCode();
 	}
 
 	@SuppressWarnings("unchecked")

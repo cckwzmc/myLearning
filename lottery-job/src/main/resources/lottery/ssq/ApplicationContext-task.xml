@@ -17,6 +17,7 @@
 				<ref bean="cronFetchDyjLotterySsqTrigger" />
 				<ref bean="cronLotteryFilterTrigger" />
 				<ref bean="cronFetchCaipiaoLotterySsqTrigger" />
+				<ref bean="cronFetchBetzcLotterySsqTrigger" />
 				<ref bean="cronLotteryGenTrigger" />
 			</list>
 		</property>
@@ -111,6 +112,28 @@
 		<property name="cronExpression">
 			<!-- 周2，4，7的4点和13自动运行 -->
 			<value>0 36 5,11 ? * SUN,TUE,THU</value>
+		</property>
+	</bean>
+	
+	<!-- 盈彩网抓取 -->
+	<bean id="fetchBetzcLotterySsq"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="fetchLotterySsqService" />
+		</property>
+		<property name="targetMethod">
+			<value>fetchBetzcLotterySsqService</value>
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!--定时器设定起动频率&启动时间我设的是每5秒起动一次 (0 0 0 4 * * ?每日四点起动....)-->
+	<bean id="cronFetchBetzcLotterySsqTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="fetchBetzcLotterySsq" />
+		</property>
+		<property name="cronExpression">
+			<!-- 周2，4，7的4点和13自动运行 -->
+			<value>0 10 5,13 ? * SUN,TUE,THU</value>
 		</property>
 	</bean>
 	

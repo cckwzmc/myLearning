@@ -1,10 +1,13 @@
 package com.lottery.ssq.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
@@ -27,10 +30,10 @@ import com.lottery.util.html.HttpHtmlService;
  * 
  * @author LIYI
  */
-public class LotterySsqCustomerBuyService extends Thread {
-	private static final Logger logger = LoggerFactory.getLogger(LotterySsqCustomerBuyService.class);
+public class LotterySsqCustomerBetzcService extends Thread {
+	private static final Logger logger = LoggerFactory.getLogger(LotterySsqCustomerBetzcService.class);
 	private LotteryDao dao = null;
-
+	private String buyUrlPrefix="http://buy.betzc.com";
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
@@ -44,13 +47,12 @@ public class LotterySsqCustomerBuyService extends Thread {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Map<String, String>> getBetzcProject() {
+	public List<String> getBetzcProject() {
 		new LotterySsqConifgService();
 		String url = LotterySsqFetchConfig.buywanUrl;
-		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
+		List<String> retList = new ArrayList<String>();
 		int k = 0;
-		for (int i = 1; i < 100; i++) {
+		for (int i = 1; i < 5; i++) {
 			if (k > 3) {
 				break;
 			}
@@ -62,23 +64,31 @@ public class LotterySsqCustomerBuyService extends Thread {
 			if (betzc == null || betzc.size() != 1) {
 				return null;
 			}
+			if(betzc.toString().indexOf("无记录")>1){
+				k++;
+				continue;
+			}
 			for (Element el : betzc) {
 				List<Element> tr = el.getAllElements("tr");
 				for (Element etr : tr.subList(1, tr.size())) {
 					List<Element> tdList = etr.getAllElements("td");
+					if(tdList==null||tdList.size()<9){
+						continue;
+					}
 					Element codeTd = tdList.get(8);
 					Element aE = codeTd.getFirstElement("a");
 					if (aE == null || aE.length() == 0 || aE.isEmpty()) {
 						continue;
 					}
 					String href = aE.getAttributeValue("href");
-					String projectUrl = href;
+					String projectUrl = buyUrlPrefix+href;
+					retList.add(projectUrl);
 				}
 				break;
 			}
 
 			try {
-				sleep(6000);
+				sleep(1000);
 			} catch (InterruptedException e) {
 				notify();
 			}
@@ -93,49 +103,65 @@ public class LotterySsqCustomerBuyService extends Thread {
 	 * @param playtype
 	 * @return
 	 */
-	public List<String> downloadDyjProject(String id, String playtype) {
+	public List<String> downloadBetzcProject(String url) {
 		List<String> list = new ArrayList<String>();
-		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.buywanUrl, "@id@", id),
-				"@playtype@", playtype);
-		logger.info(url);
-		String content = HttpHtmlService.getXmlContent(url, "GB2312");
+		String content = HttpHtmlService.getHtmlContent(url, "utf-8");
 		try {
-			sleep(5000);
+			sleep(1000);
 		} catch (InterruptedException e) {
 			notify();
 		}
-		if (content.indexOf("该方案") != -1 || content.indexOf("尚未截止") != -1) {
-			list.add("-1");
-			return null;
-		}
-		content = StringUtils.replace(content, " + ", "+");
-		content = StringUtils.replace(content, " = ", "+");
-		content = StringUtils.replace(content, "<br><br>", "\n");
-		content = StringUtils.replace(content, "<br>", "\n");
-		content = StringUtils.replace(content, " | ", "+");
-		content = StringUtils.replace(content, "|", "+");
-		content = StringUtils.replace(content, "=", "+");
-		content = StringUtils.replace(content, " \n", "\n");
-		content = StringUtils.replace(content, "\t", ",");
-		content = StringUtils.replace(content, ".", ",");
-		String[] contents = StringUtils.split(content, "\n");
-		for (int i = 0; i < contents.length; i++) {
-			list.add(StringUtils.replace(contents[i], " ", ",").trim());
-		}
+		Source source=new Source(content);
+		List<Element> ssq=source.getAllElementsByClass("ssq_scroll");
+		Element ssqElement=ssq.get(0);
+		String codes=ssqElement.getContent().getTextExtractor().toString();
+		codes=StringUtils.remove(codes, "[双色球]：										");
+		codes=StringUtils.replace(codes, "[双色球]： ","@@");
+		codes=StringUtils.replace(codes, " + ","+");
+		codes=codes.replace(" ", ",");
+		codes=codes.replace(",@@", "@@");
+		codes=codes.substring(2);
+//		List<Element> code=ssqElement.getAllElements("span");
+//		int i=0;
+//		String redCode="";
+//		String blueCode="";
+//		for(Element ce:code){
+//			
+//			if(i%2==0){n
+//				redCode=ce.getAllStartTagsByClass("redchar");
+//				redCode=redCode.replace(" ", ",");
+//				if(redCode.length()<12){
+//					continue;
+//				}
+//			}else{
+//				blueCode=ce.getContent().getTextExtractor().toString();
+//				blueCode=blueCode.replace(" ", ",");
+//				if(blueCode.length()<2){
+//					continue;
+//				}
+//			}
+//			i++;
+//			if(redCode.length()>10&&blueCode.length()>1)
+//			{
+//				list.add(redCode+"+"+blueCode);
+//				redCode="";
+//				blueCode="";
+//			}
+//		}
+		list.add(codes);
 		return list;
 	}
 
 	@SuppressWarnings("unchecked")
-	public void saveDyjProjectRedCode() {
+	public void saveBetzcProjectRedCode() {
 		List<String[]> resultList = new ArrayList<String[]>();
 		int last = 0;
 		int page = 200;
-		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
+		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "6");
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
-				code = StringUtils.replace(code, "|", "+");
 				String[] codes = StringUtils.split(code, "@@");
 				for (String ssq : codes) {
 					String redCode = StringUtils.split(ssq, "+")[0];
@@ -184,35 +210,62 @@ public class LotterySsqCustomerBuyService extends Thread {
 	 * 盈彩网用户投注抓取
 	 */
 	public void fetchBetzcProjectCode() {
-		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "1");
-		List<Map<String, String>> list = null;// this.getBetzcProject();
+		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "6");
+		List<String> list =  this.getBetzcProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
-		for (Map<String, String> map : list) {
-			if ("0".equals(map.get("isupload"))) {
-				continue;
-			}
-			if (this.dao.getCountSsqLotteryCollectFetchByProid(map.get("proid"), "1") > 0) {
-				continue;
-			}
-			List<String> pList = this.downloadDyjProject(map.get("id"), map.get("playtype"));
+		Set<String> danList=new HashSet<String>();
+		if(CollectionUtils.isEmpty(list)){
+			return ;
+		}
+		for (String url : list) {
+			List<String> pList = this.downloadBetzcProject(url);
 			if (CollectionUtils.isEmpty(pList)) {
 				continue;
 			}
 			Map<String, String> tmpMap = new HashMap<String, String>();
-			if (CollectionUtils.isNotEmpty(pList) && "-1".equals(pList.get(0))) {
-				tmpMap.put("proid", map.get("proid"));
-				tmpMap.put("net", "1");
-				tmpMap.put("expect", LotterySsqConfig.expect);
-				tmpMap.put("code", "-1");
-				tmpMap.put("isfail", "1");
-				continue;
+			for(String code:pList){
+				if(StringUtils.indexOf(code, ")")>1){
+					String ssqCode="";
+					String[] tmpCode=StringUtils.split(code, "@@");
+					for(String ssq:tmpCode){
+						if(StringUtils.indexOf(code, ")")>1){
+							List<String[]> tmp=new ArrayList<String[]>();
+							String dan=StringUtils.substringBetween(ssq,"(", ")");
+							danList.add(dan);
+							LotterySsqUtils.selectDanArray(6, dan, StringUtils.substringBetween(code, "),", "+"), tmp);
+							logger.info("");
+							String blueCode=StringUtils.substring(code, StringUtils.indexOf(code, "+"));
+							for(String[] danCode:tmp){
+								String[] temp=(dan+","+StringUtils.join(danCode,",")).split(",");
+								Arrays.sort(temp);
+								if("".equals(ssqCode)){
+									ssqCode=(StringUtils.join(temp,",")+blueCode);
+								}else{
+									ssqCode="@@"+(StringUtils.join(temp,",")+blueCode);
+								}
+							}
+							
+						}else{
+							if("".equals(ssqCode)){
+								ssqCode=ssq;
+							}else{
+								ssqCode+="@@"+ssq;
+							}
+						}
+					}
+					tmpMap.put("proid", StringUtils.substring(StringUtils.substring(url, url.lastIndexOf("/")+1,url.length()),url.lastIndexOf(".")));
+					tmpMap.put("net", "6");
+					tmpMap.put("expect", LotterySsqConfig.expect);
+					tmpMap.put("code", ssqCode);
+					tmpMap.put("isfail", "0");
+				}else{
+					tmpMap.put("proid", StringUtils.substring(StringUtils.substring(url, url.lastIndexOf("/")+1,url.length()),url.lastIndexOf(".")));
+					tmpMap.put("net", "6");
+					tmpMap.put("expect", LotterySsqConfig.expect);
+					tmpMap.put("code", code);
+					tmpMap.put("isfail", "0");
+				}
 			}
-			String[] codes = pList.toArray(new String[pList.size()]);
-			tmpMap.put("proid", map.get("proid"));
-			tmpMap.put("net", "1");
-			tmpMap.put("expect", LotterySsqConfig.expect);
-			tmpMap.put("code", StringUtils.join(codes, "@@"));
-			tmpMap.put("isfail", "0");
 			resultList.add(tmpMap);
 			if (resultList.size() > 200) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
@@ -223,11 +276,14 @@ public class LotterySsqCustomerBuyService extends Thread {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
+		if(CollectionUtils.isNotEmpty(danList)){
+			this.dao.batchSqqLotteryDanResult(new ArrayList<String>(danList), "1");
+		}
 		logger.info("========" + "盈彩网抓取完成..............................................");
 	}
 
 	public static void main(String[] args) {
-		LotterySsqCustomerBuyService test = new LotterySsqCustomerBuyService();
+		LotterySsqCustomerBetzcService test = new LotterySsqCustomerBetzcService();
 		new LotterySsqFetchConfig().buywanUrl = "http://buy.betzc.com/ssq/hemai.html?page.pageNo=@page@";
 		test.getBetzcProject();
 	}
