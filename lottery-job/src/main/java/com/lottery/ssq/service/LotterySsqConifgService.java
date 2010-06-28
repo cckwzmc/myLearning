@@ -297,6 +297,9 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "geFiveOddOrEven")) {
 				LotterySsqFilterConfig.geFiveOddOrEven = NumberUtils.toInt(cfgValue);
 			}
+			if (StringUtils.equals(cfgName, "is_reFilter")) {
+				LotterySsqFilterConfig.is_reFilter = NumberUtils.toInt(cfgValue);
+			}
 		}
 		return true;
 	}

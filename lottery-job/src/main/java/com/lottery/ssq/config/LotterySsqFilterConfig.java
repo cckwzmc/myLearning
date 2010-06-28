@@ -1,7 +1,7 @@
 package com.lottery.ssq.config;
 
 public class LotterySsqFilterConfig extends LotterySsqConfig {
-
+	public static int is_reFilter = 0;
 	public static int quOne = -1;
 	public static int quTwo = -1;
 	public static int quThree = -1;

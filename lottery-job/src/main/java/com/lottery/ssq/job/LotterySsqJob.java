@@ -27,7 +27,8 @@ public class LotterySsqJob {
 
 	private LotterySsqCollectService lotteryCollectService = null;
 	private LotterySsqConifgService lotterySsqConifgService = null;
-	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService=null;
+	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService = null;
+
 	public void setLotterySsqCustomerCaipiaoService(LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService) {
 		this.lotterySsqCustomerCaipiaoService = lotterySsqCustomerCaipiaoService;
 	}
@@ -93,7 +94,8 @@ public class LotterySsqJob {
 			this.lotterySsqConifgService = (LotterySsqConifgService) context.getBean("lotterySsqConifgService");
 		}
 		if (this.lotterySsqCustomerBetzcService == null) {
-			this.lotterySsqCustomerBetzcService = (LotterySsqCustomerBetzcService) context.getBean("lotterySsqCustomerBetzcService");
+			this.lotterySsqCustomerBetzcService = (LotterySsqCustomerBetzcService) context
+					.getBean("lotterySsqCustomerBetzcService");
 		}
 		if (this.lotterySsqCustomerCaipiaoService == null) {
 			this.lotterySsqCustomerCaipiaoService = (LotterySsqCustomerCaipiaoService) context
@@ -167,6 +169,7 @@ public class LotterySsqJob {
 		this.lotterySsqCustomerCaipiaoService.fetchCaipiaoProjectCode();
 		logger.info("抓取爱彩网用户投注结束....................");
 	}
+
 	/**
 	 * 盈彩网用户投注抓取
 	 */
