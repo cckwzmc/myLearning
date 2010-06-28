@@ -103,7 +103,7 @@ public class LotterySsqService {
 		while (last < count) {
 			List list = this.dao.getSsqLottoryFilterResultLimit(last, page);
 			last += page;
-
+			logger.info("已经计算了" + last + "个号码了");
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map lValue = (Map) iterator.next();
 				String[] lValues = StringUtils.split(ObjectUtils.toString(lValue.get("value")), ",");

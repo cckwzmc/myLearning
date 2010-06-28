@@ -33,7 +33,8 @@ import com.lottery.util.html.HttpHtmlService;
 public class LotterySsqCustomerBetzcService extends Thread {
 	private static final Logger logger = LoggerFactory.getLogger(LotterySsqCustomerBetzcService.class);
 	private LotteryDao dao = null;
-	private String buyUrlPrefix="http://buy.betzc.com";
+	private String buyUrlPrefix = "http://buy.betzc.com";
+
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
@@ -64,7 +65,7 @@ public class LotterySsqCustomerBetzcService extends Thread {
 			if (betzc == null || betzc.size() != 1) {
 				return null;
 			}
-			if(betzc.toString().indexOf("无记录")>1){
+			if (betzc.toString().indexOf("无记录") > 1) {
 				k++;
 				continue;
 			}
@@ -72,7 +73,7 @@ public class LotterySsqCustomerBetzcService extends Thread {
 				List<Element> tr = el.getAllElements("tr");
 				for (Element etr : tr.subList(1, tr.size())) {
 					List<Element> tdList = etr.getAllElements("td");
-					if(tdList==null||tdList.size()<9){
+					if (tdList == null || tdList.size() < 9) {
 						continue;
 					}
 					Element codeTd = tdList.get(8);
@@ -81,7 +82,7 @@ public class LotterySsqCustomerBetzcService extends Thread {
 						continue;
 					}
 					String href = aE.getAttributeValue("href");
-					String projectUrl = buyUrlPrefix+href;
+					String projectUrl = buyUrlPrefix + href;
 					retList.add(projectUrl);
 				}
 				break;
@@ -111,43 +112,43 @@ public class LotterySsqCustomerBetzcService extends Thread {
 		} catch (InterruptedException e) {
 			notify();
 		}
-		Source source=new Source(content);
-		List<Element> ssq=source.getAllElementsByClass("ssq_scroll");
-		Element ssqElement=ssq.get(0);
-		String codes=ssqElement.getContent().getTextExtractor().toString();
-		codes=StringUtils.remove(codes, "[双色球]：										");
-		codes=StringUtils.replace(codes, "[双色球]： ","@@");
-		codes=StringUtils.replace(codes, " + ","+");
-		codes=codes.replace(" ", ",");
-		codes=codes.replace(",@@", "@@");
-		codes=codes.substring(2);
-//		List<Element> code=ssqElement.getAllElements("span");
-//		int i=0;
-//		String redCode="";
-//		String blueCode="";
-//		for(Element ce:code){
-//			
-//			if(i%2==0){n
-//				redCode=ce.getAllStartTagsByClass("redchar");
-//				redCode=redCode.replace(" ", ",");
-//				if(redCode.length()<12){
-//					continue;
-//				}
-//			}else{
-//				blueCode=ce.getContent().getTextExtractor().toString();
-//				blueCode=blueCode.replace(" ", ",");
-//				if(blueCode.length()<2){
-//					continue;
-//				}
-//			}
-//			i++;
-//			if(redCode.length()>10&&blueCode.length()>1)
-//			{
-//				list.add(redCode+"+"+blueCode);
-//				redCode="";
-//				blueCode="";
-//			}
-//		}
+		Source source = new Source(content);
+		List<Element> ssq = source.getAllElementsByClass("ssq_scroll");
+		Element ssqElement = ssq.get(0);
+		String codes = ssqElement.getContent().getTextExtractor().toString();
+		codes = StringUtils.remove(codes, "[双色球]：										");
+		codes = StringUtils.replace(codes, "[双色球]： ", "@@");
+		codes = StringUtils.replace(codes, " + ", "+");
+		codes = codes.replace(" ", ",");
+		codes = codes.replace(",@@", "@@");
+		codes = codes.substring(2);
+		// List<Element> code=ssqElement.getAllElements("span");
+		// int i=0;
+		// String redCode="";
+		// String blueCode="";
+		// for(Element ce:code){
+		//			
+		// if(i%2==0){n
+		// redCode=ce.getAllStartTagsByClass("redchar");
+		// redCode=redCode.replace(" ", ",");
+		// if(redCode.length()<12){
+		// continue;
+		// }
+		// }else{
+		// blueCode=ce.getContent().getTextExtractor().toString();
+		// blueCode=blueCode.replace(" ", ",");
+		// if(blueCode.length()<2){
+		// continue;
+		// }
+		// }
+		// i++;
+		// if(redCode.length()>10&&blueCode.length()>1)
+		// {
+		// list.add(redCode+"+"+blueCode);
+		// redCode="";
+		// blueCode="";
+		// }
+		// }
 		list.add(codes);
 		return list;
 	}
@@ -211,11 +212,11 @@ public class LotterySsqCustomerBetzcService extends Thread {
 	 */
 	public void fetchBetzcProjectCode() {
 		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "6");
-		List<String> list =  this.getBetzcProject();
+		List<String> list = this.getBetzcProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
-		Set<String> danList=new HashSet<String>();
-		if(CollectionUtils.isEmpty(list)){
-			return ;
+		Set<String> danList = new HashSet<String>();
+		if (CollectionUtils.isEmpty(list)) {
+			return;
 		}
 		for (String url : list) {
 			List<String> pList = this.downloadBetzcProject(url);
@@ -223,43 +224,45 @@ public class LotterySsqCustomerBetzcService extends Thread {
 				continue;
 			}
 			Map<String, String> tmpMap = new HashMap<String, String>();
-			for(String code:pList){
-				if(StringUtils.indexOf(code, ")")>1){
-					String ssqCode="";
-					String[] tmpCode=StringUtils.split(code, "@@");
-					for(String ssq:tmpCode){
-						if(StringUtils.indexOf(code, ")")>1){
-							List<String[]> tmp=new ArrayList<String[]>();
-							String dan=StringUtils.substringBetween(ssq,"(", ")");
+			for (String code : pList) {
+				if (StringUtils.indexOf(code, ")") > 1) {
+					String ssqCode = "";
+					String[] tmpCode = StringUtils.split(code, "@@");
+					for (String ssq : tmpCode) {
+						if (StringUtils.indexOf(code, ")") > 1) {
+							List<String[]> tmp = new ArrayList<String[]>();
+							String dan = StringUtils.substringBetween(ssq, "(", ")");
 							danList.add(dan);
 							LotterySsqUtils.selectDanArray(6, dan, StringUtils.substringBetween(code, "),", "+"), tmp);
 							logger.info("");
-							String blueCode=StringUtils.substring(code, StringUtils.indexOf(code, "+"));
-							for(String[] danCode:tmp){
-								String[] temp=(dan+","+StringUtils.join(danCode,",")).split(",");
+							String blueCode = StringUtils.substring(code, StringUtils.indexOf(code, "+"));
+							for (String[] danCode : tmp) {
+								String[] temp = (dan + "," + StringUtils.join(danCode, ",")).split(",");
 								Arrays.sort(temp);
-								if("".equals(ssqCode)){
-									ssqCode=(StringUtils.join(temp,",")+blueCode);
-								}else{
-									ssqCode="@@"+(StringUtils.join(temp,",")+blueCode);
+								if ("".equals(ssqCode)) {
+									ssqCode = (StringUtils.join(temp, ",") + blueCode);
+								} else {
+									ssqCode = "@@" + (StringUtils.join(temp, ",") + blueCode);
 								}
 							}
-							
-						}else{
-							if("".equals(ssqCode)){
-								ssqCode=ssq;
-							}else{
-								ssqCode+="@@"+ssq;
+
+						} else {
+							if ("".equals(ssqCode)) {
+								ssqCode = ssq;
+							} else {
+								ssqCode += "@@" + ssq;
 							}
 						}
 					}
-					tmpMap.put("proid", StringUtils.substring(StringUtils.substring(url, url.lastIndexOf("/")+1,url.length()),url.lastIndexOf(".")));
+					tmpMap.put("proid", StringUtils.substring(StringUtils.substring(url, url.lastIndexOf("/") + 1, url
+							.length()), url.lastIndexOf(".")));
 					tmpMap.put("net", "6");
 					tmpMap.put("expect", LotterySsqConfig.expect);
 					tmpMap.put("code", ssqCode);
 					tmpMap.put("isfail", "0");
-				}else{
-					tmpMap.put("proid", StringUtils.substring(StringUtils.substring(url, url.lastIndexOf("/")+1,url.length()),url.lastIndexOf(".")));
+				} else {
+					tmpMap.put("proid", StringUtils.substring(StringUtils.substring(url, url.lastIndexOf("/") + 1, url
+							.length()), url.lastIndexOf(".")));
 					tmpMap.put("net", "6");
 					tmpMap.put("expect", LotterySsqConfig.expect);
 					tmpMap.put("code", code);
@@ -276,7 +279,7 @@ public class LotterySsqCustomerBetzcService extends Thread {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
-		if(CollectionUtils.isNotEmpty(danList)){
+		if (CollectionUtils.isNotEmpty(danList)) {
 			this.dao.batchSqqLotteryDanResult(new ArrayList<String>(danList), "1");
 		}
 		logger.info("========" + "盈彩网抓取完成..............................................");
@@ -284,7 +287,7 @@ public class LotterySsqCustomerBetzcService extends Thread {
 
 	public static void main(String[] args) {
 		LotterySsqCustomerBetzcService test = new LotterySsqCustomerBetzcService();
-		new LotterySsqFetchConfig().buywanUrl = "http://buy.betzc.com/ssq/hemai.html?page.pageNo=@page@";
-		test.getBetzcProject();
+		new LotterySsqFetchConfig().buywanUrl = "http://buy.betzc.com/ssq/hemai.html?page.pageNo=7";
+		test.fetchBetzcProjectCode();
 	}
 }

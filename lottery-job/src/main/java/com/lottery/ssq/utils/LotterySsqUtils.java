@@ -75,7 +75,8 @@ public class LotterySsqUtils {
 				// String redCode=StringUtils.join(r, ",");
 				// if(!resultList.contains(r))
 				// {
-				resultList.add(r);
+				String[] tmp = new String[] { StringUtils.join(r, ",") };
+				resultList.add(tmp);
 				// }
 				subselectArray(i + 1, index + 1, r, k, source, resultList);
 			} else {
@@ -210,4 +211,5 @@ public class LotterySsqUtils {
 		Arrays.sort(ret);
 		return ret;
 	}
+
 }
