@@ -14,6 +14,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +22,6 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
@@ -61,12 +61,13 @@ public class LotterySsqFileService extends Thread {
 	/**
 	 * 从文件中读取号码，包括：红球、蓝球 一行一个号码 "lottery/ssq/excluderedfile.txt" fileList中的格式可能包含了蓝球分隔符为"+","|"
 	 * 
-	 * @param fileName String[] String[0]=redCode,String[1]=blueCode
+	 * @param fileName
+	 *            String[] String[0]=redCode,String[1]=blueCode
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public Set<String[]> getCodeFromFile(String fileName) {
-		Set<String[]> list = new HashSet<String[]>();
+		Set<String[]> list = new LinkedHashSet<String[]>();
 		String filestr = "";
 		try {
 			ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
@@ -253,7 +254,8 @@ public class LotterySsqFileService extends Thread {
 	}
 
 	/**
-	 * @param fileList String[] String[0]=redCode,String[1]=blueCode
+	 * @param fileList
+	 *            String[] String[0]=redCode,String[1]=blueCode
 	 * @return
 	 */
 	public List<String> getRedCodeFromFile(Set<String[]> fileList) {
@@ -337,6 +339,7 @@ public class LotterySsqFileService extends Thread {
 		if (CollectionUtils.isEmpty(fileCode)) {
 			return;
 		}
+		int tmp = -20;
 		for (Iterator<String[]> iterator = fileCode.iterator(); iterator.hasNext();) {
 			String[] codes = (String[]) iterator.next();
 			String code = StringUtils.join(codes, "+");
@@ -351,10 +354,11 @@ public class LotterySsqFileService extends Thread {
 				map.put("code", sCode);
 				map.put("net", "2");
 				map.put("expect", LotterySsqConfig.expect);
-				map.put("proid", RandomUtils.nextInt(999999999) + "");
+				map.put("proid", tmp + "");
 				resultList.add(map);
 				i = 0;
 				sCode = "";
+				tmp++;
 			}
 			if (resultList.size() > 200) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
@@ -366,7 +370,7 @@ public class LotterySsqFileService extends Thread {
 			map.put("code", sCode);
 			map.put("net", "2");
 			map.put("expect", LotterySsqConfig.expect);
-			map.put("proid", RandomUtils.nextInt(999999999) + "");
+			map.put("proid", (tmp++) + "");
 			resultList.add(map);
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
@@ -484,31 +488,32 @@ public class LotterySsqFileService extends Thread {
 	 * 处理过期的收集文件
 	 */
 	public void clearCollectFile() {
-		String expect=this.dao.getMaxLotteryFetchJob();
-		if(StringUtils.isNotBlank(expect)){
+		String expect = this.dao.getMaxLotteryFetchJob();
+		if (StringUtils.isNotBlank(expect)) {
 			this.clearFileContent();
 		}
 	}
+
 	/**
 	 * 删除文件收集中的红球号码，一般用于意外情况的使用。
 	 */
-	public void deleteFileRedCode(){
-		Set<String> rSet=this.getRedCodeFromFile();
-		List<String> resultList=new ArrayList<String>();
+	public void deleteFileRedCode() {
+		Set<String> rSet = this.getRedCodeFromFile();
+		List<String> resultList = new ArrayList<String>();
 		for (Iterator<String> iterator = rSet.iterator(); iterator.hasNext();) {
 			String redCode = (String) iterator.next();
-			String[] redCodes=redCode.split(",");
-			if(redCodes.length>20){
+			String[] redCodes = redCode.split(",");
+			if (redCodes.length > 20) {
 				this.lotterySsqThan20Service.select(6, redCodes, true);
 				continue;
 			}
 			LotterySsqUtils.select(6, redCodes, resultList);
-			if(resultList.size()>5000){
+			if (resultList.size() > 5000) {
 				this.dao.deleteSsqLotteryFilterResult(resultList);
 				resultList.clear();
 			}
 		}
-		if(CollectionUtils.isNotEmpty(resultList)){
+		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.deleteSsqLotteryFilterResult(resultList);
 			resultList.clear();
 		}

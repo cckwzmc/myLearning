@@ -26,7 +26,7 @@ import com.lottery.ssq.utils.LotterySsqUtils;
 import com.lottery.util.html.HttpHtmlService;
 
 /**
- * 大赢家用户购买/收集的数据处理
+ * 盈彩网用户购买/收集的数据处理
  * 
  * @author LIYI
  */
@@ -53,7 +53,7 @@ public class LotterySsqCustomerBetzcService extends Thread {
 		String url = LotterySsqFetchConfig.buywanUrl;
 		List<String> retList = new ArrayList<String>();
 		int k = 0;
-		for (int i = 1; i < 5; i++) {
+		for (int i = 1; i < 100; i++) {
 			if (k > 3) {
 				break;
 			}
@@ -255,14 +255,16 @@ public class LotterySsqCustomerBetzcService extends Thread {
 						}
 					}
 					tmpMap.put("proid", StringUtils.substring(StringUtils.substring(url, url.lastIndexOf("/") + 1, url
-							.length()), url.lastIndexOf(".")));
+							.length()), 0, StringUtils.substring(url, url.lastIndexOf("/") + 1, url.length())
+							.lastIndexOf(".")));
 					tmpMap.put("net", "6");
 					tmpMap.put("expect", LotterySsqConfig.expect);
 					tmpMap.put("code", ssqCode);
 					tmpMap.put("isfail", "0");
 				} else {
 					tmpMap.put("proid", StringUtils.substring(StringUtils.substring(url, url.lastIndexOf("/") + 1, url
-							.length()), url.lastIndexOf(".")));
+							.length()), 0, StringUtils.substring(url, url.lastIndexOf("/") + 1, url.length())
+							.lastIndexOf(".")));
 					tmpMap.put("net", "6");
 					tmpMap.put("expect", LotterySsqConfig.expect);
 					tmpMap.put("code", code);

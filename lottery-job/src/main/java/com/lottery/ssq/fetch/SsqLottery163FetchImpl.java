@@ -12,7 +12,6 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.lottery.ssq.config.LotterySsqConfig;
-import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.fetch.dao.LotteryFetchDao;
 import com.lottery.util.html.HttpHtmlService;
 
@@ -35,6 +34,10 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 				Map map = (Map) iterator.next();
 				String webTitle = ObjectUtils.toString(map.get("title"));
 				String[] wt = StringUtils.split(webTitle, "|");
+				int matchTitle=0;
+				for(String subTitle:wt){
+					if(detail.in)
+				}
 			}
 		}
 		return null;
@@ -58,7 +61,8 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 				String hrefValue = href.get(0).getAttributeValue("href");
 				String hrefTitle = href.get(0).getContent().getTextExtractor().toString();
 
-				if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1 || hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
+				if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1
+						|| hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
 					ssq[0] = hrefValue;
 					ssq[1] = hrefTitle;
 					ssqList.add(ssq);
@@ -67,5 +71,11 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 			}
 		}
 		return ssqList;
+	}
+
+	public static void main(String[] args) {
+		new LotterySsqConfig().expect = "10074";
+		SsqLottery163FetchImpl fetch = new SsqLottery163FetchImpl();
+		fetch.getSsqLotteryIndexList();
 	}
 }
