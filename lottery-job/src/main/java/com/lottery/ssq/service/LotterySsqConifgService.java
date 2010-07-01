@@ -154,10 +154,11 @@ public class LotterySsqConifgService {
 		if (StringUtils.isBlank(LotterySsqConfig.expect)) {
 			return false;
 		}
-		List list = this.fetchDao.getLotterySsqFilterConfig("is_reFilter");
+		List list = this.fetchDao.getLotterySsqFilterConfig("is_reFilter", "0");
 		if (CollectionUtils.isEmpty(list)) {
 			return false;
 		}
+		list = this.fetchDao.getLotterySsqFilterConfig();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Map iMap = (Map) iterator.next();
 			String cfgName = (String) iMap.get("config_name");
