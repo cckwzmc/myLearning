@@ -62,5 +62,9 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	public static int continueFourOddOreven;
 	// 5个以上的奇数或偶数
 	public static int geFiveOddOrEven;
+	//只有一个用户投注的号码会中5个号码，并且6个号码在其中.
+	public static int customerLeCount3RedList;
+	//用户有5人以上投注的号码，都不可能中四个
+	public static int customerGtCount5RedList;
 
 }

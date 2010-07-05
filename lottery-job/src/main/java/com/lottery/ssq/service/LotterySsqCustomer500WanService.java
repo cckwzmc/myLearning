@@ -217,22 +217,28 @@ public class LotterySsqCustomer500WanService extends Thread {
 				if(StringUtils.indexOf(code, "胆")!=-1){
 					String[] codes = StringUtils.split(code, "@@");
 					for (String ssq : codes) {
-						String redCode = StringUtils.split(ssq, "+")[0];
-						if (StringUtils.indexOf(redCode, "胆")!=-1) {
-							redCode=StringUtils.replace(redCode,"--1","");
-							redCode=StringUtils.replace(redCode,": ","");
-							redCode=StringUtils.replace(redCode,":","");
-							redCode=StringUtils.replace(redCode,"： ","");
-							redCode=StringUtils.replace(redCode,"：","");
-							redCode=StringUtils.replace(redCode,"胆","");
-							redCode=StringUtils.replace(redCode,"拖","|");
-							redCode=StringUtils.replace(redCode,"蓝球","#");
-							redCode=StringUtils.replace(redCode," ","");
+						String[] redCode = StringUtils.split(ssq, "+");
+						String[] blueCode=null;
+						if(redCode.length==2)
+						{
+							blueCode=StringUtils.split(redCode[1],",");
+							this.dao.saveCollectBlueCodeResult(blueCode,LotterySsqConfig.expect);
+						}
+						if (StringUtils.indexOf(redCode[0], "胆")!=-1) {
+							redCode[0]=StringUtils.replace(redCode[0],"--1","");
+							redCode[0]=StringUtils.replace(redCode[0],": ","");
+							redCode[0]=StringUtils.replace(redCode[0],":","");
+							redCode[0]=StringUtils.replace(redCode[0],"： ","");
+							redCode[0]=StringUtils.replace(redCode[0],"：","");
+							redCode[0]=StringUtils.replace(redCode[0],"胆","");
+							redCode[0]=StringUtils.replace(redCode[0],"拖","|");
+							redCode[0]=StringUtils.replace(redCode[0],"蓝球","#");
+							redCode[0]=StringUtils.replace(redCode[0]," ","");
 						}else{
 							continue;
 						}
-						String dan=StringUtils.substring(redCode, 0, StringUtils.indexOf(redCode, "|"));
-						String tuo=StringUtils.substring(redCode, StringUtils.indexOf(redCode, "|")+1, StringUtils.indexOf(redCode, "#"));
+						String dan=StringUtils.substring(redCode[0], 0, StringUtils.indexOf(redCode[0], "|"));
+						String tuo=StringUtils.substring(redCode[0], StringUtils.indexOf(redCode[0], "|")+1, StringUtils.indexOf(redCode[0], "#"));
 						String[] dans=dan.split(",");
 						LotterySsqUtils.selectDanArray(6, dan,tuo, danList);
 						for(String[] danCode:danList){
@@ -254,12 +260,18 @@ public class LotterySsqCustomer500WanService extends Thread {
 					}
 					String[] codes = StringUtils.split(code, "@@");
 					for (String ssq : codes) {
-						String redCode = StringUtils.split(ssq, "+")[0];
-						if(redCode.startsWith("--1")){
+						String[] redCode = StringUtils.split(ssq, "+");
+						String[] blueCode=null;
+						if(redCode.length==2)
+						{
+							blueCode=StringUtils.split(redCode[1],",");
+							this.dao.saveCollectBlueCodeResult(blueCode,LotterySsqConfig.expect);
+						}
+						if(redCode[0].startsWith("--1")){
 							logger.error("使用了胆的方案解析==" + ssq);
 							continue;
 						}
-						String[] redCodes = StringUtils.split(redCode, ",");
+						String[] redCodes = StringUtils.split(redCode[0], ",");
 						if (redCodes.length < 6 || redCodes.length > 20) {
 							logger.error("方案解析失败==" + ssq);
 							continue;

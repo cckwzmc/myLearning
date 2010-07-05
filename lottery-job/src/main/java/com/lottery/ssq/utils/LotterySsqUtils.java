@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -72,17 +73,15 @@ public class LotterySsqUtils {
 				subselectArray(i + 1, index + 1, r, k, source, resultList);
 			} else if (index == k) {
 				r[index - 1] = source[i];
-				// String redCode=StringUtils.join(r, ",");
-				// if(!resultList.contains(r))
-				// {
-				String[] tmp = new String[] { StringUtils.join(r, ",") };
+				String[] tmp=new String[r.length];
+				for(int n=0;n<r.length;n++){
+					tmp[n]=r[n];
+				}
 				resultList.add(tmp);
-				// }
 				subselectArray(i + 1, index + 1, r, k, source, resultList);
 			} else {
 				return;
 			}
-
 		}
 	}
 
@@ -211,5 +210,12 @@ public class LotterySsqUtils {
 		Arrays.sort(ret);
 		return ret;
 	}
-
+	public static void main(String[] args) {
+		List<String[]> resultList=new ArrayList<String[]>();
+		selectArray(6, new String[]{"01","02","04","08","11","12","33"}, resultList);
+		for(String[] red:resultList){
+			System.out.println(StringUtils.join(red,","));
+		}
+		System.out.println();
+	}
 }

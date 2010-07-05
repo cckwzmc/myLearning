@@ -301,6 +301,13 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "is_reFilter")) {
 				LotterySsqFilterConfig.is_reFilter = NumberUtils.toInt(cfgValue);
 			}
+			if (StringUtils.equals(cfgName, "customerLeCount3RedList")) {
+				LotterySsqFilterConfig.customerLeCount3RedList = NumberUtils.toInt(cfgValue);
+			}
+			//用户有5人以上投注的号码，都不可能中四个
+			if (StringUtils.equals(cfgName, "customerGtCount5RedList")) {
+				LotterySsqFilterConfig.customerGtCount5RedList = NumberUtils.toInt(cfgValue);
+			}
 		}
 		return true;
 	}

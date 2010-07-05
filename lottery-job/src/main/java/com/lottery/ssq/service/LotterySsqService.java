@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.lottery.ssq.Algorithm.LotterySsqAlgorithm;
 import com.lottery.ssq.Algorithm.LotterySsqFirstFilterAlgorithm;
 import com.lottery.ssq.config.LotterySsqConfig;
+import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.config.LotterySsqFilterConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.filter.LotterySsqFilterUtils;
@@ -132,8 +133,7 @@ public class LotterySsqService {
 						isContinue = false;
 						break;
 					}
-					if (!LotterySsqFilterUtils.customerFilterMethod(methodName, arg, lValues, customerDanList,
-							customerLeCount3RedList, customerGtCount5RedList)) {
+					if (!LotterySsqFilterUtils.customerFilterMethod(methodName, arg, lValues, customerDanList, customerLeCount3RedList, customerGtCount5RedList)) {
 						isContinue = false;
 						break;
 					}
@@ -143,17 +143,13 @@ public class LotterySsqService {
 				}
 
 				for (int i = 0; i < lValues.length; i++) {
-					if (LotterySsqFilterConfig.quOne != -1
-							&& NumberUtils.toInt(lValues[i]) <= LotterySsqFilterConfig.quOneNum) {
+					if (LotterySsqFilterConfig.quOne != -1 && NumberUtils.toInt(lValues[i]) <= LotterySsqFilterConfig.quOneNum) {
 						qOne++;
 					}
-					if (LotterySsqFilterConfig.quTwo != -1
-							&& NumberUtils.toInt(lValues[i]) > LotterySsqFilterConfig.quOneNum
-							&& NumberUtils.toInt(lValues[i]) <= LotterySsqFilterConfig.quTwoNum) {
+					if (LotterySsqFilterConfig.quTwo != -1 && NumberUtils.toInt(lValues[i]) > LotterySsqFilterConfig.quOneNum && NumberUtils.toInt(lValues[i]) <= LotterySsqFilterConfig.quTwoNum) {
 						qTwo++;
 					}
-					if (LotterySsqFilterConfig.quThree != -1
-							&& NumberUtils.toInt(lValues[i]) > LotterySsqFilterConfig.quTwoNum) {
+					if (LotterySsqFilterConfig.quThree != -1 && NumberUtils.toInt(lValues[i]) > LotterySsqFilterConfig.quTwoNum) {
 						qThree++;
 					}
 				}
@@ -174,8 +170,12 @@ public class LotterySsqService {
 	 * 用户投注号码
 	 */
 	private void initFilterCustomerCode() {
-		customerGtCount5RedList = this.dao.getSsqLotteryCollectResultCountLessThan5();
-		customerLeCount3RedList = this.dao.getSsqLotteryCollectResultCountLe3();
+		if(LotterySsqFilterConfig.customerGtCount5RedList==1){
+			customerGtCount5RedList = this.dao.getSsqLotteryCollectResultCountLessThan5();
+		}
+		if (LotterySsqFilterConfig.customerLeCount3RedList == 1) {
+			customerLeCount3RedList = this.dao.getSsqLotteryCollectResultCountLe3();
+		}
 
 		// List firstRedCodeList = this.dao.getSsqLotteryCollectResult("first", 0, 20);
 		// String[] firstRedCode = LotterySsqUtils.mergeRedCode(firstRedCodeList);
@@ -267,9 +267,8 @@ public class LotterySsqService {
 	}
 
 	/**
-	 * private List<String> fromFileMediaData(File qsFile) throws IOException { FileReader rd = new FileReader(qsFile);
-	 * BufferedReader br = new BufferedReader(rd); String line = ""; List<String> list = new ArrayList<String>(); while
-	 * (line != null) { line = br.readLine(); if (line != null) { list.add(line); } } rd.close(); return list; }
+	 * private List<String> fromFileMediaData(File qsFile) throws IOException { FileReader rd = new FileReader(qsFile); BufferedReader br = new BufferedReader(rd); String line = ""; List<String> list = new ArrayList<String>(); while (line != null) { line = br.readLine(); if (line
+	 * != null) { list.add(line); } } rd.close(); return list; }
 	 **/
 	/**
 	 * 从头开始，处理媒体号码及自己收集的号码 第一次过滤
@@ -284,6 +283,7 @@ public class LotterySsqService {
 		logger.info("开始从过滤号码中删除不合理的号码(必须有一个上一期的号码或有边号或连号).............");
 		while (last < count) {
 			List list = this.dao.getLottoryAllResultLimit(last, page);
+			// List list = this.dao.getLottoryAllResultLimit(last, page,"01,12,14,29,31,32");
 			last += page;
 			filterRedCode(list);
 		}
@@ -306,9 +306,9 @@ public class LotterySsqService {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				// first,second,third,fourth,firth,sixth
-				redCodeList.add(ObjectUtils.toString(map.get("first")) + "," + ObjectUtils.toString(map.get("second"))
-						+ "," + ObjectUtils.toString(map.get("third")) + "," + ObjectUtils.toString(map.get("fourth"))
-						+ "," + ObjectUtils.toString(map.get("firth")) + "," + ObjectUtils.toString(map.get("sixth")));
+				String redCode = ObjectUtils.toString(map.get("first")) + "," + ObjectUtils.toString(map.get("second")) + "," + ObjectUtils.toString(map.get("third")) + "," + ObjectUtils.toString(map.get("fourth")) + "," + ObjectUtils.toString(map.get("firth")) + ","
+						+ ObjectUtils.toString(map.get("sixth"));
+				redCodeList.add(redCode);
 			}
 			this.dao.batchDelSsqLotteryFilterResult(redCodeList);
 			redCodeList.clear();
@@ -318,17 +318,10 @@ public class LotterySsqService {
 	/**
 	 * 从文件中读取数据过滤不再使用
 	 * 
-	 * @Deprecated public void filterCurrentRedCodeFromFile() { // 媒体预测号码 List<String> redMedia = new
-	 *             ArrayList<String>(); // 本人添加的过滤号码 List<String> redFile = new ArrayList<String>(); File qsFile = new
-	 *             File("d:/myproject/ssq_media_red_" + LotterySsqConfig.expect + ".xml"); try { redMedia =
-	 *             this.fromFileMediaData(qsFile); qsFile = new File("d:/myproject/ssq_file_red_" +
-	 *             LotterySsqConfig.expect + ".xml"); redFile = this.fromFileMediaData(qsFile); } catch (IOException e)
-	 *             { e.printStackTrace(); } if (this.dao.isGenLotteryResult("1", LotterySsqConfig.expect)) {
-	 *             this.dao.clearSsqLotteryFilterResult(); this.dao.clearSsqLotteryCollectResult(); } int count =
-	 *             this.dao.getTotalLotteryAllResult(); int last = 0; int page = 60000; List list = null; while (last <
-	 *             count) { list = this.dao.getLottoryAllResultLimit(last, page); if (list.size() == count) { last =
-	 *             list.size(); } else { last += page; } // filterRedCode(redMedia, redFile, list); }
-	 *             this.dao.saveLotteryGenLog("1", LotterySsqConfig.expect, "1"); }
+	 * @Deprecated public void filterCurrentRedCodeFromFile() { // 媒体预测号码 List<String> redMedia = new ArrayList<String>(); // 本人添加的过滤号码 List<String> redFile = new ArrayList<String>(); File qsFile = new File("d:/myproject/ssq_media_red_" + LotterySsqConfig.expect + ".xml"); try {
+	 * redMedia = this.fromFileMediaData(qsFile); qsFile = new File("d:/myproject/ssq_file_red_" + LotterySsqConfig.expect + ".xml"); redFile = this.fromFileMediaData(qsFile); } catch (IOException e) { e.printStackTrace(); } if (this.dao.isGenLotteryResult("1",
+	 * LotterySsqConfig.expect)) { this.dao.clearSsqLotteryFilterResult(); this.dao.clearSsqLotteryCollectResult(); } int count = this.dao.getTotalLotteryAllResult(); int last = 0; int page = 60000; List list = null; while (last < count) { list =
+	 * this.dao.getLottoryAllResultLimit(last, page); if (list.size() == count) { last = list.size(); } else { last += page; } // filterRedCode(redMedia, redFile, list); } this.dao.saveLotteryGenLog("1", LotterySsqConfig.expect, "1"); }
 	 **/
 	/**
 	 * 第一步过滤号码算法 必须包含边号、连号、上一期的号码之一，，是不是要加个隔号呢？？（差值为1）
@@ -345,12 +338,10 @@ public class LotterySsqService {
 			Map lMap = (Map) iterator.next();
 			String lValue = (String) lMap.get("value");
 			String[] lValues = StringUtils.split(lValue, ",");
-
 			if (!LotterySsqFirstFilterAlgorithm.isFilterRedNumericInRange(lValues)) {
 				redList.add(lValue);
 			}
-			if (!LotterySsqFirstFilterAlgorithm.isFilterRedIncludeSideCode(lValues, LotterySsqConfig.preSideCode)
-					&& !LotterySsqFirstFilterAlgorithm.isFilterIncludePreCode(lValues, LotterySsqConfig.preRedCode)) {
+			if (!LotterySsqFirstFilterAlgorithm.isFilterRedIncludeSideCode(lValues, LotterySsqConfig.preSideCode) && !LotterySsqFirstFilterAlgorithm.isFilterIncludePreCode(lValues, LotterySsqConfig.preRedCode)) {
 				redList.add(lValue);
 			}
 
@@ -411,25 +402,14 @@ public class LotterySsqService {
 	}
 
 	/**
-	 * public static void main(String[] args) { File file = new File("d:/myproject/current.tt"); FileReader fr; try { fr
-	 * = new FileReader(file); BufferedReader br = new BufferedReader(fr); List<String> list = new ArrayList<String>();
-	 * String line = br.readLine(); while (line != null) { list.add(line); line = br.readLine(); } List<String> redList
-	 * = new ArrayList<String>(); for (int i = 0; i < list.size(); i++) { String[] redCode = list.get(i).split(","); for
-	 * (int j = 0; j < redCode.length; j++) { if (!redList.contains(redCode[j])) { redList.add(redCode[j]); } } } String
-	 * out = ""; for (Iterator<String> iterator = redList.iterator(); iterator.hasNext();) { String code =
-	 * iterator.next(); if ("".equals(out)) { out = code; } else { out += "," + code; } } System.out.println(out +
-	 * "            " + redList.size()); } catch (FileNotFoundException e) { e.printStackTrace(); } catch (IOException
-	 * e) { // ClassUtils.getDefaultClassLoader(); // Enumeration urls = null; // try { // urls =
-	 * classLoader.getResources("lottery/ssq/excluderedfile.txt"); // } catch (IOException e) { // } // while
-	 * (urls.hasMoreElements()) { // URL url = (URL) urls.nextElement(); // InputStream is = null; // try { //
-	 * URLConnection con = url.openConnection(); // is = con.getInputStream(); // // BufferedInputStream bis = new
-	 * BufferedInputStream(is); // byte[] bs = new byte[bis.available()]; // int ch = 0; // // java.nio.ByteBuffer
-	 * bb=java.nio.ByteBuffer.allocate(2048); // // CharBuffer cb=CharBuffer.allocate(bis.available()); // //
-	 * while(ch!=-1){ // // // bb.put(bs); // // cb.append((char)ch); // // ch=bis.read(); // // // // } //
-	 * bis.read(bs); // System.out.println(new String(bs, "GBK")); // // String redCode=new String(bb.array(),"GBK"); //
-	 * // String[] redCodes=StringUtils.split(redCode, '\n'); // // System.out.println(redCodes+"\n"+redCode); // }
-	 * finally { // if (is != null) { // is.close(); // } // } // } // } catch (FileNotFoundException e) { //
-	 * e.printStackTrace(); // } }
+	 * public static void main(String[] args) { File file = new File("d:/myproject/current.tt"); FileReader fr; try { fr = new FileReader(file); BufferedReader br = new BufferedReader(fr); List<String> list = new ArrayList<String>(); String line = br.readLine(); while (line !=
+	 * null) { list.add(line); line = br.readLine(); } List<String> redList = new ArrayList<String>(); for (int i = 0; i < list.size(); i++) { String[] redCode = list.get(i).split(","); for (int j = 0; j < redCode.length; j++) { if (!redList.contains(redCode[j])) {
+	 * redList.add(redCode[j]); } } } String out = ""; for (Iterator<String> iterator = redList.iterator(); iterator.hasNext();) { String code = iterator.next(); if ("".equals(out)) { out = code; } else { out += "," + code; } } System.out.println(out + "            " +
+	 * redList.size()); } catch (FileNotFoundException e) { e.printStackTrace(); } catch (IOException e) { // ClassUtils.getDefaultClassLoader(); // Enumeration urls = null; // try { // urls = classLoader.getResources("lottery/ssq/excluderedfile.txt"); // } catch (IOException e)
+	 * { // } // while (urls.hasMoreElements()) { // URL url = (URL) urls.nextElement(); // InputStream is = null; // try { // URLConnection con = url.openConnection(); // is = con.getInputStream(); // // BufferedInputStream bis = new BufferedInputStream(is); // byte[] bs = new
+	 * byte[bis.available()]; // int ch = 0; // // java.nio.ByteBuffer bb=java.nio.ByteBuffer.allocate(2048); // // CharBuffer cb=CharBuffer.allocate(bis.available()); // // while(ch!=-1){ // // // bb.put(bs); // // cb.append((char)ch); // // ch=bis.read(); // // // // } //
+	 * bis.read(bs); // System.out.println(new String(bs, "GBK")); // // String redCode=new String(bb.array(),"GBK"); // // String[] redCodes=StringUtils.split(redCode, '\n'); // // System.out.println(redCodes+"\n"+redCode); // } finally { // if (is != null) { // is.close(); // }
+	 * // } // } // } catch (FileNotFoundException e) { // e.printStackTrace(); // } }
 	 **/
 	public void completCurrentGenCode() {
 		this.dao.updateLotterySsqFilterConfig("1", "is_reFilter");

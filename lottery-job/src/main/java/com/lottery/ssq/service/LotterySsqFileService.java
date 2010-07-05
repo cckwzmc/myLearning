@@ -396,8 +396,14 @@ public class LotterySsqFileService extends Thread {
 				code = StringUtils.replace(code, "|", "+");
 				String[] codes = StringUtils.split(code, "@@");
 				for (String ssq : codes) {
-					String redCode = StringUtils.split(ssq, "+")[0];
-					String[] redCodes = StringUtils.split(redCode, ",");
+					String[] redCode = StringUtils.split(ssq, "+");
+					String[] blueCode=null;
+					if(redCode.length==2)
+					{
+						blueCode=StringUtils.split(redCode[1],",");
+						this.dao.saveCollectBlueCodeResult(blueCode,LotterySsqConfig.expect);
+					}
+					String[] redCodes = StringUtils.split(redCode[0], ",");
 					if (redCodes.length > 20) {
 						lotterySsqThan20Service.select(6, redCodes, false);
 						continue;
