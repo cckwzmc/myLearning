@@ -34,6 +34,20 @@ public class LotteryFetchDao extends JdbcBaseDao {
 
 	/**
 	 * @param type
+	 *            '0:双色球；1：足彩',
+	 * @param is_complet
+	 *            '是否已完成；0：未完成；1：已完成',
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List getLotterySsqExpectConfig(int type, int is_complete, String expect) {
+		String sql = "select * from lottery_fetch_job where type=? and is_complete=? and expect=? order by id desc limit 0,1";
+		List list = this.getJdbcTemplate().queryForList(sql, new Object[] { type, is_complete, expect });
+		return list;
+	}
+
+	/**
+	 * @param type
 	 *            1:ssq 2:football
 	 * @param lotteryQh
 	 *            期号 is_gen=0为生成 1:已生成

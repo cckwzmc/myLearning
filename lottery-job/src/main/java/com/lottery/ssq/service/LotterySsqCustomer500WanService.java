@@ -39,6 +39,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
+
 	LotterySsqThan20Service lotterySsqThan20Service = null;
 
 	public void setLotterySsqThan20Service(LotterySsqThan20Service lotterySsqThan20Service) {
@@ -132,7 +133,8 @@ public class LotterySsqCustomer500WanService extends Thread {
 			String code = contents[i];
 			String[] codes = StringUtils.split(code, " ");
 			if (codes.length == 7) {
-				code = codes[0] + "," + codes[1] + "," + codes[2] + "," + codes[3] + "," + codes[4] + "," + codes[5] + "+" + codes[6];
+				code = codes[0] + "," + codes[1] + "," + codes[2] + "," + codes[3] + "," + codes[4] + "," + codes[5]
+						+ "+" + codes[6];
 			} else {
 				code = StringUtils.replace(code, " ", ",");
 			}
@@ -152,7 +154,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 		Source source = new Source(content);
 		Element projectDetailList = source.getElementById("projectDetailList");
 		List<Element> detail = projectDetailList.getAllElementsByClass("num");
-		boolean isHaveDan=false;
+		boolean isHaveDan = false;
 		for (Element e : detail) {
 			String code = e.getContent().getTextExtractor().toString();
 			if (code.indexOf("红球") != -1) {
@@ -167,7 +169,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 					String dan = dans[i].replace(" ", "");
 					if (StringUtils.isNotBlank(dan)) {
 						list.add("--1," + dan);
-						isHaveDan=true;
+						isHaveDan = true;
 					}
 				}
 			} else if (code.indexOf("拖") != -1) {
@@ -181,7 +183,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 			}
 			list.add(code);
 		}
-		if(isHaveDan){
+		if (isHaveDan) {
 			list.add("--1");
 		}
 		return list;
@@ -205,6 +207,23 @@ public class LotterySsqCustomer500WanService extends Thread {
 	public void save500WanProjectRedCode() {
 		List<String[]> resultList = new ArrayList<String[]>();
 		List<String[]> danList = new ArrayList<String[]>();
+		Map<String, Integer> blueMap = new HashMap<String, Integer>();
+		blueMap.put("01", 0);
+		blueMap.put("02", 0);
+		blueMap.put("03", 0);
+		blueMap.put("04", 0);
+		blueMap.put("05", 0);
+		blueMap.put("06", 0);
+		blueMap.put("07", 0);
+		blueMap.put("08", 0);
+		blueMap.put("09", 0);
+		blueMap.put("10", 0);
+		blueMap.put("11", 0);
+		blueMap.put("12", 0);
+		blueMap.put("13", 0);
+		blueMap.put("14", 0);
+		blueMap.put("15", 0);
+		blueMap.put("16", 0);
 		int last = 0;
 		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
@@ -212,38 +231,47 @@ public class LotterySsqCustomer500WanService extends Thread {
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
-				String id=(String) map.get("id");
+				String id = (String) map.get("id");
 				String code = ObjectUtils.toString(map.get("code"));
-				if(StringUtils.indexOf(code, "胆")!=-1){
+				if (StringUtils.indexOf(code, "胆") != -1) {
 					String[] codes = StringUtils.split(code, "@@");
 					for (String ssq : codes) {
 						String[] redCode = StringUtils.split(ssq, "+");
-						String[] blueCode=null;
-						if(redCode.length==2)
-						{
-							blueCode=StringUtils.split(redCode[1],",");
-							this.dao.saveCollectBlueCodeResult(blueCode,LotterySsqConfig.expect);
+						String[] blueCode = null;
+						if (redCode.length == 2) {
+							blueCode = StringUtils.split(redCode[1], ",");
+							for (String blue : blueCode) {
+								if (blue.length() > 2) {
+									continue;
+								} else if (blue.length() == 1) {
+									blue = "0" + blue;
+								}
+								Integer tmp = blueMap.get(blue) + 1;
+								blueMap.put(blue, tmp);
+							}
 						}
-						if (StringUtils.indexOf(redCode[0], "胆")!=-1) {
-							redCode[0]=StringUtils.replace(redCode[0],"--1","");
-							redCode[0]=StringUtils.replace(redCode[0],": ","");
-							redCode[0]=StringUtils.replace(redCode[0],":","");
-							redCode[0]=StringUtils.replace(redCode[0],"： ","");
-							redCode[0]=StringUtils.replace(redCode[0],"：","");
-							redCode[0]=StringUtils.replace(redCode[0],"胆","");
-							redCode[0]=StringUtils.replace(redCode[0],"拖","|");
-							redCode[0]=StringUtils.replace(redCode[0],"蓝球","#");
-							redCode[0]=StringUtils.replace(redCode[0]," ","");
-						}else{
+						if (StringUtils.indexOf(redCode[0], "胆") != -1) {
+							redCode[0] = StringUtils.replace(redCode[0], "--1", "");
+							redCode[0] = StringUtils.replace(redCode[0], ": ", "");
+							redCode[0] = StringUtils.replace(redCode[0], ":", "");
+							redCode[0] = StringUtils.replace(redCode[0], "： ", "");
+							redCode[0] = StringUtils.replace(redCode[0], "：", "");
+							redCode[0] = StringUtils.replace(redCode[0], "胆", "");
+							redCode[0] = StringUtils.replace(redCode[0], "拖", "|");
+							redCode[0] = StringUtils.replace(redCode[0], "蓝球", "#");
+							redCode[0] = StringUtils.replace(redCode[0], " ", "");
+						} else {
 							continue;
 						}
-						String dan=StringUtils.substring(redCode[0], 0, StringUtils.indexOf(redCode[0], "|"));
-						String tuo=StringUtils.substring(redCode[0], StringUtils.indexOf(redCode[0], "|")+1, StringUtils.indexOf(redCode[0], "#"));
-						String[] dans=dan.split(",");
-						LotterySsqUtils.selectDanArray(6, dan,tuo, danList);
-						for(String[] danCode:danList){
-							String[] rsDanCode=(StringUtils.join(dans, ",")+","+StringUtils.join(danCode, ",")).split(",");
-							if(rsDanCode.length!=6){
+						String dan = StringUtils.substring(redCode[0], 0, StringUtils.indexOf(redCode[0], "|"));
+						String tuo = StringUtils.substring(redCode[0], StringUtils.indexOf(redCode[0], "|") + 1,
+								StringUtils.indexOf(redCode[0], "#"));
+						String[] dans = dan.split(",");
+						LotterySsqUtils.selectDanArray(6, dan, tuo, danList);
+						for (String[] danCode : danList) {
+							String[] rsDanCode = (StringUtils.join(dans, ",") + "," + StringUtils.join(danCode, ","))
+									.split(",");
+							if (rsDanCode.length != 6) {
 								continue;
 							}
 							Arrays.sort(rsDanCode);
@@ -251,8 +279,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 						}
 						danList.clear();
 					}
-				}else
-				{
+				} else {
 					Matcher m = p.matcher(code);
 					if (m.find()) {
 						logger.error("内容有非法字符==" + code);
@@ -261,13 +288,20 @@ public class LotterySsqCustomer500WanService extends Thread {
 					String[] codes = StringUtils.split(code, "@@");
 					for (String ssq : codes) {
 						String[] redCode = StringUtils.split(ssq, "+");
-						String[] blueCode=null;
-						if(redCode.length==2)
-						{
-							blueCode=StringUtils.split(redCode[1],",");
-							this.dao.saveCollectBlueCodeResult(blueCode,LotterySsqConfig.expect);
+						String[] blueCode = null;
+						if (redCode.length == 2) {
+							blueCode = StringUtils.split(redCode[1], ",");
+							for (String blue : blueCode) {
+								if (blue.length() > 2) {
+									continue;
+								} else if (blue.length() == 1) {
+									blue = "0" + blue;
+								}
+								Integer tmp = blueMap.get(blue) + 1;
+								blueMap.put(blue, tmp);
+							}
 						}
-						if(redCode[0].startsWith("--1")){
+						if (redCode[0].startsWith("--1")) {
 							logger.error("使用了胆的方案解析==" + ssq);
 							continue;
 						}
@@ -292,12 +326,14 @@ public class LotterySsqCustomer500WanService extends Thread {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
+		this.dao.saveCollectBlueCodeResult(blueMap, LotterySsqConfig.expect);
 	}
 
 	private String parserUrl(String fangan) {
 		String download = LotterySsqFetchConfig.www500wanDowload;
 		if (fangan.toLowerCase().indexOf("onclick") != -1) {
-			download = StringUtils.replace(download, "@pid@", StringUtils.substringBetween(fangan, "list.showProject(", ")"));
+			download = StringUtils.replace(download, "@pid@", StringUtils.substringBetween(fangan, "list.showProject(",
+					")"));
 		} else {
 			download = "http://" + StringUtils.substringBetween(fangan, "http://", "'");
 		}
@@ -312,7 +348,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "0");
 		List<Map<String, String>> list = this.get500WanProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
-		List<String> danList=new ArrayList<String>();
+		List<String> danList = new ArrayList<String>();
 		for (Map<String, String> map : list) {
 			String fangan = map.get("fangan");
 			if (this.dao.getCountSsqLotteryCollectFetchByProid(map.get("proid"), "0") > 0) {
@@ -332,10 +368,10 @@ public class LotterySsqCustomer500WanService extends Thread {
 			downloadUrl = StringUtils.replace(downloadUrl, "@nowdate@", new Date().getTime() + "");
 			logger.info(downloadUrl);
 			List<String> pList = this.download500WanProject(downloadUrl);
-			if(CollectionUtils.isNotEmpty(pList)&&pList.contains("--1")){
-				for (int k=0;k<pList.size();k++) {
-					String dan = (String)pList.get(k);
-					if(dan.startsWith("--1,")){
+			if (CollectionUtils.isNotEmpty(pList) && pList.contains("--1")) {
+				for (int k = 0; k < pList.size(); k++) {
+					String dan = (String) pList.get(k);
+					if (dan.startsWith("--1,")) {
 						danList.add(pList.remove(k).replace("--1,", ""));
 						k--;
 					}
@@ -375,17 +411,18 @@ public class LotterySsqCustomer500WanService extends Thread {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
-		if(CollectionUtils.isNotEmpty(danList)){
+		if (CollectionUtils.isNotEmpty(danList)) {
 			this.dao.batchSqqLotteryDanResult(danList, "1");
 		}
 		logger.info("========" + "500Wan抓取完成..............................................");
 	}
+
 	public static void main(String[] args) {
-		LotterySsqCustomer500WanService ss=new LotterySsqCustomer500WanService();
-		String tt="<div class=\"alert_content\" id=\"projectDetailList\">" +
-				"<div class=\"num\"><span class=\"red\">胆: 14,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>" +
-				"<div class=\"num\"><span class=\"red\">胆: 11,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>" +
-				"</div>";
+		LotterySsqCustomer500WanService ss = new LotterySsqCustomer500WanService();
+		String tt = "<div class=\"alert_content\" id=\"projectDetailList\">"
+				+ "<div class=\"num\"><span class=\"red\">胆: 14,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>"
+				+ "<div class=\"num\"><span class=\"red\">胆: 11,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>"
+				+ "</div>";
 		System.out.println(ss.parserdownloadProjectHtml(tt));
 	}
 }

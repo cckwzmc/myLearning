@@ -36,9 +36,11 @@ public class LotterySsqCustomerDyjService extends Thread {
 	public void setDao(LotteryDao dao) {
 		this.dao = dao;
 	}
-	public void run(){
+
+	public void run() {
 		this.fetchDyjProjectCode();
 	}
+
 	/**
 	 * 获取用户的各种方案
 	 * 
@@ -54,8 +56,11 @@ public class LotterySsqCustomerDyjService extends Thread {
 			if (k > 3) {
 				break;
 			}
-			String dyjXmlData = HttpHtmlService.getXmlContent(StringUtils.replace(StringUtils.replace(url, "@pageno@", i + ""), "@random@", this.genRandom()), "GB2312");
-			logger.info(StringUtils.replace(StringUtils.replace(url, "@pageno@", i + ""), "@random@", this.genRandom()));
+			String dyjXmlData = HttpHtmlService.getXmlContent(StringUtils.replace(StringUtils.replace(url, "@pageno@",
+					i + ""), "@random@", this.genRandom()), "GB2312");
+			logger
+					.info(StringUtils.replace(StringUtils.replace(url, "@pageno@", i + ""), "@random@", this
+							.genRandom()));
 			Document document = null;
 			try {
 				document = DocumentHelper.parseText(dyjXmlData);
@@ -99,10 +104,11 @@ public class LotterySsqCustomerDyjService extends Thread {
 	 */
 	public List<String> downloadDyjProject(String id, String playtype) {
 		List<String> list = new ArrayList<String>();
-		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@id@", id), "@playtype@", playtype);
-		if(!"3".equals(playtype)){
-//			download.asp/downcode.asp
-			url=StringUtils.replace(url, "download.asp", "downcode.asp");
+		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.dyjDowload, "@id@", id),
+				"@playtype@", playtype);
+		if (!"3".equals(playtype)) {
+			// download.asp/downcode.asp
+			url = StringUtils.replace(url, "download.asp", "downcode.asp");
 		}
 		logger.info(url);
 		String content = HttpHtmlService.getXmlContent(url, "GB2312");
@@ -111,7 +117,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		} catch (InterruptedException e) {
 			notify();
 		}
-		if (content.indexOf("该方案") != -1||content.indexOf("尚未截止")!=-1) {
+		if (content.indexOf("该方案") != -1 || content.indexOf("尚未截止") != -1) {
 			list.add("-1");
 			return null;
 		}
@@ -138,19 +144,43 @@ public class LotterySsqCustomerDyjService extends Thread {
 		int last = 0;
 		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
+		Map<String, Integer> blueMap = new HashMap<String, Integer>();
+		blueMap.put("01", 0);
+		blueMap.put("02", 0);
+		blueMap.put("03", 0);
+		blueMap.put("04", 0);
+		blueMap.put("05", 0);
+		blueMap.put("06", 0);
+		blueMap.put("07", 0);
+		blueMap.put("08", 0);
+		blueMap.put("09", 0);
+		blueMap.put("10", 0);
+		blueMap.put("11", 0);
+		blueMap.put("12", 0);
+		blueMap.put("13", 0);
+		blueMap.put("14", 0);
+		blueMap.put("15", 0);
+		blueMap.put("16", 0);
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
-				code=StringUtils.replace(code, "|", "+");
+				code = StringUtils.replace(code, "|", "+");
 				String[] codes = StringUtils.split(code, "@@");
 				for (String ssq : codes) {
 					String[] redCode = StringUtils.split(ssq, "+");
-					String[] blueCode=null;
-					if(redCode.length==2)
-					{
-						blueCode=StringUtils.split(redCode[1],",");
-						this.dao.saveCollectBlueCodeResult(blueCode,LotterySsqConfig.expect);
+					String[] blueCode = null;
+					if (redCode.length == 2) {
+						blueCode = StringUtils.split(redCode[1], ",");
+						for (String blue : blueCode) {
+							if (blue.length() > 2) {
+								continue;
+							} else if (blue.length() == 1) {
+								blue = "0" + blue;
+							}
+							Integer tmp = blueMap.get(blue) + 1;
+							blueMap.put(blue, tmp);
+						}
 					}
 					String[] redCodes = StringUtils.split(redCode[0], ",");
 					if (redCodes.length < 6 || redCodes.length > 20) {
@@ -171,6 +201,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
+		this.dao.saveCollectBlueCodeResult(blueMap, LotterySsqConfig.expect);
 	}
 
 	/**
@@ -212,7 +243,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 				continue;
 			}
 			Map<String, String> tmpMap = new HashMap<String, String>();
-			if(CollectionUtils.isNotEmpty(pList)&&"-1".equals(pList.get(0))){
+			if (CollectionUtils.isNotEmpty(pList) && "-1".equals(pList.get(0))) {
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "1");
 				tmpMap.put("expect", LotterySsqConfig.expect);
@@ -236,6 +267,6 @@ public class LotterySsqCustomerDyjService extends Thread {
 			this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 			resultList.clear();
 		}
-		logger.info("========"+"大赢家抓取完成..............................................");
+		logger.info("========" + "大赢家抓取完成..............................................");
 	}
 }

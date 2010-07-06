@@ -159,6 +159,23 @@ public class LotterySsqCustomerBetzcService extends Thread {
 		int last = 0;
 		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "6");
+		Map<String, Integer> blueMap = new HashMap<String, Integer>();
+		blueMap.put("01", 0);
+		blueMap.put("02", 0);
+		blueMap.put("03", 0);
+		blueMap.put("04", 0);
+		blueMap.put("05", 0);
+		blueMap.put("06", 0);
+		blueMap.put("07", 0);
+		blueMap.put("08", 0);
+		blueMap.put("09", 0);
+		blueMap.put("10", 0);
+		blueMap.put("11", 0);
+		blueMap.put("12", 0);
+		blueMap.put("13", 0);
+		blueMap.put("14", 0);
+		blueMap.put("15", 0);
+		blueMap.put("16", 0);
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
@@ -166,11 +183,18 @@ public class LotterySsqCustomerBetzcService extends Thread {
 				String[] codes = StringUtils.split(code, "@@");
 				for (String ssq : codes) {
 					String[] redCode = StringUtils.split(ssq, "+");
-					String[] blueCode=null;
-					if(redCode.length==2)
-					{
-						blueCode=StringUtils.split(redCode[1],",");
-						this.dao.saveCollectBlueCodeResult(blueCode,LotterySsqConfig.expect);
+					String[] blueCode = null;
+					if (redCode.length == 2) {
+						blueCode = StringUtils.split(redCode[1], ",");
+						for (String blue : blueCode) {
+							if (blue.length() > 2) {
+								continue;
+							} else if (blue.length() == 1) {
+								blue = "0" + blue;
+							}
+							Integer tmp = blueMap.get(blue) + 1;
+							blueMap.put(blue, tmp);
+						}
 					}
 					String[] redCodes = StringUtils.split(redCode[0], ",");
 					if (redCodes.length < 6 || redCodes.length > 20) {
@@ -191,6 +215,7 @@ public class LotterySsqCustomerBetzcService extends Thread {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
 			resultList.clear();
 		}
+		this.dao.saveCollectBlueCodeResult(blueMap, LotterySsqConfig.expect);
 	}
 
 	/**

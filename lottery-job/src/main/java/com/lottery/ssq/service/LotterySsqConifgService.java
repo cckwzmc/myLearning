@@ -30,6 +30,7 @@ public class LotterySsqConifgService {
 	@SuppressWarnings("unchecked")
 	public boolean initSsqConfig() {
 		List ssqList = this.fetchDao.getLotterySsqExpectConfig(0, 0);
+		// List ssqList = this.fetchDao.getLotterySsqExpectConfig(0, 0, "10076");
 		if (CollectionUtils.isEmpty(ssqList)) {
 			return false;
 		}
@@ -304,7 +305,7 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "customerLeCount3RedList")) {
 				LotterySsqFilterConfig.customerLeCount3RedList = NumberUtils.toInt(cfgValue);
 			}
-			//用户有5人以上投注的号码，都不可能中四个
+			// 用户有5人以上投注的号码，都不可能中四个
 			if (StringUtils.equals(cfgName, "customerGtCount5RedList")) {
 				LotterySsqFilterConfig.customerGtCount5RedList = NumberUtils.toInt(cfgValue);
 			}

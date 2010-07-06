@@ -55,7 +55,8 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			if (k > 3) {
 				break;
 			}
-			String caipiaoHtmlData = HttpHtmlService.getHtmlContent(StringUtils.replace(StringUtils.replace(url, "@page@", i + ""), "@random@", this.genRandom()), "GB2312");
+			String caipiaoHtmlData = HttpHtmlService.getHtmlContent(StringUtils.replace(StringUtils.replace(url,
+					"@page@", i + ""), "@random@", this.genRandom()), "GB2312");
 			logger.info(StringUtils.replace(StringUtils.replace(url, "@page@", i + ""), "@random@", this.genRandom()));
 			Source source = new Source(caipiaoHtmlData);
 			List<Element> gd04List = source.getAllElementsByClass("gd_f_l_04");
@@ -93,15 +94,16 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 	}
 
 	/**
-	 * 下载用户方案
-	 * 对胆的方案要另想办法
+	 * 下载用户方案 对胆的方案要另想办法
+	 * 
 	 * @param id
 	 * @param playtype
 	 * @return
 	 */
 	public List<String> downloadCaipiaoProject(String id, String playtype) {
 		List<String> list = new ArrayList<String>();
-		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.caipiaoDowload, "@playNum@", id), "@playtype@", playtype);
+		String url = StringUtils.replace(StringUtils.replace(LotterySsqFetchConfig.caipiaoDowload, "@playNum@", id),
+				"@playtype@", playtype);
 		logger.info(url);
 		String content = HttpHtmlService.getHtmlContent(url, "GB2312");
 		try {
@@ -131,7 +133,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 		codeContent = StringUtils.replace(codeContent, "\t", ",");
 		codeContent = StringUtils.replace(codeContent, ".", ",");
 		codeContent = parserdownloadProjectHtml(codeContent);
-		if(StringUtils.isBlank(codeContent)){
+		if (StringUtils.isBlank(codeContent)) {
 			return null;
 		}
 		String[] contents = StringUtils.split(codeContent, "\n");
@@ -151,8 +153,8 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 	 * @return
 	 */
 	private String parserdownloadProjectHtml(String code) {
-		List<String> list=new ArrayList<String>();
-		boolean isHaveDan=false;
+		List<String> list = new ArrayList<String>();
+		boolean isHaveDan = false;
 		String retStr = "";
 		// 红球胆码:06,09,20,27 红球拖码:07,10,18,22,23,25,26,32 蓝球号码:03,05,07,11,13
 		if (code.indexOf("红球胆码") != -1) {
@@ -160,8 +162,8 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			for (int i = 0; i < dans.length; i++) {
 				String dan = dans[i].replace(" ", "");
 				if (StringUtils.isNotBlank(dan)) {
-					 list.add("--1," + dan);
-					 isHaveDan = true;
+					list.add("--1," + dan);
+					isHaveDan = true;
 				}
 			}
 		} else if (code.indexOf("红球") != -1) {
@@ -172,8 +174,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			code = StringUtils.replace(code, "蓝球", "+");
 			code = StringUtils.replace(code, "红球", "");
 			return code;
-		}
-		else {
+		} else {
 
 		}
 		return retStr;
@@ -199,6 +200,23 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 		int last = 0;
 		int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "5");
+		Map<String, Integer> blueMap = new HashMap<String, Integer>();
+		blueMap.put("01", 0);
+		blueMap.put("02", 0);
+		blueMap.put("03", 0);
+		blueMap.put("04", 0);
+		blueMap.put("05", 0);
+		blueMap.put("06", 0);
+		blueMap.put("07", 0);
+		blueMap.put("08", 0);
+		blueMap.put("09", 0);
+		blueMap.put("10", 0);
+		blueMap.put("11", 0);
+		blueMap.put("12", 0);
+		blueMap.put("13", 0);
+		blueMap.put("14", 0);
+		blueMap.put("15", 0);
+		blueMap.put("16", 0);
 		while (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
@@ -207,11 +225,18 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 				String[] codes = StringUtils.split(code, "@@");
 				for (String ssq : codes) {
 					String[] redCode = StringUtils.split(ssq, "+");
-					String[] blueCode=null;
-					if(redCode.length==2)
-					{
-						blueCode=StringUtils.split(redCode[1],",");
-						this.dao.saveCollectBlueCodeResult(blueCode,LotterySsqConfig.expect);
+					String[] blueCode = null;
+					if (redCode.length == 2) {
+						blueCode = StringUtils.split(redCode[1], ",");
+						for (String blue : blueCode) {
+							if (blue.length() > 2) {
+								continue;
+							} else if (blue.length() == 1) {
+								blue = "0" + blue;
+							}
+							Integer tmp = blueMap.get(blue) + 1;
+							blueMap.put(blue, tmp);
+						}
 					}
 					String[] redCodes = StringUtils.split(redCode[0], ",");
 					if (redCodes.length < 6 || redCodes.length > 20) {
@@ -235,6 +260,7 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 			logger.info("看看是否拆分了爱彩网的数据.....");
 			resultList.clear();
 		}
+		this.dao.saveCollectBlueCodeResult(blueMap, LotterySsqConfig.expect);
 	}
 
 	/**
