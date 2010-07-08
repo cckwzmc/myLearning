@@ -17,6 +17,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.Algorithm.LotterySsqAlgorithm;
+import com.lottery.ssq.Algorithm.LotterySsqCollectResultAlgorithm;
 import com.lottery.ssq.Algorithm.LotterySsqFirstFilterAlgorithm;
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.config.LotterySsqFilterConfig;
@@ -141,6 +142,23 @@ public class LotterySsqService {
 				if (!isContinue) {
 					continue;
 				}
+				if (LotterySsqFilterConfig.customerLeCount3RedList == 1) {
+					int first = 0;
+					List customerLeCountRedList = null;
+					boolean start = true;
+					String mergeCode = "";
+					while (CollectionUtils.isNotEmpty(customerLeCountRedList) || start) {
+						customerLeCountRedList = this.dao.getSsqLotteryCollectResultCountLe1(first, page);
+						first += page;
+						mergeCode = LotterySsqCollectResultAlgorithm.isCumstomerRedIncludeFiveCode(lValues,
+								customerLeCountRedList, mergeCode);
+						start = false;
+					}
+					if (!LotterySsqFilterUtils.isCumstomerRedIncludeFiveCode(lValues, mergeCode)) {
+						customerLeCountRedList.clear();
+						continue;
+					}
+				}
 
 				for (int i = 0; i < lValues.length; i++) {
 					if (LotterySsqFilterConfig.quOne != -1
@@ -177,9 +195,9 @@ public class LotterySsqService {
 		if (LotterySsqFilterConfig.customerGtCount5RedList == 1) {
 			customerGtCount5RedList = this.dao.getSsqLotteryCollectResultCountLessThan5();
 		}
-		if (LotterySsqFilterConfig.customerLeCount3RedList == 1) {
-			customerLeCount3RedList = this.dao.getSsqLotteryCollectResultCountLe3();
-		}
+		// if (LotterySsqFilterConfig.customerLeCount3RedList == 1) {
+		// customerLeCount3RedList = this.dao.getSsqLotteryCollectResultCountLe3();
+		// }
 		// List firstRedCodeList = this.dao.getSsqLotteryCollectResult("first", 0, 20);
 		// String[] firstRedCode = LotterySsqUtils.mergeRedCode(firstRedCodeList);
 		// List secondRedCodeList = this.dao.getSsqLotteryCollectResult("second", 0, 20);

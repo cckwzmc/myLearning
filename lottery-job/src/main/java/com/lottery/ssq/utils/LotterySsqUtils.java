@@ -73,9 +73,9 @@ public class LotterySsqUtils {
 				subselectArray(i + 1, index + 1, r, k, source, resultList);
 			} else if (index == k) {
 				r[index - 1] = source[i];
-				String[] tmp=new String[r.length];
-				for(int n=0;n<r.length;n++){
-					tmp[n]=r[n];
+				String[] tmp = new String[r.length];
+				for (int n = 0; n < r.length; n++) {
+					tmp[n] = r[n];
 				}
 				resultList.add(tmp);
 				subselectArray(i + 1, index + 1, r, k, source, resultList);
@@ -210,12 +210,30 @@ public class LotterySsqUtils {
 		Arrays.sort(ret);
 		return ret;
 	}
+
 	public static void main(String[] args) {
-		List<String[]> resultList=new ArrayList<String[]>();
-		selectArray(6, new String[]{"01","02","04","08","11","12","33"}, resultList);
-		for(String[] red:resultList){
-			System.out.println(StringUtils.join(red,","));
+		List<String[]> resultList = new ArrayList<String[]>();
+		selectArray(6, new String[] { "01", "02", "04", "08", "11", "12", "33" }, resultList);
+		for (String[] red : resultList) {
+			System.out.println(StringUtils.join(red, ","));
 		}
 		System.out.println();
+	}
+
+	public static String[] mergeRedCode(List<String[]> tmpRedCodeList, String mergeCode) {
+		Set<String> tmpSet = new HashSet<String>();
+		if (StringUtils.isNotBlank(mergeCode)) {
+			String[] mergeCodes = mergeCode.split(",");
+			for (String tmpMergeCode : mergeCodes) {
+				tmpSet.add(tmpMergeCode);
+			}
+		}
+		String[] mergeList = LotterySsqUtils.mergeRedCode(tmpRedCodeList);
+		for (String tmpMergeCode : mergeList) {
+			tmpSet.add(tmpMergeCode);
+		}
+		String[] ret = tmpSet.toArray(new String[] {});
+		Arrays.sort(ret);
+		return ret;
 	}
 }

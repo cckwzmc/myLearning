@@ -309,4 +309,30 @@ public class LotterySsqFilterUtils {
 		// }
 		return true;
 	}
+
+	/**
+	 * 必须有6个号码在mergeCode中
+	 * 
+	 * @param lValues
+	 * @param mergeCode
+	 * @return
+	 */
+	public static boolean isCumstomerRedIncludeFiveCode(String[] lValues, String mergeCode) {
+		if (StringUtils.isBlank(mergeCode)) {
+			return true;
+		}
+		String[] mergeCodes = mergeCode.split(",");
+		int selectedCode = 0;
+		for (String code : mergeCodes) {
+			for (String value : lValues) {
+				if (StringUtils.equals(code, value)) {
+					selectedCode++;
+				}
+			}
+		}
+		if (selectedCode < 6) {
+			return false;
+		}
+		return true;
+	}
 }

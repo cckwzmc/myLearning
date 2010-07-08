@@ -663,8 +663,16 @@ public class LotteryDao extends JdbcBaseDao {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List getSsqLotteryCollectResultCountLe3() {
-		String sql = "select * from (select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result s ) t group by t.redcode order by c desc ) t where t.c<=3";
+	public List getSsqLotteryCollectResultCountLe3(int first, int last) {
+		String sql = "select * from (select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result s ) t group by t.redcode order by c desc ) t where t.c<=3 limit "
+				+ first + "," + last;
+		return this.getJdbcTemplate().queryForList(sql);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getSsqLotteryCollectResultCountLe1(int first, int last) {
+		String sql = "select * from (select redcode,count(*) c from (select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) redcode from ssq_lottery_collect_result s ) t group by t.redcode order by c desc ) t where t.c=1 limit "
+				+ first + "," + last;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 
