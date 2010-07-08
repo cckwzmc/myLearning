@@ -125,12 +125,19 @@ public class LotterySsqCustomerDyjService extends Thread {
 		content = StringUtils.replace(content, " = ", "+");
 		content = StringUtils.replace(content, "<br><br>", "\n");
 		content = StringUtils.replace(content, "<br>", "\n");
+		content = StringUtils.replace(content, "  ", " ");
+		content = StringUtils.replace(content, "  ", " ");
+		content = StringUtils.replace(content, "  ", " ");
+		content = StringUtils.replace(content, "  ", " ");
 		content = StringUtils.replace(content, " | ", "+");
 		content = StringUtils.replace(content, "|", "+");
 		content = StringUtils.replace(content, "=", "+");
 		content = StringUtils.replace(content, " \n", "\n");
 		content = StringUtils.replace(content, "\t", ",");
 		content = StringUtils.replace(content, ".", ",");
+		content = StringUtils.replace(content, " + ", "+");
+		content = StringUtils.replace(content, " +", "+");
+		content = StringUtils.replace(content, "+ ", "+");
 		String[] contents = StringUtils.split(content, "\n");
 		for (int i = 0; i < contents.length; i++) {
 			list.add(StringUtils.replace(contents[i], " ", ",").trim());

@@ -229,4 +229,11 @@ public class LotterySsqJob {
 			logger.info("生成过滤号码完成...........");
 		}
 	}
+	
+	/**
+	 * 各大网站的推荐号码
+	 */
+	public void fetchWebCommend(){
+		
+	}
 }

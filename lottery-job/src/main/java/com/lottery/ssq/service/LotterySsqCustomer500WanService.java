@@ -119,6 +119,9 @@ public class LotterySsqCustomer500WanService extends Thread {
 		content = StringUtils.replace(content, "∣", "+");
 		content = StringUtils.replace(content, "|", "+");
 		content = StringUtils.replace(content, "  ", " ");
+		content = StringUtils.replace(content, "  ", " ");
+		content = StringUtils.replace(content, "  ", " ");
+		content = StringUtils.replace(content, "  ", " ");
 		content = StringUtils.replace(content, "=", "+");
 		content = StringUtils.replace(content, " \n", "\n");
 		content = StringUtils.replace(content, "\t", ",");
@@ -128,6 +131,9 @@ public class LotterySsqCustomer500WanService extends Thread {
 		content = StringUtils.replace(content, "-", ",");
 		content = StringUtils.replace(content, ".", ",");
 		content = StringUtils.replace(content, "，", ",");
+		content = StringUtils.replace(content, " + ", "+");
+		content = StringUtils.replace(content, " +", "+");
+		content = StringUtils.replace(content, "+ ", "+");
 		String[] contents = StringUtils.split(content, "\n");
 		for (int i = 0; i < contents.length; i++) {
 			String code = contents[i];

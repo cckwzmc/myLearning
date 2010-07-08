@@ -118,7 +118,14 @@ public class LotterySsqCustomerBetzcService extends Thread {
 		String codes = ssqElement.getContent().getTextExtractor().toString();
 		codes = StringUtils.remove(codes, "[双色球]：										");
 		codes = StringUtils.replace(codes, "[双色球]： ", "@@");
+		codes = StringUtils.replace(codes, "  ", " ");
+		codes = StringUtils.replace(codes, "  ", " ");
+		codes = StringUtils.replace(codes, "  ", " ");
+		codes = StringUtils.replace(codes, "  ", " ");
 		codes = StringUtils.replace(codes, " + ", "+");
+		codes = StringUtils.replace(codes, " + ", "+");
+		codes = StringUtils.replace(codes, " +", "+");
+		codes = StringUtils.replace(codes, "+ ", "+");
 		codes = codes.replace(" ", ",");
 		codes = codes.replace(",@@", "@@");
 		codes = codes.substring(2);

@@ -126,12 +126,19 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 		codeContent = StringUtils.replace(codeContent, " = ", "+");
 		codeContent = StringUtils.replace(codeContent, "<br><br>", "\n");
 		codeContent = StringUtils.replace(codeContent, "<br>", "\n");
+		codeContent = StringUtils.replace(codeContent, "  ", " ");
+		codeContent = StringUtils.replace(codeContent, "  ", " ");
+		codeContent = StringUtils.replace(codeContent, "  ", " ");
+		codeContent = StringUtils.replace(codeContent, "  ", " ");
 		codeContent = StringUtils.replace(codeContent, " | ", "+");
 		codeContent = StringUtils.replace(codeContent, "|", "+");
 		codeContent = StringUtils.replace(codeContent, "=", "+");
 		codeContent = StringUtils.replace(codeContent, " \n", "\n");
 		codeContent = StringUtils.replace(codeContent, "\t", ",");
 		codeContent = StringUtils.replace(codeContent, ".", ",");
+		codeContent = StringUtils.replace(codeContent, " + ", "+");
+		codeContent = StringUtils.replace(codeContent, " +", "+");
+		codeContent = StringUtils.replace(codeContent, "+ ", "+");
 		codeContent = parserdownloadProjectHtml(codeContent);
 		if (StringUtils.isBlank(codeContent)) {
 			return null;
