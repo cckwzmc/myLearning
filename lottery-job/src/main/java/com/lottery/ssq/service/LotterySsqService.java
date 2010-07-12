@@ -458,7 +458,7 @@ public class LotterySsqService {
 		logger.info("开始从抓取号码中生产过滤号码.............");
 		List list = null;
 		boolean start = true;
-		while (CollectionUtils.isNotEmpty(list) && !start) {
+		while (CollectionUtils.isNotEmpty(list) || start) {
 			start = false;
 			list = this.dao.getSsqLotteryCollectResultCountLe2(last, page);
 			last += page;
