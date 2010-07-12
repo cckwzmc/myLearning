@@ -247,10 +247,13 @@ public class LotterySsqCustomer500WanService extends Thread {
 						if (redCode.length == 2) {
 							blueCode = StringUtils.split(redCode[1], ",");
 							for (String blue : blueCode) {
-								if (blue.length() > 2) {
+								if (blue.length() > 2||!StringUtils.isNumeric(blue)) {
 									continue;
 								} else if (blue.length() == 1) {
 									blue = "0" + blue;
+								}
+								if(!blueMap.containsKey(blue)){
+									continue;
 								}
 								Integer tmp = blueMap.get(blue) + 1;
 								blueMap.put(blue, tmp);
@@ -298,10 +301,13 @@ public class LotterySsqCustomer500WanService extends Thread {
 						if (redCode.length == 2) {
 							blueCode = StringUtils.split(redCode[1], ",");
 							for (String blue : blueCode) {
-								if (blue.length() > 2) {
+								if (blue.length() > 2||!StringUtils.isNumeric(blue)) {
 									continue;
 								} else if (blue.length() == 1) {
 									blue = "0" + blue;
+								}
+								if(!blueMap.containsKey(blue)){
+									continue;
 								}
 								Integer tmp = blueMap.get(blue) + 1;
 								blueMap.put(blue, tmp);

@@ -66,5 +66,6 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	public static int customerLeCount3RedList;
 	//用户有5人以上投注的号码，都不可能中四个
 	public static int customerGtCount5RedList;
+	public static int genFilterRedCodeFromCollectResult;
 
 }

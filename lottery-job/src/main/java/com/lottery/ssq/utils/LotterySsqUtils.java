@@ -236,4 +236,30 @@ public class LotterySsqUtils {
 		Arrays.sort(ret);
 		return ret;
 	}
+
+	public static String standardReplace(String code) {
+		code=StringUtils.replace(code, " + ", "+");
+		code=StringUtils.replace(code, " +", "+");
+		code=StringUtils.replace(code, "+ ", "+");
+		code=StringUtils.replace(code, "，", ",");
+		code=StringUtils.replace(code, "、", ",");
+		code=StringUtils.replace(code, "。", ",");
+		code=StringUtils.replace(code, "；", ",");
+		code=StringUtils.replace(code, " ", ",");
+		String[] codes=StringUtils.split(code, "+");
+		String[] redcodes=StringUtils.split(codes[0], ",");
+		for(int i=0;i<redcodes.length;i++){
+			if(StringUtils.isBlank(redcodes[i])){
+				redcodes[i]="";
+			}else if(redcodes[i].length()<2){
+				redcodes[i]="0"+redcodes[i];
+			}else if(redcodes[i].length()==3){
+				redcodes[i]="0"+StringUtils.substring(redcodes[i], 0,1)+","+StringUtils.substring(redcodes[i], 1);
+			}else if(redcodes[i].length()==4){
+				redcodes[i]=StringUtils.substring(redcodes[i], 0,2)+","+StringUtils.substring(redcodes[i], 2);
+			}
+		}
+		return code;
+	}
+
 }

@@ -155,11 +155,7 @@ public class LotterySsqConifgService {
 		if (StringUtils.isBlank(LotterySsqConfig.expect)) {
 			return false;
 		}
-		List list = this.fetchDao.getLotterySsqFilterConfig("is_reFilter", "0");
-		if (CollectionUtils.isEmpty(list)) {
-			return false;
-		}
-		list = this.fetchDao.getLotterySsqFilterConfig();
+		List list = this.fetchDao.getLotterySsqFilterConfig();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Map iMap = (Map) iterator.next();
 			String cfgName = (String) iMap.get("config_name");
@@ -308,6 +304,10 @@ public class LotterySsqConifgService {
 			// 用户有5人以上投注的号码，都不可能中四个
 			if (StringUtils.equals(cfgName, "customerGtCount5RedList")) {
 				LotterySsqFilterConfig.customerGtCount5RedList = NumberUtils.toInt(cfgValue);
+			}
+			// 是否计算从抓取号码中过滤号码
+			if (StringUtils.equals(cfgName, "genFilterRedCodeFromCollectResult")) {
+				LotterySsqFilterConfig.genFilterRedCodeFromCollectResult = NumberUtils.toInt(cfgValue);
 			}
 		}
 		return true;

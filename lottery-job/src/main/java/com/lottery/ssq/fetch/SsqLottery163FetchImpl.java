@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.fetch.dao.LotteryFetchDao;
+import com.lottery.ssq.utils.LotterySsqUtils;
 import com.lottery.util.html.HttpHtmlService;
 
 public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
@@ -37,12 +38,14 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 	public String getSsqLotteryDetail(String url, String title) {
 		List<String[]> ssqList = this.getSsqLotteryIndexList();
 		List webList = this.lotteryFetchDao.getSsqLotteryWebFetchList(1);
-		List<String> commendCode=new ArrayList<String>();
-		for (String[] detail : ssqList) {
-			for (Iterator iterator = webList.iterator(); iterator.hasNext();) {
-				Map map = (Map) iterator.next();
-				String webTitle = ObjectUtils.toString(map.get("title"));
-				String[] wt = StringUtils.split(webTitle, "|");
+		String webFetchcode = "";
+		Set<String> result = new HashSet<String>();
+		List<String> blueResult = new ArrayList<String>();
+		for (Iterator iterator = webList.iterator(); iterator.hasNext();) {
+			Map map = (Map) iterator.next();
+			String webTitle = ObjectUtils.toString(map.get("title"));
+			String[] wt = StringUtils.split(webTitle, "|");
+			for (String[] detail : ssqList) {
 				boolean isMatch = true;
 				for (String subTitle : wt) {
 					if (detail[1].indexOf(subTitle) == -1) {
@@ -50,26 +53,24 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 						break;
 					}
 				}
-				Set<String> result = new HashSet<String>();
-				List<String> blueResult = new ArrayList<String>();
 				if (isMatch) {
 					String htmlContent = HttpHtmlService.getHtmlContent(detail[0], "GBK");
 					String[] pattens = StringUtils.split(ObjectUtils.toString(map.get("patten_des")), "|");
 					String[] replaces = StringUtils.split(ObjectUtils.toString(map.get("replace")), "|");
 					logger.info(htmlContent);
 					Source source = new Source(htmlContent);
-					String content = "";
 					List<Element> eList = null;
+					Element e = null;
 					for (String patten : pattens) {
 						boolean isExistBlueCode = false;
 						if (StringUtils.indexOf(ObjectUtils.toString(map.get("patten_des")), "blue=") > -1) {
 							isExistBlueCode = true;
 						}
 						if (StringUtils.indexOf(patten, "id=") > -1) {
-							Element e = source.getElementById(StringUtils.remove(patten, "id="));
+							e = source.getElementById(StringUtils.remove(patten, "id="));
 						}
-						if (StringUtils.indexOf(patten, "tag_list=") > -1) {
-							eList = source.getAllElements(StringUtils.remove(patten, "tag_list="));
+						if (StringUtils.indexOf(patten, "tag_list=") > -1 && e != null) {
+							eList = e.getAllElements(StringUtils.remove(patten, "tag_list="));
 						}
 						if (CollectionUtils.isNotEmpty(eList)) {
 							// 取红球
@@ -79,7 +80,7 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 									isAtNext = true;
 								}
 								String hStr = StringUtils.remove(patten, "have=");
-								hStr = StringUtils.remove(patten, "next=");
+								hStr = StringUtils.remove(hStr, "next=");
 								for (int i = 0; i < eList.size(); i++) {
 									String code = "";
 									Segment element = eList.get(i);
@@ -87,19 +88,18 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 										if (!isAtNext) {
 											code = element.getTextExtractor().toString();
 											if (StringUtils.isNotBlank(code)) {
-												this.replaceChar(code,replaces);
+												code = this.replaceChar(code, replaces);
 												result.add(code);
 											}
 										} else {
 											i++;
 											code = eList.get(i).getTextExtractor().toString();
-
-											if (StringUtils.indexOf(eList.get(i + 1).getTextExtractor().toString(), "蓝球") > -1) {
-												code += eList.get(i + 1).getTextExtractor().toString();
-												i++;
-											}
+											// if (StringUtils.indexOf(eList.get(i + 1).getTextExtractor().toString(), "蓝球") > -1) {
+											// code += eList.get(i + 1).getTextExtractor().toString();
+											// i++;
+											// }
 											if (StringUtils.isNotBlank(code)) {
-												this.replaceChar(code,replaces);
+												code = this.replaceChar(code, replaces);
 												result.add(code);
 											}
 										}
@@ -108,13 +108,13 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 
 							}
 							// 取蓝球 ---begin
-							if (isExistBlueCode) {
+							if (isExistBlueCode && patten.indexOf("blue=") > -1) {
 								boolean isAtNext = false;
 								if (StringUtils.indexOf(patten, "next=") > -1) {
 									isAtNext = true;
 								}
 								String hStr = StringUtils.remove(patten, "blue=");
-								hStr = StringUtils.remove(patten, "next=");
+								hStr = StringUtils.remove(hStr, "next=");
 								for (int i = 0; i < eList.size(); i++) {
 									Segment element = eList.get(i);
 									String blueCode = "";
@@ -124,14 +124,14 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 												blueCode = element.getTextExtractor().toString();
 											}
 											if (StringUtils.isNotBlank(blueCode)) {
-												this.replaceChar(blueCode,replaces);
+												blueCode = this.replaceChar(blueCode, replaces);
 												blueResult.add(blueCode);
 											}
 										} else {
 											i++;
 											blueCode = eList.get(i).getTextExtractor().toString();
 											if (StringUtils.isNotBlank(blueCode)) {
-												this.replaceChar(blueCode,replaces);
+												blueCode = this.replaceChar(blueCode, replaces);
 												blueResult.add(blueCode);
 											}
 										}
@@ -141,45 +141,76 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 							// 蓝球 end
 						}
 					}
-				}
-				if(CollectionUtils.isNotEmpty(blueResult)&&CollectionUtils.isNotEmpty(result)){
-					String[] codeTmp=result.toArray(new String[]{});
-					String[] blueCode=blueResult.toArray(new String[]{});
-					String tmpCode="";
-					for(String redCode:codeTmp){
-						if("".equals(tmpCode)){
-							tmpCode=codeTmp+"+"+StringUtils.join(blueCode, ",");
-						}else{
-							tmpCode+="@@"+codeTmp+"+"+StringUtils.join(blueCode, ",");
+					if (CollectionUtils.isNotEmpty(blueResult) && CollectionUtils.isNotEmpty(result)) {
+						String[] codeTmp = result.toArray(new String[] {});
+						String[] blueCode = blueResult.toArray(new String[] {});
+						String tmpCode = "";
+						for (String redCode : codeTmp) {
+							if ("".equals(tmpCode)) {
+								tmpCode = redCode + "+" + StringUtils.join(blueCode, ",");
+							} else {
+								tmpCode += "@@" + redCode + "+" + StringUtils.join(blueCode, ",");
+							}
 						}
-					}
-					commendCode.add(tmpCode);
-				}else{
-					if(CollectionUtils.isNotEmpty(result)){
-						String[] codeTmp=result.toArray(new String[]{});
-						commendCode.add(StringUtils.join(codeTmp, "@@"));
+						webFetchcode = tmpCode;
+						this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map.get("id"));
+						webFetchcode = "";
+						result.clear();
+						blueResult.clear();
+					} else {
+						if (CollectionUtils.isNotEmpty(result)) {
+							String[] codeTmp = result.toArray(new String[] {});
+							webFetchcode = StringUtils.join(codeTmp, "@@");
+							this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map.get("id"));
+						}
+						webFetchcode = "";
+						result.clear();
+						blueResult.clear();
 					}
 				}
+
 			}
 		}
-		this.lotteryFetchDao.batchLotterySsqCommendCode(commendCode);
 		return null;
 	}
 
-	private void replaceChar(String code, String[] replaces) {
-		code=StringUtils.remove(code, LotterySsqConfig.expect);
-		code=StringUtils.remove(code, LotterySsqConfig.expect.substring(2));
-		for(String replace:replaces){
-			if(StringUtils.indexOf(replace,"split=")>-1){
-				replace=StringUtils.remove(replace, "split=");
-				if(StringUtils.indexOf(replace, "first=")>-1)
-				{
-					replace=StringUtils.remove(replace, "first=");
-					code=StringUtils.substring(code,0,StringUtils.indexOf(code, replace));
+	private String replaceChar(String code, String[] replaces) {
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.remove(code, LotterySsqConfig.expect);
+		code = StringUtils.remove(code, LotterySsqConfig.expect.substring(2));
+		for (String replace : replaces) {
+			if (StringUtils.indexOf(replace, "split=") > -1) {
+				replace = StringUtils.remove(replace, "split=");
+				if (StringUtils.indexOf(replace, "second=") > -1) {
+					String firstStr=StringUtils.substringBetween(replace, "first=", "second=");
+					String secondStr=StringUtils.substring(replace, StringUtils.indexOf(replace,"second=")+7);
+					code=StringUtils.substring(code, StringUtils.indexOf(code,firstStr)+firstStr.length());
+					if(StringUtils.indexOf(code, secondStr)>-1){
+						code=StringUtils.substring(code, 0,StringUtils.indexOf(code, secondStr));
+					}
+				} else if (StringUtils.indexOf(replace, "first=") > -1) {
+					replace = StringUtils.remove(replace, "first=");
+					code = StringUtils.substring(code, 0, StringUtils.indexOf(code, replace));
 				}
 			}
-			code=StringUtils.remove(code, replace);
 		}
+		for (String replace : replaces) {
+			if(StringUtils.indexOf(replace, "==")>-1){
+				String[] rStr=StringUtils.split(replace, "==");
+				code=StringUtils.replace(code, rStr[0], rStr[1]);
+			}else{
+				code = StringUtils.remove(code, replace);
+			}
+		}
+		code=LotterySsqUtils.standardReplace(code);
+		return code;
 	}
 
 	@Override

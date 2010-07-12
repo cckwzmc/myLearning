@@ -691,4 +691,20 @@ public class LotteryDao extends JdbcBaseDao {
 			}
 		}
 	}
+	
+	
+	/**
+	 * 
+	 * ssq_lottery_collect_result
+	 * 投注用户小于等于2的号码
+	 * @param first
+	 * @param last
+	 * @return
+	 */
+	public List getSsqLotteryCollectResultCountLe2(int first,int last){
+		String sql=" select * from (select value,count(*) c from " +
+				"(select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) value from ssq_lottery_collect_result s ) t" +
+				"  group by t.redcode) t  where c<=2 order by c limit "+ first + "," + last;
+		return this.getJdbcTemplate().queryForList(sql);
+	}
 }

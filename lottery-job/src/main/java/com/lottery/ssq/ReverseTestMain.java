@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.lottery.ssq.fetch.ISsqLotteryFetch;
 import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
@@ -34,10 +35,13 @@ public class ReverseTestMain {
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
 			LotterySsqFileService lotterySsqFileService = (LotterySsqFileService) context
 					.getBean("lotterySsqFileService");
-			lotterySsqConifgService.initSsqConfig();
-			lotterySsqConifgService.initFetchConfig();
-			lotterySsqConifgService.initFilterConfig();
-			service.getCurrentExpertSingleResult();
+			
+			ISsqLotteryFetch ssqLotterySohuFetchImpl=(ISsqLotteryFetch) context.getBean("ssqLotterySohuFetchImpl");;
+			ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
+//			lotterySsqConifgService.initSsqConfig();
+//			lotterySsqConifgService.initFetchConfig();
+//			lotterySsqConifgService.initFilterConfig();
+//			service.getCurrentExpertSingleResult();
 			// lotterySsqConifgService.initFetchConfig();
 			// lotterySsqConifgService.initFilterConfig();
 

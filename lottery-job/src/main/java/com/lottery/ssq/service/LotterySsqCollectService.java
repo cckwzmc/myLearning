@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.dao.LotteryDao;
+import com.lottery.ssq.fetch.ISsqLotteryFetch;
 
 /**
  * 抓取500万/大赢家 用户投注号码
@@ -27,7 +28,22 @@ public class LotterySsqCollectService {
 	LotterySsqFileService lotterySsqFileService = null;
 	LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
 	LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
-	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService=null;
+	ISsqLotteryFetch ssqLottery163FetchImpl;
+	ISsqLotteryFetch ssqLotterySohuFetchImpl;
+	ISsqLotteryFetch ssqLotterySinaFetchImpl;
+	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService = null;
+
+	public void setSsqLottery163FetchImpl(ISsqLotteryFetch ssqLottery163FetchImpl) {
+		this.ssqLottery163FetchImpl = ssqLottery163FetchImpl;
+	}
+
+	public void setSsqLotterySohuFetchImpl(ISsqLotteryFetch ssqLotterySohuFetchImpl) {
+		this.ssqLotterySohuFetchImpl = ssqLotterySohuFetchImpl;
+	}
+
+	public void setSsqLotterySinaFetchImpl(ISsqLotteryFetch ssqLotterySinaFetchImpl) {
+		this.ssqLotterySinaFetchImpl = ssqLotterySinaFetchImpl;
+	}
 
 	public void setLotterySsqMedia500WanService(LotterySsqMedia500WanService lotterySsqMedia500WanService) {
 		this.lotterySsqMedia500WanService = lotterySsqMedia500WanService;
@@ -49,7 +65,6 @@ public class LotterySsqCollectService {
 		this.lotterySsqCustomer500WanService = lotterySsqCustomer500WanService;
 	}
 
-	
 	public void setLotterySsqCustomerBetzcService(LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService) {
 		this.lotterySsqCustomerBetzcService = lotterySsqCustomerBetzcService;
 	}
@@ -86,15 +101,17 @@ public class LotterySsqCollectService {
 	public void collectFileProject() {
 		this.lotterySsqFileService.start();
 	}
+
 	/**
 	 * 备份历史收集的号码
 	 */
-	public void backHisSsqCollectResult(){
-		String expect=this.dao.getGenLotteryMaxExpect("1");
+	public void backHisSsqCollectResult() {
+		String expect = this.dao.getGenLotteryMaxExpect("1");
 		if (StringUtils.isNotBlank(expect)) {
 			this.dao.backupSsqLotteryCollectResult(expect);
 		}
 	}
+
 	/**
 	 * 开始处理采集数据n
 	 */
@@ -108,6 +125,15 @@ public class LotterySsqCollectService {
 		this.lotterySsqMediaSinaService.saveMediaSinaRedCode();
 		this.lotterySsqCustomerCaipiaoService.saveCaipiaoProjectRedCode();
 		this.lotterySsqCustomerBetzcService.saveBetzcProjectRedCode();
+	}
+
+	/**
+	 * 抓取各大网站的推荐
+	 */
+	public void fetchWebList() {
+		this.ssqLottery163FetchImpl.getSsqLotteryDetail("", "");
+		this.ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
+		this.ssqLotterySinaFetchImpl.getSsqLotteryDetail("", "");
 	}
 
 	@SuppressWarnings("unchecked")

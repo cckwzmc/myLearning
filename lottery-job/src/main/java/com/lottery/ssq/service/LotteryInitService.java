@@ -19,6 +19,7 @@ import org.dom4j.DocumentHelper;
 import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.LotteryConstant;
+import com.lottery.ssq.Algorithm.LotterySsqAlgorithm;
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.config.LotterySsqFetchConfig;
 import com.lottery.ssq.dao.LotteryDao;
@@ -83,120 +84,8 @@ public class LotteryInitService {
 	 *            如果=="0"保存到all_result =="1"保存到filter_result
 	 */
 	private void saveLottoryResult(String redCode) {
-		String[] codeSix = redCode.split(",");
-
-		int qOne = 0;
-		int qTwo = 0;
-		int qThree = 0;
-		for (int i = 0; i < codeSix.length; i++) {
-			if (NumberUtils.toInt(codeSix[i]) <= 11) {
-				qOne++;
-			}
-			if (NumberUtils.toInt(codeSix[i]) > 11 && NumberUtils.toInt(codeSix[i]) <= 22) {
-				qTwo++;
-			}
-			if (NumberUtils.toInt(codeSix[i]) > 22 && NumberUtils.toInt(codeSix[i]) <= 33) {
-				qThree++;
-			}
-		}
-
-		if (qOne == 0 || qTwo == 0 || qThree == 0) {
-			return;
-		}
-		if (qOne >= 4 || qTwo >= 4 || qThree >= 4) {
-			return;
-		}
-		boolean isReturn = false;
-		int lhCode = 0;
-		int one = NumberUtils.toInt(codeSix[0]);
-		int two = NumberUtils.toInt(codeSix[1]);
-		int three = NumberUtils.toInt(codeSix[2]);
-		int four = NumberUtils.toInt(codeSix[3]);
-		int five = NumberUtils.toInt(codeSix[4]);
-		int six = NumberUtils.toInt(codeSix[5]);
-
-		if (two - one == 1) {
-			lhCode++;
-		}
-		if (three - two == 1) {
-			lhCode++;
-		}
-		if (four - three == 1) {
-			lhCode++;
-		}
-		if (five - four == 1) {
-			lhCode++;
-		}
-		if (six - five == 1) {
-			lhCode++;
-		}
-		if (lhCode >= 3) {
-			return;
-		}
-		int czCode = 0;
-		if (two - one == 2) {
-			czCode++;
-		}
-		if (three - two == 2) {
-			czCode++;
-		}
-		if (four - three == 2) {
-			czCode++;
-		}
-		if (five - four == 2) {
-			czCode++;
-		}
-		if (six - five == 2) {
-			czCode++;
-		}
-		if (czCode >= 3) {
-			return;
-		}
-		czCode = 0;
-		if (two - one == 3) {
-			czCode++;
-		}
-		if (three - two == 3) {
-			czCode++;
-		}
-		if (four - three == 3) {
-			czCode++;
-		}
-		if (five - four == 3) {
-			czCode++;
-		}
-		if (six - five == 3) {
-			czCode++;
-		}
-		if (czCode >= 3) {
-			return;
-		}
-		czCode = 0;
-		int cz1 = two - one;
-		int cz2 = three - two;
-		int cz3 = four - three;
-		int cz4 = five - four;
-		int cz5 = six - five;
-		int[] czs = { cz1, cz2, cz3, cz4, cz5 };
-		for (int i = 0; i < 5; i++) {
-			int tmpCount = 0;
-			int tmp = czs[i];
-			for (int j = 0; j < 5; j++) {
-				if (tmp == czs[j]) {
-					tmpCount++;
-				}
-			}
-			if (tmpCount >= 4) {
-				return;
-			}
-		}
-		if (czCode >= 3) {
-			return;
-		}
-		if (qOne == 2 && qTwo == 2 && qThree == 2 && ((two - one) == (four - three) && (four - three) == (six - five))) {
-			return;
-		}
-		if (isReturn) {
+		redCode=LotterySsqAlgorithm.initFilterRedCode(redCode);
+		if(StringUtils.isBlank(redCode)){
 			return;
 		}
 		redList.add(redCode);
@@ -218,6 +107,8 @@ public class LotteryInitService {
 			redList.clear();
 		}
 	}
+
+	
 
 	/**
 	 * 从当前配置URL补充媒体预测号码

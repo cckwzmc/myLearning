@@ -198,6 +198,9 @@ public class LotterySsqJob {
 		logger.info("文件收集加入Collect_Fetch。。。。。。");
 		this.lotterySsqFileService.collectFileCode();
 		logger.info("文件收集加入Collect_Fetch结束。。。。。。");
+		logger.info("抓取各大网站的推荐.......................");
+		this.lotteryCollectService.fetchWebList();
+		logger.info("抓取各大网站的推荐结束.......................");
 		logger.info("500wan媒体推荐抓取开始。。。。。。");
 		this.lotteryInitService.fetchMedia500WanContent();
 		logger.info("500wan媒体推荐抓取结束。。。。。。");
@@ -227,6 +230,22 @@ public class LotterySsqJob {
 			this.lotterySsqService.getCurrentExpertSingleResult();
 			this.lotterySsqService.completCurrentGenCode();
 			logger.info("生成过滤号码完成...........");
+		}
+	}
+	/**
+	 * 从抓取号码中过滤号码
+	 */
+	public void genFilterRedCodeFromCollectResult() {
+		initService();
+		if (!this.lotterySsqConifgService.initFetchConfig() || !this.lotterySsqConifgService.initFilterConfig()) {
+			logger.info("抓取配置/过滤配置初始化失败....................");
+			return;
+		}
+		if (this.lotterySsqService.isGenLotteryResult("1", LotterySsqConfig.expect)&&LotterySsqFilterConfig.genFilterRedCodeFromCollectResult==0) {
+			logger.info("后台任务生成从抓取号码中过滤号码....");
+			this.lotterySsqService.genFilterRedCodeFromCollectResult();
+			this.lotterySsqService.finishFilterRedCodeFromCollectResult();
+			logger.info("生成从抓取号码中过滤号码结束...........");
 		}
 	}
 	

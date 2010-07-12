@@ -4,10 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.lottery.dao.JdbcBaseDao;
 
+/**
+ * @author ly.zy.ljh
+ */
 public class LotteryFetchDao extends JdbcBaseDao {
+	private static final Logger logger = LoggerFactory.getLogger(LotteryFetchDao.class);
+
 	public void saveSsqLotteryWebFetchList(String title) {
 
 	}
@@ -19,10 +26,8 @@ public class LotteryFetchDao extends JdbcBaseDao {
 	}
 
 	/**
-	 * @param type
-	 *            '0:双色球；1：足彩',
-	 * @param is_complet
-	 *            '是否已完成；0：未完成；1：已完成',
+	 * @param type '0:双色球；1：足彩',
+	 * @param is_complet '是否已完成；0：未完成；1：已完成',
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -33,10 +38,8 @@ public class LotteryFetchDao extends JdbcBaseDao {
 	}
 
 	/**
-	 * @param type
-	 *            '0:双色球；1：足彩',
-	 * @param is_complet
-	 *            '是否已完成；0：未完成；1：已完成',
+	 * @param type '0:双色球；1：足彩',
+	 * @param is_complet '是否已完成；0：未完成；1：已完成',
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -47,10 +50,8 @@ public class LotteryFetchDao extends JdbcBaseDao {
 	}
 
 	/**
-	 * @param type
-	 *            1:ssq 2:football
-	 * @param lotteryQh
-	 *            期号 is_gen=0为生成 1:已生成
+	 * @param type 1:ssq 2:football
+	 * @param lotteryQh 期号 is_gen=0为生成 1:已生成
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -64,8 +65,7 @@ public class LotteryFetchDao extends JdbcBaseDao {
 	}
 
 	/**
-	 * @param config_name
-	 *            init_filter_date:初始化数据；gen_data：生成投注号码
+	 * @param config_name init_filter_date:初始化数据；gen_data：生成投注号码
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -115,5 +115,21 @@ public class LotteryFetchDao extends JdbcBaseDao {
 	public void updateLotterySsqFilterConfig(String cfgValue, String cfgName) {
 		String sql = "update ssq_lottery_config set config_value=? where config_name=?";
 		this.getJdbcTemplate().update(sql, new Object[] { cfgValue, cfgName });
+	}
+
+	/**
+	 * 在各大网站保存抓取数据
+	 * 
+	 * @param webFetchcode
+	 * @param expect
+	 * @param object
+	 */
+	public void batchLotterySsqCommendCode(String webFetchcode, String expect, Object fid) {
+		try {
+			String sql = "insert into ssq_lottery_web_fetch_result values(?,?,?)";
+			super.getJdbcTemplate().update(sql, new Object[] { expect, fid, webFetchcode });
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
 	}
 }
