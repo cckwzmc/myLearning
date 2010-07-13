@@ -1,7 +1,6 @@
 package com.lottery.ssq.fetch;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -57,7 +56,6 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 					String htmlContent = HttpHtmlService.getHtmlContent(detail[0], "GBK");
 					String[] pattens = StringUtils.split(ObjectUtils.toString(map.get("patten_des")), "|");
 					String[] replaces = StringUtils.split(ObjectUtils.toString(map.get("replace")), "|");
-					logger.info(htmlContent);
 					Source source = new Source(htmlContent);
 					List<Element> eList = null;
 					Element e = null;
@@ -95,7 +93,8 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 											i++;
 											code = eList.get(i).getTextExtractor().toString();
 
-											// if (StringUtils.indexOf(eList.get(i + 1).getTextExtractor().toString(), "蓝球") > -1) {
+											// if (StringUtils.indexOf(eList.get(i + 1).getTextExtractor().toString(),
+											// "蓝球") > -1) {
 											// code += eList.get(i + 1).getTextExtractor().toString();
 											// i++;
 											// }
@@ -155,7 +154,8 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 						}
 					}
 					webFetchcode = tmpCode;
-					this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map.get("id"));
+					this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map
+							.get("id"));
 					webFetchcode = "";
 					result.clear();
 					blueResult.clear();
@@ -163,7 +163,8 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 					if (CollectionUtils.isNotEmpty(result)) {
 						String[] codeTmp = result.toArray(new String[] {});
 						webFetchcode = StringUtils.join(codeTmp, "@@");
-						this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map.get("id"));
+						this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map
+								.get("id"));
 					}
 					webFetchcode = "";
 					result.clear();
@@ -189,11 +190,11 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 			if (StringUtils.indexOf(replace, "split=") > -1) {
 				replace = StringUtils.remove(replace, "split=");
 				if (StringUtils.indexOf(replace, "second=") > -1) {
-					String firstStr=StringUtils.substringBetween(replace, "first=", "second=");
-					String secondStr=StringUtils.substring(replace, StringUtils.indexOf(replace,"second=")+7);
-					code=StringUtils.substring(code, StringUtils.indexOf(code,firstStr)+firstStr.length());
-					if(StringUtils.indexOf(code, secondStr)>-1){
-						code=StringUtils.substring(code, 0,StringUtils.indexOf(code, secondStr));
+					String firstStr = StringUtils.substringBetween(replace, "first=", "second=");
+					String secondStr = StringUtils.substring(replace, StringUtils.indexOf(replace, "second=") + 7);
+					code = StringUtils.substring(code, StringUtils.indexOf(code, firstStr) + firstStr.length());
+					if (StringUtils.indexOf(code, secondStr) > -1) {
+						code = StringUtils.substring(code, 0, StringUtils.indexOf(code, secondStr));
 					}
 				} else if (StringUtils.indexOf(replace, "first=") > -1) {
 					replace = StringUtils.remove(replace, "first=");
@@ -202,14 +203,14 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 			}
 		}
 		for (String replace : replaces) {
-			if(StringUtils.indexOf(replace, "==")>-1){
-				String[] rStr=StringUtils.split(replace, "==");
-				code=StringUtils.replace(code, rStr[0], rStr[1]);
-			}else{
+			if (StringUtils.indexOf(replace, "==") > -1) {
+				String[] rStr = StringUtils.split(replace, "==");
+				code = StringUtils.replace(code, rStr[0], rStr[1]);
+			} else {
 				code = StringUtils.remove(code, replace);
 			}
 		}
-		code=LotterySsqUtils.standardReplace(code);
+		code = LotterySsqUtils.standardReplace(code);
 		return code;
 	}
 
@@ -235,7 +236,8 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 			String hrefValue = href.get(0).getAttributeValue("href");
 			String hrefTitle = href.get(0).getContent().getTextExtractor().toString();
 
-			if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1 || hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
+			if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1
+					|| hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
 				ssq[0] = hrefValue;
 				ssq[1] = hrefTitle;
 				ssqList.add(ssq);
