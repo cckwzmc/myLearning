@@ -423,8 +423,10 @@ public class LotterySsqFileService extends Thread {
 							} else if (blue.length() == 1) {
 								blue = "0" + blue;
 							}
-							Integer tmp = blueMap.get(blue) + 1;
-							blueMap.put(blue, tmp);
+							if (blueMap.containsKey(blue)) {
+								Integer tmp = blueMap.get(blue) + 1;
+								blueMap.put(blue, tmp);
+							}
 						}
 					}
 					String[] redCodes = StringUtils.split(redCode[0], ",");
