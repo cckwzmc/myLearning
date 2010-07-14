@@ -241,6 +241,7 @@ public class LotterySsqUtils {
 		if (StringUtils.isBlank(code)) {
 			return "";
 		}
+		code=code.trim();
 		code = StringUtils.replace(code, " + ", "+");
 		code = StringUtils.replace(code, " +", "+");
 		code = StringUtils.replace(code, "+ ", "+");
@@ -264,7 +265,27 @@ public class LotterySsqUtils {
 				redcodes[i] = StringUtils.substring(redcodes[i], 0, 2) + "," + StringUtils.substring(redcodes[i], 2);
 			}
 		}
-		return code;
+		if(codes.length==2){
+			codes[0]=StringUtils.join(redcodes,",");
+			String[] tmpRedcodes = StringUtils.split(codes[1], ",");
+			for (int i = 0; i < tmpRedcodes.length; i++) {
+				tmpRedcodes[i] = tmpRedcodes[i].trim();
+				if (StringUtils.isBlank(tmpRedcodes[i])) {
+					tmpRedcodes[i] = "";
+				} else if (tmpRedcodes[i].length() < 2) {
+					tmpRedcodes[i] = "0" + tmpRedcodes[i];
+				} else if (tmpRedcodes[i].length() == 3) {
+					tmpRedcodes[i] = "0" + StringUtils.substring(tmpRedcodes[i], 0, 1) + ","
+							+ StringUtils.substring(tmpRedcodes[i], 1);
+				} else if (tmpRedcodes[i].length() == 4) {
+					tmpRedcodes[i] = StringUtils.substring(tmpRedcodes[i], 0, 2) + "," + StringUtils.substring(tmpRedcodes[i], 2);
+				}
+			}
+			codes[1]=StringUtils.join(tmpRedcodes,",");
+		}else if(codes.length==1){
+			codes[0]=StringUtils.join(redcodes,",");
+		}
+		return StringUtils.join(codes,"+");
 	}
 
 }

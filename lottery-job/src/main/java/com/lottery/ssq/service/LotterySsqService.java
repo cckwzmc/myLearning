@@ -456,7 +456,7 @@ public class LotterySsqService {
 		int last = 0;
 		int page = 50000;
 		logger.info("开始从抓取号码中生产过滤号码.............");
-		List list = null;
+		List list = new ArrayList();
 		boolean start = true;
 		while (CollectionUtils.isNotEmpty(list) || start) {
 			start = false;

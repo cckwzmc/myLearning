@@ -36,7 +36,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 	@Override
 	public String getSsqLotteryDetail(String url, String title) {
 		List<String[]> ssqList = this.getSsqLotteryIndexList();
-		List webList = this.lotteryFetchDao.getSsqLotteryWebFetchList(1);
+		List webList = this.lotteryFetchDao.getSsqLotteryWebFetchList(3);
 		String webFetchcode = "";
 		Set<String> result = new HashSet<String>();
 		List<String> blueResult = new ArrayList<String>();
