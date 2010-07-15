@@ -430,7 +430,7 @@ public class LotterySsqFileService extends Thread {
 						}
 					}
 					String[] redCodes = StringUtils.split(redCode[0], ",");
-					if (redCodes.length > 20) {
+					if (redCodes.length > 18) {
 						lotterySsqThan20Service.select(6, redCodes, false);
 						continue;
 					}
