@@ -151,166 +151,174 @@ public class LotterySsqConifgService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean initFilterConfig() {
+	public LotterySsqFilterConfig initFilterConfig() {
 		if (StringUtils.isBlank(LotterySsqConfig.expect)) {
-			return false;
+			return null;
 		}
 		List list = this.fetchDao.getLotterySsqFilterConfig();
+		LotterySsqFilterConfig config=new LotterySsqFilterConfig();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Map iMap = (Map) iterator.next();
 			String cfgName = (String) iMap.get("config_name");
 			String cfgValue = (String) iMap.get("config_value");
 			if (StringUtils.equals(cfgName, "firstMinCode")) {
-				LotterySsqFilterConfig.firstMinCode = NumberUtils.toInt(cfgValue);
+				config.setFirstMinCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "firstMaxCode")) {
-				LotterySsqFilterConfig.firstMaxCode = NumberUtils.toInt(cfgValue);
+				config.setFirstMaxCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "lastMinCode")) {
-				LotterySsqFilterConfig.lastMinCode = NumberUtils.toInt(cfgValue);
+				config.setLastMinCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "lastMaxCode")) {
-				LotterySsqFilterConfig.lastMaxCode = NumberUtils.toInt(cfgValue);
+				config.setLastMaxCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "secondMinCode")) {
-				LotterySsqFilterConfig.secondMinCode = NumberUtils.toInt(cfgValue);
+				config.setSecondMinCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "secondMaxCode")) {
-				LotterySsqFilterConfig.secondMaxCode = NumberUtils.toInt(cfgValue);
+				config.setSecondMaxCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "thirdMinCode")) {
-				LotterySsqFilterConfig.thirdMinCode = NumberUtils.toInt(cfgValue);
+				config.setThirdMinCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "thirdMaxCode")) {
-				LotterySsqFilterConfig.thirdMaxCode = NumberUtils.toInt(cfgValue);
+				config.setThirdMaxCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "fourthMinCode")) {
-				LotterySsqFilterConfig.fourthMinCode = NumberUtils.toInt(cfgValue);
+				config.setFourthMinCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "fourthMaxCode")) {
-				LotterySsqFilterConfig.fourthMaxCode = NumberUtils.toInt(cfgValue);
-			}
-			if (StringUtils.equals(cfgName, "fourthMaxCode")) {
-				LotterySsqFilterConfig.fourthMaxCode = NumberUtils.toInt(cfgValue);
+				config.setFourthMaxCode(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "quOne")) {
-				LotterySsqFilterConfig.quOne = NumberUtils.toInt(cfgValue);
+				config.setQuOne(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "quTwo")) {
-				LotterySsqFilterConfig.quTwo = NumberUtils.toInt(cfgValue);
+				config.setQuTwo(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "quThree")) {
-				LotterySsqFilterConfig.quThree = NumberUtils.toInt(cfgValue);
-			}
-			if (StringUtils.equals(cfgName, "quThree")) {
-				LotterySsqFilterConfig.quThree = NumberUtils.toInt(cfgValue);
-			}
-			if (StringUtils.equals(cfgName, "quThree")) {
-				LotterySsqFilterConfig.quThree = NumberUtils.toInt(cfgValue);
+				config.setQuThree(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "excludeRed")) {
 				// 不包含
-				LotterySsqFilterConfig.excludeRed = StringUtils.isNotBlank(cfgValue) ? cfgValue.split(",") : null;
+				config.setExcludeRed(StringUtils.isNotBlank(cfgValue) ? cfgValue.split(",") : null);
 			}
 			if (StringUtils.equals(cfgName, "musthavered")) {
 				// 必须有的
-				LotterySsqFilterConfig.musthavered = StringUtils.isNotBlank(cfgValue) ? cfgValue.split(",") : null;
+				config.setMusthavered(StringUtils.isNotBlank(cfgValue) ? cfgValue.split(",") : null);
 			}
 			if (StringUtils.equals(cfgName, "ishaveexclude")) {
 				// 是否从 文件中读取排除号码
-				LotterySsqFilterConfig.ishaveexclude = NumberUtils.toInt(cfgValue);
+				config.setIshaveexclude(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "haveTwoSeries")) {
 				// 有几个两连号
-				LotterySsqFilterConfig.haveTwoSeries = NumberUtils.toInt(cfgValue);
+				config.setHaveTwoSeries(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "haveThreeSeries")) {
 				// 有几个三连号
-				LotterySsqFilterConfig.haveThreeSeries = NumberUtils.toInt(cfgValue);
+				config.setHaveThreeSeries(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "haveOnediffer")) {
 				// 有几个差值为1的，，如1，3，5 算两个
-				LotterySsqFilterConfig.haveOnediffer = NumberUtils.toInt(cfgValue);
+				config.setHaveOnediffer(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "selectCode")) {
 				// 在这些号码中选择6个
-				LotterySsqFilterConfig.selectCode = StringUtils.isNotBlank(cfgValue) ? cfgValue.split(",") : null;
+				config.setSelectCode(StringUtils.isNotBlank(cfgValue) ? cfgValue.split(",") : null);
 			}
 			if (StringUtils.equals(cfgName, "cannotSelectedTogethor")) {
 				// 不能同时出现的号码
-				LotterySsqFilterConfig.cannotSelectedTogethor = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null;
+				config.setCannotSelectedTogethor(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null);
 			}
 			if (StringUtils.equals(cfgName, "haveSideCode")) {
 				// 是否有边号
-				LotterySsqFilterConfig.haveSideCode = NumberUtils.toInt(cfgValue);
+				config.setHaveSideCode(NumberUtils.toInt(cfgValue));
 			}
 			// 最多中其中一个
 			if (StringUtils.equals(cfgName, "zuiduoSelectedOneCode")) {
-				LotterySsqFilterConfig.zuiduoSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null;
+				config.setZuiduoSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null);
 			}
 			// 至少选择一个
 			if (StringUtils.equals(cfgName, "leastSelectedOneCode")) {
-				LotterySsqFilterConfig.leastSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null;
+				config.setLeastSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null);
 			}
 			// 必须选择其中的一个
 			if (StringUtils.equals(cfgName, "mustSelectedOneCode")) {
-				LotterySsqFilterConfig.mustSelectedOneCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null;
+				config.setMustSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null);
 			}
 			// 必须选其中的两个
 			if (StringUtils.equals(cfgName, "mustSelectedTwoCode")) {
-				LotterySsqFilterConfig.mustSelectedTwoCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null;
+				config.setMustSelectedTwoCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null);
 			}
 			// 至少选其中的两个
 			if (StringUtils.equals(cfgName, "leastSelectedTwoCode")) {
-				LotterySsqFilterConfig.leastSelectedTwoCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null;
+				config.setLeastSelectedTwoCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null);
 			}
 			// 至少选其中的三个
 			if (StringUtils.equals(cfgName, "leastSelectedThreeCode")) {
-				LotterySsqFilterConfig.leastSelectedThreeCode = StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null;
+				config.setLeastSelectedThreeCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
+						cfgValue, "|") : null);
 			}
 			// 三个尾数相同的号码
 			if (StringUtils.equals(cfgName, "mantissaThreeSame")) {
-				LotterySsqFilterConfig.mantissaThreeSame = NumberUtils.toInt(cfgValue);
+				config.setMantissaThreeSame(NumberUtils.toInt(cfgValue));
 			}
 			// 三个2倍数的号码
 			if (StringUtils.equals(cfgName, "haveThree2Multiple")) {
-				LotterySsqFilterConfig.haveThree2Multiple = NumberUtils.toInt(cfgValue);
+				config.setHaveThree2Multiple(NumberUtils.toInt(cfgValue));
 			}
 			// 三个3倍数的号码
 			if (StringUtils.equals(cfgName, "haveThree3Multiple")) {
-				LotterySsqFilterConfig.haveThree3Multiple = NumberUtils.toInt(cfgValue);
+				config.setHaveThree3Multiple(NumberUtils.toInt(cfgValue));
 			}
 			// 连续4个奇数或偶数
 			if (StringUtils.equals(cfgName, "continueFourOddOreven")) {
-				LotterySsqFilterConfig.continueFourOddOreven = NumberUtils.toInt(cfgValue);
+				config.setContinueFourOddOreven(NumberUtils.toInt(cfgValue));
 			}
 			// 5个以上奇数或偶数
 			if (StringUtils.equals(cfgName, "geFiveOddOrEven")) {
-				LotterySsqFilterConfig.geFiveOddOrEven = NumberUtils.toInt(cfgValue);
+				config.setGeFiveOddOrEven(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "is_reFilter")) {
-				LotterySsqFilterConfig.is_reFilter = NumberUtils.toInt(cfgValue);
+				config.setIs_reFilter(NumberUtils.toInt(cfgValue));
 			}
 			if (StringUtils.equals(cfgName, "customerLeCount3RedList")) {
-				LotterySsqFilterConfig.customerLeCount3RedList = NumberUtils.toInt(cfgValue);
+				config.setCustomerLeCount3RedList(NumberUtils.toInt(cfgValue));
 			}
 			// 用户有5人以上投注的号码，都不可能中四个
 			if (StringUtils.equals(cfgName, "customerGtCount5RedList")) {
-				LotterySsqFilterConfig.customerGtCount5RedList = NumberUtils.toInt(cfgValue);
+				config.setCustomerGtCount5RedList(NumberUtils.toInt(cfgValue));
 			}
 			// 是否计算从抓取号码中过滤号码
 			if (StringUtils.equals(cfgName, "genFilterRedCodeFromCollectResult")) {
-				LotterySsqFilterConfig.genFilterRedCodeFromCollectResult = NumberUtils.toInt(cfgValue);
+				config.setGenFilterRedCodeFromCollectResult(NumberUtils.toInt(cfgValue));
+			}
+//			private int selectedSeriOrDiffOrPreCode;
+//			private int selectedSeriCodeOrDiffCode;
+//			private int selectedPreCodeOrDiffCode;
+//			private int isSinaRedCodeNodeSelected;
+			if (StringUtils.equals(cfgName, "selectedSeriOrDiffOrPreCode")) {
+				config.setSelectedSeriOrDiffOrPreCode(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "selectedSeriCodeOrDiffCode")) {
+				config.setSelectedSeriCodeOrDiffCode(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "selectedPreCodeOrDiffCode")) {
+				config.setSelectedPreCodeOrDiffCode(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "isSinaRedCodeNodeSelected")) {
+				config.setIsSinaRedCodeNodeSelected(NumberUtils.toInt(cfgValue));
 			}
 		}
-		return true;
+		return config;
 	}
 
 	/**

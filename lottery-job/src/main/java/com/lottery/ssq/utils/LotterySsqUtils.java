@@ -242,13 +242,16 @@ public class LotterySsqUtils {
 			return "";
 		}
 		code=code.trim();
+		code = StringUtils.replace(code, "　", "");
 		code = StringUtils.replace(code, " + ", "+");
 		code = StringUtils.replace(code, " +", "+");
 		code = StringUtils.replace(code, "+ ", "+");
 		code = StringUtils.replace(code, "，", ",");
 		code = StringUtils.replace(code, "、", ",");
-		code = StringUtils.replace(code, "。", ",");
+		code = StringUtils.replace(code, ".", ",");
+		code = StringUtils.replace(code, "。", " ");
 		code = StringUtils.replace(code, "；", ",");
+		code = StringUtils.replace(code, ", ", ",");
 		code = StringUtils.replace(code, " ", ",");
 		String[] codes = StringUtils.split(code, "+");
 		String[] redcodes = StringUtils.split(codes[0], ",");

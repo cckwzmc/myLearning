@@ -132,4 +132,14 @@ public class LotteryFetchDao extends JdbcBaseDao {
 			logger.error(e.getMessage());
 		}
 	}
+
+	/**
+	 * 各大网站收集的数据.
+	 * @param expect
+	 * @return
+	 */
+	public List getWebCollectList(String expect) {
+		String sql = "select content from ssq_lottery_web_fetch_result t where t.expect=?";
+		return this.getJdbcTemplate().queryForList(sql, new Object[] { expect });
+	}
 }

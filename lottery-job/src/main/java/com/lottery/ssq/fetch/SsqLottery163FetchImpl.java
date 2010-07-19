@@ -176,6 +176,17 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 	}
 
 	private String replaceChar(String code, String[] replaces) {
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "　", "");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
 		code = StringUtils.replace(code, "  ", " ");
 		code = StringUtils.replace(code, "  ", " ");
 		code = StringUtils.replace(code, "  ", " ");

@@ -54,6 +54,7 @@
 		<property name="ssqLottery163FetchImpl" ref="ssqLottery163FetchImpl"></property>
 		<property name="ssqLotterySohuFetchImpl" ref="ssqLotterySohuFetchImpl"></property>
 		<property name="ssqLotterySinaFetchImpl" ref="ssqLotterySinaFetchImpl"></property>
+		<property name="lotterySsqWebCollectService" ref="lotterySsqWebCollectService"></property>
 	</bean>
 	<bean id="lotterySsqConifgService" class="com.lottery.ssq.service.LotterySsqConifgService">
 		<property name="fetchDao" ref="fetchDao" />
@@ -69,5 +70,10 @@
 	</bean>
 	<bean id="ssqLotterySinaFetchImpl" class="com.lottery.ssq.fetch.SsqLotterySinaFetchImpl">
 		<property name="lotteryFetchDao" ref="fetchDao"></property>
+	</bean>
+	<bean id="lotterySsqWebCollectService" class="com.lottery.ssq.service.LotterySsqWebCollectService">
+		<property name="fetchDao" ref="fetchDao"></property>
+		<property name="lotteryDao" ref="lotteryDao"></property>
+		<property name="lotterySsqThan20Service" ref="lotterySsqThan20Service"></property>
 	</bean>
 </beans>	

@@ -12,6 +12,7 @@ import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
 import com.lottery.ssq.service.LotterySsqFileService;
 import com.lottery.ssq.service.LotterySsqService;
+import com.lottery.ssq.service.LotterySsqWebCollectService;
 
 /**
  * 反向处理，把不存在媒体预测的结果选出来，两种方式 1、把媒体的结果都合并处理。 2、把媒体的结果分开处理。
@@ -40,9 +41,12 @@ public class ReverseTestMain {
 			lotterySsqConifgService.initFilterConfig();
 			ISsqLotteryFetch ssqLotterySohuFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySohuFetchImpl");
 			ISsqLotteryFetch ssqLottery163FetchImpl = (ISsqLotteryFetch) context.getBean("ssqLottery163FetchImpl");
-			ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
-			ssqLottery163FetchImpl.getSsqLotteryDetail("", "");
-
+			ISsqLotteryFetch ssqLotterySinaFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySinaFetchImpl");
+			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context.getBean("lotterySsqWebCollectService");
+//			ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
+//			ssqLottery163FetchImpl.getSsqLotteryDetail("", "");
+//			ssqLotterySinaFetchImpl.getSsqLotteryDetail("", "");
+			lotterySsqWebCollectService.saveSsqWebCollect();
 			// service.getCurrentExpertSingleResult();
 			// lotterySsqConifgService.initFetchConfig();
 			// lotterySsqConifgService.initFilterConfig();
@@ -205,7 +209,7 @@ public class ReverseTestMain {
 				}
 			}
 			logger.info("开始生成投注号码...。。。。。。。。。。。。..");
-			service.getCurrentExpertSingleResult();
+//			service.getCurrentExpertSingleResult();
 			// service.filterCurrentRedCodeFromFile();
 		} catch (Exception e) {
 			e.printStackTrace();

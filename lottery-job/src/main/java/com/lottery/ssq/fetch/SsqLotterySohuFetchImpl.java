@@ -25,8 +25,11 @@ import com.lottery.util.html.HttpHtmlService;
 public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 
 	private static final Logger logger = LoggerFactory.getLogger(SsqLotterySohuFetchImpl.class);
-	final String URLSOHU = "http://sports.sohu.com/s2005/1284/s227150850.shtml";
+//	final String URLSOHU = "http://sports.sohu.com/s2005/1284/s227150850_184.shtml";
+	 final String URLSOHU = "http://sports.sohu.com/s2005/1284/s227150850.shtml";
 	private LotteryFetchDao lotteryFetchDao = null;
+	// "双色球|各媒体|工作室"; id=117特殊处理
+	private boolean isSepTitle = false;
 
 	public void setLotteryFetchDao(LotteryFetchDao lotteryFetchDao) {
 		this.lotteryFetchDao = lotteryFetchDao;
@@ -52,7 +55,9 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 						break;
 					}
 				}
-				if (isMatch) {
+				if ("117".equals(ObjectUtils.toString(map.get("id"))) && isMatch) {
+					result = this.sohuSepPage(detail[0]);
+				} else if (isMatch) {
 					String htmlContent = HttpHtmlService.getHtmlContent(detail[0], "GBK");
 					String[] pattens = StringUtils.split(ObjectUtils.toString(map.get("patten_des")), "|");
 					String[] replaces = StringUtils.split(ObjectUtils.toString(map.get("replace")), "|");
@@ -154,8 +159,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 						}
 					}
 					webFetchcode = tmpCode;
-					this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map
-							.get("id"));
+					this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map.get("id"));
 					webFetchcode = "";
 					result.clear();
 					blueResult.clear();
@@ -163,8 +167,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 					if (CollectionUtils.isNotEmpty(result)) {
 						String[] codeTmp = result.toArray(new String[] {});
 						webFetchcode = StringUtils.join(codeTmp, "@@");
-						this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map
-								.get("id"));
+						this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map.get("id"));
 					}
 					webFetchcode = "";
 					result.clear();
@@ -175,9 +178,97 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 		return null;
 	}
 
+	/**
+	 * 双色球2010081期各媒体专家工作室推荐汇总
+	 * <p>
+	 * 特殊处理
+	 * 
+	 * @return
+	 */
+	private Set<String> sohuSepPage(String url) {
+		String urlTmp = "http://mirror4.club.sohu.com/readjsnew-ssq-@code@-111111.html";
+		Set<String> result = new HashSet<String>();
+		String htmlContent = HttpHtmlService.getHtmlContent(url, "GBK");
+		Source source = new Source(htmlContent);
+		List<Element> content02 = source.getAllElementsByClass("content02");
+		List<Element> content01 = source.getAllElementsByClass("content01");
+		content02.addAll(content01);
+		for (Element el : content02) {
+			List<Element> para2 = el.getAllElementsByClass("para2");
+			if (CollectionUtils.isEmpty(para2)) {
+				continue;
+			}
+			Element para2El = para2.get(0);
+			String para2Str = para2El.toString();
+			String showItem = StringUtils.substring(para2Str, StringUtils.indexOf(para2Str, "show_item(\"") + 11);
+			showItem = StringUtils.substring(showItem, 0, StringUtils.indexOf(showItem, "\""));
+			String codeUrl = StringUtils.replace(urlTmp, "@code@", showItem);
+			String codeContent = HttpHtmlService.getHtmlContent(codeUrl, "GBK");
+			String body = StringUtils.substring(codeContent, StringUtils.indexOf(codeContent, "body_" + showItem) + ("body_" + showItem).length() + 2);
+			body = StringUtils.substring(body, 0, StringUtils.indexOf(body, "var"));
+			if (StringUtils.indexOf(body, "幸运之门") > -1 || StringUtils.indexOf(body, "盈彩网") > -1 || StringUtils.indexOf(body, "鑫源彩") > -1) {
+				String[] xyzm = StringUtils.split(body, "<br>");
+				for (String code : xyzm) {
+					if (StringUtils.indexOf(code, "红球") > -1) {
+						code = StringUtils.replace(code, "红球", "");
+						code = StringUtils.replace(code, ":", "");
+						code = StringUtils.replace(code, "：", "");
+						code = StringUtils.replace(code, "┃,", "");
+						code = StringUtils.replace(code, "&nbsp;", "##");
+						code = StringUtils.replace(code, "：", "");
+						result.add(code);
+					} else if (StringUtils.indexOf(code, "蓝球") > -1) {
+
+					} else if (StringUtils.indexOf(code, "红胆") > -1) {
+
+					}
+				}
+			}
+			if (StringUtils.indexOf(body, "金海特") > -1) {
+				String[] xyzm = StringUtils.split(body, "<br>");
+				for (String code : xyzm) {
+					if (StringUtils.indexOf(code, "红球15码") > -1 || StringUtils.indexOf(code, "缩水大复推荐") > -1 || StringUtils.indexOf(code, "复式") > -1) {
+						code = StringUtils.replace(code, "缩水大复推荐", "");
+						code = StringUtils.replace(code, "复式", "");
+						code = StringUtils.replace(code, "红球15码", "");
+						code = StringUtils.replace(code, "红球", "");
+						code = StringUtils.replace(code, ":", "");
+						code = StringUtils.replace(code, "：", "");
+						result.add(code);
+					} else if (StringUtils.indexOf(code, "蓝球") > -1) {
+
+					}
+				}
+			}
+		}
+		Set<String> retResult = new HashSet<String>();
+		for (String code : result) {
+			if (StringUtils.isBlank(code) || code.length() < 16) {
+				continue;
+			}
+			code = StringUtils.replace(code, "┃", "");
+			code = StringUtils.replace(code, "&n", "");
+			if (StringUtils.endsWith(code, ",")) {
+				code = StringUtils.substring(code, 0, code.length() - 1);
+			}
+			code=this.replaceChar(code, null);
+			retResult.add(code);
+		}
+		return retResult;
+	}
+
 	private String replaceChar(String code, String[] replaces) {
-		code = StringUtils.replace(code, "  ", " ");
-		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "　", "");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
 		code = StringUtils.replace(code, "  ", " ");
 		code = StringUtils.replace(code, "  ", " ");
 		code = StringUtils.replace(code, "  ", " ");
@@ -186,28 +277,30 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 		code = StringUtils.replace(code, "  ", " ");
 		code = StringUtils.remove(code, LotterySsqConfig.expect);
 		code = StringUtils.remove(code, LotterySsqConfig.expect.substring(2));
-		for (String replace : replaces) {
-			if (StringUtils.indexOf(replace, "split=") > -1) {
-				replace = StringUtils.remove(replace, "split=");
-				if (StringUtils.indexOf(replace, "second=") > -1) {
-					String firstStr = StringUtils.substringBetween(replace, "first=", "second=");
-					String secondStr = StringUtils.substring(replace, StringUtils.indexOf(replace, "second=") + 7);
-					code = StringUtils.substring(code, StringUtils.indexOf(code, firstStr) + firstStr.length());
-					if (StringUtils.indexOf(code, secondStr) > -1) {
-						code = StringUtils.substring(code, 0, StringUtils.indexOf(code, secondStr));
+		if (replaces != null && replaces.length > 0) {
+			for (String replace : replaces) {
+				if (StringUtils.indexOf(replace, "split=") > -1) {
+					replace = StringUtils.remove(replace, "split=");
+					if (StringUtils.indexOf(replace, "second=") > -1) {
+						String firstStr = StringUtils.substringBetween(replace, "first=", "second=");
+						String secondStr = StringUtils.substring(replace, StringUtils.indexOf(replace, "second=") + 7);
+						code = StringUtils.substring(code, StringUtils.indexOf(code, firstStr) + firstStr.length());
+						if (StringUtils.indexOf(code, secondStr) > -1) {
+							code = StringUtils.substring(code, 0, StringUtils.indexOf(code, secondStr));
+						}
+					} else if (StringUtils.indexOf(replace, "first=") > -1) {
+						replace = StringUtils.remove(replace, "first=");
+						code = StringUtils.substring(code, 0, StringUtils.indexOf(code, replace));
 					}
-				} else if (StringUtils.indexOf(replace, "first=") > -1) {
-					replace = StringUtils.remove(replace, "first=");
-					code = StringUtils.substring(code, 0, StringUtils.indexOf(code, replace));
 				}
 			}
-		}
-		for (String replace : replaces) {
-			if (StringUtils.indexOf(replace, "==") > -1) {
-				String[] rStr = StringUtils.split(replace, "==");
-				code = StringUtils.replace(code, rStr[0], rStr[1]);
-			} else {
-				code = StringUtils.remove(code, replace);
+			for (String replace : replaces) {
+				if (StringUtils.indexOf(replace, "==") > -1) {
+					String[] rStr = StringUtils.split(replace, "==");
+					code = StringUtils.replace(code, rStr[0], rStr[1]);
+				} else {
+					code = StringUtils.remove(code, replace);
+				}
 			}
 		}
 		code = LotterySsqUtils.standardReplace(code);
@@ -236,8 +329,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 			String hrefValue = href.get(0).getAttributeValue("href");
 			String hrefTitle = href.get(0).getContent().getTextExtractor().toString();
 
-			if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1
-					|| hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
+			if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1 || hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
 				ssq[0] = hrefValue;
 				ssq[1] = hrefTitle;
 				ssqList.add(ssq);
@@ -248,8 +340,9 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 	}
 
 	public static void main(String[] args) {
-		new LotterySsqConfig().expect = "10076";
+		// new LotterySsqConfig().expect = "10076";
 		SsqLotterySohuFetchImpl fetch = new SsqLotterySohuFetchImpl();
-		fetch.getSsqLotteryDetail("", "");
+		fetch.sohuSepPage("http://club.sports.sohu.com/r-ssq-685259-0-10-900.html");
+		// fetch.getSsqLotteryDetail("", "");
 	}
 }

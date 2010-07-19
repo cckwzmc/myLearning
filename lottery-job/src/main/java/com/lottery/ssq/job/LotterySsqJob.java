@@ -221,13 +221,14 @@ public class LotterySsqJob {
 	 */
 	public void genFilterRedCode() {
 		initService();
-		if (!this.lotterySsqConifgService.initFetchConfig() || !this.lotterySsqConifgService.initFilterConfig()) {
+		LotterySsqFilterConfig filterConfig=this.lotterySsqConifgService.initFilterConfig();
+		if (!this.lotterySsqConifgService.initFetchConfig() || filterConfig==null) {
 			logger.info("抓取配置/过滤配置初始化失败....................");
 			return;
 		}
-		if (this.lotterySsqService.isGenLotteryResult("1", LotterySsqConfig.expect)&&LotterySsqFilterConfig.is_reFilter==0) {
+		if (this.lotterySsqService.isGenLotteryResult("1", LotterySsqConfig.expect)&&filterConfig.getIs_reFilter()==0) {
 			logger.info("后台任务生成过滤号码....");
-			this.lotterySsqService.getCurrentExpertSingleResult();
+			this.lotterySsqService.getCurrentExpertSingleResult(filterConfig);
 			this.lotterySsqService.completCurrentGenCode();
 			logger.info("生成过滤号码完成...........");
 		}
@@ -237,13 +238,14 @@ public class LotterySsqJob {
 	 */
 	public void genFilterRedCodeFromCollectResult() {
 		initService();
-		if (!this.lotterySsqConifgService.initFetchConfig() || !this.lotterySsqConifgService.initFilterConfig()) {
+		LotterySsqFilterConfig filterConfig=this.lotterySsqConifgService.initFilterConfig();
+		if (!this.lotterySsqConifgService.initFetchConfig() || filterConfig==null) {
 			logger.info("抓取配置/过滤配置初始化失败....................");
 			return;
 		}
-		if (this.lotterySsqService.isGenLotteryResult("1", LotterySsqConfig.expect)&&LotterySsqFilterConfig.genFilterRedCodeFromCollectResult==0) {
+		if (this.lotterySsqService.isGenLotteryResult("1", LotterySsqConfig.expect)&&filterConfig.getGenFilterRedCodeFromCollectResult()==0) {
 			logger.info("后台任务生成从抓取号码中过滤号码....");
-			this.lotterySsqService.genFilterRedCodeFromCollectResult();
+			this.lotterySsqService.genFilterRedCodeFromCollectResult(filterConfig);
 			this.lotterySsqService.finishFilterRedCodeFromCollectResult();
 			logger.info("生成从抓取号码中过滤号码结束...........");
 		}

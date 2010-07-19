@@ -32,6 +32,12 @@ public class LotterySsqCollectService {
 	ISsqLotteryFetch ssqLotterySohuFetchImpl;
 	ISsqLotteryFetch ssqLotterySinaFetchImpl;
 	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService = null;
+	private LotterySsqWebCollectService lotterySsqWebCollectService=null;
+
+
+	public void setLotterySsqWebCollectService(LotterySsqWebCollectService lotterySsqWebCollectService) {
+		this.lotterySsqWebCollectService = lotterySsqWebCollectService;
+	}
 
 	public void setSsqLottery163FetchImpl(ISsqLotteryFetch ssqLottery163FetchImpl) {
 		this.ssqLottery163FetchImpl = ssqLottery163FetchImpl;
@@ -125,6 +131,7 @@ public class LotterySsqCollectService {
 		this.lotterySsqMediaSinaService.saveMediaSinaRedCode();
 		this.lotterySsqCustomerCaipiaoService.saveCaipiaoProjectRedCode();
 		this.lotterySsqCustomerBetzcService.saveBetzcProjectRedCode();
+		this.lotterySsqWebCollectService.saveSsqWebCollect();
 	}
 
 	/**

@@ -434,7 +434,7 @@ public class LotterySsqFileService extends Thread {
 						lotterySsqThan20Service.select(6, redCodes, false);
 						continue;
 					}
-					if (redCodes.length < 6 || redCodes.length > 20) {
+					if (redCodes.length < 6 ) {
 						logger.error("方案解析失败==" + ssq);
 						continue;
 					}
