@@ -11,7 +11,6 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.lottery.ssq.config.LotterySsqFilterConfig;
-import com.sun.org.apache.bcel.internal.generic.Select;
 
 /**
  * 针对sina媒体使用的算法
@@ -21,13 +20,15 @@ import com.sun.org.apache.bcel.internal.generic.Select;
 public class LotterySsqMediaAlgorithm {
 	/**
 	 * 与不能同时出现的号码类似，只是这是通过sina擂台网上收集而来的。
-	 * @param filterConfig 
+	 * 
+	 * @param filterConfig
 	 * 
 	 * @param lValues
 	 * @param sinaDanList
 	 * @return
 	 */
-	public static boolean isSinaDanTogethorFilter(LotterySsqFilterConfig filterConfig, String[] lValues, List<String> sinaDanList) {
+	public static boolean isSinaDanTogethorFilter(LotterySsqFilterConfig filterConfig, String[] lValues,
+			List<String> sinaDanList) {
 		int tempSelect = 0;
 		if (CollectionUtils.isNotEmpty(sinaDanList)) {
 			for (int j = 0; j < sinaDanList.size(); j++) {
@@ -50,13 +51,15 @@ public class LotterySsqMediaAlgorithm {
 
 	/**
 	 * 新浪媒体擂台，媒体推荐的红胆中，中号的不能超过的num个数
-	 * @param filterConfig 
+	 * 
+	 * @param filterConfig
 	 * 
 	 * @param lValues
 	 * @param sinaDanList
 	 * @return
 	 */
-	public static boolean isSinaDanNoneFilter(LotterySsqFilterConfig filterConfig, String[] lValues, List<String> sinaDanList, int num) {
+	public static boolean isSinaDanNoneFilter(LotterySsqFilterConfig filterConfig, String[] lValues,
+			List<String> sinaDanList, int num) {
 
 		if (CollectionUtils.isEmpty(sinaDanList)) {
 			return true;
@@ -141,14 +144,16 @@ public class LotterySsqMediaAlgorithm {
 
 	/**
 	 * sina 媒体推荐的红胆总和中不能超过num个<=num
-	 * @param filterConfig 
+	 * 
+	 * @param filterConfig
 	 * 
 	 * @param lValues
 	 * @param sinaDanList
 	 * @param num
 	 * @return
 	 */
-	public static boolean isSinaDanAllFilter(LotterySsqFilterConfig filterConfig, String[] lValues, List<String> sinaDanList, int num) {
+	public static boolean isSinaDanAllFilter(LotterySsqFilterConfig filterConfig, String[] lValues,
+			List<String> sinaDanList, int num) {
 		Set<String> danSet = new HashSet<String>();
 		for (Iterator<String> iterator = sinaDanList.iterator(); iterator.hasNext();) {
 			String[] dans = iterator.next().split(",");
@@ -172,76 +177,76 @@ public class LotterySsqMediaAlgorithm {
 		return true;
 	}
 
-//	/**
-//	 * 最多只能中其中的一个///只要是新浪推荐的号码中大于等于6的号码
-//	 * 
-//	 * @param lValues
-//	 * @param sinaRedCodeList
-//	 * @return
-//	 * 已验证
-//	 */
-//	public static boolean isSelectOneCode(String[] lValues) {
-//		if (LotterySsqFilterConfig.zuiduoSelectedOneCode == null
-//				|| LotterySsqFilterConfig.zuiduoSelectedOneCode.length < 1) {
-//			return true;
-//		}
-//		for (int i = 0; i < LotterySsqFilterConfig.zuiduoSelectedOneCode.length; i++) {
-//			int tempSelect = 0;
-//			String[] code = LotterySsqFilterConfig.zuiduoSelectedOneCode[i].split(",");
-//			for (int k = 0; k < code.length; k++) {
-//				for (int j = 0; j < lValues.length; j++) {
-//					if (StringUtils.equals(code[k], lValues[j])) {
-//						tempSelect++;
-//					}
-//				}
-//			}
-//			if (tempSelect > 1) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-//
-//	/**
-//	 * 至少要中其中的一个号码
-//	 * 
-//	 * @param lValues
-//	 * @return
-//	 * 已验证
-//	 */
-//	public static boolean isLeastSelectedOneCode(String[] lValues) {
-//		if (LotterySsqFilterConfig.leastSelectedOneCode == null
-//				|| LotterySsqFilterConfig.leastSelectedOneCode.length < 1) {
-//			return true;
-//		}
-//		for (int i = 0; i < LotterySsqFilterConfig.leastSelectedOneCode.length; i++) {
-//			int tempSelect = 0;
-//			String[] code = LotterySsqFilterConfig.leastSelectedOneCode[i].split(",");
-//			for (int k = 0; k < code.length; k++) {
-//				for (int j = 0; j < lValues.length; j++) {
-//					if (StringUtils.equals(code[k], lValues[j])) {
-//						tempSelect++;
-//					}
-//				}
-//			}
-//			if (tempSelect < 1) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-
+	// /**
+	// * 最多只能中其中的一个///只要是新浪推荐的号码中大于等于6的号码
+	// *
+	// * @param lValues
+	// * @param sinaRedCodeList
+	// * @return
+	// * 已验证
+	// */
+	// public static boolean isSelectOneCode(String[] lValues) {
+	// if (LotterySsqFilterConfig.zuiduoSelectedOneCode == null
+	// || LotterySsqFilterConfig.zuiduoSelectedOneCode.length < 1) {
+	// return true;
+	// }
+	// for (int i = 0; i < LotterySsqFilterConfig.zuiduoSelectedOneCode.length; i++) {
+	// int tempSelect = 0;
+	// String[] code = LotterySsqFilterConfig.zuiduoSelectedOneCode[i].split(",");
+	// for (int k = 0; k < code.length; k++) {
+	// for (int j = 0; j < lValues.length; j++) {
+	// if (StringUtils.equals(code[k], lValues[j])) {
+	// tempSelect++;
+	// }
+	// }
+	// }
+	// if (tempSelect > 1) {
+	// return false;
+	// }
+	// }
+	// return true;
+	// }
+	//
+	// /**
+	// * 至少要中其中的一个号码
+	// *
+	// * @param lValues
+	// * @return
+	// * 已验证
+	// */
+	// public static boolean isLeastSelectedOneCode(String[] lValues) {
+	// if (LotterySsqFilterConfig.leastSelectedOneCode == null
+	// || LotterySsqFilterConfig.leastSelectedOneCode.length < 1) {
+	// return true;
+	// }
+	// for (int i = 0; i < LotterySsqFilterConfig.leastSelectedOneCode.length; i++) {
+	// int tempSelect = 0;
+	// String[] code = LotterySsqFilterConfig.leastSelectedOneCode[i].split(",");
+	// for (int k = 0; k < code.length; k++) {
+	// for (int j = 0; j < lValues.length; j++) {
+	// if (StringUtils.equals(code[k], lValues[j])) {
+	// tempSelect++;
+	// }
+	// }
+	// }
+	// if (tempSelect < 1) {
+	// return false;
+	// }
+	// }
+	// return true;
+	// }
 
 	/**
 	 * 新浪媒体 推荐红球中4个的媒体不能超过num个
-	 * @param filterConfig 
+	 * 
+	 * @param filterConfig
 	 * 
 	 * @param lValues
 	 * @param mediaSinaList
-	 * @return
-	 * 已验证
+	 * @return 已验证
 	 */
-	public static boolean isSinaRedCodeXiaoFourFilter(LotterySsqFilterConfig filterConfig, String[] lValues, List<String[]> mediaSinaList, int num) {
+	public static boolean isSinaRedCodeXiaoFourFilter(LotterySsqFilterConfig filterConfig, String[] lValues,
+			List<String[]> mediaSinaList, int num) {
 		int count = 0;
 		for (String[] redCode : mediaSinaList) {
 			int tempSelect = 0;
@@ -261,7 +266,7 @@ public class LotterySsqMediaAlgorithm {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 对用户选择的前10个号码进行过滤 不能存在前2的号码 不能存在前10中的2以上号码
 	 * 
@@ -314,7 +319,6 @@ public class LotterySsqMediaAlgorithm {
 		}
 		return true;
 	}
-
 
 	/**
 	 * 用户投注的前40个不回中超过4个。
@@ -433,8 +437,7 @@ public class LotterySsqMediaAlgorithm {
 	 * 
 	 * @param lValues
 	 * @param redCodeList
-	 * @return
-	 * 已验证
+	 * @return 已验证
 	 */
 	public static boolean isRedIncludeFourCode(String[] lValues, Set<String[]> redCodeList) {
 		if (CollectionUtils.isEmpty(redCodeList)) {
@@ -460,14 +463,15 @@ public class LotterySsqMediaAlgorithm {
 
 	/**
 	 * 新浪擂台媒体不能中4个以上的红球,包括4个. num通常等于=4
-	 * @param filterConfig 
+	 * 
+	 * @param filterConfig
 	 * 
 	 * @param lValues
 	 * @param redCodeList
-	 * @return
-	 * 已验证
+	 * @return 已验证
 	 */
-	public static boolean isSinaRedIncludeFourCode(LotterySsqFilterConfig filterConfig, String[] lValues, HashSet<String[]> redCodeList, int num) {
+	public static boolean isSinaRedIncludeFourCode(LotterySsqFilterConfig filterConfig, String[] lValues,
+			HashSet<String[]> redCodeList, int num) {
 		if (CollectionUtils.isEmpty(redCodeList)) {
 			return true;
 		}
@@ -495,8 +499,7 @@ public class LotterySsqMediaAlgorithm {
 	 * @param lValues
 	 * @param wan500RedCodeList
 	 * @param num
-	 * @return
-	 * 已验证
+	 * @return 已验证
 	 */
 	public static boolean isWan500RedIncludeFourCode(String[] lValues, Set<String[]> wan500RedCodeList, int num) {
 		if (CollectionUtils.isEmpty(wan500RedCodeList)) {
@@ -522,31 +525,33 @@ public class LotterySsqMediaAlgorithm {
 
 	/**
 	 * 新浪媒体推荐中至少有num注会一个号码也不中.
-	 * @param filterConfig 
+	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @param sinaRedCodeList
 	 * @param int1
 	 * @return
 	 */
-	public static boolean isSinaRedCodeNodeSelected(LotterySsqFilterConfig filterConfig, String[] lValues, List<String[]> sinaRedCodeList, int num) {
-		if(num<1){
+	public static boolean isSinaRedCodeNodeSelected(LotterySsqFilterConfig filterConfig, String[] lValues,
+			List<String[]> sinaRedCodeList, int num) {
+		if (num < 1) {
 			return true;
 		}
-		int zeroSelected=0;
-		for(String[] sinaRedCode:sinaRedCodeList){
-			int selected=0;
-			for(String sinaSredCode:sinaRedCode){
-				for(String sRedCode:lValues){
-					if(StringUtils.equals(sinaSredCode, sRedCode)){
+		int zeroSelected = 0;
+		for (String[] sinaRedCode : sinaRedCodeList) {
+			int selected = 0;
+			for (String sinaSredCode : sinaRedCode) {
+				for (String sRedCode : lValues) {
+					if (StringUtils.equals(sinaSredCode, sRedCode)) {
 						selected++;
 					}
 				}
 			}
-			if(selected==0){
+			if (selected == 0) {
 				zeroSelected++;
 			}
 		}
-		if(zeroSelected>=num){
+		if (zeroSelected >= num) {
 			return true;
 		}
 		return false;
