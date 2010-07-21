@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -106,13 +105,13 @@ public class LotterySsqService {
 		int page = 50000;
 		logger.info("开始生成过滤号码了.............");
 		while (last < count) {
-			List list=new ArrayList();
-//			List list = this.dao.getSsqLottoryFilterResultLimit(last, page);
+//			List list=new ArrayList();
+			List list = this.dao.getSsqLottoryFilterResultLimit(last, page);
 			last += page;
-			Map map=new HashMap();
-			list.clear();
-			map.put("value", "01,02,08,12,13,26");
-			list.add(map);
+//			Map map=new HashMap();
+//			list.clear();
+//			map.put("value", "01,02,08,12,13,26");
+//			list.add(map);
 			logger.info("已经计算了" + last + "个号码了");
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map lValue = (Map) iterator.next();

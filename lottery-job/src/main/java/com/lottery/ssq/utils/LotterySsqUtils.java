@@ -246,6 +246,7 @@ public class LotterySsqUtils {
 		code = StringUtils.replace(code, " + ", "+");
 		code = StringUtils.replace(code, " +", "+");
 		code = StringUtils.replace(code, "+ ", "+");
+		code = StringUtils.replace(code, "+,", "+");
 		code = StringUtils.replace(code, "，", ",");
 		code = StringUtils.replace(code, "、", ",");
 		code = StringUtils.replace(code, ".", ",");

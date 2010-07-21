@@ -1,5 +1,6 @@
 package com.lottery.ssq.fetch;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,8 +26,7 @@ import com.lottery.util.html.HttpHtmlService;
 public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 
 	private static final Logger logger = LoggerFactory.getLogger(SsqLotterySohuFetchImpl.class);
-//	final String URLSOHU = "http://sports.sohu.com/s2005/1284/s227150850_184.shtml";
-	 final String URLSOHU = "http://sports.sohu.com/s2005/1284/s227150850.shtml";
+	final String[] URLSOHU = { "http://sports.sohu.com/s2005/1284/s227150850.shtml", "http://sports.sohu.com/s2005/1284/s227150850_184.shtml" };
 	private LotteryFetchDao lotteryFetchDao = null;
 	// "双色球|各媒体|工作室"; id=117特殊处理
 	private boolean isSepTitle = false;
@@ -251,7 +251,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 			if (StringUtils.endsWith(code, ",")) {
 				code = StringUtils.substring(code, 0, code.length() - 1);
 			}
-			code=this.replaceChar(code, null);
+			code = this.replaceChar(code, null);
 			retResult.add(code);
 		}
 		return retResult;
@@ -309,32 +309,35 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 
 	@Override
 	public List<String[]> getSsqLotteryIndexList() {
-		String listContent = HttpHtmlService.getHtmlContent(URLSOHU, "GBK");
-		if (StringUtils.isBlank(listContent)) {
-			return null;
-		}
 		List<String[]> ssqList = new ArrayList<String[]>();
-		Source source = new Source(listContent);
-		List<Element> listContainer = source.getAllElementsByClass("f14list");
-		if (CollectionUtils.isEmpty(listContainer)) {
-			return null;
-		}
-		List<Element> list = (listContainer.get(0)).getAllElements("li");
-		for (Element li : list) {
-			if (li.getTextExtractor().toString().trim().length() < 10) {
-				continue;
-			}
-			String[] ssq = new String[2];
-			List<Element> href = li.getAllElements("a");
-			String hrefValue = href.get(0).getAttributeValue("href");
-			String hrefTitle = href.get(0).getContent().getTextExtractor().toString();
-
-			if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1 || hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
-				ssq[0] = hrefValue;
-				ssq[1] = hrefTitle;
-				ssqList.add(ssq);
+		for (String sohuUrl : URLSOHU) {
+			String listContent = HttpHtmlService.getHtmlContent(sohuUrl, "GBK");
+			if (StringUtils.isBlank(listContent)) {
+				return null;
 			}
 
+			Source source = new Source(listContent);
+			List<Element> listContainer = source.getAllElementsByClass("f14list");
+			if (CollectionUtils.isEmpty(listContainer)) {
+				return null;
+			}
+			List<Element> list = (listContainer.get(0)).getAllElements("li");
+			for (Element li : list) {
+				if (li.getTextExtractor().toString().trim().length() < 10) {
+					continue;
+				}
+				String[] ssq = new String[2];
+				List<Element> href = li.getAllElements("a");
+				String hrefValue = href.get(0).getAttributeValue("href");
+				String hrefTitle = href.get(0).getContent().getTextExtractor().toString();
+
+				if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1 || hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
+					ssq[0] = hrefValue;
+					ssq[1] = hrefTitle;
+					ssqList.add(ssq);
+				}
+
+			}
 		}
 		return ssqList;
 	}
