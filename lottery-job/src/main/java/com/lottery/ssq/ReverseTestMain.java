@@ -44,8 +44,8 @@ public class ReverseTestMain {
 			ISsqLotteryFetch ssqLotterySinaFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySinaFetchImpl");
 			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context.getBean("lotterySsqWebCollectService");
 			ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
-//			ssqLottery163FetchImpl.getSsqLotteryDetail("", "");
-//			ssqLotterySinaFetchImpl.getSsqLotteryDetail("", "");
+			ssqLottery163FetchImpl.getSsqLotteryDetail("", "");
+			ssqLotterySinaFetchImpl.getSsqLotteryDetail("", "");
 //			lotterySsqWebCollectService.saveSsqWebCollect();
 			// service.getCurrentExpertSingleResult();
 			// lotterySsqConifgService.initFetchConfig();

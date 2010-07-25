@@ -49,7 +49,7 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 				for (String subTitle : wt) {
 					if (detail[1].indexOf(subTitle) == -1) {
 						isMatch = false;
-						break;
+						//break;
 					}
 				}
 				if (isMatch) {

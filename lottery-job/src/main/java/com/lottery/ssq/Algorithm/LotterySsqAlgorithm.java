@@ -16,52 +16,53 @@ import com.lottery.ssq.config.LotterySsqFilterConfig;
 public class LotterySsqAlgorithm {
 	/**
 	 * 数字在指定的范围内
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param redCode
 	 * @return
 	 */
 	public static boolean isRedNumericInRange(LotterySsqFilterConfig filterConfig, String[] redCode) {
+		if(redCode==null||redCode.length!=6){
+			return false;
+		}
 		if (NumberUtils.toInt(redCode[0]) > filterConfig.getFirstMaxCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[0]) < filterConfig.getFirstMinCode()){
+		if (NumberUtils.toInt(redCode[0]) < filterConfig.getFirstMinCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[1]) > filterConfig.getSecondMaxCode()){
+		if (NumberUtils.toInt(redCode[1]) > filterConfig.getSecondMaxCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[1]) < filterConfig.getSecondMinCode()){
+		if (NumberUtils.toInt(redCode[1]) < filterConfig.getSecondMinCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[2]) > filterConfig.getThirdMaxCode()){
+		if (NumberUtils.toInt(redCode[2]) > filterConfig.getThirdMaxCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[2]) < filterConfig.getThirdMinCode()){
+		if (NumberUtils.toInt(redCode[2]) < filterConfig.getThirdMinCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[3]) > filterConfig.getFourthMaxCode()){
+		if (NumberUtils.toInt(redCode[3]) > filterConfig.getFourthMaxCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[3]) < filterConfig.getFourthMinCode()){
+		if (NumberUtils.toInt(redCode[3]) < filterConfig.getFourthMinCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[5]) < filterConfig.getLastMinCode()){
+		if (NumberUtils.toInt(redCode[5]) < filterConfig.getLastMinCode()) {
 			return false;
 		}
-		if (NumberUtils.toInt(redCode[5]) > filterConfig.getLastMaxCode()){
+		if (NumberUtils.toInt(redCode[5]) > filterConfig.getLastMaxCode()) {
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * 是否包含上一期的号码 filterConfig.getIncludePreRedNum()==0号码中不能包含一个上一期的号码 包含
-	 * 至少filterConfig.getIncludePreRedNum()个以上的号码
-	 * @param filterConfig 
+	 * 是否包含上一期的号码 filterConfig.getIncludePreRedNum()==0号码中不能包含一个上一期的号码 包含 至少filterConfig.getIncludePreRedNum()个以上的号码
 	 * 
-	 * @param lValues
-	 *            最多包含zuoduoNum个号码
+	 * @param filterConfig
+	 * @param lValues 最多包含zuoduoNum个号码
 	 * @return
 	 */
 	public static boolean isRedIncludePreRedCode(LotterySsqFilterConfig filterConfig, String[] lValues, int zuiduoNum) {
@@ -87,8 +88,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * // 必须包含其中的任意一个数字(边号) 并且不能超过2个
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -125,8 +126,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * // 至少有一个两连号 0表示不能包含连号 <0表示有无边号都可以
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -163,8 +164,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * // 胆
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -173,8 +174,7 @@ public class LotterySsqAlgorithm {
 		if (filterConfig.getMusthavered() != null && filterConfig.getMusthavered().length >= 1) {
 			for (int i = 0; i < lValues.length; i++) {
 				for (int j = 0; j < filterConfig.getMusthavered().length; j++) {
-					if (StringUtils.equals(lValues[i], ObjectUtils.toString(filterConfig.getMusthavered()[j])
-							.trim())) {
+					if (StringUtils.equals(lValues[i], ObjectUtils.toString(filterConfig.getMusthavered()[j]).trim())) {
 						tempSelect++;
 					}
 				}
@@ -188,8 +188,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * // 不能包含其中的任意一个数字
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -214,8 +214,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 在指定的一系列号码中选取6个
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -224,8 +224,7 @@ public class LotterySsqAlgorithm {
 			int tempSelect = 0;
 			for (int i = 0; i < lValues.length; i++) {
 				for (int j = 0; j < filterConfig.getSelectCode().length; j++) {
-					if (StringUtils.equals(lValues[i], ObjectUtils.toString(filterConfig.getSelectCode()[j])
-							.trim())) {
+					if (StringUtils.equals(lValues[i], ObjectUtils.toString(filterConfig.getSelectCode()[j]).trim())) {
 						tempSelect++;
 					}
 				}
@@ -239,15 +238,14 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * // 不能同时存在的号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
 	public static boolean isRedTogethorCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
 		int tempSelect = 0;
-		if (filterConfig.getCannotSelectedTogethor() != null
-				&& filterConfig.getCannotSelectedTogethor().length >= 1) {
+		if (filterConfig.getCannotSelectedTogethor() != null && filterConfig.getCannotSelectedTogethor().length >= 1) {
 			for (int j = 0; j < filterConfig.getCannotSelectedTogethor().length; j++) {
 				String[] tmp = StringUtils.split(filterConfig.getCannotSelectedTogethor()[j], ",");
 				tempSelect = 0;
@@ -268,8 +266,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 是否要求包含三连号 0表示没有,<0表示有没有都可以
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -309,8 +307,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 有几个以上差值为1的,,,, LotterySsqFilterConfig.getHaveOnediffer()=0表示没有,<0表示有没有都可以
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -356,11 +354,8 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedCoincidenceZone(LotterySsqFilterConfig filterConfig, String[] lValues, int qOne, int qTwo, int qThree) {
-		if (filterConfig.getQuOne() != -1 && filterConfig.getQuTwo() != -1
-				&& filterConfig.getQuThree() != -1
-				&& (filterConfig.getQuOne() + filterConfig.getQuTwo() + filterConfig.getQuThree()) == 6) {
-			if (qOne == filterConfig.getQuOne() && qTwo == filterConfig.getQuTwo()
-					&& qThree == filterConfig.getQuThree()) {
+		if (filterConfig.getQuOne() != -1 && filterConfig.getQuTwo() != -1 && filterConfig.getQuThree() != -1 && (filterConfig.getQuOne() + filterConfig.getQuTwo() + filterConfig.getQuThree()) == 6) {
+			if (qOne == filterConfig.getQuOne() && qTwo == filterConfig.getQuTwo() && qThree == filterConfig.getQuThree()) {
 				return true;
 			}
 		} else {
@@ -390,15 +385,14 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 最多只能中其中的一个///如：新浪推荐的号码中大于等于6的号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @param sinaRedCodeList
 	 * @return
 	 */
 	public static boolean isSelectOneCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
-		if (filterConfig.getZuiduoSelectedOneCode() == null
-				|| filterConfig.getZuiduoSelectedOneCode().length < 1) {
+		if (filterConfig.getZuiduoSelectedOneCode() == null || filterConfig.getZuiduoSelectedOneCode().length < 1) {
 			return true;
 		}
 		for (int i = 0; i < filterConfig.getZuiduoSelectedOneCode().length; i++) {
@@ -420,14 +414,13 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 至少要中其中的一个号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
 	public static boolean isLeastSelectedOneCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
-		if (filterConfig.getLeastSelectedOneCode() == null
-				|| filterConfig.getLeastSelectedOneCode().length < 1) {
+		if (filterConfig.getLeastSelectedOneCode() == null || filterConfig.getLeastSelectedOneCode().length < 1) {
 			return true;
 		}
 		for (int i = 0; i < filterConfig.getLeastSelectedOneCode().length; i++) {
@@ -451,16 +444,14 @@ public class LotterySsqAlgorithm {
 	 * 至少要中其中的两个号码
 	 * 
 	 * @param lValues
-	 * @return
-	 * 已验证
+	 * @return 已验证
 	 */
 	public static boolean isLeastSelectedTwoCode(String[] lValues, String[] redcodes) {
 		if (redcodes == null || redcodes.length < 1) {
 			return true;
 		}
-		for(String code:redcodes)
-		{
-			String[] codes=StringUtils.split(code,",");
+		for (String code : redcodes) {
+			String[] codes = StringUtils.split(code, ",");
 			int tempSelect = 0;
 			for (int k = 0; k < codes.length; k++) {
 				for (int j = 0; j < lValues.length; j++) {
@@ -478,11 +469,10 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 必须要中其中的一个号码 选且只选其中一个号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
-	 * @return
-	 * 已验证
+	 * @return 已验证
 	 */
 	public static boolean isMustSelectedOneCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
 		if (filterConfig.getMustSelectedOneCode() == null || filterConfig.getMustSelectedOneCode().length < 1) {
@@ -504,6 +494,7 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+
 	/**
 	 * 从文件中读取的号码中不能中四个以上的号码.
 	 * 
@@ -559,87 +550,94 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 必须选择其中的两个号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
 	public static boolean mustSelectedTwoRedCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
-		if (filterConfig.getMustSelectedTwoCode() == null
-				|| filterConfig.getMustSelectedTwoCode().length == 0) {
+		if (filterConfig.getMustSelectedTwoCode() == null || filterConfig.getMustSelectedTwoCode().length == 0) {
 			return true;
 		}
-		int selectedCode = 0;
-		for (int i = 0; i < lValues.length; i++) {
-			for (int j = 0; j < filterConfig.getMustSelectedTwoCode().length; j++) {
-				if (StringUtils.equals(lValues[i], filterConfig.getMustSelectedTwoCode()[j])) {
-					selectedCode++;
+		for (int j = 0; j < filterConfig.getMustSelectedTwoCode().length; j++) {
+			int selectedCode = 0;
+			String[] tmpCode = StringUtils.split(filterConfig.getMustSelectedTwoCode()[j], ",");
+			for (String code : tmpCode) {
+				for (int i = 0; i < lValues.length; i++) {
+					if (StringUtils.equals(lValues[i], code)) {
+						selectedCode++;
+					}
 				}
 			}
-
-		}
-		if (selectedCode != 2) {
-			return false;
+			if (selectedCode != 2) {
+				return false;
+			}
 		}
 		return true;
 	}
 
 	/**
 	 * 至少选择其中的两个号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
 	public static boolean leastSelectedTwoRedCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
-		if (filterConfig.getLeastSelectedTwoCode() == null
-				|| filterConfig.getLeastSelectedTwoCode().length == 0) {
+		if (filterConfig.getLeastSelectedTwoCode() == null || filterConfig.getLeastSelectedTwoCode().length == 0) {
 			return true;
 		}
-		int selectedCode = 0;
-		for (int i = 0; i < lValues.length; i++) {
-			for (int j = 0; j < filterConfig.getLeastSelectedTwoCode().length; j++) {
-				if (StringUtils.equals(lValues[i], filterConfig.getLeastSelectedTwoCode()[j])) {
-					selectedCode++;
+		for (int j = 0; j < filterConfig.getLeastSelectedTwoCode().length; j++) {
+			int selectedCode = 0;
+			String[] tmpTwoCode = StringUtils.split(filterConfig.getLeastSelectedTwoCode()[j], ",");
+			for (String code : tmpTwoCode) {
+				for (int i = 0; i < lValues.length; i++) {
+					if (StringUtils.equals(lValues[i], code)) {
+						selectedCode++;
+					}
 				}
 			}
+			if (selectedCode < 2) {
+				return false;
+			}
 		}
-		if (selectedCode < 2) {
-			return false;
-		}
+
 		return true;
 	}
 
 	/**
 	 * 至少选中其中三个号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
 	public static boolean leastSelectedThreeRedCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
-		if (filterConfig.getLeastSelectedThreeCode() == null
-				|| filterConfig.getLeastSelectedThreeCode().length == 0) {
+		if (filterConfig.getLeastSelectedThreeCode() == null || filterConfig.getLeastSelectedThreeCode().length == 0) {
 			return true;
 		}
-		int selectedCode = 0;
-		for (int i = 0; i < lValues.length; i++) {
-			for (int j = 0; j < filterConfig.getLeastSelectedThreeCode().length; j++) {
-				if (StringUtils.equals(lValues[i], filterConfig.getLeastSelectedThreeCode()[j])) {
-					selectedCode++;
+		for (int j = 0; j < filterConfig.getLeastSelectedThreeCode().length; j++) {
+			int selectedCode = 0;
+			String[] tmpCode = StringUtils.split(filterConfig.getLeastSelectedThreeCode()[j], ",");
+			for (String code : tmpCode) {
+				for (int i = 0; i < lValues.length; i++) {
+					if (StringUtils.equals(lValues[i], code)) {
+						selectedCode++;
+					}
 				}
 			}
+			if (selectedCode < 2) {
+				return false;
+			}
 		}
-		if (selectedCode < 2) {
-			return false;
-		}
+
 		return true;
 	}
 
 	/**
 	 * 三个尾数相同的号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -666,8 +664,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 三个以上包含三个2倍数的号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -698,8 +696,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 三个以上包含三个3倍数的号码
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -730,8 +728,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 连续4个奇数或偶数
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -768,8 +766,8 @@ public class LotterySsqAlgorithm {
 
 	/**
 	 * 5个以上的奇数或偶数包括5个
-	 * @param filterConfig 
 	 * 
+	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
@@ -799,9 +797,10 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+
 	/**
-	 * 最原始的号码过滤方法,
-	 * 一个区不能有超过4个的号码 不能有>4的连号 不能有3个三连号 不能同时存在三个差值为1或2的 如果号码分布在三个区， 那么三个区的号码差值不能相同 TODO 六个数之间的5差值不能相等有<=4个差值以上
+	 * 最原始的号码过滤方法, 一个区不能有超过4个的号码 不能有>4的连号 不能有3个三连号 不能同时存在三个差值为1或2的 如果号码分布在三个区， 那么三个区的号码差值不能相同 TODO 六个数之间的5差值不能相等有<=4个差值以上
+	 * 
 	 * @param redCode
 	 * @return
 	 */
@@ -924,13 +923,14 @@ public class LotterySsqAlgorithm {
 		}
 		return redCode;
 	}
+
 	/**
 	 * @param redCode
 	 * @return
 	 */
 	public static String filterFromCollectRedCode(String redCode) {
 		String[] codeSix = redCode.split(",");
-		
+
 		int qOne = 0;
 		int qTwo = 0;
 		int qThree = 0;
@@ -945,13 +945,13 @@ public class LotterySsqAlgorithm {
 				qThree++;
 			}
 		}
-		
-//		if (qOne == 0 || qTwo == 0 || qThree == 0) {
-//			return null;
-//		}
-//		if (qOne >= 4 || qTwo >= 4 || qThree >= 4) {
-//			return null;
-//		}
+
+		// if (qOne == 0 || qTwo == 0 || qThree == 0) {
+		// return null;
+		// }
+		// if (qOne >= 4 || qTwo >= 4 || qThree >= 4) {
+		// return null;
+		// }
 		boolean isReturn = false;
 		int lhCode = 0;
 		int one = NumberUtils.toInt(codeSix[0]);
@@ -960,7 +960,7 @@ public class LotterySsqAlgorithm {
 		int four = NumberUtils.toInt(codeSix[3]);
 		int five = NumberUtils.toInt(codeSix[4]);
 		int six = NumberUtils.toInt(codeSix[5]);
-		
+
 		if (two - one == 1) {
 			lhCode++;
 		}

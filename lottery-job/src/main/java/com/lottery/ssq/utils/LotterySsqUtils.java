@@ -254,6 +254,7 @@ public class LotterySsqUtils {
 		code = StringUtils.replace(code, "；", ",");
 		code = StringUtils.replace(code, ", ", ",");
 		code = StringUtils.replace(code, " ", ",");
+		code = StringUtils.replace(code, "\\", ",");
 		String[] codes = StringUtils.split(code, "+");
 		String[] redcodes = StringUtils.split(codes[0], ",");
 		for (int i = 0; i < redcodes.length; i++) {

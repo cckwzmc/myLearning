@@ -52,7 +52,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 				for (String subTitle : wt) {
 					if (detail[1].indexOf(subTitle) == -1) {
 						isMatch = false;
-						break;
+						//break;
 					}
 				}
 				if ("117".equals(ObjectUtils.toString(map.get("id"))) && isMatch) {

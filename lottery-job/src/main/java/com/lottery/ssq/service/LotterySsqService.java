@@ -125,11 +125,12 @@ public class LotterySsqService {
 					continue;
 				}
 				boolean isContinue = true;
+				String tmpName="";
 				for (int i = 0; i < methodList.size(); i++) {
 					Map methodMap = (Map) methodList.get(i);
 					String methodName = (String) methodMap.get("method_name");
 					String arg = ObjectUtils.toString(methodMap.get("args1"));
-//					logger.info("methodName======="+methodName);
+					tmpName=methodName;
 					if (!LotterySsqFilterUtils.standardFilterMethod(filterConfig,methodName, arg, lValues)) {
 						isContinue = false;
 						break;
@@ -148,6 +149,7 @@ public class LotterySsqService {
 					}
 				}
 				if (!isContinue) {
+					logger.info("============================="+tmpName);
 					continue;
 				}
 				if (filterConfig.getCustomerLeCount3RedList() == 1) {
@@ -474,13 +476,16 @@ public class LotterySsqService {
 			start = false;
 			list = this.dao.getSsqLotteryCollectResultCountLe2(last, page);
 //			Map map=new HashMap();
-//			map.put("value", "02,03,09,24,26,27");
+//			map.put("value", "01,08,12,13,24,27");
 //			list.add(map);
 			last += page;
 			logger.info("已经计算从抓取号码中生产过滤号码" + last + "个号码了");
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map lValue = (Map) iterator.next();
 				String[] lValues = StringUtils.split(ObjectUtils.toString(lValue.get("value")), ",");
+				if(lValues==null||lValues.length!=6){
+					continue;
+				}
 				int qOne = 0;
 				int qTwo = 0;
 				int qThree = 0;
@@ -493,9 +498,11 @@ public class LotterySsqService {
 					continue;
 				}
 				boolean isContinue = true;
+				String tmpName="";
 				for (int i = 0; i < methodList.size(); i++) {
 					Map methodMap = (Map) methodList.get(i);
 					String methodName = (String) methodMap.get("method_name");
+					tmpName=methodName;
 					String arg = ObjectUtils.toString(methodMap.get("args1"));
 					if (!LotterySsqFilterUtils.standardFilterMethod(filterConfig,methodName, arg, lValues)) {
 						isContinue = false;
@@ -515,6 +522,7 @@ public class LotterySsqService {
 					}
 				}
 				if (!isContinue) {
+					//logger.info("============================="+tmpName);
 					continue;
 				}
 				for (int i = 0; i < lValues.length; i++) {

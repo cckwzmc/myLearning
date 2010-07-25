@@ -285,7 +285,7 @@ public class LotterySsqFilterUtils {
 		// continue;
 		// }
 		// 用户投注的胆
-		if ("isSinaDanTogethorFilter".equals(methodName)) {
+		if ("isCustomerDanFilter".equals(methodName)) {
 			if (!LotterySsqCollectResultAlgorithm.isCustomerDanFilter(lValues, customerDanList, NumberUtils
 					.toInt(args[0]))) {
 				return false;
