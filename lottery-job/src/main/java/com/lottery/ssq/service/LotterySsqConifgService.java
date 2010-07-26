@@ -317,6 +317,9 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "isSinaRedCodeNodeSelected")) {
 				config.setIsSinaRedCodeNodeSelected(NumberUtils.toInt(cfgValue));
 			}
+			if (StringUtils.equals(cfgName, "isUseLastFilter")) {
+				config.setIsUseLastFilter(NumberUtils.toInt(cfgValue));
+			}
 		}
 		return config;
 	}

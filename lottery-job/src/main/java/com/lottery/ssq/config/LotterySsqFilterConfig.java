@@ -77,6 +77,15 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	private int selectedSeriCodeOrDiffCode;
 	private int selectedPreCodeOrDiffCode;
 	private int isSinaRedCodeNodeSelected;
+	public int isUseLastFilter;
+
+	public int getIsUseLastFilter() {
+		return isUseLastFilter;
+	}
+
+	public void setIsUseLastFilter(int isUseLastFilter) {
+		this.isUseLastFilter = isUseLastFilter;
+	}
 
 	public int getIsSinaRedCodeNodeSelected() {
 		return isSinaRedCodeNodeSelected;

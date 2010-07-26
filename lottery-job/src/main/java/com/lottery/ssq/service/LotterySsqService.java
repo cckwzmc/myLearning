@@ -30,17 +30,18 @@ public class LotterySsqService {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LotterySsqService.class);
 	private LotteryDao dao = null;
 	private boolean isSaveToDatabase = true;
+	private LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
+	private LotterySsqFileService lotterySsqFileService = null;
+	
+	
+	private List customerGtCount5RedList = new ArrayList();
+	private List customerLeCount3RedList = new ArrayList();
 	private  List<String> customerDanList = new ArrayList<String>();
 	private  List<String> sinaDanList = new ArrayList<String>();
 	private List<String[]> sinaRedCodeList = new ArrayList<String[]>();
 	private Set<String[]> wan500RedCodeList = new HashSet<String[]>();
 	private List<String> customerMaxSelected = new ArrayList<String>();
 	private List methodList = new ArrayList();
-	private LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
-	private LotterySsqFileService lotterySsqFileService = null;
-	private List customerGtCount5RedList = new ArrayList();
-	private List customerLeCount3RedList = new ArrayList();
-
 	public void setLotterySsqMediaSinaService(LotterySsqMediaSinaService lotterySsqMediaSinaService) {
 		this.lotterySsqMediaSinaService = lotterySsqMediaSinaService;
 	}
@@ -68,6 +69,8 @@ public class LotterySsqService {
 	 * @param redCodeList
 	 */
 	private void initFilterMediaRedCode() {
+		wan500RedCodeList.clear();
+		sinaRedCodeList.clear();
 		List wanList = this.dao.getSsqLotteryCollectFetchByType("3");
 		List sinaList = this.dao.getSsqLotteryCollectFetchByType("4");
 		if (CollectionUtils.isNotEmpty(wanList)) {
@@ -199,6 +202,8 @@ public class LotterySsqService {
 	 * @param filterConfig 
 	 */
 	private void initFilterCustomerCode(LotterySsqFilterConfig filterConfig) {
+		customerGtCount5RedList.clear();
+		customerLeCount3RedList.clear();
 		if (filterConfig.getCustomerGtCount5RedList() == 1) {
 			customerGtCount5RedList = this.dao.getSsqLotteryCollectResultCountLessThan5();
 		}
@@ -223,6 +228,7 @@ public class LotterySsqService {
 	 * 动态过滤方法的加载
 	 */
 	private void initFilterDynamicMethod() {
+		methodList.clear();
 		methodList = this.dao.getSsqLotteryDynamicFilterMethod();
 	}
 
@@ -230,6 +236,7 @@ public class LotterySsqService {
 	 * 用户投注--投注号码的总统计（不分号码位置）
 	 */
 	private void initFilterCustomerSingleRedCodeStat() {
+		customerMaxSelected.clear();
 		List selectedList = this.dao.getSsqLotteryFetchResultSort();
 		for (Iterator iterator = selectedList.iterator(); iterator.hasNext();) {
 			Map map = (Map) iterator.next();
@@ -242,6 +249,8 @@ public class LotterySsqService {
 	 */
 
 	private void initFilterDanRedCode() {
+		sinaDanList.clear();
+		customerDanList.clear();
 		List list = this.dao.getSsqLotteryDanResult("0");
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Map obj = (Map) iterator.next();
@@ -479,6 +488,7 @@ public class LotterySsqService {
 //			map.put("value", "01,08,12,13,24,27");
 //			list.add(map);
 			last += page;
+			
 			logger.info("已经计算从抓取号码中生产过滤号码" + last + "个号码了");
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map lValue = (Map) iterator.next();
@@ -540,6 +550,9 @@ public class LotterySsqService {
 					redList.add(ObjectUtils.toString(lValue.get("value")));
 				}
 			}
+		}
+		if(filterConfig.getIsUseLastFilter()==1){
+			
 		}
 		String f = System.currentTimeMillis() + "_" + LotterySsqConfig.expect + "_"+redList.size()+".txt";
 		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/" + f;
