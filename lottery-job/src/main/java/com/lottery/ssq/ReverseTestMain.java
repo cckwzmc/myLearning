@@ -1,7 +1,17 @@
 package com.lottery.ssq;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -42,11 +52,16 @@ public class ReverseTestMain {
 			ISsqLotteryFetch ssqLotterySohuFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySohuFetchImpl");
 			ISsqLotteryFetch ssqLottery163FetchImpl = (ISsqLotteryFetch) context.getBean("ssqLottery163FetchImpl");
 			ISsqLotteryFetch ssqLotterySinaFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySinaFetchImpl");
-			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context.getBean("lotterySsqWebCollectService");
-			ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
-			ssqLottery163FetchImpl.getSsqLotteryDetail("", "");
-			ssqLotterySinaFetchImpl.getSsqLotteryDetail("", "");
-//			lotterySsqWebCollectService.saveSsqWebCollect();
+			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context
+					.getBean("lotterySsqWebCollectService");
+			Set<String> codes = getCodeFromFile();
+			if (CollectionUtils.isNotEmpty(codes)) {
+				service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(), codes);
+			}
+			// ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
+			// ssqLottery163FetchImpl.getSsqLotteryDetail("", "");
+			// ssqLotterySinaFetchImpl.getSsqLotteryDetail("", "");
+			// lotterySsqWebCollectService.saveSsqWebCollect();
 			// service.getCurrentExpertSingleResult();
 			// lotterySsqConifgService.initFetchConfig();
 			// lotterySsqConifgService.initFilterConfig();
@@ -209,12 +224,38 @@ public class ReverseTestMain {
 				}
 			}
 			logger.info("开始生成投注号码...。。。。。。。。。。。。..");
-//			service.getCurrentExpertSingleResult();
+			// service.getCurrentExpertSingleResult();
 			// service.filterCurrentRedCodeFromFile();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private static Set<String> getCodeFromFile() {
+		Set<String> list = new LinkedHashSet<String>();
+		String fileName = "D:/ttcode.txt";
+		try {
+			File file = new File(fileName);
+			FileReader read = new FileReader(file);
+			BufferedReader br = new BufferedReader(read);
+			boolean start = true;
+			String line = "abc";
+			while (StringUtils.isNotBlank(line)) {
+				line = br.readLine();
+				if (StringUtils.isNotBlank(line)) {
+					list.add(line);
+				}
+			}
+			read.close();
+		} catch (FileNotFoundException e) {
+			logger.error(fileName + "没有找到..............");
+		} catch (UnsupportedEncodingException e) {
+			logger.error(fileName + "编码有问题..............");
+		} catch (IOException e) {
+			logger.error(fileName + "+++++" + e.getMessage() + "..............");
+		}
+		return list;
 	}
 }
 // class TimeScanner extends Thread{
