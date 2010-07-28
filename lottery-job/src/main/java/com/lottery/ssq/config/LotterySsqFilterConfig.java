@@ -78,6 +78,9 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	private int selectedPreCodeOrDiffCode;
 	private int isSinaRedCodeNodeSelected;
 	public int isUseLastFilter;
+	private int threeQuNum;
+	private int twoQuNum;
+	private int oneQuNum;
 
 	public int getIsUseLastFilter() {
 		return isUseLastFilter;
@@ -437,6 +440,30 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 
 	public int getSelectedPreCodeOrDiffCode() {
 		return this.selectedPreCodeOrDiffCode;
+	}
+
+	public int getThreeQuNum() {
+		return threeQuNum;
+	}
+
+	public void setThreeQuNum(int threeQuNum) {
+		this.threeQuNum = threeQuNum;
+	}
+
+	public int getTwoQuNum() {
+		return twoQuNum;
+	}
+
+	public void setTwoQuNum(int twoQuNum) {
+		this.twoQuNum = twoQuNum;
+	}
+
+	public int getOneQuNum() {
+		return oneQuNum;
+	}
+
+	public void setOneQuNum(int oneQuNum) {
+		this.oneQuNum = oneQuNum;
 	}
 
 }

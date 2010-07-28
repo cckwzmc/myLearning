@@ -317,8 +317,18 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "isSinaRedCodeNodeSelected")) {
 				config.setIsSinaRedCodeNodeSelected(NumberUtils.toInt(cfgValue));
 			}
+			//是否使用从过滤号码中再过滤
 			if (StringUtils.equals(cfgName, "isUseLastFilter")) {
 				config.setIsUseLastFilter(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "oneQuNum")) {
+				config.setOneQuNum(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "twoQuNum")) {
+				config.setTwoQuNum(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "threeQuNum")) {
+				config.setThreeQuNum(NumberUtils.toInt(cfgValue));
 			}
 		}
 		return config;

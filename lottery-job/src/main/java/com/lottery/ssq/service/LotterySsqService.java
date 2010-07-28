@@ -174,7 +174,11 @@ public class LotterySsqService {
 						continue;
 					}
 				}
-
+				if(filterConfig.getOneQuNum()>0||filterConfig.getTwoQuNum()>0||filterConfig.getThreeQuNum()>0){
+					if(!LotterySsqAlgorithm.isQuNum(filterConfig, lValues)){
+						continue;
+					}
+				}
 				for (int i = 0; i < lValues.length; i++) {
 					if (filterConfig.getQuOne() != -1 && NumberUtils.toInt(lValues[i]) <= filterConfig.getQuOneNum()) {
 						qOne++;
@@ -194,10 +198,10 @@ public class LotterySsqService {
 			}
 		}
 		String f = System.currentTimeMillis() + "_" + LotterySsqConfig.expect + "_" + redList.size() + ".txt";
-		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/" + f;
+		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/txt/" + f;
 		writeFile(redList, rsFileName, false);
 		String lotteryHtml = "D:/Apache2.2/htdocs/lottery_rs/index_" + LotterySsqConfig.expect + ".htm";
-		String tmp = "<li><a href='" + f + "'>" + f + "</a></li>";
+		String tmp = "<li><a href='txt/" + f + "'>" + f + "</a></li>";
 		writeFile(tmp, lotteryHtml, true);
 	}
 
@@ -566,6 +570,11 @@ public class LotterySsqService {
 					// logger.info("============================="+tmpName);
 					continue;
 				}
+				if(filterConfig.getOneQuNum()>0||filterConfig.getTwoQuNum()>0||filterConfig.getThreeQuNum()>0){
+					if(!LotterySsqAlgorithm.isQuNum(filterConfig, lValues)){
+						continue;
+					}
+				}
 				for (int i = 0; i < lValues.length; i++) {
 					if (filterConfig.getQuOne() != -1 && NumberUtils.toInt(lValues[i]) <= filterConfig.getQuOneNum()) {
 						qOne++;
@@ -587,10 +596,10 @@ public class LotterySsqService {
 
 		}
 		String f = System.currentTimeMillis() + "_" + LotterySsqConfig.expect + "_" + redList.size() + ".txt";
-		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/" + f;
+		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/txt/" + f;
 		writeFile(redList, rsFileName, false);
 		String lotteryHtml = "D:/Apache2.2/htdocs/lottery_rs/index_" + LotterySsqConfig.expect + ".htm";
-		String tmp = "<li><a href='" + f + "'>" + f + "</a></li>";
+		String tmp = "<li><a href='txt/" + f + "'>" + f + "</a></li>";
 		writeFile(tmp, lotteryHtml, true);
 
 	}
@@ -617,7 +626,7 @@ public class LotterySsqService {
 		logger.info("开始从抓取号码中生产过滤号码.............");
 		List<String> list = new ArrayList<String>();
 		list.addAll(codes);
-		while (CollectionUtils.isNotEmpty(list)) {
+		if (CollectionUtils.isNotEmpty(list)) {
 
 			logger.info("已经计算从抓取号码中生产过滤号码" + list.size() + "个号码了");
 			for (String tmpCode : list) {
@@ -667,6 +676,11 @@ public class LotterySsqService {
 					// logger.info("============================="+tmpName);
 					continue;
 				}
+				if(filterConfig.getOneQuNum()>0||filterConfig.getTwoQuNum()>0||filterConfig.getThreeQuNum()>0){
+					if(!LotterySsqAlgorithm.isQuNum(filterConfig, lValues)){
+						continue;
+					}
+				}
 				for (int i = 0; i < lValues.length; i++) {
 					if (filterConfig.getQuOne() != -1 && NumberUtils.toInt(lValues[i]) <= filterConfig.getQuOneNum()) {
 						qOne++;
@@ -683,16 +697,12 @@ public class LotterySsqService {
 					redList.add(tmpCode);
 				}
 			}
-			list.clear();
-		}
-		if (filterConfig.getIsUseLastFilter() == 1) {
-
 		}
 		String f = System.currentTimeMillis() + "_" + LotterySsqConfig.expect + "_" + redList.size() + ".txt";
-		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/" + f;
+		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/txt/" + f;
 		writeFile(redList, rsFileName, false);
 		String lotteryHtml = "D:/Apache2.2/htdocs/lottery_rs/index_" + LotterySsqConfig.expect + ".htm";
-		String tmp = "<li><a href='" + f + "'>" + f + "</a></li>";
+		String tmp = "<li><a href='txt/" + f + "'>" + f + "</a></li>";
 		writeFile(tmp, lotteryHtml, true);
 
 	}

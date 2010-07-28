@@ -57,7 +57,47 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+	/**
+	 * 一区的最多个数不能超过<num个
+	 * <p/>
+	 * 二区的最多个数不能超过<num个
+	 * <p/>
+	 * 三区的最多个数不能超过<num个
+	 * @return
+	 */
+	public static boolean isQuNum(LotterySsqFilterConfig filterConfig, String[] lValues){
 
+		int qOne = 0;
+		int qTwo = 0;
+		int qThree = 0;
+		for (int i = 0; i < lValues.length; i++) {
+			if (NumberUtils.toInt(lValues[i]) <= 11) {
+				qOne++;
+			}
+			if (NumberUtils.toInt(lValues[i]) > 11 && NumberUtils.toInt(lValues[i]) <= 22) {
+				qTwo++;
+			}
+			if (NumberUtils.toInt(lValues[i]) > 22 && NumberUtils.toInt(lValues[i]) <= 33) {
+				qThree++;
+			}
+		}
+		if(filterConfig.getOneQuNum()>0){
+			if(qOne>=filterConfig.getOneQuNum()){
+				return false;
+			}
+		}
+		if(filterConfig.getTwoQuNum()>0){
+			if(qTwo>=filterConfig.getTwoQuNum()){
+				return false;
+			}
+		}
+		if(filterConfig.getThreeQuNum()>0){
+			if(qThree>=filterConfig.getThreeQuNum()){
+				return false;
+			}
+		}
+		return true;
+	}
 	/**
 	 * 是否包含上一期的号码 filterConfig.getIncludePreRedNum()==0号码中不能包含一个上一期的号码 包含 至少filterConfig.getIncludePreRedNum()个以上的号码
 	 * 
