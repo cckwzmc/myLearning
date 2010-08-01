@@ -56,8 +56,13 @@ public class LotteryDao extends JdbcBaseDao {
 
 	@SuppressWarnings("unchecked")
 	public List getSsqLottoryFilterResultLimit(int first, int page) {
-		String sql = "select value from ssq_lottery_filter_result t limit " + first + "," + page;
+		String sql = "select id,value from ssq_lottery_filter_result t order by id limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql);
+	}
+	@SuppressWarnings("unchecked")
+	public List getSsqLottoryFilterResultLimit(int first, int page,String value) {
+		String sql = "select value from ssq_lottery_filter_result t where t.value=? order by id limit " + first + "," + page;
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{value});
 	}
 
 	public void addSsqLotteryFilterResult(String redCode) {
@@ -411,14 +416,13 @@ public class LotteryDao extends JdbcBaseDao {
 
 	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectFetchLimit(int first, int page, String net) {
-		String sql = "select id,code from ssq_lottery_collect_fetch t where t.net=? and code!='-1'  limit " + first
-				+ "," + page;
+		String sql = "select id,code from ssq_lottery_collect_fetch t where t.net=? and code!='-1' ";
 		return this.getJdbcTemplate().queryForList(sql, new Object[] { net });
 	}
 
 	@SuppressWarnings("unchecked")
 	public List getSsqLotteryCollectResultLimit(int first, int page) {
-		String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result t  limit " + first
+		String sql = "select first,second,third,fourth,firth,sixth from ssq_lottery_collect_result t order by id  limit " + first
 				+ "," + page;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
@@ -528,12 +532,13 @@ public class LotteryDao extends JdbcBaseDao {
 			return;
 		}
 		BatchPreparedStatementSetter pps = null;
-		String sql = "insert into ssq_lottery_filter_result(value) values (?)";
+		String sql = "insert into ssq_lottery_filter_result(id,value) values (?,?)";
 		pps = new BatchPreparedStatementSetter() {
 
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				ps.setObject(1, ((Map) list.get(i)).get("value"));
+				ps.setObject(1, ((Map) list.get(i)).get("id"));
+				ps.setObject(2, ((Map) list.get(i)).get("value"));
 			}
 
 			@Override
@@ -704,6 +709,16 @@ public class LotteryDao extends JdbcBaseDao {
 		String sql = " select * from (select value,count(*) c from "
 				+ "(select CONCAT_ws(',',s.first,s.second,s.third,s.fourth,firth,sixth) value from ssq_lottery_collect_result s ) t"
 				+ "  group by t.value) t  where c<=2 order by c limit " + first + "," + last;
+		return this.getJdbcTemplate().queryForList(sql);
+	}
+
+	public List getLotteryHisCode(String from, String to) {
+		String sql="select * from  ssq_lottery_his_open_code t where t.expect>='"+from+"' and t.expect<='"+to+"' order by t.expect desc";
+		return this.getJdbcTemplate().queryForList(sql);
+	}
+
+	public List getLotteryHisCode(int limit) {
+		String sql="select * from  ssq_lottery_his_open_code t order by t.expect desc limit 0,"+limit;
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 }

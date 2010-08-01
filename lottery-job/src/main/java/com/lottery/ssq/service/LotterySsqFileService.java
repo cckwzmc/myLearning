@@ -386,9 +386,9 @@ public class LotterySsqFileService extends Thread {
 	@SuppressWarnings("unchecked")
 	public void saveFileProjectRedCode() {
 		List<String[]> resultList = new ArrayList<String[]>();
-		int last = 0;
-		int page = 200;
-		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "2");
+//		int last = 0;
+//		int page = 200;
+		List list = this.dao.getSsqLotteryCollectFetchLimit(0, 0, "2");
 		Map<String, Integer> blueMap = new HashMap<String, Integer>();
 		blueMap.put("01", 0);
 		blueMap.put("02", 0);
@@ -406,7 +406,7 @@ public class LotterySsqFileService extends Thread {
 		blueMap.put("14", 0);
 		blueMap.put("15", 0);
 		blueMap.put("16", 0);
-		while (CollectionUtils.isNotEmpty(list)) {
+		if (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
@@ -445,8 +445,8 @@ public class LotterySsqFileService extends Thread {
 					resultList.clear();
 				}
 			}
-			last += page;
-			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "2");
+//			last += page;
+//			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "2");
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);

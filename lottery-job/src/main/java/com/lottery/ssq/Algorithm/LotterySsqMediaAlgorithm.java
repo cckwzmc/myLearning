@@ -69,6 +69,9 @@ public class LotterySsqMediaAlgorithm {
 			for (int j = 0; j < sinaDanList.size(); j++) {
 				int tempSelect = 0;
 				String[] tmp = StringUtils.split(ObjectUtils.toString(sinaDanList.get(j)), ",");
+				if(tmp.length<2){
+					continue;
+				}
 				for (int k = 0; k < tmp.length; k++) {
 					for (int i = 0; i < lValues.length; i++) {
 						if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
@@ -555,5 +558,33 @@ public class LotterySsqMediaAlgorithm {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * 从网站收集的红球不能中4各号码以上 .
+	 * @param lValues
+	 * @param webRedCodeList
+	 * @return
+	 */
+	public static boolean isFilterWebFourCode(String[] lValues, Set<String> webRedCodeList) {
+		if(CollectionUtils.isEmpty(webRedCodeList)){
+			return true;
+		}
+		for(String redCode:webRedCodeList){
+			int selected=0;
+			String[] redCodes=StringUtils.split(redCode,",");
+			for(String code:redCodes)
+			{
+				for(String value:lValues){
+					if(StringUtils.equals(code, value)){
+						selected++;
+					}
+				}
+			}
+			if(selected>4){
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -303,6 +303,34 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+	/**
+	 * // 不能同时存在的号码
+	 * 
+	 * @param filterConfig
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isRedTogethorCode(String[] lValues,List<String> list) {
+		if(CollectionUtils.isEmpty(list)){
+			return true;
+		}
+		int tempSelect = 0;
+		for (String redcode:list) {
+			String[] tmp = StringUtils.split(redcode, ",");
+			tempSelect = 0;
+			for (int k = 0; k < tmp.length; k++) {
+				for (int i = 0; i < lValues.length; i++) {
+					if (StringUtils.equals(lValues[i], ObjectUtils.toString(tmp[k]).trim())) {
+						tempSelect++;
+					}
+				}
+			}
+			if (tmp.length == tempSelect) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * 是否要求包含三连号 0表示没有,<0表示有没有都可以

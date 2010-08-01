@@ -33,6 +33,12 @@ public class LotteryInitService {
 	LotteryDao dao = null;
 	LotterySsqMedia500WanService lotterySsqMedia500WanService = null;
 	LotterySsqMediaSinaService lotterySsqMediaSinaService = null;
+	private LotterySsqConifgService lotterySsqConifgService=null;
+	
+	public void setLotterySsqConifgService(LotterySsqConifgService lotterySsqConifgService) {
+		this.lotterySsqConifgService = lotterySsqConifgService;
+	}
+
 	private String filterResult = "";
 
 	public void setLotterySsqMediaSinaService(LotterySsqMediaSinaService lotterySsqMediaSinaService) {
@@ -163,7 +169,7 @@ public class LotteryInitService {
 	 */
 	@SuppressWarnings("unchecked")
 	public void initHistoryOpenCode() {
-		new LotterySsqConifgService();
+		//new LotterySsqConifgService();
 		String xmlData = HttpHtmlService.getXmlContent(LotterySsqFetchConfig.media500WanUrl);
 		if (StringUtils.isBlank(xmlData)) {
 			return;
@@ -519,4 +525,91 @@ public class LotteryInitService {
 			resultList.clear();
 		}
 	}
+	/**
+	 * 号码在历史10期号码中的重复情况.
+	 */
+	@SuppressWarnings("unchecked")
+	public void testHistoryRedCode(){
+		List list=this.dao.getLotteryHisCode("10001","10087");
+		List tmpList=list;
+		int selectedZero1=50;
+		int selectedOne1=50;
+		int selectedTwo1=50;
+		int selectedThree1=50;
+		int selectedFour1=50;
+		int selectedFive1=50;
+		int kkkkkkkkkk=11;
+		if(CollectionUtils.isNotEmpty(list)){
+			for(int i=0;i<list.size();i++){
+				Map map=(Map) list.get(i);
+				String[] redCodes=StringUtils.split(ObjectUtils.toString(map.get("redcode")),",");
+				int selectedZero=0;
+				int selectedOne=0;
+				int selectedTwo=0;
+				int selectedThree=0;
+				int selectedFour=0;
+				int selectedFive=0;
+				boolean flag=false;
+				int count=0;
+				
+				for(int j=i+2;j<tmpList.size()&&j<=i+kkkkkkkkkk;j++){
+					count++;
+					if(count>=kkkkkkkkkk){
+						flag=true;
+					}
+					Map tmpMap=(Map) tmpList.get(j);
+					String[] tmpRedCodes=StringUtils.split(ObjectUtils.toString(tmpMap.get("redcode")),",");
+					int selected=0;
+					for(String redCode:redCodes){
+						for(String tmpRedCode:tmpRedCodes){
+							if(StringUtils.equals(redCode, tmpRedCode)){
+								selected++;
+							}
+						}
+					}
+					if(selected==0){
+						selectedZero++;
+					}
+					if(selected==1){
+						selectedOne++;
+					}
+					if(selected==2){
+						selectedTwo++;
+					}
+					if(selected==3){
+						selectedThree++;
+					}
+					if(selected==4){
+						selectedFour++;
+					}
+					if(selected==5){
+						selectedFive++;
+					}
+					//logger.info("第"+ObjectUtils.toString(map.get("expect"))+"期在"+ObjectUtils.toString(tmpMap.get("expect"))+"期中"+selected+"个号码。。。。。。。。。。。");
+				}
+				logger.info("\n"+"中0个" +selectedZero+"\t中1个"+selectedOne+"\t中2个"+selectedTwo+"\t中3个"+selectedThree+"\t中4个"+selectedFour+"\t中5个"+selectedFive);
+				if(flag){
+				if(selectedZero<selectedZero1){
+					selectedZero1=selectedZero;
+				}
+				if(selectedOne<selectedOne1){
+					selectedOne1=selectedOne;
+				}
+				if(selectedTwo<selectedTwo1){
+					selectedTwo1=selectedTwo;
+				}
+				if(selectedThree<selectedThree1){
+					selectedThree1=selectedThree;
+				}
+				if(selectedFour<selectedFour1){
+					selectedFour1=selectedFour;
+				}
+				if(selectedFive<selectedFive1){
+					selectedFive1=selectedFive;
+				}}
+			}
+		}
+		logger.info("总统计:::::\n"+"中0个" +selectedZero1+"\t中1个"+selectedOne1+"\t中2个"+selectedTwo1+"\t中3个"+selectedThree1+"\t中4个"+selectedFour1+"\t中5个"+selectedFive1);
+	}
+	
 }

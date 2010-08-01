@@ -148,9 +148,9 @@ public class LotterySsqCustomerDyjService extends Thread {
 	@SuppressWarnings("unchecked")
 	public void saveDyjProjectRedCode() {
 		List<String[]> resultList = new ArrayList<String[]>();
-		int last = 0;
-		int page = 200;
-		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
+//		int last = 0;
+//		int page = 200;
+		List list = this.dao.getSsqLotteryCollectFetchLimit(0, 0, "1");
 		Map<String, Integer> blueMap = new HashMap<String, Integer>();
 		blueMap.put("01", 0);
 		blueMap.put("02", 0);
@@ -168,7 +168,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		blueMap.put("14", 0);
 		blueMap.put("15", 0);
 		blueMap.put("16", 0);
-		while (CollectionUtils.isNotEmpty(list)) {
+		if (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String code = ObjectUtils.toString(map.get("code"));
@@ -204,8 +204,8 @@ public class LotterySsqCustomerDyjService extends Thread {
 					}
 				}
 			}
-			last += page;
-			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
+//			last += page;
+//			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);

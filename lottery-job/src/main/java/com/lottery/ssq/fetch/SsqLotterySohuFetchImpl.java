@@ -26,7 +26,7 @@ import com.lottery.util.html.HttpHtmlService;
 public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 
 	private static final Logger logger = LoggerFactory.getLogger(SsqLotterySohuFetchImpl.class);
-	final String[] URLSOHU = { "http://sports.sohu.com/s2005/1284/s227150850.shtml", "http://sports.sohu.com/s2005/1284/s227150850_184.shtml" };
+	final String[] URLSOHU = { "http://sports.sohu.com/s2005/1284/s227150850.shtml", "http://sports.sohu.com/s2005/1284/s227150850_192.shtml" };
 	private LotteryFetchDao lotteryFetchDao = null;
 	// "双色球|各媒体|工作室"; id=117特殊处理
 	private boolean isSepTitle = false;
@@ -196,6 +196,9 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 		for (Element el : content02) {
 			List<Element> para2 = el.getAllElementsByClass("para2");
 			if (CollectionUtils.isEmpty(para2)) {
+				para2 = el.getAllElementsByClass("para1");
+			}
+			if (CollectionUtils.isEmpty(para2)) {
 				continue;
 			}
 			Element para2El = para2.get(0);
@@ -220,7 +223,18 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 					} else if (StringUtils.indexOf(code, "蓝球") > -1) {
 
 					} else if (StringUtils.indexOf(code, "红胆") > -1) {
-
+						code = StringUtils.replace(code, "红球", "");
+						code = StringUtils.replace(code, "红胆", "");
+						code = StringUtils.replace(code, ":", "");
+						code = StringUtils.replace(code, "：", "");
+						code = StringUtils.replace(code, "┃,", "");
+						code = StringUtils.replace(code, "&nbsp;", "##");
+						code = StringUtils.replace(code, "：", "");
+						code = StringUtils.replace(code, "┃", "");
+						code = StringUtils.replace(code, "&n", "");
+						code=this.replaceStantardString(code);
+						this.lotteryFetchDao.saveWebFetchDanResult(code);
+						
 					}
 				}
 			}
@@ -258,23 +272,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 	}
 
 	private String replaceChar(String code, String[] replaces) {
-		code = StringUtils.replace(code, "　", "");
-		code = StringUtils.replace(code, "    ", " ");
-		code = StringUtils.replace(code, "    ", " ");
-		code = StringUtils.replace(code, "    ", " ");
-		code = StringUtils.replace(code, "    ", " ");
-		code = StringUtils.replace(code, "    ", " ");
-		code = StringUtils.replace(code, "   ", " ");
-		code = StringUtils.replace(code, "   ", " ");
-		code = StringUtils.replace(code, "   ", " ");
-		code = StringUtils.replace(code, "   ", " ");
-		code = StringUtils.replace(code, "   ", " ");
-		code = StringUtils.replace(code, "  ", " ");
-		code = StringUtils.replace(code, "  ", " ");
-		code = StringUtils.replace(code, "  ", " ");
-		code = StringUtils.replace(code, "  ", " ");
-		code = StringUtils.replace(code, "  ", " ");
-		code = StringUtils.replace(code, "  ", " ");
+		code = replaceStantardString(code);
 		code = StringUtils.remove(code, LotterySsqConfig.expect);
 		code = StringUtils.remove(code, LotterySsqConfig.expect.substring(2));
 		if (replaces != null && replaces.length > 0) {
@@ -304,6 +302,34 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 			}
 		}
 		code = LotterySsqUtils.standardReplace(code);
+		return code;
+	}
+
+	private String replaceStantardString(String code) {
+		code = StringUtils.replace(code, "　", "");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "    ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "   ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "，", ",");
+		if(StringUtils.endsWith(code, ",")){
+			code=code.substring(0, code.length()-1);
+		}
+		if(StringUtils.startsWith(code, ",")){
+			code=code.substring(1);
+		}
 		return code;
 	}
 

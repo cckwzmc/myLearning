@@ -2,8 +2,10 @@ package com.lottery.ssq.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -12,15 +14,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.config.LotterySsqConfig;
+import com.lottery.ssq.config.LotterySsqFilterConfig;
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.fetch.dao.LotteryFetchDao;
 import com.lottery.ssq.utils.LotterySsqUtils;
+
 public class LotterySsqWebCollectService {
 	private static final Logger logger = LoggerFactory.getLogger(LotterySsqWebCollectService.class);
 	private LotteryFetchDao fetchDao;
 	private LotteryDao lotteryDao;
 	private LotterySsqThan20Service lotterySsqThan20Service;
-	
+
 	public void setFetchDao(LotteryFetchDao fetchDao) {
 		this.fetchDao = fetchDao;
 	}
@@ -34,9 +38,9 @@ public class LotterySsqWebCollectService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void saveSsqWebCollect(){
+	public void saveSsqWebCollect() {
 		List<String[]> resultList = new ArrayList<String[]>();
-		List list=this.fetchDao.getWebCollectList(LotterySsqConfig.expect);
+		List list = this.fetchDao.getWebCollectList(LotterySsqConfig.expect);
 		Map<String, Integer> blueMap = new HashMap<String, Integer>();
 		blueMap.put("01", 0);
 		blueMap.put("02", 0);
@@ -54,9 +58,9 @@ public class LotterySsqWebCollectService {
 		blueMap.put("14", 0);
 		blueMap.put("15", 0);
 		blueMap.put("16", 0);
-		if(CollectionUtils.isNotEmpty(list)){
-			for(int i=0;i<list.size();i++){
-				Map map=(Map) list.get(i);
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (int i = 0; i < list.size(); i++) {
+				Map map = (Map) list.get(i);
 				String code = ObjectUtils.toString(map.get("content"));
 				String[] codes = StringUtils.split(code, "@@");
 				for (String ssq : codes) {
@@ -65,12 +69,12 @@ public class LotterySsqWebCollectService {
 					if (redCode.length == 2) {
 						blueCode = StringUtils.split(redCode[1], ",");
 						for (String blue : blueCode) {
-							if (blue.length() > 2||!StringUtils.isNumeric(blue)) {
+							if (blue.length() > 2 || !StringUtils.isNumeric(blue)) {
 								continue;
 							} else if (blue.length() == 1) {
 								blue = "0" + blue;
 							}
-							if(!blueMap.containsKey(blue)){
+							if (!blueMap.containsKey(blue)) {
 								continue;
 							}
 							Integer tmp = blueMap.get(blue) + 1;
@@ -78,7 +82,7 @@ public class LotterySsqWebCollectService {
 						}
 					}
 					String[] redCodes = StringUtils.split(redCode[0], ",");
-					if (redCodes.length < 6 ) {
+					if (redCodes.length < 6) {
 						logger.error("方案解析失败==" + ssq);
 						continue;
 					}
@@ -100,4 +104,25 @@ public class LotterySsqWebCollectService {
 			this.lotteryDao.saveCollectBlueCodeResult(blueMap, LotterySsqConfig.expect);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public Set<String> getWebRedCoeByIds(LotterySsqFilterConfig filterConfig) {
+		Set<String> set=new HashSet<String>();
+		List list = this.fetchDao.getSsqLotteryWebFetchResult("12,117", filterConfig.expect);
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (int i = 0; i < list.size(); i++) {
+				Map map=(Map) list.get(i);
+				String content=ObjectUtils.toString(map.get("content"));
+				String[] codes=StringUtils.split(content,"@@");
+				for(String code:codes){
+					String[] redcodes=StringUtils.split(code, "+");
+					if(redcodes.length>0){
+						set.add(redcodes[0]);
+					}
+				}
+			}
+		}
+		return set;
+	}
+
 }

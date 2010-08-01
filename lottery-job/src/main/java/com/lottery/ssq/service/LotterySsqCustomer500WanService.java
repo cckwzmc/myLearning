@@ -230,11 +230,11 @@ public class LotterySsqCustomer500WanService extends Thread {
 		blueMap.put("14", 0);
 		blueMap.put("15", 0);
 		blueMap.put("16", 0);
-		int last = 0;
-		int page = 200;
-		List list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
+//		int last = 0;
+//		int page = 200;
+		List list = this.dao.getSsqLotteryCollectFetchLimit(0, 0, "0");
 		Pattern p = Pattern.compile("[^\\x00-\\xff]");
-		while (CollectionUtils.isNotEmpty(list)) {
+		if (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				String id = (String) map.get("id");
@@ -331,8 +331,8 @@ public class LotterySsqCustomer500WanService extends Thread {
 					resultList.clear();
 				}
 			}
-			last += page;
-			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
+//			last += page;
+//			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);

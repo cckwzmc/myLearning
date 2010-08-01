@@ -54,10 +54,21 @@ public class ReverseTestMain {
 			ISsqLotteryFetch ssqLotterySinaFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySinaFetchImpl");
 			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context
 					.getBean("lotterySsqWebCollectService");
-			Set<String> codes = getCodeFromFile();
+			initService.testHistoryRedCode();
+//			ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
+//			initService.initFilterResult();
+//			collectservice.collectResultDispose();
+			Set<String> codes = getCodeFromFile("D:/ttcode.txt");
 			if (CollectionUtils.isNotEmpty(codes)) {
 				service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(), codes);
 			}
+			Set<String> filterCode=getCodeFromFile("D:/ttcode_filter.txt");
+			if(CollectionUtils.isNotEmpty(filterCode)){
+				service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig(),filterCode);
+			}
+//			service.filterCurrentRedCodeFirst();
+//			initService.initFilterResult();
+//			service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());
 			// ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
 			// ssqLottery163FetchImpl.getSsqLotteryDetail("", "");
 			// ssqLotterySinaFetchImpl.getSsqLotteryDetail("", "");
@@ -100,7 +111,7 @@ public class ReverseTestMain {
 			// initService.hisDrawsRedcode("05,13,14,27,20,26","10071");
 			// initService.hisDrawsRedcode("06,08,22,23,30,31","10072");
 			// initService.hisDrawsRedcode("01,16,20,23,27,31","10073");
-			initService.hisDrawsRedcode("01,12,14,29,31,32", "10076");
+//			initService.hisDrawsRedcode("01,12,14,29,31,32", "10076");
 
 			// lotterySsqFileService.deleteFileRedCode();
 			// initService.deleteMediaFetch();
@@ -110,9 +121,9 @@ public class ReverseTestMain {
 			// initService.fetchMediaSinaContent();
 			// initService.fetchMedia500WanContent();
 			// initService.tempDeleteMediaRedCodeFromFilter();
-			service.clearHisSsqData();
-			collectservice.backHisSsqCollectResult();
-			initService.initFilterResult();
+//			service.clearHisSsqData();
+//			collectservice.backHisSsqCollectResult();
+//			initService.initFilterResult();
 			// 看中奖号码在用户投注中的表现
 			// initService.hisDrawsRedcode("02,03,13,19,20,23","10055");
 			// initService.hisDrawsRedcode("01,06,08,12,14,25","10054");
@@ -232,9 +243,9 @@ public class ReverseTestMain {
 
 	}
 
-	private static Set<String> getCodeFromFile() {
+	private static Set<String> getCodeFromFile(String name) {
 		Set<String> list = new LinkedHashSet<String>();
-		String fileName = "D:/ttcode.txt";
+		String fileName = name;
 		try {
 			File file = new File(fileName);
 			FileReader read = new FileReader(file);

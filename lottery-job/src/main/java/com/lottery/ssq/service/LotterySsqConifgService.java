@@ -330,6 +330,21 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "threeQuNum")) {
 				config.setThreeQuNum(NumberUtils.toInt(cfgValue));
 			}
+			if (StringUtils.equals(cfgName, "isFilterWebFourCode")) {
+				config.setIsFilterWebFourCode(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "isFilterHistoryFourCode")) {
+				config.setIsFilterHistoryFourCode(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "isFilterHistoryFiveSelecte")) {
+				config.setIsFilterHistoryFiveSelecte(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "isFilterHistoryOneSelecte")) {
+				config.setIsFilterHistoryOneSelecte(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "isFilterHistoryThreeSelecte")) {
+				config.setIsFilterHistoryThreeSelecte(NumberUtils.toInt(cfgValue));
+			}
 		}
 		return config;
 	}

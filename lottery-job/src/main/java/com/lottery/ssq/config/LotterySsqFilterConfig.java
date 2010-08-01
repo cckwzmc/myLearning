@@ -81,6 +81,11 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	private int threeQuNum;
 	private int twoQuNum;
 	private int oneQuNum;
+	private Integer isFilterWebFourCode;
+	private Integer isFilterHistoryFourCode;
+	private int isFilterHistoryFiveSelecte;
+	private int isFilterHistoryOneSelecte;
+	private int isFilterHistoryThreeSelecte;
 
 	public int getIsUseLastFilter() {
 		return isUseLastFilter;
@@ -464,6 +469,46 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 
 	public void setOneQuNum(int oneQuNum) {
 		this.oneQuNum = oneQuNum;
+	}
+
+	public void setIsFilterWebFourCode(Integer isFilterWebFourCode) {
+		this.isFilterWebFourCode = isFilterWebFourCode;
+	}
+
+	public Integer getIsFilterWebFourCode() {
+		return this.isFilterWebFourCode;
+	}
+
+	public void setIsFilterHistoryFourCode(Integer isFilterHistoryFourCode) {
+		this.isFilterHistoryFourCode = isFilterHistoryFourCode;
+	}
+
+	public Integer getIsFilterHistoryFourCode() {
+		return isFilterHistoryFourCode;
+	}
+
+	public void setIsFilterHistoryFiveSelecte(int isFilterHistoryFiveSelecte) {
+		this.isFilterHistoryFiveSelecte = isFilterHistoryFiveSelecte;
+	}
+
+	public int getIsFilterHistoryFiveSelecte() {
+		return this.isFilterHistoryFiveSelecte;
+	}
+
+	public void setIsFilterHistoryOneSelecte(int isFilterHistoryOneSelecte) {
+		this.isFilterHistoryOneSelecte = isFilterHistoryOneSelecte;
+	}
+
+	public int getIsFilterHistoryOneSelecte() {
+		return this.isFilterHistoryOneSelecte;
+	}
+
+	public void setIsFilterHistoryThreeSelecte(int isFilterHistoryThreeSelecte) {
+		this.isFilterHistoryThreeSelecte = isFilterHistoryThreeSelecte;
+	}
+
+	public int getIsFilterHistoryThreeSelecte() {
+		return this.isFilterHistoryThreeSelecte;
 	}
 
 }

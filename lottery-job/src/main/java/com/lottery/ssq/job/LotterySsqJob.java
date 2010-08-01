@@ -124,6 +124,9 @@ public class LotterySsqJob {
 		logger.info("备份历史抓取结果开始....................");
 		this.lotteryCollectService.backHisSsqCollectResult();
 		logger.info("备份历史抓取结果结束....................");
+		logger.info("抓取历史出球记录开始....................");
+		this.lotteryInitService.initHistoryOpenCode();
+		logger.info("抓取历史出球记录结束....................");
 	}
 
 	/**
