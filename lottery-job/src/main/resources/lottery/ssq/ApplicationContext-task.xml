@@ -177,9 +177,11 @@
 		</property>
 		<property name="cronExpression">
 			<!-- 周2，4，7的4点和13自动运行 -->
-			<value>0 0/1 11,16,17,18,20,21,0 ? * MON,SUN,TUE,THU</value>
+			<value>0 0/1 11,16,17,18 ? * MON,SUN,TUE,THU</value>
 		</property>
 	</bean>
+	
+	
 	<bean id="scheduledLotterySsqGenDetail2"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject">
@@ -197,7 +199,7 @@
 		</property>
 		<property name="cronExpression">
 			<!-- 周2，4，7的4点和13自动运行 -->
-			<value>0 0/2 11,16,17,18,23,0 ? * FRI,SUN,TUE,THU</value>
+			<value>0 0/1 11,16,17,18,23,0 ? * MON,SUN,TUE,THU</value>
 		</property>
 	</bean>
 </beans>	

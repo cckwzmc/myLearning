@@ -22,7 +22,7 @@ public class LotterySsqAlgorithm {
 	 * @return
 	 */
 	public static boolean isRedNumericInRange(LotterySsqFilterConfig filterConfig, String[] redCode) {
-		if(redCode==null||redCode.length!=6){
+		if (redCode == null || redCode.length != 6) {
 			return false;
 		}
 		if (NumberUtils.toInt(redCode[0]) > filterConfig.getFirstMaxCode()) {
@@ -57,15 +57,17 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+
 	/**
 	 * 一区的最多个数不能超过<num个
 	 * <p/>
 	 * 二区的最多个数不能超过<num个
 	 * <p/>
 	 * 三区的最多个数不能超过<num个
+	 * 
 	 * @return
 	 */
-	public static boolean isQuNum(LotterySsqFilterConfig filterConfig, String[] lValues){
+	public static boolean isQuNum(LotterySsqFilterConfig filterConfig, String[] lValues) {
 
 		int qOne = 0;
 		int qTwo = 0;
@@ -81,31 +83,36 @@ public class LotterySsqAlgorithm {
 				qThree++;
 			}
 		}
-		if(filterConfig.getOneQuNum()>0){
-			if(qOne>=filterConfig.getOneQuNum()){
+		if (filterConfig.getOneQuNum() > 0) {
+			if (qOne >= filterConfig.getOneQuNum()) {
 				return false;
 			}
 		}
-		if(filterConfig.getTwoQuNum()>0){
-			if(qTwo>=filterConfig.getTwoQuNum()){
+		if (filterConfig.getTwoQuNum() > 0) {
+			if (qTwo >= filterConfig.getTwoQuNum()) {
 				return false;
 			}
 		}
-		if(filterConfig.getThreeQuNum()>0){
-			if(qThree>=filterConfig.getThreeQuNum()){
+		if (filterConfig.getThreeQuNum() > 0) {
+			if (qThree >= filterConfig.getThreeQuNum()) {
 				return false;
 			}
 		}
 		return true;
 	}
+
 	/**
-	 * 是否包含上一期的号码 filterConfig.getIncludePreRedNum()==0号码中不能包含一个上一期的号码 包含 至少filterConfig.getIncludePreRedNum()个以上的号码
+	 * 是否包含上一期的号码
+	 * <p/>
+	 * filterConfig.getIncludePreRedNum()==0号码中不能包含一个上一期的号码
+	 * <p/>
+	 * 否则包含 至少filterConfig.getIncludePreRedNum()个的号码
 	 * 
 	 * @param filterConfig
 	 * @param lValues 最多包含zuoduoNum个号码
 	 * @return
 	 */
-	public static boolean isRedIncludePreRedCode(LotterySsqFilterConfig filterConfig, String[] lValues, int zuiduoNum) {
+	public static boolean isRedIncludePreRedCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
 		if (filterConfig.getIncludePreRedNum() == -1) {
 			return true;
 		}
@@ -117,51 +124,54 @@ public class LotterySsqAlgorithm {
 				}
 			}
 		}
-		if (filterConfig.getIncludePreRedNum() == 0 && tempSelect == 0) {
+		if (filterConfig.getIncludePreRedNum() >= 0 && tempSelect >= filterConfig.getIncludePreRedNum()) {
 			return true;
 		}
-		if (filterConfig.getIncludePreRedNum() > 0 && tempSelect <= zuiduoNum) {
+		return false;
+	}
+	public static boolean isRedIncludePreRedCode(LotterySsqFilterConfig filterConfig, String[] lValues,int num) {
+		if (filterConfig.getIncludePreRedNum() == -1) {
+			return true;
+		}
+		int tempSelect = 0;
+		for (int j = 0; j < lValues.length; j++) {
+			for (int k = 0; k < LotterySsqConfig.preRedCode.length; k++) {
+				if (StringUtils.equals(lValues[j], LotterySsqConfig.preRedCode[k])) {
+					tempSelect++;
+				}
+			}
+		}
+		if (filterConfig.getIncludePreRedNum() >= 0 && tempSelect >= num) {
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * // 必须包含其中的任意一个数字(边号) 并且不能超过2个
+	 * // 必须包含其中的任意一个数字(边号)
+	 * <p/>
+	 * 并且不能超过2个
 	 * 
 	 * @param filterConfig
 	 * @param lValues
 	 * @return
 	 */
-	public static boolean isRedIncludeSideCode(LotterySsqFilterConfig filterConfig, String[] lValues, int zuiduoNum) {
+	public static boolean isRedIncludeSideCode(LotterySsqFilterConfig filterConfig, String[] lValues) {
 		int tempSelect = 0;
-		if (LotterySsqConfig.preSideCode == null || filterConfig.getHaveSideCode() == -1) {
+		if (LotterySsqConfig.preSideCode == null || filterConfig.getHaveSideCode() == -1 || LotterySsqConfig.preSideCode.length < 1) {
 			return true;
 		}
-		if (LotterySsqConfig.preSideCode.length > 0 && filterConfig.getHaveSideCode() > 0) {
-			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < LotterySsqConfig.preSideCode.length; k++) {
-					if (StringUtils.equals(lValues[j], LotterySsqConfig.preSideCode[k])) {
-						tempSelect++;
-					}
+		for (int j = 0; j < lValues.length; j++) {
+			for (int k = 0; k < LotterySsqConfig.preSideCode.length; k++) {
+				if (StringUtils.equals(lValues[j], LotterySsqConfig.preSideCode[k])) {
+					tempSelect++;
 				}
-			}
-			if (tempSelect == 0 || tempSelect > zuiduoNum) {
-				return false;
-			}
-		} else if (filterConfig.getHaveSideCode() == 0) {
-			for (int j = 0; j < lValues.length; j++) {
-				for (int k = 0; k < LotterySsqConfig.preSideCode.length; k++) {
-					if (StringUtils.equals(lValues[j], LotterySsqConfig.preSideCode[k])) {
-						tempSelect++;
-					}
-				}
-			}
-			if (tempSelect > 0) {
-				return false;
 			}
 		}
-		return true;
+		if (tempSelect >= filterConfig.getHaveSideCode()) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -176,30 +186,17 @@ public class LotterySsqAlgorithm {
 			return true;
 		}
 		int tempSelect2 = 0;
-		if (filterConfig.getHaveTwoSeries() == 0) {
-			for (int j = 0; j < lValues.length; j++) {
-				int rValue = NumberUtils.toInt(lValues[j]);
-				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-				if (nextValue != -1 && nextValue - rValue == 1) {
-					tempSelect2++;
-				}
-			}
-			if (tempSelect2 > filterConfig.getHaveTwoSeries()) {
-				return false;
-			}
-		} else if (filterConfig.getHaveTwoSeries() > 0) {
-			for (int j = 0; j < lValues.length; j++) {
-				int rValue = NumberUtils.toInt(lValues[j]);
-				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-				if (nextValue != -1 && nextValue - rValue == 1) {
-					tempSelect2++;
-				}
-			}
-			if (tempSelect2 < filterConfig.getHaveTwoSeries()) {
-				return false;
+		for (int j = 0; j < lValues.length; j++) {
+			int rValue = NumberUtils.toInt(lValues[j]);
+			int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+			if (nextValue != -1 && nextValue - rValue == 1) {
+				tempSelect2++;
 			}
 		}
-		return true;
+		if (tempSelect2 >= filterConfig.getHaveTwoSeries()) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -303,6 +300,7 @@ public class LotterySsqAlgorithm {
 		}
 		return true;
 	}
+
 	/**
 	 * // 不能同时存在的号码
 	 * 
@@ -310,12 +308,12 @@ public class LotterySsqAlgorithm {
 	 * @param lValues
 	 * @return
 	 */
-	public static boolean isRedTogethorCode(String[] lValues,List<String> list) {
-		if(CollectionUtils.isEmpty(list)){
+	public static boolean isRedTogethorCode(String[] lValues, List<String> list) {
+		if (CollectionUtils.isEmpty(list)) {
 			return true;
 		}
 		int tempSelect = 0;
-		for (String redcode:list) {
+		for (String redcode : list) {
 			String[] tmp = StringUtils.split(redcode, ",");
 			tempSelect = 0;
 			for (int k = 0; k < tmp.length; k++) {
@@ -343,34 +341,19 @@ public class LotterySsqAlgorithm {
 		if (filterConfig.getHaveThreeSeries() < 0) {
 			return true;
 		}
-		if (filterConfig.getHaveThreeSeries() > 0) {
-			int tempSelect = 0;
-			for (int j = 0; j < lValues.length; j++) {
-				int rValue = NumberUtils.toInt(lValues[j]);
-				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-				int nNextValue = (j + 2) < lValues.length ? NumberUtils.toInt(lValues[j + 2]) : -1;
-				if (nextValue != -1 && nNextValue != -1 && nextValue - rValue == 1 && nNextValue - nextValue == 1) {
-					tempSelect++;
-				}
-			}
-			if (tempSelect < filterConfig.getHaveThreeSeries()) {
-				return false;
-			}
-		} else {
-			int tempSelect = 0;
-			for (int j = 0; j < lValues.length; j++) {
-				int rValue = NumberUtils.toInt(lValues[j]);
-				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-				int nNextValue = (j + 2) < lValues.length ? NumberUtils.toInt(lValues[j + 2]) : -1;
-				if (nextValue != -1 && nNextValue != -1 && nextValue - rValue == 1 && nNextValue - nextValue == 1) {
-					tempSelect++;
-				}
-			}
-			if (tempSelect > filterConfig.getHaveThreeSeries()) {
-				return false;
+		int tempSelect = 0;
+		for (int j = 0; j < lValues.length; j++) {
+			int rValue = NumberUtils.toInt(lValues[j]);
+			int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+			int nNextValue = (j + 2) < lValues.length ? NumberUtils.toInt(lValues[j + 2]) : -1;
+			if (nextValue != -1 && nNextValue != -1 && nextValue - rValue == 1 && nNextValue - nextValue == 1) {
+				tempSelect++;
 			}
 		}
-		return true;
+		if (tempSelect >= filterConfig.getHaveThreeSeries()) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -384,7 +367,6 @@ public class LotterySsqAlgorithm {
 		if (filterConfig.getHaveOnediffer() < 0) {
 			return true;
 		}
-		if (filterConfig.getHaveOnediffer() > 0) {
 			int tempSelect = 0;
 			for (int j = 0; j < lValues.length; j++) {
 				int rValue = NumberUtils.toInt(lValues[j]);
@@ -393,23 +375,10 @@ public class LotterySsqAlgorithm {
 					tempSelect++;
 				}
 			}
-			if (tempSelect < filterConfig.getHaveOnediffer()) {
-				return false;
+			if (tempSelect >= filterConfig.getHaveOnediffer()) {
+				return true;
 			}
-		} else {
-			int tempSelect = 0;
-			for (int j = 0; j < lValues.length; j++) {
-				int rValue = NumberUtils.toInt(lValues[j]);
-				int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
-				if (nextValue != -1 && nextValue - rValue == 2) {
-					tempSelect++;
-				}
-			}
-			if (tempSelect > filterConfig.getHaveOnediffer()) {
-				return false;
-			}
-		}
-		return true;
+		return false;
 	}
 
 	/**

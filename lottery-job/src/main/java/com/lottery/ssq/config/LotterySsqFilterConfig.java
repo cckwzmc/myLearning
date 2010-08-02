@@ -86,6 +86,7 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	private int isFilterHistoryFiveSelecte;
 	private int isFilterHistoryOneSelecte;
 	private int isFilterHistoryThreeSelecte;
+	private int selectedPreCodeOrSeriCode;
 
 	public int getIsUseLastFilter() {
 		return isUseLastFilter;
@@ -509,6 +510,14 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 
 	public int getIsFilterHistoryThreeSelecte() {
 		return this.isFilterHistoryThreeSelecte;
+	}
+
+	public void setSelectedPreCodeOrSeriCode(int selectedPreCodeOrSeriCode) {
+		this.selectedPreCodeOrSeriCode = selectedPreCodeOrSeriCode;
+	}
+
+	public int getSelectedPreCodeOrSeriCode() {
+		return this.selectedPreCodeOrSeriCode;
 	}
 
 }

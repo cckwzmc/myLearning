@@ -345,6 +345,9 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "isFilterHistoryThreeSelecte")) {
 				config.setIsFilterHistoryThreeSelecte(NumberUtils.toInt(cfgValue));
 			}
+			if (StringUtils.equals(cfgName, "selectedPreCodeOrSeriCode")) {
+				config.setSelectedPreCodeOrSeriCode(NumberUtils.toInt(cfgValue));
+			}
 		}
 		return config;
 	}
