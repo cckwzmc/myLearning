@@ -13,185 +13,10 @@ import com.lottery.ssq.Algorithm.LotterySsqMediaAlgorithm;
 import com.lottery.ssq.config.LotterySsqFilterConfig;
 
 public class LotterySsqFilterUtils {
-	/**
-	 * 基本过滤方法
-	 * @param filterConfig 
-	 * 
-	 * @param methodName
-	 * @param arg
-	 * @param lValues
-	 * @return
-	 */
-	public static boolean standardFilterMethod(LotterySsqFilterConfig filterConfig, String methodName, String arg, String[] lValues) {
-
-		String[] args = StringUtils.split(arg, "|");
-		if ("isRedNumericInRange".equals(methodName)) {
-			// 数字的范围
-			if (!LotterySsqAlgorithm.isRedNumericInRange(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isRedIncludeRequiredCode".equals(methodName)) {
-			// 是否需要胆
-			if (!LotterySsqAlgorithm.isRedIncludeRequiredCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isRedIncludePreRedCode".equals(methodName)) {
-			// 是否包含上一期的号码
-			if (!LotterySsqAlgorithm.isRedIncludePreRedCode(filterConfig,lValues, NumberUtils.toInt(args[0]))) {
-				return false;
-			}
-		}
-		if ("isRedIncludeSideCode".equals(methodName)) {
-			// 是否包括边号
-			if (!LotterySsqAlgorithm.isRedIncludeSideCode(filterConfig,lValues, NumberUtils.toInt(args[0]))) {
-				return false;
-			}
-		}
-		if ("isRedNotIncludeTheCode".equals(methodName)) {
-			// 不能出现的号码
-			if (!LotterySsqAlgorithm.isRedNotIncludeTheCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isRedInTheCodes".equals(methodName)) {
-			// 在指定的一系列号码中选取6个
-			if (!LotterySsqAlgorithm.isRedInTheCodes(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isRedTogethorCode".equals(methodName)) {
-			// 不能同时出现的号码多组用"|"分割
-			if (!LotterySsqAlgorithm.isRedTogethorCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isRedIncludeEvenIn".equals(methodName)) {
-			// 是否包含两连号
-			if (!LotterySsqAlgorithm.isRedIncludeEvenIn(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isRedIncludeThreeEvenIn".equals(methodName)) {
-			// 是否包含三连号
-			if (!LotterySsqAlgorithm.isRedIncludeThreeEvenIn(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isRedIncludeDifferCode".equals(methodName)) {
-			// 是否包含隔号
-			if (!LotterySsqAlgorithm.isRedIncludeDifferCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isLeastSelectedOneCode".equals(methodName)) {
-			// 至少中其中的一个号码
-			if (!LotterySsqAlgorithm.isLeastSelectedOneCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isMustSelectedOneCode".equals(methodName)) {
-			// 必须选择一个/是并的关系而不是或得关系
-			if (!LotterySsqAlgorithm.isMustSelectedOneCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		if ("isSelectOneCode".equals(methodName)) {
-			// 最多只能其中的一个号码
-			if (!LotterySsqAlgorithm.isSelectOneCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		// 必须选其中的两个
-		if ("mustSelectedTwoRedCode".equals(methodName)) {
-			if (!LotterySsqAlgorithm.mustSelectedTwoRedCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		// 至少选其中的两个.
-		if ("leastSelectedTwoRedCode".equals(methodName)) {
-			if (!LotterySsqAlgorithm.leastSelectedTwoRedCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		// 至少选其中的三个
-		if ("leastSelectedThreeRedCode".equals(methodName)) {
-			if (!LotterySsqAlgorithm.leastSelectedThreeRedCode(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		// 过滤掉有三个尾数相同的号码，如2,12,32
-		if ("mantissaThreeSame".equals(methodName)) {
-			if (!LotterySsqAlgorithm.mantissaThreeSame(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		// 过滤掉有三个2倍数的号码，如2,4,8
-		if ("haveThree2Multiple".equals(methodName)) {
-			if (!LotterySsqAlgorithm.haveThree2Multiple(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		// 过滤掉有三个3倍数的号码，如2,6,18
-		if ("haveThree3Multiple".equals(methodName)) {
-			if (!LotterySsqAlgorithm.haveThree3Multiple(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		// 连续4个奇数或偶数
-		if ("continueFourOddOreven".equals(methodName)) {
-			if (!LotterySsqAlgorithm.continueFourOddOreven(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		// 有5个以上的奇数或偶数包含5个.
-		if ("geFiveOddOrEven".equals(methodName)) {
-			if (!LotterySsqAlgorithm.geFiveOddOrEven(filterConfig,lValues)) {
-				return false;
-			}
-		}
-		//必须中上一期一个号码或有连号
-		if("selectedPreCodeOrSeriCode".equals(methodName)){
-			if (LotterySsqAlgorithm.isRedIncludePreRedCode(filterConfig,lValues,1)||LotterySsqAlgorithm.isRedIncludeEvenIn(filterConfig,lValues)) {
-				return true;
-			}else{
-				return false;
-			}
-		}
-		//必须中上一期一个号码或有隔号
-		if("selectedPreCodeOrDiffCode".equals(methodName)&&filterConfig.getSelectedPreCodeOrDiffCode()==1){
-			if (LotterySsqAlgorithm.isRedIncludePreRedCode(filterConfig,lValues,1)||LotterySsqAlgorithm.isRedIncludeDifferCode(filterConfig,lValues)) {
-				return true;
-			}else{
-				return false;
-			}
-		}
-		//必须中隔号或连号
-		if("selectedSeriCodeOrDiffCode".equals(methodName)&&filterConfig.getSelectedSeriCodeOrDiffCode()==1){
-			if (LotterySsqAlgorithm.isRedIncludeEvenIn(filterConfig,lValues)||LotterySsqAlgorithm.isRedIncludeDifferCode(filterConfig,lValues)) {
-				return true;
-			}else{
-				return false;
-			}
-		}
-		//必须中上一期一个号码或连号或隔号
-		if("selectedSeriOrDiffOrPreCode".equals(methodName)&&filterConfig.getSelectedSeriOrDiffOrPreCode()==1){
-			if (LotterySsqAlgorithm.isRedIncludePreRedCode(filterConfig,lValues,1)||LotterySsqAlgorithm.isRedIncludeEvenIn(filterConfig,lValues)||LotterySsqAlgorithm.isRedIncludeDifferCode(filterConfig,lValues)) {
-				return true;
-			}else{
-				return false;
-			}
-		}
-		// 对历史号码的研究
-		// 1.1、2、3/4/5、差值的统计
-		// 重号附近号码规律的统计
-		return true;
-	}
 
 	/** 新浪媒体擂台 **/
 	/**
-	 * @param filterConfig 
+	 * @param filterConfig
 	 * @param methodName
 	 * @param arg
 	 * @param lValues
@@ -199,40 +24,42 @@ public class LotterySsqFilterUtils {
 	 * @param sinaRedCodeList
 	 * @return
 	 */
-	public static boolean sinaFilterMethod(LotterySsqFilterConfig filterConfig, String methodName, String arg, String[] lValues, List<String> sinaDanList,
-			List<String[]> sinaRedCodeList) {
+	public static boolean sinaFilterMethod(LotterySsqFilterConfig filterConfig, String methodName, String arg,
+			String[] lValues, List<String> sinaDanList, List<String[]> sinaRedCodeList) {
 		String[] args = arg.split(",");
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		if ("isSinaDanTogethorFilter".equals(methodName)) {
-			if (!LotterySsqMediaAlgorithm.isSinaDanTogethorFilter(filterConfig,lValues, sinaDanList)) {
+			if (!LotterySsqMediaAlgorithm.isSinaDanTogethorFilter(filterConfig, lValues, sinaDanList)) {
 				return false;
 			}
 		}
 		if ("isSinaDanAllFilter".equals(methodName)) {
 
-			if (!LotterySsqMediaAlgorithm.isSinaDanAllFilter(filterConfig,lValues, sinaDanList, NumberUtils.toInt(args[0]))) {
-				return false;
-			}
-		}
-		if ("isSinaDanNoneFilter".equals(methodName)) {
-			if (!LotterySsqMediaAlgorithm.isSinaDanNoneFilter(filterConfig,lValues, sinaDanList, NumberUtils.toInt(args[0]))) {
-				return false;
-			}
-		}
-		if ("isSinaRedIncludeFourCode".equals(methodName)) {
-			if (!LotterySsqMediaAlgorithm.isSinaRedIncludeFourCode(filterConfig,lValues, new HashSet<String[]>(sinaRedCodeList),
-					NumberUtils.toInt(args[0]))) {
-				return false;
-			}
-		}
-		if ("isSinaRedCodeXiaoFourFilter".equals(methodName)) {
-			if (!LotterySsqMediaAlgorithm.isSinaRedCodeXiaoFourFilter(filterConfig,lValues, sinaRedCodeList, NumberUtils
+			if (!LotterySsqMediaAlgorithm.isSinaDanAllFilter(filterConfig, lValues, sinaDanList, NumberUtils
 					.toInt(args[0]))) {
 				return false;
 			}
 		}
-		if("isSinaRedCodeNodeSelected".equals(methodName)&&filterConfig.getIsSinaRedCodeNodeSelected()==1){
-			if (!LotterySsqMediaAlgorithm.isSinaRedCodeNodeSelected(filterConfig,lValues, sinaRedCodeList, NumberUtils
+		if ("isSinaDanNoneFilter".equals(methodName)) {
+			if (!LotterySsqMediaAlgorithm.isSinaDanNoneFilter(filterConfig, lValues, sinaDanList, NumberUtils
+					.toInt(args[0]))) {
+				return false;
+			}
+		}
+		if ("isSinaRedIncludeFourCode".equals(methodName)) {
+			if (!LotterySsqMediaAlgorithm.isSinaRedIncludeFourCode(filterConfig, lValues, new HashSet<String[]>(
+					sinaRedCodeList), NumberUtils.toInt(args[0]))) {
+				return false;
+			}
+		}
+		if ("isSinaRedCodeXiaoFourFilter".equals(methodName)) {
+			if (!LotterySsqMediaAlgorithm.isSinaRedCodeXiaoFourFilter(filterConfig, lValues, sinaRedCodeList,
+					NumberUtils.toInt(args[0]))) {
+				return false;
+			}
+		}
+		if ("isSinaRedCodeNodeSelected".equals(methodName) && filterConfig.getIsSinaRedCodeNodeSelected() == 1) {
+			if (!LotterySsqMediaAlgorithm.isSinaRedCodeNodeSelected(filterConfig, lValues, sinaRedCodeList, NumberUtils
 					.toInt(args[0]))) {
 				return false;
 			}
@@ -242,7 +69,8 @@ public class LotterySsqFilterUtils {
 
 	/**
 	 * 500万媒体过滤
-	 * @param filterConfig 
+	 * 
+	 * @param filterConfig
 	 * 
 	 * @param methodName
 	 * @param arg
@@ -250,8 +78,8 @@ public class LotterySsqFilterUtils {
 	 * @param wan500RedCodeList
 	 * @return
 	 */
-	public static boolean wan500FilterMethod(LotterySsqFilterConfig filterConfig, String methodName, String arg, String[] lValues,
-			Set<String[]> wan500RedCodeList) {
+	public static boolean wan500FilterMethod(LotterySsqFilterConfig filterConfig, String methodName, String arg,
+			String[] lValues, Set<String[]> wan500RedCodeList) {
 		String[] args = arg.split(",");
 		if ("isWan500RedIncludeFourCode".equals(methodName)) {
 			if (!LotterySsqMediaAlgorithm.isWan500RedIncludeFourCode(lValues, wan500RedCodeList, NumberUtils
@@ -264,7 +92,8 @@ public class LotterySsqFilterUtils {
 
 	/**
 	 * 用户选号过滤
-	 * @param filterConfig 
+	 * 
+	 * @param filterConfig
 	 * 
 	 * @param methodName
 	 * @param arg
@@ -274,8 +103,8 @@ public class LotterySsqFilterUtils {
 	 * @param customerEqCount1RedList
 	 * @return
 	 */
-	public static boolean customerFilterMethod(LotterySsqFilterConfig filterConfig, String methodName, String arg, String[] lValues,
-			List<String> customerDanList, List customerLeCount3RedList, List customerGtCount5RedList) {
+	public static boolean customerFilterMethod(LotterySsqFilterConfig filterConfig, String methodName, String arg,
+			String[] lValues, List<String> customerDanList, List customerLeCount3RedList, List customerGtCount5RedList) {
 		String[] args = arg.split(",");
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -303,12 +132,12 @@ public class LotterySsqFilterUtils {
 				return false;
 			}
 		}
-		if("leastSelectedTwoCode".equals(methodName)){
+		if ("leastSelectedTwoCode".equals(methodName)) {
 			if (!LotterySsqAlgorithm.isLeastSelectedTwoCode(lValues, filterConfig.getLeastSelectedTwoCode())) {
 				return false;
-			 }
+			}
 		}
-		
+
 		// 收集号码的排行中的前10个
 		// if (!LotterySsqCollectResultAlgorithm.isCustomerRedCodeTop10Filter(lValues,
 		// customerMaxSelected.subList(0, 10))) {
@@ -332,7 +161,7 @@ public class LotterySsqFilterUtils {
 		// if (!LotterySsqAlgorithm.isRedFourCodeResult(lValues, customerRedTop40)) {
 		// continue;
 		// }
-		 
+
 		// if (!LotterySsqAlgorithm.isRedFourCodeInCustomerResult(lValues, cRedList)) {
 		// continue;
 		// }
