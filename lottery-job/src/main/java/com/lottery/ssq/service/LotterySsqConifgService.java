@@ -30,7 +30,6 @@ public class LotterySsqConifgService {
 	@SuppressWarnings("unchecked")
 	public boolean initSsqConfig() {
 		List ssqList = this.fetchDao.getLotterySsqExpectConfig(0, 0);
-		// List ssqList = this.fetchDao.getLotterySsqExpectConfig(0, 0, "10076");
 		if (CollectionUtils.isEmpty(ssqList)) {
 			return false;
 		}
@@ -41,7 +40,8 @@ public class LotterySsqConifgService {
 			return false;
 		}
 		LotterySsqConfig.expect = expect;
-		LotterySsqConfig.preRedCode = StringUtils.split(ObjectUtils.toString(map.get("preRedCode")), ",");
+		LotterySsqConfig.preRedCode = StringUtils.split(StringUtils
+				.split(ObjectUtils.toString(map.get("precode")), "+")[0], ",");
 		if (ArrayUtils.isNotEmpty(LotterySsqConfig.preRedCode)) {
 			String temp = "";
 			for (int i = 0; i < LotterySsqConfig.preRedCode.length; i++) {
@@ -156,7 +156,7 @@ public class LotterySsqConifgService {
 			return null;
 		}
 		List list = this.fetchDao.getLotterySsqFilterConfig();
-		LotterySsqFilterConfig config=new LotterySsqFilterConfig();
+		LotterySsqFilterConfig config = new LotterySsqFilterConfig();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Map iMap = (Map) iterator.next();
 			String cfgName = (String) iMap.get("config_name");
@@ -216,6 +216,10 @@ public class LotterySsqConifgService {
 				// 有几个两连号
 				config.setHaveTwoSeries(NumberUtils.toInt(cfgValue));
 			}
+			if (StringUtils.equals(cfgName, "includePreRedNum")) {
+				// 是否包含上一期的号码
+				config.setIncludePreRedNum(NumberUtils.toInt(cfgValue));
+			}
 			if (StringUtils.equals(cfgName, "haveThreeSeries")) {
 				// 有几个三连号
 				config.setHaveThreeSeries(NumberUtils.toInt(cfgValue));
@@ -230,8 +234,8 @@ public class LotterySsqConifgService {
 			}
 			if (StringUtils.equals(cfgName, "cannotSelectedTogethor")) {
 				// 不能同时出现的号码
-				config.setCannotSelectedTogethor(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null);
+				config.setCannotSelectedTogethor(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|")
+						: null);
 			}
 			if (StringUtils.equals(cfgName, "haveSideCode")) {
 				// 是否有边号
@@ -239,33 +243,33 @@ public class LotterySsqConifgService {
 			}
 			// 最多中其中一个
 			if (StringUtils.equals(cfgName, "zuiduoSelectedOneCode")) {
-				config.setZuiduoSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null);
+				config.setZuiduoSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|")
+						: null);
 			}
 			// 至少选择一个
 			if (StringUtils.equals(cfgName, "leastSelectedOneCode")) {
-				config.setLeastSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null);
+				config.setLeastSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|")
+						: null);
 			}
 			// 必须选择其中的一个
 			if (StringUtils.equals(cfgName, "mustSelectedOneCode")) {
-				config.setMustSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null);
+				config.setMustSelectedOneCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|")
+						: null);
 			}
 			// 必须选其中的两个
 			if (StringUtils.equals(cfgName, "mustSelectedTwoCode")) {
-				config.setMustSelectedTwoCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null);
+				config.setMustSelectedTwoCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|")
+						: null);
 			}
 			// 至少选其中的两个
 			if (StringUtils.equals(cfgName, "leastSelectedTwoCode")) {
-				config.setLeastSelectedTwoCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null);
+				config.setLeastSelectedTwoCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|")
+						: null);
 			}
 			// 至少选其中的三个
 			if (StringUtils.equals(cfgName, "leastSelectedThreeCode")) {
-				config.setLeastSelectedThreeCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(
-						cfgValue, "|") : null);
+				config.setLeastSelectedThreeCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|")
+						: null);
 			}
 			// 三个尾数相同的号码
 			if (StringUtils.equals(cfgName, "mantissaThreeSame")) {
@@ -301,10 +305,10 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "genFilterRedCodeFromCollectResult")) {
 				config.setGenFilterRedCodeFromCollectResult(NumberUtils.toInt(cfgValue));
 			}
-//			private int selectedSeriOrDiffOrPreCode;
-//			private int selectedSeriCodeOrDiffCode;
-//			private int selectedPreCodeOrDiffCode;
-//			private int isSinaRedCodeNodeSelected;
+			// private int selectedSeriOrDiffOrPreCode;
+			// private int selectedSeriCodeOrDiffCode;
+			// private int selectedPreCodeOrDiffCode;
+			// private int isSinaRedCodeNodeSelected;
 			if (StringUtils.equals(cfgName, "selectedSeriOrDiffOrPreCode")) {
 				config.setSelectedSeriOrDiffOrPreCode(NumberUtils.toInt(cfgValue));
 			}
@@ -317,7 +321,7 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "isSinaRedCodeNodeSelected")) {
 				config.setIsSinaRedCodeNodeSelected(NumberUtils.toInt(cfgValue));
 			}
-			//是否使用从过滤号码中再过滤
+			// 是否使用从过滤号码中再过滤
 			if (StringUtils.equals(cfgName, "isUseLastFilter")) {
 				config.setIsUseLastFilter(NumberUtils.toInt(cfgValue));
 			}

@@ -49,6 +49,10 @@ public class LotterySsqService {
 	private List<String> customerMaxSelected = new ArrayList<String>();
 	private List methodList = new ArrayList();
 
+	public void setLotterySsqStantardFilterService(LotterySsqStantardFilterService lotterySsqStantardFilterService) {
+		this.lotterySsqStantardFilterService = lotterySsqStantardFilterService;
+	}
+
 	public void setLotterySsqHisRedCodeFilterService(LotterySsqHisRedCodeFilterService lotterySsqHisRedCodeFilterService) {
 		this.lotterySsqHisRedCodeFilterService = lotterySsqHisRedCodeFilterService;
 	}
@@ -127,8 +131,6 @@ public class LotterySsqService {
 		this.initFilterCustomerCode(filterConfig);
 		List<String> redList = new ArrayList<String>();
 		Set<String> webRedCodeList = this.lotterySsqWebCollectService.getWebRedCoeByIds(filterConfig);
-		// int count = this.dao.getTotalLotteryFilterResult();
-		// logger.info("总共有" + count + "条，记录.....................");
 		int last = 0;
 		int page = 50000;
 		logger.info("开始生成过滤号码了.............");
