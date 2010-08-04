@@ -1,5 +1,8 @@
 package com.lottery.ssq.filter;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+
 import com.lottery.ssq.Algorithm.LotterySsqAlgorithm;
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.config.LotterySsqFilterConfig;
@@ -142,23 +145,29 @@ public class LotterySsqStantardFilterService {
 		}
 		// 必须中上一期一个号码或有隔号
 		if (filterConfig.getSelectedPreCodeOrDiffCode() > 0) {
-			if (!LotterySsqAlgorithm.isRedIncludePreRedCode(filterConfig, lValues, 1)
-					&& !LotterySsqAlgorithm.isRedIncludeDifferCode(filterConfig, lValues)) {
+			if (!this.isRedIncludePreRedCode(filterConfig, lValues, 1)
+					&& !this.isRedIncludeDifferCode(filterConfig, lValues,1)) {
 				return false;
 			}
 		}
 		// 必须中隔号或连号
 		if (filterConfig.getSelectedSeriCodeOrDiffCode() > 0) {
-			if (!LotterySsqAlgorithm.isRedIncludeEvenIn(filterConfig, lValues)
-					&& !LotterySsqAlgorithm.isRedIncludeDifferCode(filterConfig, lValues)) {
+			if (!this.isRedIncludeEvenIn(filterConfig, lValues,1)
+					&& !this.isRedIncludeDifferCode(filterConfig, lValues,1)) {
 				return false;
 			}
 		}
 		// 必须中上一期一个号码或连号或隔号
 		if (filterConfig.getSelectedSeriOrDiffOrPreCode() > 1) {
-			if (!LotterySsqAlgorithm.isRedIncludePreRedCode(filterConfig, lValues, 1)
-					&& !LotterySsqAlgorithm.isRedIncludeEvenIn(filterConfig, lValues)
-					&& !LotterySsqAlgorithm.isRedIncludeDifferCode(filterConfig, lValues)) {
+			if (!this.isRedIncludePreRedCode(filterConfig, lValues, 1)
+					&& !this.isRedIncludeEvenIn(filterConfig, lValues,1)
+					&& !this.isRedIncludeDifferCode(filterConfig, lValues,1)) {
+				return false;
+			}
+		}
+		if (filterConfig.getOneQuNum() > 0 || filterConfig.getTwoQuNum() > 0
+				|| filterConfig.getThreeQuNum() > 0) {
+			if (!LotterySsqAlgorithm.isQuNum(filterConfig, lValues)) {
 				return false;
 			}
 		}
@@ -166,5 +175,83 @@ public class LotterySsqStantardFilterService {
 		// 1.1、2、3/4/5、差值的统计
 		// 重号附近号码规律的统计
 		return true;
+	}
+	/**
+	 * 是否符合在区域的号码分布
+	 * 
+	 * @param lValues
+	 * @param filterConfig 
+	 * @return
+	 */
+	public boolean stantardFilterQu(String[] lValues, LotterySsqFilterConfig filterConfig){
+		int qOne = 0;
+		int qTwo = 0;
+		int qThree = 0;
+		for (int i = 0; i < lValues.length; i++) {
+			if (filterConfig.getQuOne() != -1 && NumberUtils.toInt(lValues[i]) <= filterConfig.getQuOneNum()) {
+				qOne++;
+			}
+			if (filterConfig.getQuTwo() != -1 && NumberUtils.toInt(lValues[i]) > filterConfig.getQuOneNum()
+					&& NumberUtils.toInt(lValues[i]) <= filterConfig.getQuTwoNum()) {
+				qTwo++;
+			}
+			if (filterConfig.getQuThree() != -1 && NumberUtils.toInt(lValues[i]) > filterConfig.getQuTwoNum()) {
+				qThree++;
+			}
+		}
+		return LotterySsqAlgorithm.isRedCoincidenceZone(filterConfig, lValues, qOne, qTwo, qThree);
+	}
+	private boolean isRedIncludeEvenIn(LotterySsqFilterConfig filterConfig, String[] lValues,int num) {
+		if (num <= 0) {
+			return true;
+		}
+		int tempSelect2=0;
+		for (int j = 0; j < lValues.length; j++) {
+			int rValue = NumberUtils.toInt(lValues[j]);
+			int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+			if (nextValue != -1 && nextValue - rValue == 1) {
+				tempSelect2++;
+			}
+		}
+		if (tempSelect2 >= num) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isRedIncludeDifferCode(LotterySsqFilterConfig filterConfig, String[] lValues, int num) {
+		if (num<=0) {
+			return true;
+		}
+		int tempSelect = 0;
+		for (int j = 0; j < lValues.length; j++) {
+			int rValue = NumberUtils.toInt(lValues[j]);
+			int nextValue = (j + 1) < lValues.length ? NumberUtils.toInt(lValues[j + 1]) : -1;
+			if (nextValue != -1 && nextValue - rValue == 2) {
+				tempSelect++;
+			}
+		}
+		if (tempSelect >= num) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isRedIncludePreRedCode(LotterySsqFilterConfig filterConfig, String[] lValues, int num) {
+		if (num<=0) {
+			return true;
+		}
+		int tempSelect = 0;
+		for (int j = 0; j < lValues.length; j++) {
+			for (int k = 0; k < LotterySsqConfig.preRedCode.length; k++) {
+				if (StringUtils.equals(lValues[j], LotterySsqConfig.preRedCode[k])) {
+					tempSelect++;
+				}
+			}
+		}
+		if (filterConfig.getIncludePreRedNum() >= 0 && tempSelect >= num) {
+			return true;
+		}
+		return false;
 	}
 }

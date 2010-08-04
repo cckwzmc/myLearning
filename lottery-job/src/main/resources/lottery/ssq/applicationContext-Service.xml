@@ -6,11 +6,14 @@
 	default-autowire="byName" default-lazy-init="false">
 	<bean id="lotteryService" class="com.lottery.ssq.service.LotterySsqService">
 		<property name="dao" ref="lotteryDao" />
-		<property name="fetchDao" ref="fetchDao" />
-		<property name="lotterySsqMediaSinaService" ref="lotterySsqMediaSinaService"></property>
 		<property name="lotterySsqFileService" ref="lotterySsqFileService"></property>
 		<property name="lotterySsqWebCollectService" ref="lotterySsqWebCollectService"></property>
 		<property name="lotterySsqStantardFilterService" ref="lotterySsqStantardFilterService"></property>
+		<property name="lotterySsqHisRedCodeFilterService" ref="lotterySsqHisRedCodeFilterService"></property>
+		<property name="lotterySsqSinaMediaFilterService" ref="lotterySsqSinaMediaFilterService"></property>
+		<property name="lotterySsqWebMediaFilterService" ref="lotterySsqWebMediaFilterService"></property>
+		<property name="lotterySsq500WanMediaFilterService" ref="lotterySsq500WanMediaFilterService"></property>
+		<property name="lotterySsqConsumerFilterService" ref="lotterySsqConsumerFilterService"></property>
 	</bean>
 	<bean id="fetchDao" class="com.lottery.ssq.fetch.dao.LotteryFetchDao"></bean>
 	<bean id="initLotteryService" class="com.lottery.ssq.service.LotteryInitService">
@@ -52,6 +55,14 @@
 		<property name="dao" ref="lotteryDao" />
 	</bean>
 	<bean id="lotterySsqStantardFilterService" class="com.lottery.ssq.filter.LotterySsqStantardFilterService">
+	</bean>
+	<bean id="lotterySsqSinaMediaFilterService" class="com.lottery.ssq.filter.LotterySsqSinaMediaFilterService">
+	</bean>
+	<bean id="lotterySsqWebMediaFilterService" class="com.lottery.ssq.filter.LotterySsqWebMediaFilterService">
+	</bean>
+	<bean id="lotterySsq500WanMediaFilterService" class="com.lottery.ssq.filter.LotterySsq500WanMediaFilterService">
+	</bean>
+	<bean id="lotterySsqConsumerFilterService" class="com.lottery.ssq.filter.LotterySsqConsumerFilterService">
 	</bean>
 	<bean id="lotteryCollectService" class="com.lottery.ssq.service.LotterySsqCollectService">
 		<property name="dao" ref="lotteryDao" />

@@ -67,28 +67,6 @@ public class LotterySsqFilterUtils {
 		return true;
 	}
 
-	/**
-	 * 500万媒体过滤
-	 * 
-	 * @param filterConfig
-	 * 
-	 * @param methodName
-	 * @param arg
-	 * @param lValues
-	 * @param wan500RedCodeList
-	 * @return
-	 */
-	public static boolean wan500FilterMethod(LotterySsqFilterConfig filterConfig, String methodName, String arg,
-			String[] lValues, Set<String[]> wan500RedCodeList) {
-		String[] args = arg.split(",");
-		if ("isWan500RedIncludeFourCode".equals(methodName)) {
-			if (!LotterySsqMediaAlgorithm.isWan500RedIncludeFourCode(lValues, wan500RedCodeList, NumberUtils
-					.toInt(args[0]))) {
-				return false;
-			}
-		}
-		return true;
-	}
 
 	/**
 	 * 用户选号过滤

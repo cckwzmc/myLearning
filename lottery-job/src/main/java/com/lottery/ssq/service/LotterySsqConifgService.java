@@ -297,7 +297,7 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "customerLeCount3RedList")) {
 				config.setCustomerLeCount3RedList(NumberUtils.toInt(cfgValue));
 			}
-			// 用户有5人以上投注的号码，都不可能中四个
+			// 用户有5人以上投注的号码，都不可能中四个，//选择规律中的一些号码，不能中4个以上的号码	
 			if (StringUtils.equals(cfgName, "customerGtCount5RedList")) {
 				config.setCustomerGtCount5RedList(NumberUtils.toInt(cfgValue));
 			}
@@ -351,6 +351,19 @@ public class LotterySsqConifgService {
 			}
 			if (StringUtils.equals(cfgName, "selectedPreCodeOrSeriCode")) {
 				config.setSelectedPreCodeOrSeriCode(NumberUtils.toInt(cfgValue));
+			}
+			//用户投注胆过滤
+			if (StringUtils.equals(cfgName, "isCustomerDanFilter")) {
+				config.setIsCustomerDanFilter(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "isSinaDanAllFilter")) {
+				config.setIsSinaDanAllFilter(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "isSinaDanNoneFilter")) {
+				config.setIsSinaDanNoneFilter(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "isSinaRedCodeXiaoFourFilter")) {
+				config.setIsSinaRedCodeXiaoFourFilter(NumberUtils.toInt(cfgValue));
 			}
 		}
 		return config;

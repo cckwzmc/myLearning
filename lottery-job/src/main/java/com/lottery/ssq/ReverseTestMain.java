@@ -54,6 +54,7 @@ public class ReverseTestMain {
 			ISsqLotteryFetch ssqLotterySinaFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySinaFetchImpl");
 			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context
 					.getBean("lotterySsqWebCollectService");
+			service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());
 			// initService.testHistoryRedCode();
 			// ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
 			// initService.initFilterResult();
@@ -62,10 +63,10 @@ public class ReverseTestMain {
 			// if (CollectionUtils.isNotEmpty(codes)) {
 			// service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(), codes);
 			// }
-			Set<String> filterCode = getCodeFromFile("D:/ttcode_filter.txt");
-			if (CollectionUtils.isNotEmpty(filterCode)) {
-				service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig(), filterCode);
-			}
+//			Set<String> filterCode = getCodeFromFile("D:/ttcode_filter.txt");
+//			if (CollectionUtils.isNotEmpty(filterCode)) {
+//				service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig(), filterCode);
+//			}
 			// service.filterCurrentRedCodeFirst();
 			// initService.initFilterResult();
 			// service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());

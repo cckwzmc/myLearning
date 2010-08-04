@@ -87,6 +87,10 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	private int isFilterHistoryOneSelecte;
 	private int isFilterHistoryThreeSelecte;
 	private int selectedPreCodeOrSeriCode;
+	private int isCustomerDanFilter;
+	private int isSinaDanAllFilter;
+	private int isSinaDanNoneFilter;
+	private int isSinaRedCodeXiaoFourFilter;
 
 	public int getIsUseLastFilter() {
 		return isUseLastFilter;
@@ -518,6 +522,38 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 
 	public int getSelectedPreCodeOrSeriCode() {
 		return this.selectedPreCodeOrSeriCode;
+	}
+
+	public void setIsCustomerDanFilter(int isCustomerDanFilter) {
+		this.isCustomerDanFilter = isCustomerDanFilter;
+	}
+
+	public int getIsCustomerDanFilter() {
+		return this.isCustomerDanFilter;
+	}
+
+	public void setIsSinaDanAllFilter(int isSinaDanAllFilter) {
+		this.isSinaDanAllFilter = isSinaDanAllFilter;
+	}
+
+	public int getIsSinaDanAllFilter() {
+		return this.isSinaDanAllFilter;
+	}
+
+	public void setIsSinaDanNoneFilter(int isSinaDanNoneFilter) {
+		this.isSinaDanNoneFilter = isSinaDanNoneFilter;
+	}
+
+	public int getIsSinaDanNoneFilter() {
+		return this.isSinaDanNoneFilter;
+	}
+
+	public void setIsSinaRedCodeXiaoFourFilter(int isSinaRedCodeXiaoFourFilter) {
+		this.isSinaRedCodeXiaoFourFilter = isSinaRedCodeXiaoFourFilter;
+	}
+
+	public int getIsSinaRedCodeXiaoFourFilter() {
+		return this.isSinaRedCodeXiaoFourFilter;
 	}
 
 }

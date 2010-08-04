@@ -496,35 +496,7 @@ public class LotterySsqMediaAlgorithm {
 		return true;
 	}
 
-	/**
-	 * 500万媒体不能中4个以上的红球,包括4个. num通常等于=4
-	 * 
-	 * @param lValues
-	 * @param wan500RedCodeList
-	 * @param num
-	 * @return 已验证
-	 */
-	public static boolean isWan500RedIncludeFourCode(String[] lValues, Set<String[]> wan500RedCodeList, int num) {
-		if (CollectionUtils.isEmpty(wan500RedCodeList)) {
-			return true;
-		}
-		for (Iterator<String[]> iterator2 = wan500RedCodeList.iterator(); iterator2.hasNext();) {
-			int tempSelect = 0;
-			String[] mediaRedCode = (String[]) iterator2.next();
-			for (int i = 0; i < mediaRedCode.length; i++) {
-				for (int j = 0; j < lValues.length; j++) {
-					if (StringUtils.equals(mediaRedCode[i], lValues[j])) {
-						tempSelect++;
-					}
-				}
-			}
-			if (tempSelect > num) {
-				return false;
-			}
-
-		}
-		return true;
-	}
+	
 
 	/**
 	 * 新浪媒体推荐中至少有num注会一个号码也不中.
@@ -560,31 +532,4 @@ public class LotterySsqMediaAlgorithm {
 		return false;
 	}
 
-	/**
-	 * 从网站收集的红球不能中4各号码以上 .
-	 * @param lValues
-	 * @param webRedCodeList
-	 * @return
-	 */
-	public static boolean isFilterWebFourCode(String[] lValues, Set<String> webRedCodeList) {
-		if(CollectionUtils.isEmpty(webRedCodeList)){
-			return true;
-		}
-		for(String redCode:webRedCodeList){
-			int selected=0;
-			String[] redCodes=StringUtils.split(redCode,",");
-			for(String code:redCodes)
-			{
-				for(String value:lValues){
-					if(StringUtils.equals(code, value)){
-						selected++;
-					}
-				}
-			}
-			if(selected>4){
-				return false;
-			}
-		}
-		return true;
-	}
 }
