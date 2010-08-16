@@ -427,17 +427,19 @@ public class LotteryInitService {
 
 		// int count=this.dao.getTotalLotteryCollectResult(expect);
 		List list = null;
-		while (true) {
-			list = this.dao.getSsqLotteryCollectResultLimit(first, page, expect);
+//		while (true) {
+//			list = this.dao.getSsqLotteryCollectResultLimit(first, page, expect);
+			list = this.dao.getSsqLotteryCollectResultLimit(first, 50, expect);
 			first += page;
-			if (CollectionUtils.isEmpty(list)) {
-				break;
-			}
+//			if (CollectionUtils.isEmpty(list)) {
+//				break;
+//			}
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				int tCount = 0;
 				Map map = (Map) iterator.next();
 				// s.first,s.second,s.third,s.fourth,firth,sixth
 				String[] tmp = ObjectUtils.toString(map.get("redcode")).split(",");// new
+				Integer count=NumberUtils.toInt(ObjectUtils.toString(map.get("c")));
 				// String[]{ObjectUtils.toString(map.get("first")),ObjectUtils.toString(map.get("second")),ObjectUtils.toString(map.get("third")),ObjectUtils.toString(map.get("fourth")),ObjectUtils.toString(map.get("firth")),ObjectUtils.toString(map.get("sixth"))};
 				for (int i = 0; i < redcodes.length; i++) {
 					for (int j = 0; j < tmp.length; j++) {
@@ -446,12 +448,13 @@ public class LotteryInitService {
 						}
 					}
 				}
-				if (tCount > 4) {
+//				logger.info(msg)
+				if (count > 5) {
 					logger.info(StringUtils.join(tmp, ",") + "(" + ObjectUtils.toString(map.get("c")) + ")" + "中了"
 							+ tCount);
 				}
 			}
-		}
+//		}
 
 	}
 

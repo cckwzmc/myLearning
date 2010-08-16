@@ -39,28 +39,8 @@ public class LotterySsqService {
 	private LotterySsqWebMediaFilterService lotterySsqWebMediaFilterService;
 	private LotterySsq500WanMediaFilterService lotterySsq500WanMediaFilterService;
 	private LotterySsqConsumerFilterService lotterySsqConsumerFilterService;
-	/**
-	 * SINA媒体数据
-	 */
-	private List<String> sinaDanList = new ArrayList<String>();
-	private List<String[]> sinaRedCodeList = new ArrayList<String[]>();
-	/**
-	 * 500万媒体数据
-	 */
-	private Set<String[]> wan500RedCodeList = new HashSet<String[]>();
-	/**
-	 * 各大网站抓取数据.
-	 */
-	private List<String> webDanList = new ArrayList<String>();
-	/**
-	 * 用户投注数据
-	 */
-	private List<String> customerDanList = new ArrayList<String>();
-	// 大于5个以上投注.
-	private List customerGtCount5RedList = new ArrayList();
 
-	public void setLotterySsq500WanMediaFilterService(
-			LotterySsq500WanMediaFilterService lotterySsq500WanMediaFilterService) {
+	public void setLotterySsq500WanMediaFilterService(LotterySsq500WanMediaFilterService lotterySsq500WanMediaFilterService) {
 		this.lotterySsq500WanMediaFilterService = lotterySsq500WanMediaFilterService;
 	}
 
@@ -97,48 +77,40 @@ public class LotterySsqService {
 	}
 
 	/**
-	 * 媒体推荐号码 新浪和500万
-	 * 
-	 * @param sinaRedCodeList
-	 * @param redCodeList
-	 */
-	private void initFilterMediaRedCode() {
-		wan500RedCodeList.clear();
-		sinaRedCodeList.clear();
-		List wanList = this.dao.getSsqLotteryCollectFetchByType("3");
-
-		if (CollectionUtils.isNotEmpty(wanList)) {
-			Map map = (Map) wanList.get(0);
-			String[] wan = ObjectUtils.toString(map.get("code")).split("@@");
-			for (String code : wan) {
-				wan500RedCodeList.add(StringUtils.split(code, "+")[0].split(","));
-			}
-		}
-		List sinaList = this.dao.getSsqLotteryCollectFetchByType("4");
-		if (CollectionUtils.isNotEmpty(sinaList)) {
-			Map map = (Map) sinaList.get(0);
-			String[] sina = ObjectUtils.toString(map.get("code")).split("@@");
-			for (String code : sina) {
-				sinaRedCodeList.add(StringUtils.split(code, "+")[0].split(","));
-			}
-		}
-	}
-
-	/**
 	 * 从ssq_lottery_filter_result中过滤号码
 	 * 
 	 * @param filterConfig
 	 */
 	public void getCurrentExpertSingleResult(LotterySsqFilterConfig filterConfig, Set<String> filterRedcode) {
-
-		/* 媒体推荐号码 */
-		this.initFilterMediaRedCode();
-		// ****胆的查询***/
-		this.initFilterDanRedCode();
-		// 用户投注的加载
-		this.initFilterCustomerCode(filterConfig);
-		List<String> redList = new ArrayList<String>();
+		/**
+		 * SINA媒体数据
+		 */
+		List<String> sinaDanList = new ArrayList<String>();
+		List<String[]> sinaRedCodeList = new ArrayList<String[]>();
+		/*新浪过滤列表数据*/
+		this.initSinaFilterData(sinaDanList, sinaRedCodeList);
+		/*500万过滤数据*/
+		Set<String[]> wan500RedCodeList = new HashSet<String[]>();
+		this.init500WanFilterData(wan500RedCodeList);
+		/**
+		 * 各大网站抓取数据.
+		 */
+		List<String> webDanList = new ArrayList<String>();
+		this.initWebFilterData(webDanList);
+		/**
+		 * 用户投注数据
+		 */
+		List<String> customerDanList = new ArrayList<String>();
+		// 大于5个以上投注.
+		List customerGtCount5RedList = new ArrayList();
+		// 总投注数的前30注.
+		List customerLeCount30RedList = new ArrayList();
+		this.initFilterCustomerCode(filterConfig, customerDanList, customerGtCount5RedList, customerLeCount30RedList);
+		// 指定媒体的胆号.
 		Set<String> webRedCodeList = this.lotterySsqWebCollectService.getWebRedCoeByIds(filterConfig);
+
+		List<String> redList = new ArrayList<String>();
+
 		int last = 0;
 		int page = 50000;
 		logger.info("开始生成过滤号码了.............");
@@ -165,51 +137,7 @@ public class LotterySsqService {
 				} else {
 					lValues = StringUtils.split((String) iterator.next(), ",");
 				}
-				/*
-				 * 标准过滤方法
-				 */
-				if (!this.lotterySsqStantardFilterService.stantardFilter(filterConfig, lValues)) {
-					continue;
-				}
-				/*
-				 * 新浪媒体过滤方法
-				 */
-				if (!lotterySsqSinaMediaFilterService.sinaFilterMethod(filterConfig, lValues, sinaDanList,
-						sinaRedCodeList)) {
-					continue;
-				}
-
-				/*
-				 * 各大网站媒体过滤方法
-				 */
-				if (!this.lotterySsqWebMediaFilterService.webFilterRedCode(filterConfig, lValues, webRedCodeList,
-						webDanList)) {
-					continue;
-				}
-				/*
-				 * 历史号码过滤方法
-				 */
-				if (!this.lotterySsqHisRedCodeFilterService.filterHistoryRedCode(lValues, filterConfig)) {
-					continue;
-				}
-				/*
-				 * 500万媒体过滤
-				 */
-				if (!this.lotterySsq500WanMediaFilterService.wan500FilterRedCode(filterConfig, lValues,
-						wan500RedCodeList)) {
-					continue;
-				}
-				/*
-				 * 用户投注过滤方法
-				 */
-				if (!this.lotterySsqConsumerFilterService.customerFilterRedcode(filterConfig, lValues, customerDanList,
-						customerGtCount5RedList)) {
-					continue;
-				}
-				/*
-				 * 是否符合在区域的号码分布
-				 */
-				if (!this.lotterySsqStantardFilterService.stantardFilterQu(lValues, filterConfig)) {
+				if (!this.doFilter(filterConfig, lValues, sinaDanList, sinaRedCodeList, webDanList, webRedCodeList, wan500RedCodeList, customerDanList, customerGtCount5RedList, customerLeCount30RedList)) {
 					continue;
 				}
 				redList.add(StringUtils.join(lValues, ","));
@@ -218,13 +146,115 @@ public class LotterySsqService {
 				break;
 			}
 		}
-		String f = System.currentTimeMillis() + "_filterResult_" + LotterySsqConfig.expect + "_" + redList.size()
-				+ ".txt";
+		String f = System.currentTimeMillis() + "_filterResult_" + LotterySsqConfig.expect + "_" + redList.size() + ".txt";
 		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/txt/" + f;
 		writeFile(redList, rsFileName, false);
 		String lotteryHtml = "D:/Apache2.2/htdocs/lottery_rs/index_" + LotterySsqConfig.expect + ".htm";
 		String tmp = "<li><a href='txt/" + f + "'>" + f + "</a></li>";
 		writeFile(tmp, lotteryHtml, true);
+	}
+
+	private boolean doFilter(LotterySsqFilterConfig filterConfig, String[] lValues, List<String> sinaDanList, List<String[]> sinaRedCodeList, List<String> webDanList, Set<String> webRedCodeList, Set<String[]> wan500RedCodeList, List<String> customerDanList,
+			List customerGtCount5RedList, List customerLeCount30RedList) {
+		/*
+		 * 标准过滤方法
+		 */
+		if (!this.lotterySsqStantardFilterService.stantardFilter(filterConfig, lValues)) {
+			return false;
+		}
+		/*
+		 * 新浪媒体过滤方法
+		 */
+		if (!lotterySsqSinaMediaFilterService.sinaFilterMethod(filterConfig, lValues, sinaDanList, sinaRedCodeList)) {
+			return false;
+		}
+
+		/*
+		 * 各大网站媒体过滤方法
+		 */
+		if (!this.lotterySsqWebMediaFilterService.webFilterRedCode(filterConfig, lValues, webRedCodeList, webDanList)) {
+			return false;
+		}
+		/*
+		 *历史号码过滤方法 
+		 */
+		if (!this.lotterySsqHisRedCodeFilterService.filterHistoryRedCode(lValues, filterConfig)) {
+			return false;
+		}
+		/*
+		 * 500万媒体过滤
+		 */
+		if (!this.lotterySsq500WanMediaFilterService.wan500FilterRedCode(filterConfig, lValues, wan500RedCodeList)) {
+			return false;
+		}
+		/*
+		 * 用户投注过滤方法
+		 */
+		if (!this.lotterySsqConsumerFilterService.customerFilterRedcode(filterConfig, lValues, customerDanList, customerGtCount5RedList, customerLeCount30RedList)) {
+			return false;
+		}
+		/*
+		 *  是否符合在区域的号码分布
+		 */
+		if (!this.lotterySsqStantardFilterService.stantardFilterQu(lValues, filterConfig)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 各大网站的初始化过滤数据
+	 * 
+	 * @param webDanList
+	 */
+	private void initWebFilterData(List<String> webDanList) {
+		List list = this.dao.getSsqLotteryDanResult("2");
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map obj = (Map) iterator.next();
+				webDanList.add(ObjectUtils.toString(obj.get("dan")));
+			}
+		}
+	}
+
+	/**
+	 * 500万媒体投注过滤号码.
+	 * 
+	 * @param wan500RedCodeList
+	 */
+	private void init500WanFilterData(Set<String[]> wan500RedCodeList) {
+		List wanList = this.dao.getSsqLotteryCollectFetchByType("3");
+		if (CollectionUtils.isNotEmpty(wanList)) {
+			Map map = (Map) wanList.get(0);
+			String[] wan = ObjectUtils.toString(map.get("code")).split("@@");
+			for (String code : wan) {
+				wan500RedCodeList.add(StringUtils.split(code, "+")[0].split(","));
+			}
+		}
+	}
+
+	/**
+	 * sina媒体投注过滤号码.
+	 * 
+	 * @param sinaDanList
+	 * @param sinaRedCodeList
+	 */
+	private void initSinaFilterData(List<String> sinaDanList, List<String[]> sinaRedCodeList) {
+		List sinaList = this.dao.getSsqLotteryCollectFetchByType("4");
+		if (CollectionUtils.isNotEmpty(sinaList)) {
+			Map map = (Map) sinaList.get(0);
+			String[] sina = ObjectUtils.toString(map.get("code")).split("@@");
+			for (String code : sina) {
+				sinaRedCodeList.add(StringUtils.split(code, "+")[0].split(","));
+			}
+		}
+		List list = this.dao.getSsqLotteryDanResult("0");
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map obj = (Map) iterator.next();
+				sinaDanList.add(ObjectUtils.toString(obj.get("dan")));
+			}
+		}
 	}
 
 	/**
@@ -240,11 +270,21 @@ public class LotterySsqService {
 	 * 用户投注号码
 	 * 
 	 * @param filterConfig
+	 * @param customerLeCount30RedList
+	 * @param customerGtCount5RedList
+	 * @param customerDanList
 	 */
-	private void initFilterCustomerCode(LotterySsqFilterConfig filterConfig) {
-		customerGtCount5RedList.clear();
+	private void initFilterCustomerCode(LotterySsqFilterConfig filterConfig, List<String> customerDanList, List customerGtCount5RedList, List customerLeCount30RedList) {
 		if (filterConfig.getCustomerGtCount5RedList() >= 1) {
 			customerGtCount5RedList = this.dao.getSsqLotteryCollectResultCountLessThan5();
+		}
+		customerLeCount30RedList = this.dao.getSsqLotteryCollectResult30(0, 30);
+		List list = this.dao.getSsqLotteryDanResult("1");
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Map obj = (Map) iterator.next();
+				customerDanList.add(ObjectUtils.toString(obj.get("dan")));
+			}
 		}
 		// if (LotterySsqFilterConfig.customerLeCount3RedList == 1) {
 		// customerLeCount3RedList = this.dao.getSsqLotteryCollectResultCountLe3();
@@ -261,43 +301,6 @@ public class LotterySsqService {
 		// String[] firthRedCode = LotterySsqUtils.mergeRedCode(firthRedCodeList);
 		// List sixthRedCodeList = this.dao.getSsqLotteryCollectResult("sixth", 0, 20);
 		// String[] sixthRedCode = LotterySsqUtils.mergeRedCode(sixthRedCodeList);
-	}
-
-	/**
-	 * 用户投注--投注号码的总统计（不分号码位置）
-	 */
-	// private void initFilterCustomerSingleRedCodeStat() {
-	// customerMaxSelected.clear();
-	// List selectedList = this.dao.getSsqLotteryFetchResultSort();
-	// for (Iterator iterator = selectedList.iterator(); iterator.hasNext();) {
-	// Map map = (Map) iterator.next();
-	// customerMaxSelected.add(ObjectUtils.toString(map.get("redcode")));
-	// }
-	// }
-
-	/**
-	 * 胆号 新浪和用户投注号码
-	 */
-
-	private void initFilterDanRedCode() {
-		sinaDanList.clear();
-		customerDanList.clear();
-		webDanList.clear();
-		List list = this.dao.getSsqLotteryDanResult("0");
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Map obj = (Map) iterator.next();
-			sinaDanList.add(ObjectUtils.toString(obj.get("dan")));
-		}
-		list = this.dao.getSsqLotteryDanResult("2");
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Map obj = (Map) iterator.next();
-			webDanList.add(ObjectUtils.toString(obj.get("dan")));
-		}
-		list = this.dao.getSsqLotteryDanResult("1");
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Map obj = (Map) iterator.next();
-			customerDanList.add(ObjectUtils.toString(obj.get("dan")));
-		}
 	}
 
 	/**
@@ -376,9 +379,8 @@ public class LotterySsqService {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Map map = (Map) iterator.next();
 				// first,second,third,fourth,firth,sixth
-				String redCode = ObjectUtils.toString(map.get("first")) + "," + ObjectUtils.toString(map.get("second"))
-						+ "," + ObjectUtils.toString(map.get("third")) + "," + ObjectUtils.toString(map.get("fourth"))
-						+ "," + ObjectUtils.toString(map.get("firth")) + "," + ObjectUtils.toString(map.get("sixth"));
+				String redCode = ObjectUtils.toString(map.get("first")) + "," + ObjectUtils.toString(map.get("second")) + "," + ObjectUtils.toString(map.get("third")) + "," + ObjectUtils.toString(map.get("fourth")) + "," + ObjectUtils.toString(map.get("firth")) + ","
+						+ ObjectUtils.toString(map.get("sixth"));
 				redCodeList.add(redCode);
 			}
 			this.dao.batchDelSsqLotteryFilterResult(redCodeList);
@@ -404,8 +406,7 @@ public class LotterySsqService {
 			if (!LotterySsqFirstFilterAlgorithm.isFilterRedNumericInRange(lValues)) {
 				redList.add(lValue);
 			}
-			if (!LotterySsqFirstFilterAlgorithm.isFilterRedIncludeSideCode(lValues, LotterySsqConfig.preSideCode)
-					&& !LotterySsqFirstFilterAlgorithm.isFilterIncludePreCode(lValues, LotterySsqConfig.preRedCode)) {
+			if (!LotterySsqFirstFilterAlgorithm.isFilterRedIncludeSideCode(lValues, LotterySsqConfig.preSideCode) && !LotterySsqFirstFilterAlgorithm.isFilterIncludePreCode(lValues, LotterySsqConfig.preRedCode)) {
 				redList.add(lValue);
 			}
 
@@ -490,12 +491,34 @@ public class LotterySsqService {
 	 * @param codes
 	 */
 	public void genFilterRedCodeFromCollectResult(LotterySsqFilterConfig filterConfig, Set<String> codes) {
-		/* 媒体推荐号码 */
-		this.initFilterMediaRedCode();
-		// ****胆的查询***/
-		this.initFilterDanRedCode();
-		// 用户投注的加载
-		this.initFilterCustomerCode(filterConfig);
+		/**
+		 * SINA媒体数据
+		 */
+		List<String> sinaDanList = new ArrayList<String>();
+		List<String[]> sinaRedCodeList = new ArrayList<String[]>();
+		/**
+		 * 用户投注数据
+		 */
+		List<String> customerDanList = new ArrayList<String>();
+		// 大于5个以上投注.
+		List customerGtCount5RedList = new ArrayList();
+		// 总投注数的前30注.
+		List customerLeCount30RedList = new ArrayList();
+		/*500万过滤数据*/
+		Set<String[]> wan500RedCodeList = new HashSet<String[]>();
+		/**
+		 * 各大网站抓取数据.
+		 */
+		List<String> webDanList = new ArrayList<String>();
+		/*新浪过滤列表数据*/
+		this.initSinaFilterData(sinaDanList, sinaRedCodeList);
+
+		this.init500WanFilterData(wan500RedCodeList);
+
+		this.initWebFilterData(webDanList);
+
+		this.initFilterCustomerCode(filterConfig, customerDanList, customerGtCount5RedList, customerLeCount30RedList);
+
 		List<String> redList = new ArrayList<String>();
 		Set<String> webRedCodeList = this.lotterySsqWebCollectService.getWebRedCoeByIds(filterConfig);
 		logger.info("开始从抓取号码中生产过滤号码.............");
@@ -531,51 +554,7 @@ public class LotterySsqService {
 				if (StringUtils.isBlank(LotterySsqAlgorithm.filterFromCollectRedCode(StringUtils.join(lValues, ",")))) {
 					continue;
 				}
-				/*
-				 * 标准过滤方法
-				 */
-				if (!this.lotterySsqStantardFilterService.stantardFilter(filterConfig, lValues)) {
-					continue;
-				}
-				/*
-				 * 新浪媒体过滤方法
-				 */
-				if (!lotterySsqSinaMediaFilterService.sinaFilterMethod(filterConfig, lValues, sinaDanList,
-						sinaRedCodeList)) {
-					continue;
-				}
-
-				/*
-				 * 各大网站媒体过滤方法
-				 */
-				if (!this.lotterySsqWebMediaFilterService.webFilterRedCode(filterConfig, lValues, webRedCodeList,
-						webDanList)) {
-					continue;
-				}
-				/*
-				 * 历史号码过滤方法
-				 */
-				if (!this.lotterySsqHisRedCodeFilterService.filterHistoryRedCode(lValues, filterConfig)) {
-					continue;
-				}
-				/*
-				 * 500万媒体过滤
-				 */
-				if (!this.lotterySsq500WanMediaFilterService.wan500FilterRedCode(filterConfig, lValues,
-						wan500RedCodeList)) {
-					continue;
-				}
-				/*
-				 * 用户投注过滤方法
-				 */
-				if (!this.lotterySsqConsumerFilterService.customerFilterRedcode(filterConfig, lValues, customerDanList,
-						customerGtCount5RedList)) {
-					continue;
-				}
-				/*
-				 * 是否符合在区域的号码分布
-				 */
-				if (!this.lotterySsqStantardFilterService.stantardFilterQu(lValues, filterConfig)) {
+				if (!this.doFilter(filterConfig, lValues, sinaDanList, sinaRedCodeList, webDanList, webRedCodeList, wan500RedCodeList, customerDanList, customerGtCount5RedList, customerLeCount30RedList)) {
 					continue;
 				}
 				redList.add(StringUtils.join(lValues, ","));
@@ -584,8 +563,7 @@ public class LotterySsqService {
 				break;
 			}
 		}
-		String f = System.currentTimeMillis() + "_collectResult_" + LotterySsqConfig.expect + "_" + redList.size()
-				+ ".txt";
+		String f = System.currentTimeMillis() + "_collectResult_" + LotterySsqConfig.expect + "_" + redList.size() + ".txt";
 		String rsFileName = "D:/Apache2.2/htdocs/lottery_rs/txt/" + f;
 		writeFile(redList, rsFileName, false);
 		String lotteryHtml = "D:/Apache2.2/htdocs/lottery_rs/index_" + LotterySsqConfig.expect + ".htm";

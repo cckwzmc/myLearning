@@ -24,7 +24,7 @@ import com.lottery.ssq.dao.LotteryDao;
  */
 public class LotterySsqConsumerFilterService {
 
-	public boolean customerFilterRedcode(LotterySsqFilterConfig filterConfig, String[] lValues, List<String> customerDanList, List customerGtCount5RedList) {
+	public boolean customerFilterRedcode(LotterySsqFilterConfig filterConfig, String[] lValues, List<String> customerDanList, List customerGtCount5RedList, List customerLeCount30RedList) {
 
 		// if
 		// (!LotterySsqCollectResultAlgorithm.isIncludeLocationRedCode(firstRedCode,secondRedCode,thirdRedCode,
@@ -32,15 +32,41 @@ public class LotterySsqConsumerFilterService {
 		// continue;
 		// }
 		// 用户投注的胆
-		if (filterConfig.getIsCustomerDanFilter()>0) {
+		if (filterConfig.getIsCustomerDanFilter() > 0) {
 			if (!LotterySsqCollectResultAlgorithm.isCustomerDanFilter(lValues, customerDanList, filterConfig.getIsCustomerDanFilter())) {
 				return false;
 			}
 		}
-		// 用户投注不能中4一个以上的号码
-		if (filterConfig.getCustomerGtCount5RedList()>0) {
-			if (!LotterySsqCollectResultAlgorithm.isCumstomerRedIncludeFourCode(lValues, customerGtCount5RedList)) {
+		// // 用户投注不能中4一个以上的号码
+		// if (filterConfig.getCustomerGtCount5RedList() > 0) {
+		// if (!LotterySsqCollectResultAlgorithm.isCumstomerRedIncludeFourCode(lValues, customerGtCount5RedList)) {
+		// return false;
+		// }
+		// }
+		if (CollectionUtils.isNotEmpty(customerLeCount30RedList)) {
+			// 对收集号码的过滤
+			//不可能中4个
+			if (!LotterySsqCollectResultAlgorithm.isCumstomerRedIncludeFourCode(lValues, customerLeCount30RedList)) {
 				return false;
+			}
+			// 至少3注中0个
+			if (filterConfig.getCustomer30Selecte0() > 0) {
+				if (this.isCustomer30Selecte0(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte0())) {
+					return false;
+				}
+			}
+			// 至少10注以上中1个
+
+			if (filterConfig.getCustomer30Selecte1() > 0) {
+				if (this.isCustomer30Selecte1(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte1())) {
+					return false;
+				}
+			}
+			// 最多3注中3个
+			if (filterConfig.getCustomer30Selecte3() > 0) {
+				if (this.isCustomer30Selecte3(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte3())) {
+					return false;
+				}
 			}
 		}
 		// if (filterConfig.getCustomerLeCount3RedList() == 1) {
@@ -97,6 +123,76 @@ public class LotterySsqConsumerFilterService {
 		// if(CollectionUtils.isNotEmpty(fileRedCode)&&!LotterySsqAlgorithm.isRedCodeHaveSix(fileRedCode,lValues)){
 		// continue;
 		// }
+		return true;
+	}
+
+	private boolean isCustomer30Selecte0(String[] lValues, List customerLeCount30RedList, int customer30Selecte0) {
+		int selected=0;
+		for(int i=0;i<customerLeCount30RedList.size();i++){
+			Map map=(Map) customerLeCount30RedList.get(i);
+			String[] redcodes=ObjectUtils.toString(map.get("redcode")).split(",");
+			int tmpselected=0;
+			for(String redcode:redcodes){
+				for(String value:lValues){
+					if(StringUtils.equals(redcode, value)){
+						tmpselected++;
+					}
+				}
+			}
+			if(tmpselected==0){
+				selected++;
+			}
+		}
+		if(selected<customer30Selecte0){
+			return false;
+		}
+		return true;
+		
+	}
+
+	private boolean isCustomer30Selecte1(String[] lValues, List customerLeCount30RedList, int customer30Selecte1) {
+		int selected=0;
+		for(int i=0;i<customerLeCount30RedList.size();i++){
+			Map map=(Map) customerLeCount30RedList.get(i);
+			String[] redcodes=ObjectUtils.toString(map.get("redcode")).split(",");
+			int tmpselected=0;
+			for(String redcode:redcodes){
+				for(String value:lValues){
+					if(StringUtils.equals(redcode, value)){
+						tmpselected++;
+					}
+				}
+			}
+			if(tmpselected==1){
+				selected++;
+			}
+		}
+		if(selected<customer30Selecte1){
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isCustomer30Selecte3(String[] lValues, List customerLeCount30RedList, int customer30Selecte3) {
+		int selected=0;
+		for(int i=0;i<customerLeCount30RedList.size();i++){
+			Map map=(Map) customerLeCount30RedList.get(i);
+			String[] redcodes=ObjectUtils.toString(map.get("redcode")).split(",");
+			int tmpselected=0;
+			for(String redcode:redcodes){
+				for(String value:lValues){
+					if(StringUtils.equals(redcode, value)){
+						tmpselected++;
+					}
+				}
+			}
+			if(tmpselected==3){
+				selected++;
+			}
+		}
+		if(selected>customer30Selecte3){
+			return false;
+		}
 		return true;
 	}
 

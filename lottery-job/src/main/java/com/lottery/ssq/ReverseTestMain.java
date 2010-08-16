@@ -54,19 +54,19 @@ public class ReverseTestMain {
 			ISsqLotteryFetch ssqLotterySinaFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySinaFetchImpl");
 			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context
 					.getBean("lotterySsqWebCollectService");
-			service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());
+//			service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());
 			// initService.testHistoryRedCode();
 			// ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
 			// initService.initFilterResult();
 			// collectservice.collectResultDispose();
-			// Set<String> codes = getCodeFromFile("D:/ttcode.txt");
-			// if (CollectionUtils.isNotEmpty(codes)) {
-			// service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(), codes);
-			// }
-//			Set<String> filterCode = getCodeFromFile("D:/ttcode_filter.txt");
-//			if (CollectionUtils.isNotEmpty(filterCode)) {
-//				service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig(), filterCode);
-//			}
+			 Set<String> codes = getCodeFromFile("D:/ttcode.txt");
+			 if (CollectionUtils.isNotEmpty(codes)) {
+				 service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(), codes);
+			 }
+			Set<String> filterCode = getCodeFromFile("D:/ttcode_filter.txt");
+			if (CollectionUtils.isNotEmpty(filterCode)) {
+				service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig(), filterCode);
+			}
 			// service.filterCurrentRedCodeFirst();
 			// initService.initFilterResult();
 			// service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());
@@ -89,7 +89,45 @@ public class ReverseTestMain {
 			// initService.fetchMedia500WanContent();
 			// initService.tempDeleteMediaRedCodeFromFilter();
 			// initService.initFilterResult();
-			// 看中奖号码在用户投注中的表现
+			// initService.hisDrawsRedcode("02,03,13,19,20,23","10055");
+			// initService.hisDrawsRedcode("01,06,08,12,14,25","10054");
+			// initService.hisDrawsRedcode("03,22,24,27,28,30","10053");
+			// initService.hisDrawsRedcode("01,02,19,23,27,29","10055");
+			// initService.hisDrawsRedcode("01,02,03,08,13,32","10056");
+			// initService.hisDrawsRedcode("05,11,12,19,25,32","10057");
+			// initService.hisDrawsRedcode("01,04,11,17,19,29","10058");
+			// initService.hisDrawsRedcode("01,09,11,12,18,30","10059");
+			// initService.hisDrawsRedcode("01,08,15,18,22,27","10060");
+			// initService.hisDrawsRedcode("02,04,16,19,22,26","10061");
+			// initService.hisDrawsRedcode("11,13,15,20,31,33","10062");
+			// initService.hisDrawsRedcode("02,06,10,17,23,24","10063");
+			// initService.hisDrawsRedcode("08,14,25,26,30,31","10064");
+			// initService.hisDrawsRedcode("02,07,08,17,30,32","10065");
+			// initService.hisDrawsRedcode("01,03,21,22,31,32","10066");
+			// initService.hisDrawsRedcode("01,07,10,14,21,25","10067");
+			// initService.hisDrawsRedcode("03,13,18,20,23,28","10068");
+			// initService.hisDrawsRedcode("12,14,20,22,24,32","10069");
+//			 initService.hisDrawsRedcode("08,13,23,27,31,32","10070");
+//			 initService.hisDrawsRedcode("05,13,14,27,20,26","10071");
+//			 initService.hisDrawsRedcode("06,08,22,23,30,31","10072");
+//			 initService.hisDrawsRedcode("01,16,20,23,27,31","10073");
+//			 initService.hisDrawsRedcode("02,10,17,18,19,29", "10074");
+//			 initService.hisDrawsRedcode("05,09,12,13,15,22", "10075");
+//			 initService.hisDrawsRedcode("01,12,14,29,31,32", "10076");
+//			 initService.hisDrawsRedcode("02,08,14,20,21,24", "10077");
+//			 initService.hisDrawsRedcode("01,03,09,11,17,23", "10078");
+//			 initService.hisDrawsRedcode("08,11,12,14,18,22", "10079");
+//			 initService.hisDrawsRedcode("08,10,13,14,16,23", "10080");
+//			 initService.hisDrawsRedcode("02,03,09,24,26,27", "10081");
+//			 initService.hisDrawsRedcode("01,08,13,14,27,31", "10082");
+//			 initService.hisDrawsRedcode("02,20,21,22,23,31", "10083");
+//			 initService.hisDrawsRedcode("02,10,14,18,20,30", "10084");
+//			 initService.hisDrawsRedcode("01,08,12,13,24,27", "10085");
+//			 initService.hisDrawsRedcode("05,21,28,29,30,31", "10086");
+//			 initService.hisDrawsRedcode("01,08,16,17,25,30", "10087");
+//			 initService.hisDrawsRedcode("05,06,15,23,27,30", "10087");
+//			 initService.hisDrawsRedcode("07,08,09,16,23,26", "10089");
+//			 initService.hisDrawsRedcode("01,06,10,15,25,31", "10090");
 
 			// lotterySsqFileService.deleteFileRedCode();
 			// initService.deleteMediaFetch();
@@ -102,7 +140,25 @@ public class ReverseTestMain {
 			// service.clearHisSsqData();
 			// collectservice.backHisSsqCollectResult();
 			// initService.initFilterResult();
-			// 看中奖号码在用户投注中的表现
+			// initService.hisDrawsRedcode("02,03,13,19,20,23","10055");
+			// initService.hisDrawsRedcode("01,06,08,12,14,25","10054");
+			// initService.hisDrawsRedcode("03,22,24,27,28,30","10053");
+			// initService.hisDrawsRedcode("01,02,19,23,27,29","10055");
+			// initService.hisDrawsRedcode("01,02,03,08,13,32","10056");
+			// initService.hisDrawsRedcode("05,11,12,19,25,32","10057");
+			// initService.hisDrawsRedcode("01,04,11,17,19,29","10058");
+			// initService.hisDrawsRedcode("01,09,11,12,18,30","10059");
+			// initService.hisDrawsRedcode("01,08,15,18,22,27","10060");
+			// initService.hisDrawsRedcode("02,04,16,19,22,26","10061");
+			// initService.hisDrawsRedcode("11,13,15,20,31,33","10062");
+			// initService.hisDrawsRedcode("02,06,10,17,23,24","10063");
+			// initService.hisDrawsRedcode("08,14,25,26,30,31","10064");
+			// initService.hisDrawsRedcode("02,07,08,17,30,32","10065");
+			// initService.hisDrawsRedcode("01,03,21,22,31,32","10066");
+			// initService.hisDrawsRedcode("01,07,10,14,21,25","10067");
+			// initService.hisDrawsRedcode("03,13,18,20,23,28","10068");
+			// initService.hisDrawsRedcode("12,14,20,22,24,32","10069");
+			// initService.hisDrawsRedcode("01,02,19,23,27,29","");
 
 			// collectservice.fetchDyjCustomerProject();
 			Scanner scanner = new Scanner(System.in);

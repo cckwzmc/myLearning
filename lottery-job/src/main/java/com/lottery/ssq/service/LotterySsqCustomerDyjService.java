@@ -52,7 +52,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		String url = LotterySsqFetchConfig.dyjUrl;
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		int k = 0;
-		for (int i = 1; i < 100; i++) {
+		for (int i = 1; i < 2; i++) {
 			if (k > 3) {
 				break;
 			}
@@ -113,7 +113,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		logger.info(url);
 		String content = HttpHtmlService.getXmlContent(url, "GB2312");
 		try {
-			sleep(5000);
+			sleep(2000);
 		} catch (InterruptedException e) {
 			notify();
 		}
@@ -124,6 +124,9 @@ public class LotterySsqCustomerDyjService extends Thread {
 		content = StringUtils.replace(content, " + ", "+");
 		content = StringUtils.replace(content, " = ", "+");
 		content = StringUtils.replace(content, "<br><br>", "\n");
+		content = StringUtils.replace(content, "<br/><br/>", "\n");
+		content = StringUtils.replace(content, "<br>", "\n");
+		content = StringUtils.replace(content, "<br/>", "\n");
 		content = StringUtils.replace(content, "<br>", "\n");
 		content = StringUtils.replace(content, "  ", " ");
 		content = StringUtils.replace(content, "  ", " ");
@@ -238,14 +241,17 @@ public class LotterySsqCustomerDyjService extends Thread {
 	 * 大赢家用户投注抓取
 	 */
 	public void fetchDyjProjectCode() {
-		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "1");
+		if(this.dao!=null)
+		{
+			this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "1");
+		}
 		List<Map<String, String>> list = this.getDyjProject();
 		List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
 		for (Map<String, String> map : list) {
 			if ("0".equals(map.get("isupload"))) {
 				continue;
 			}
-			if (this.dao.getCountSsqLotteryCollectFetchByProid(map.get("proid"), "1") > 0) {
+			if (this.dao!=null&&this.dao.getCountSsqLotteryCollectFetchByProid(map.get("proid"), "1") > 0) {
 				continue;
 			}
 			List<String> pList = this.downloadDyjProject(map.get("id"), map.get("playtype"));
@@ -278,5 +284,14 @@ public class LotterySsqCustomerDyjService extends Thread {
 			resultList.clear();
 		}
 		logger.info("========" + "大赢家抓取完成..............................................");
+	}
+	public static void main(String[] args) {
+		LotterySsqCustomerDyjService dyjService=new LotterySsqCustomerDyjService();
+		LotterySsqFetchConfig tt=new LotterySsqFetchConfig();
+		LotterySsqConfig jj=new LotterySsqConfig();
+		jj.expect="10094";
+		tt.dyjUrl="http://trade.cpdyj.com/trade/getproject.dyj?lottype=ss&playtype=&sort=allmoney&pageno=@pageno@&sort=renqi&expect=2010094&stype=0&moneytype=undefined&findstr=&sortending=descending&rnd=@random@";
+		tt.dyjDowload="http://trade.cpdyj.com/trade/querycast.go?projectid=@id@&lottype=3&playtype=@playtype@";
+		dyjService.fetchDyjProjectCode();
 	}
 }

@@ -365,6 +365,15 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "isSinaRedCodeXiaoFourFilter")) {
 				config.setIsSinaRedCodeXiaoFourFilter(NumberUtils.toInt(cfgValue));
 			}
+			if (StringUtils.equals(cfgName, "customer30Selecte1")) {
+				config.setCustomer30Selecte1(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "customer30Selecte0")) {
+				config.setCustomer30Selecte0(NumberUtils.toInt(cfgValue));
+			}
+			if (StringUtils.equals(cfgName, "customer30Selecte3")) {
+				config.setCustomer30Selecte3(NumberUtils.toInt(cfgValue));
+			}
 		}
 		return config;
 	}

@@ -91,6 +91,9 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	private int isSinaDanAllFilter;
 	private int isSinaDanNoneFilter;
 	private int isSinaRedCodeXiaoFourFilter;
+	private int customer30Selecte1;
+	private int customer30Selecte0;
+	private int customer30Selecte3;
 
 	public int getIsUseLastFilter() {
 		return isUseLastFilter;
@@ -554,6 +557,30 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 
 	public int getIsSinaRedCodeXiaoFourFilter() {
 		return this.isSinaRedCodeXiaoFourFilter;
+	}
+
+	public void setCustomer30Selecte1(int customer30Selecte1) {
+		this.customer30Selecte1 = customer30Selecte1;
+	}
+
+	public void setCustomer30Selecte0(int customer30Selecte0) {
+		this.customer30Selecte0 = customer30Selecte0;
+	}
+
+	public void setCustomer30Selecte3(int customer30Selecte3) {
+		this.customer30Selecte3 = customer30Selecte3;
+	}
+
+	public int getCustomer30Selecte3() {
+		return this.customer30Selecte3;
+	}
+
+	public int getCustomer30Selecte0() {
+		return this.customer30Selecte0;
+	}
+
+	public int getCustomer30Selecte1() {
+		return this.customer30Selecte1;
 	}
 
 }

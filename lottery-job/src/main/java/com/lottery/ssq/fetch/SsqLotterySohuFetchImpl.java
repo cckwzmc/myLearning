@@ -306,7 +306,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 	}
 
 	private String replaceStantardString(String code) {
-		code = StringUtils.replace(code, "　", "");
+		code = StringUtils.replace(code, "　", ",");
 		code = StringUtils.replace(code, "    ", " ");
 		code = StringUtils.replace(code, "    ", " ");
 		code = StringUtils.replace(code, "    ", " ");
@@ -323,6 +323,11 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 		code = StringUtils.replace(code, "  ", " ");
 		code = StringUtils.replace(code, "  ", " ");
 		code = StringUtils.replace(code, "  ", " ");
+		code = StringUtils.replace(code, "，", ",");
+		code = StringUtils.replace(code, ",,,", ",");
+		code = StringUtils.replace(code, ",,,", ",");
+		code = StringUtils.replace(code, ",,", ",");
+		code = StringUtils.replace(code, ",,", ",");
 		code = StringUtils.replace(code, "，", ",");
 		if(StringUtils.endsWith(code, ",")){
 			code=code.substring(0, code.length()-1);
