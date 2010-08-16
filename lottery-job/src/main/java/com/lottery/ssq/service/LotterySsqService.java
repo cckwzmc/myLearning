@@ -275,10 +275,16 @@ public class LotterySsqService {
 	 * @param customerDanList
 	 */
 	private void initFilterCustomerCode(LotterySsqFilterConfig filterConfig, List<String> customerDanList, List customerGtCount5RedList, List customerLeCount30RedList) {
+		List tmpList=null;
 		if (filterConfig.getCustomerGtCount5RedList() >= 1) {
-			customerGtCount5RedList = this.dao.getSsqLotteryCollectResultCountLessThan5();
+			tmpList=this.dao.getSsqLotteryCollectResultCountLessThan5();
+			customerGtCount5RedList .addAll(tmpList);
 		}
-		customerLeCount30RedList = this.dao.getSsqLotteryCollectResult30(0, 30);
+		tmpList=this.dao.getSsqLotteryCollectResult30(0, 30);
+		if(CollectionUtils.isNotEmpty(tmpList))
+		{
+			customerLeCount30RedList.addAll(tmpList);
+		}
 		List list = this.dao.getSsqLotteryDanResult("1");
 		if (CollectionUtils.isNotEmpty(list)) {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
