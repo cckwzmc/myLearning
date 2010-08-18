@@ -1099,4 +1099,31 @@ public class LotterySsqAlgorithm {
 		}
 		return redCode;
 	}
+
+	/**
+	 * 最多中其中的两个号码.
+	 * @param zuiduoSelectedOneCode
+	 * @param lValues
+	 * @return
+	 */
+	public static boolean isZuiduoSelectedTwoCode(String[] zuiduoSelectedOneCode, String[] lValues) {
+		if (zuiduoSelectedOneCode == null || zuiduoSelectedOneCode.length < 1) {
+			return true;
+		}
+		for (int i = 0; i < zuiduoSelectedOneCode.length; i++) {
+			int tempSelect = 0;
+			String[] code = zuiduoSelectedOneCode[i].split(",");
+			for (int k = 0; k < code.length; k++) {
+				for (int j = 0; j < lValues.length; j++) {
+					if (StringUtils.equals(code[k], lValues[j])) {
+						tempSelect++;
+					}
+				}
+			}
+			if (tempSelect > 2) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

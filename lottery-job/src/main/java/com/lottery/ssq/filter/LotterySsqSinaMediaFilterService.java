@@ -28,7 +28,6 @@ public class LotterySsqSinaMediaFilterService {
 		this.dao = dao;
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean sinaFilterMethod(LotterySsqFilterConfig filterConfig, String[] lValues, List<String> sinaDanList, List<String[]> sinaRedCodeList) {
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

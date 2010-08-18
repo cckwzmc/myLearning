@@ -374,6 +374,10 @@ public class LotterySsqConifgService {
 			if (StringUtils.equals(cfgName, "customer30Selecte3")) {
 				config.setCustomer30Selecte3(NumberUtils.toInt(cfgValue));
 			}
+			if (StringUtils.equals(cfgName, "zuiduoSelectedTwoCode")) {
+				config.setZuiduoSelectedTwoCode(StringUtils.isNotBlank(cfgValue) ? StringUtils.split(cfgValue, "|")
+						: null);
+			}
 		}
 		return config;
 	}

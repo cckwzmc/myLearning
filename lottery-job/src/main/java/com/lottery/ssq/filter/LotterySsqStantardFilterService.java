@@ -171,6 +171,12 @@ public class LotterySsqStantardFilterService {
 				return false;
 			}
 		}
+		//最多选择两个
+		if(filterConfig.getZuiduoSelectedTwoCode()!=null&&filterConfig.getZuiduoSelectedTwoCode().length>0){
+			if(!LotterySsqAlgorithm.isZuiduoSelectedTwoCode(filterConfig.getZuiduoSelectedOneCode(),lValues)){
+				return false;
+			}
+		}
 		// 对历史号码的研究
 		// 1.1、2、3/4/5、差值的统计
 		// 重号附近号码规律的统计

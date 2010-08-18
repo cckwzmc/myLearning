@@ -52,7 +52,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 		String url = LotterySsqFetchConfig.dyjUrl;
 		List<Map<String, String>> retList = new ArrayList<Map<String, String>>();
 		int k = 0;
-		for (int i = 1; i < 2; i++) {
+		for (int i = 1; i < 100; i++) {
 			if (k > 3) {
 				break;
 			}

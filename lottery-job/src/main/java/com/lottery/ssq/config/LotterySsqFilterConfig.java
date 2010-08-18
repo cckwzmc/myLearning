@@ -94,6 +94,7 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	private int customer30Selecte1;
 	private int customer30Selecte0;
 	private int customer30Selecte3;
+	private String[] zuiduoSelectedTwoCode;
 
 	public int getIsUseLastFilter() {
 		return isUseLastFilter;
@@ -582,5 +583,14 @@ public class LotterySsqFilterConfig extends LotterySsqConfig {
 	public int getCustomer30Selecte1() {
 		return this.customer30Selecte1;
 	}
+
+	public String[] getZuiduoSelectedTwoCode() {
+		return zuiduoSelectedTwoCode;
+	}
+
+	public void setZuiduoSelectedTwoCode(String[] zuiduoSelectedTwoCode) {
+		this.zuiduoSelectedTwoCode = zuiduoSelectedTwoCode;
+	}
+
 
 }
