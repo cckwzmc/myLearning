@@ -51,20 +51,20 @@ public class LotterySsqConsumerFilterService {
 			}
 			// 至少3注中0个
 			if (filterConfig.getCustomer30Selecte0() > 0) {
-				if (this.isCustomer30Selecte0(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte0())) {
+				if (!this.isCustomer30Selecte0(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte0())) {
 					return false;
 				}
 			}
 			// 至少10注以上中1个
 
 			if (filterConfig.getCustomer30Selecte1() > 0) {
-				if (this.isCustomer30Selecte1(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte1())) {
+				if (!this.isCustomer30Selecte1(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte1())) {
 					return false;
 				}
 			}
 			// 最多3注中3个
 			if (filterConfig.getCustomer30Selecte3() > 0) {
-				if (this.isCustomer30Selecte3(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte3())) {
+				if (!this.isCustomer30Selecte3(lValues, customerLeCount30RedList, filterConfig.getCustomer30Selecte3())) {
 					return false;
 				}
 			}

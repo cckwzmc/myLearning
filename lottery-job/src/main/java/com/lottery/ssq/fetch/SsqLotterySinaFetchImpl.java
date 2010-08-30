@@ -14,6 +14,8 @@ import net.htmlparser.jericho.Source;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.fetch.dao.LotteryFetchDao;
@@ -21,7 +23,7 @@ import com.lottery.ssq.utils.LotterySsqUtils;
 import com.lottery.util.html.HttpHtmlService;
 
 public class SsqLotterySinaFetchImpl implements ISsqLotteryFetch {
-
+	private static final Logger logger = LoggerFactory.getLogger(SsqLotterySinaFetchImpl.class);
     final String URLSINA = "http://sports.sina.com.cn/l/lotto/3.shtml";
     final String PREURL = "http://sports.sina.com.cn";
     private LotteryFetchDao lotteryFetchDao = null;
@@ -33,6 +35,7 @@ public class SsqLotterySinaFetchImpl implements ISsqLotteryFetch {
     @SuppressWarnings("unchecked")
     @Override
     public String getSsqLotteryDetail(String url, String title) {
+    	try{
         List<String[]> ssqList = this.getSsqLotteryIndexList();
         List webList = this.lotteryFetchDao.getSsqLotteryWebFetchList(2);
         String webFetchcode = "";
@@ -168,6 +171,9 @@ public class SsqLotterySinaFetchImpl implements ISsqLotteryFetch {
 
             }
         }
+    	}catch(Exception e){
+    		logger.error(e.getMessage()+e);
+    	}
         return null;
     }
 

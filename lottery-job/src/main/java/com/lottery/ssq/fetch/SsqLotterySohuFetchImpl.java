@@ -38,6 +38,7 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getSsqLotteryDetail(String url, String title) {
+		try{
 		List<String[]> ssqList = this.getSsqLotteryIndexList();
 		List webList = this.lotteryFetchDao.getSsqLotteryWebFetchList(3);
 		String webFetchcode = "";
@@ -174,6 +175,9 @@ public class SsqLotterySohuFetchImpl implements ISsqLotteryFetch {
 					blueResult.clear();
 				}
 			}
+		}
+		}catch(Exception e){
+			logger.error(e.getMessage()+e);
 		}
 		return null;
 	}

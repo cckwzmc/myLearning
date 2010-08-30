@@ -35,142 +35,144 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getSsqLotteryDetail(String url, String title) {
-		List<String[]> ssqList = this.getSsqLotteryIndexList();
-		List webList = this.lotteryFetchDao.getSsqLotteryWebFetchList(1);
-		String webFetchcode = "";
-		Set<String> result = new HashSet<String>();
-		List<String> blueResult = new ArrayList<String>();
-		for (Iterator iterator = webList.iterator(); iterator.hasNext();) {
-			Map map = (Map) iterator.next();
-			String webTitle = ObjectUtils.toString(map.get("title"));
-			String[] wt = StringUtils.split(webTitle, "|");
-			for (String[] detail : ssqList) {
-				boolean isMatch = true;
-				for (String subTitle : wt) {
-					if (detail[1].indexOf(subTitle) == -1) {
-						isMatch = false;
-						//break;
+		try {
+			List<String[]> ssqList = this.getSsqLotteryIndexList();
+			List webList = this.lotteryFetchDao.getSsqLotteryWebFetchList(1);
+			String webFetchcode = "";
+			Set<String> result = new HashSet<String>();
+			List<String> blueResult = new ArrayList<String>();
+			for (Iterator iterator = webList.iterator(); iterator.hasNext();) {
+				Map map = (Map) iterator.next();
+				String webTitle = ObjectUtils.toString(map.get("title"));
+				String[] wt = StringUtils.split(webTitle, "|");
+				for (String[] detail : ssqList) {
+					boolean isMatch = true;
+					for (String subTitle : wt) {
+						if (detail[1].indexOf(subTitle) == -1) {
+							isMatch = false;
+							// break;
+						}
 					}
-				}
-				if (isMatch) {
-					String htmlContent = HttpHtmlService.getHtmlContent(detail[0], "GBK");
-					String[] pattens = StringUtils.split(ObjectUtils.toString(map.get("patten_des")), "|");
-					String[] replaces = StringUtils.split(ObjectUtils.toString(map.get("replace")), "|");
-					Source source = new Source(htmlContent);
-					List<Element> eList = null;
-					Element e = null;
-					for (String patten : pattens) {
-						boolean isExistBlueCode = false;
-						if (StringUtils.indexOf(ObjectUtils.toString(map.get("patten_des")), "blue=") > -1) {
-							isExistBlueCode = true;
-						}
-						if (StringUtils.indexOf(patten, "id=") > -1) {
-							e = source.getElementById(StringUtils.remove(patten, "id="));
-						}
-						if (StringUtils.indexOf(patten, "tag_list=") > -1 && e != null) {
-							eList = e.getAllElements(StringUtils.remove(patten, "tag_list="));
-						}
-						if (CollectionUtils.isNotEmpty(eList)) {
-							// 取红球
-							if (StringUtils.indexOf(patten, "have=") > -1) {
-								boolean isAtNext = false;
-								if (StringUtils.indexOf(patten, "next=") > -1) {
-									isAtNext = true;
-								}
-								String hStr = StringUtils.remove(patten, "have=");
-								hStr = StringUtils.remove(hStr, "next=");
-								for (int i = 0; i < eList.size(); i++) {
-									String code = "";
-									Segment element = eList.get(i);
-									if (StringUtils.indexOf(element.getTextExtractor().toString(), hStr) > -1) {
-										if (!isAtNext) {
-											code = element.getTextExtractor().toString();
-											if (StringUtils.isNotBlank(code)) {
-												code = this.replaceChar(code, replaces);
-												result.add(code);
-											}
-										} else {
-											i++;
-											code = eList.get(i).getTextExtractor().toString();
-											// if (StringUtils.indexOf(eList.get(i + 1).getTextExtractor().toString(),
-											// "蓝球") > -1) {
-											// code += eList.get(i + 1).getTextExtractor().toString();
-											// i++;
-											// }
-											if (StringUtils.isNotBlank(code)) {
-												code = this.replaceChar(code, replaces);
-												result.add(code);
+					if (isMatch) {
+						String htmlContent = HttpHtmlService.getHtmlContent(detail[0], "GBK");
+						String[] pattens = StringUtils.split(ObjectUtils.toString(map.get("patten_des")), "|");
+						String[] replaces = StringUtils.split(ObjectUtils.toString(map.get("replace")), "|");
+						Source source = new Source(htmlContent);
+						List<Element> eList = null;
+						Element e = null;
+						for (String patten : pattens) {
+							boolean isExistBlueCode = false;
+							if (StringUtils.indexOf(ObjectUtils.toString(map.get("patten_des")), "blue=") > -1) {
+								isExistBlueCode = true;
+							}
+							if (StringUtils.indexOf(patten, "id=") > -1) {
+								e = source.getElementById(StringUtils.remove(patten, "id="));
+							}
+							if (StringUtils.indexOf(patten, "tag_list=") > -1 && e != null) {
+								eList = e.getAllElements(StringUtils.remove(patten, "tag_list="));
+							}
+							if (CollectionUtils.isNotEmpty(eList)) {
+								// 取红球
+								if (StringUtils.indexOf(patten, "have=") > -1) {
+									boolean isAtNext = false;
+									if (StringUtils.indexOf(patten, "next=") > -1) {
+										isAtNext = true;
+									}
+									String hStr = StringUtils.remove(patten, "have=");
+									hStr = StringUtils.remove(hStr, "next=");
+									for (int i = 0; i < eList.size(); i++) {
+										String code = "";
+										Segment element = eList.get(i);
+										if (StringUtils.indexOf(element.getTextExtractor().toString(), hStr) > -1) {
+											if (!isAtNext) {
+												code = element.getTextExtractor().toString();
+												if (StringUtils.isNotBlank(code)) {
+													code = this.replaceChar(code, replaces);
+													result.add(code);
+												}
+											} else {
+												i++;
+												code = eList.get(i).getTextExtractor().toString();
+												// if (StringUtils.indexOf(eList.get(i + 1).getTextExtractor().toString(),
+												// "蓝球") > -1) {
+												// code += eList.get(i + 1).getTextExtractor().toString();
+												// i++;
+												// }
+												if (StringUtils.isNotBlank(code)) {
+													code = this.replaceChar(code, replaces);
+													result.add(code);
+												}
 											}
 										}
 									}
-								}
 
-							}
-							// 取蓝球 ---begin
-							if (isExistBlueCode && patten.indexOf("blue=") > -1) {
-								boolean isAtNext = false;
-								if (StringUtils.indexOf(patten, "next=") > -1) {
-									isAtNext = true;
 								}
-								String hStr = StringUtils.remove(patten, "blue=");
-								hStr = StringUtils.remove(hStr, "next=");
-								for (int i = 0; i < eList.size(); i++) {
-									Segment element = eList.get(i);
-									String blueCode = "";
-									if (StringUtils.indexOf(element.getTextExtractor().toString(), hStr) > -1) {
-										if (!isAtNext) {
-											if (StringUtils.indexOf(element.getTextExtractor().toString(), hStr) > -1) {
-												blueCode = element.getTextExtractor().toString();
-											}
-											if (StringUtils.isNotBlank(blueCode)) {
-												blueCode = this.replaceChar(blueCode, replaces);
-												blueResult.add(blueCode);
-											}
-										} else {
-											i++;
-											blueCode = eList.get(i).getTextExtractor().toString();
-											if (StringUtils.isNotBlank(blueCode)) {
-												blueCode = this.replaceChar(blueCode, replaces);
-												blueResult.add(blueCode);
+								// 取蓝球 ---begin
+								if (isExistBlueCode && patten.indexOf("blue=") > -1) {
+									boolean isAtNext = false;
+									if (StringUtils.indexOf(patten, "next=") > -1) {
+										isAtNext = true;
+									}
+									String hStr = StringUtils.remove(patten, "blue=");
+									hStr = StringUtils.remove(hStr, "next=");
+									for (int i = 0; i < eList.size(); i++) {
+										Segment element = eList.get(i);
+										String blueCode = "";
+										if (StringUtils.indexOf(element.getTextExtractor().toString(), hStr) > -1) {
+											if (!isAtNext) {
+												if (StringUtils.indexOf(element.getTextExtractor().toString(), hStr) > -1) {
+													blueCode = element.getTextExtractor().toString();
+												}
+												if (StringUtils.isNotBlank(blueCode)) {
+													blueCode = this.replaceChar(blueCode, replaces);
+													blueResult.add(blueCode);
+												}
+											} else {
+												i++;
+												blueCode = eList.get(i).getTextExtractor().toString();
+												if (StringUtils.isNotBlank(blueCode)) {
+													blueCode = this.replaceChar(blueCode, replaces);
+													blueResult.add(blueCode);
+												}
 											}
 										}
 									}
 								}
-							}
-							// 蓝球 end
-						}
-					}
-					if (CollectionUtils.isNotEmpty(blueResult) && CollectionUtils.isNotEmpty(result)) {
-						String[] codeTmp = result.toArray(new String[] {});
-						String[] blueCode = blueResult.toArray(new String[] {});
-						String tmpCode = "";
-						for (String redCode : codeTmp) {
-							if ("".equals(tmpCode)) {
-								tmpCode = redCode + "+" + StringUtils.join(blueCode, ",");
-							} else {
-								tmpCode += "@@" + redCode + "+" + StringUtils.join(blueCode, ",");
+								// 蓝球 end
 							}
 						}
-						webFetchcode = tmpCode;
-						this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map
-								.get("id"));
-						webFetchcode = "";
-						result.clear();
-						blueResult.clear();
-					} else {
-						if (CollectionUtils.isNotEmpty(result)) {
+						if (CollectionUtils.isNotEmpty(blueResult) && CollectionUtils.isNotEmpty(result)) {
 							String[] codeTmp = result.toArray(new String[] {});
-							webFetchcode = StringUtils.join(codeTmp, "@@");
-							this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map
-									.get("id"));
+							String[] blueCode = blueResult.toArray(new String[] {});
+							String tmpCode = "";
+							for (String redCode : codeTmp) {
+								if ("".equals(tmpCode)) {
+									tmpCode = redCode + "+" + StringUtils.join(blueCode, ",");
+								} else {
+									tmpCode += "@@" + redCode + "+" + StringUtils.join(blueCode, ",");
+								}
+							}
+							webFetchcode = tmpCode;
+							this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map.get("id"));
+							webFetchcode = "";
+							result.clear();
+							blueResult.clear();
+						} else {
+							if (CollectionUtils.isNotEmpty(result)) {
+								String[] codeTmp = result.toArray(new String[] {});
+								webFetchcode = StringUtils.join(codeTmp, "@@");
+								this.lotteryFetchDao.batchLotterySsqCommendCode(webFetchcode, LotterySsqConfig.expect, map.get("id"));
+							}
+							webFetchcode = "";
+							result.clear();
+							blueResult.clear();
 						}
-						webFetchcode = "";
-						result.clear();
-						blueResult.clear();
 					}
-				}
 
+				}
 			}
+		} catch (Exception e) {
+			logger.error(e.getMessage() + e);
 		}
 		return null;
 	}
@@ -247,8 +249,7 @@ public class SsqLottery163FetchImpl implements ISsqLotteryFetch {
 				String hrefValue = href.get(0).getAttributeValue("href");
 				String hrefTitle = href.get(0).getContent().getTextExtractor().toString();
 
-				if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1
-						|| hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
+				if (hrefTitle.indexOf(LotterySsqConfig.expect + "") != -1 || hrefTitle.indexOf(LotterySsqConfig.expect.substring(LotterySsqConfig.expect.length() - 3)) != -1) {
 					ssq[0] = hrefValue;
 					ssq[1] = hrefTitle;
 					ssqList.add(ssq);

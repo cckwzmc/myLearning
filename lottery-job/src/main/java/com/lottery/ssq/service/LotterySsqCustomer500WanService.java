@@ -142,8 +142,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 			String code = contents[i];
 			String[] codes = StringUtils.split(code, " ");
 			if (codes.length == 7) {
-				code = codes[0] + "," + codes[1] + "," + codes[2] + "," + codes[3] + "," + codes[4] + "," + codes[5]
-						+ "+" + codes[6];
+				code = codes[0] + "," + codes[1] + "," + codes[2] + "," + codes[3] + "," + codes[4] + "," + codes[5] + "+" + codes[6];
 			} else {
 				code = StringUtils.replace(code, " ", ",");
 			}
@@ -233,8 +232,8 @@ public class LotterySsqCustomer500WanService extends Thread {
 		blueMap.put("14", 0);
 		blueMap.put("15", 0);
 		blueMap.put("16", 0);
-//		int last = 0;
-//		int page = 200;
+		// int last = 0;
+		// int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(0, 0, "0");
 		Pattern p = Pattern.compile("[^\\x00-\\xff]");
 		if (CollectionUtils.isNotEmpty(list)) {
@@ -250,12 +249,12 @@ public class LotterySsqCustomer500WanService extends Thread {
 						if (redCode.length == 2) {
 							blueCode = StringUtils.split(redCode[1], ",");
 							for (String blue : blueCode) {
-								if (blue.length() > 2||!StringUtils.isNumeric(blue)) {
+								if (blue.length() > 2 || !StringUtils.isNumeric(blue)) {
 									continue;
 								} else if (blue.length() == 1) {
 									blue = "0" + blue;
 								}
-								if(!blueMap.containsKey(blue)){
+								if (!blueMap.containsKey(blue)) {
 									continue;
 								}
 								Integer tmp = blueMap.get(blue) + 1;
@@ -276,13 +275,11 @@ public class LotterySsqCustomer500WanService extends Thread {
 							continue;
 						}
 						String dan = StringUtils.substring(redCode[0], 0, StringUtils.indexOf(redCode[0], "|"));
-						String tuo = StringUtils.substring(redCode[0], StringUtils.indexOf(redCode[0], "|") + 1,
-								StringUtils.indexOf(redCode[0], "#"));
+						String tuo = StringUtils.substring(redCode[0], StringUtils.indexOf(redCode[0], "|") + 1, StringUtils.indexOf(redCode[0], "#"));
 						String[] dans = dan.split(",");
 						LotterySsqUtils.selectDanArray(6, dan, tuo, danList);
 						for (String[] danCode : danList) {
-							String[] rsDanCode = (StringUtils.join(dans, ",") + "," + StringUtils.join(danCode, ","))
-									.split(",");
+							String[] rsDanCode = (StringUtils.join(dans, ",") + "," + StringUtils.join(danCode, ",")).split(",");
 							if (rsDanCode.length != 6) {
 								continue;
 							}
@@ -304,12 +301,12 @@ public class LotterySsqCustomer500WanService extends Thread {
 						if (redCode.length == 2) {
 							blueCode = StringUtils.split(redCode[1], ",");
 							for (String blue : blueCode) {
-								if (blue.length() > 2||!StringUtils.isNumeric(blue)) {
+								if (blue.length() > 2 || !StringUtils.isNumeric(blue)) {
 									continue;
 								} else if (blue.length() == 1) {
 									blue = "0" + blue;
 								}
-								if(!blueMap.containsKey(blue)){
+								if (!blueMap.containsKey(blue)) {
 									continue;
 								}
 								Integer tmp = blueMap.get(blue) + 1;
@@ -334,8 +331,8 @@ public class LotterySsqCustomer500WanService extends Thread {
 					resultList.clear();
 				}
 			}
-//			last += page;
-//			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
+			// last += page;
+			// list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "0");
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
@@ -347,8 +344,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 	private String parserUrl(String fangan) {
 		String download = LotterySsqFetchConfig.www500wanDowload;
 		if (fangan.toLowerCase().indexOf("onclick") != -1) {
-			download = StringUtils.replace(download, "@pid@", StringUtils.substringBetween(fangan, "list.showProject(",
-					")"));
+			download = StringUtils.replace(download, "@pid@", StringUtils.substringBetween(fangan, "list.showProject(", ")"));
 		} else {
 			download = "http://" + StringUtils.substringBetween(fangan, "http://", "'");
 		}
@@ -382,15 +378,37 @@ public class LotterySsqCustomer500WanService extends Thread {
 			String downloadUrl = this.parserUrl(map.get("fangan"));
 			downloadUrl = StringUtils.replace(downloadUrl, "@nowdate@", new Date().getTime() + "");
 			logger.info(downloadUrl);
-			List<String> pList = this.download500WanProject(downloadUrl);
-			if (CollectionUtils.isNotEmpty(pList) && pList.contains("--1")) {
-				for (int k = 0; k < pList.size(); k++) {
-					String dan = (String) pList.get(k);
-					if (dan.startsWith("--1,")) {
-						danList.add(pList.remove(k).replace("--1,", ""));
-						k--;
+			List<String> pList = null;
+			try {
+				pList = this.download500WanProject(downloadUrl);
+
+				if (CollectionUtils.isNotEmpty(pList) && pList.contains("--1")) {
+					for (int k = 0; k < pList.size(); k++) {
+						String dan = (String) pList.get(k);
+						if (dan.startsWith("--1,")) {
+							danList.add(pList.remove(k).replace("--1,", ""));
+							k--;
+						}
 					}
+					String[] codes = pList.toArray(new String[pList.size()]);
+					tmpMap.put("proid", map.get("proid"));
+					tmpMap.put("net", "0");
+					tmpMap.put("expect", LotterySsqConfig.expect);
+					tmpMap.put("code", StringUtils.join(codes, "@@"));
+					tmpMap.put("isfail", "0");
+					resultList.add(tmpMap);
+					continue;
 				}
+				if (CollectionUtils.isEmpty(pList)) {
+					tmpMap.put("proid", map.get("proid"));
+					tmpMap.put("net", "0");
+					tmpMap.put("expect", LotterySsqConfig.expect);
+					tmpMap.put("code", "-1");
+					tmpMap.put("isfail", "1");
+					resultList.add(tmpMap);
+					continue;
+				}
+
 				String[] codes = pList.toArray(new String[pList.size()]);
 				tmpMap.put("proid", map.get("proid"));
 				tmpMap.put("net", "0");
@@ -398,25 +416,9 @@ public class LotterySsqCustomer500WanService extends Thread {
 				tmpMap.put("code", StringUtils.join(codes, "@@"));
 				tmpMap.put("isfail", "0");
 				resultList.add(tmpMap);
-				continue;
+			} catch (Exception e) {
+				logger.error(e.getMessage() + e);
 			}
-			if (CollectionUtils.isEmpty(pList)) {
-				tmpMap.put("proid", map.get("proid"));
-				tmpMap.put("net", "0");
-				tmpMap.put("expect", LotterySsqConfig.expect);
-				tmpMap.put("code", "-1");
-				tmpMap.put("isfail", "1");
-				resultList.add(tmpMap);
-				continue;
-			}
-
-			String[] codes = pList.toArray(new String[pList.size()]);
-			tmpMap.put("proid", map.get("proid"));
-			tmpMap.put("net", "0");
-			tmpMap.put("expect", LotterySsqConfig.expect);
-			tmpMap.put("code", StringUtils.join(codes, "@@"));
-			tmpMap.put("isfail", "0");
-			resultList.add(tmpMap);
 			if (resultList.size() > 200) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 				resultList.clear();
@@ -434,10 +436,8 @@ public class LotterySsqCustomer500WanService extends Thread {
 
 	public static void main(String[] args) {
 		LotterySsqCustomer500WanService ss = new LotterySsqCustomer500WanService();
-		String tt = "<div class=\"alert_content\" id=\"projectDetailList\">"
-				+ "<div class=\"num\"><span class=\"red\">胆: 14,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>"
-				+ "<div class=\"num\"><span class=\"red\">胆: 11,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>"
-				+ "</div>";
+		String tt = "<div class=\"alert_content\" id=\"projectDetailList\">" + "<div class=\"num\"><span class=\"red\">胆: 14,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>"
+				+ "<div class=\"num\"><span class=\"red\">胆: 11,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>" + "</div>";
 		System.out.println(ss.parserdownloadProjectHtml(tt));
 	}
 }
