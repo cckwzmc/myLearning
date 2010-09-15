@@ -17,6 +17,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.lottery.ssq.fetch.ISsqLotteryFetch;
+import com.lottery.ssq.fetch.exact.service.LotterySsqCustomerTaobaoService;
+import com.lottery.ssq.fetch.service.LotterySsqCustomerTaobaoFetchService;
 import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
@@ -33,36 +35,34 @@ public class ReverseTestMain {
 	private static org.slf4j.Logger logger = LoggerFactory.getLogger(ReverseTestMain.class);
 
 	public static void main(String[] args) {
-		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {
-				"classpath:/spring/applicationContext.xml", "classpath:/lottery/ssq/applicationContext-database.xml",
-				"classpath:/lottery/ssq/applicationContext-dao.xml",
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "classpath:/spring/applicationContext.xml", "classpath:/lottery/ssq/applicationContext-database.xml", "classpath:/lottery/ssq/applicationContext-dao.xml",
 				"classpath:/lottery/ssq/applicationContext-service.xml" });
 		try {
-			LotterySsqConifgService lotterySsqConifgService = (LotterySsqConifgService) context
-					.getBean("lotterySsqConifgService");
-			LotterySsqCollectService collectservice = (LotterySsqCollectService) context
-					.getBean("lotteryCollectService");
+			LotterySsqConifgService lotterySsqConifgService = (LotterySsqConifgService) context.getBean("lotterySsqConifgService");
+			LotterySsqCollectService collectservice = (LotterySsqCollectService) context.getBean("lotteryCollectService");
 			LotterySsqService service = (LotterySsqService) context.getBean("lotteryService");
 			LotteryInitService initService = (LotteryInitService) context.getBean("initLotteryService");
-			LotterySsqFileService lotterySsqFileService = (LotterySsqFileService) context
-					.getBean("lotterySsqFileService");
+			LotterySsqFileService lotterySsqFileService = (LotterySsqFileService) context.getBean("lotterySsqFileService");
 			lotterySsqConifgService.initSsqConfig();
 			lotterySsqConifgService.initFetchConfig();
 			lotterySsqConifgService.initFilterConfig();
 			ISsqLotteryFetch ssqLotterySohuFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySohuFetchImpl");
 			ISsqLotteryFetch ssqLottery163FetchImpl = (ISsqLotteryFetch) context.getBean("ssqLottery163FetchImpl");
 			ISsqLotteryFetch ssqLotterySinaFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySinaFetchImpl");
-			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context
-					.getBean("lotterySsqWebCollectService");
-//			service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());
+			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context.getBean("lotterySsqWebCollectService");
+			LotterySsqCustomerTaobaoFetchService lotterySsqCustomerTaobaoFetchService = (LotterySsqCustomerTaobaoFetchService) context.getBean("lotterySsqCustomerTaobaoFetchService");
+			LotterySsqCustomerTaobaoService lotterySsqCustomerTaobaoService = (LotterySsqCustomerTaobaoService) context.getBean("lotterySsqCustomerTaobaoService");
+			lotterySsqCustomerTaobaoFetchService.saveFecthTaobaoData();
+			lotterySsqCustomerTaobaoService.saveTaobaoProjectCode();
+			// service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());
 			// initService.testHistoryRedCode();
 			// ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
 			// initService.initFilterResult();
 			// collectservice.collectResultDispose();
-			 Set<String> codes = getCodeFromFile("D:/ttcode.txt");
-			 if (CollectionUtils.isNotEmpty(codes)) {
-				 service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(), codes);
-			 }
+			Set<String> codes = getCodeFromFile("D:/ttcode.txt");
+			if (CollectionUtils.isNotEmpty(codes)) {
+				service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(), codes);
+			}
 			Set<String> filterCode = getCodeFromFile("D:/ttcode_filter.txt");
 			if (CollectionUtils.isNotEmpty(filterCode)) {
 				service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig(), filterCode);
@@ -107,27 +107,27 @@ public class ReverseTestMain {
 			// initService.hisDrawsRedcode("01,07,10,14,21,25","10067");
 			// initService.hisDrawsRedcode("03,13,18,20,23,28","10068");
 			// initService.hisDrawsRedcode("12,14,20,22,24,32","10069");
-//			 initService.hisDrawsRedcode("08,13,23,27,31,32","10070");
-//			 initService.hisDrawsRedcode("05,13,14,27,20,26","10071");
-//			 initService.hisDrawsRedcode("06,08,22,23,30,31","10072");
-//			 initService.hisDrawsRedcode("01,16,20,23,27,31","10073");
-//			 initService.hisDrawsRedcode("02,10,17,18,19,29", "10074");
-//			 initService.hisDrawsRedcode("05,09,12,13,15,22", "10075");
-//			 initService.hisDrawsRedcode("01,12,14,29,31,32", "10076");
-//			 initService.hisDrawsRedcode("02,08,14,20,21,24", "10077");
-//			 initService.hisDrawsRedcode("01,03,09,11,17,23", "10078");
-//			 initService.hisDrawsRedcode("08,11,12,14,18,22", "10079");
-//			 initService.hisDrawsRedcode("08,10,13,14,16,23", "10080");
-//			 initService.hisDrawsRedcode("02,03,09,24,26,27", "10081");
-//			 initService.hisDrawsRedcode("01,08,13,14,27,31", "10082");
-//			 initService.hisDrawsRedcode("02,20,21,22,23,31", "10083");
-//			 initService.hisDrawsRedcode("02,10,14,18,20,30", "10084");
-//			 initService.hisDrawsRedcode("01,08,12,13,24,27", "10085");
-//			 initService.hisDrawsRedcode("05,21,28,29,30,31", "10086");
-//			 initService.hisDrawsRedcode("01,08,16,17,25,30", "10087");
-//			 initService.hisDrawsRedcode("05,06,15,23,27,30", "10087");
-//			 initService.hisDrawsRedcode("07,08,09,16,23,26", "10089");
-//			 initService.hisDrawsRedcode("01,06,10,15,25,31", "10090");
+			// initService.hisDrawsRedcode("08,13,23,27,31,32","10070");
+			// initService.hisDrawsRedcode("05,13,14,27,20,26","10071");
+			// initService.hisDrawsRedcode("06,08,22,23,30,31","10072");
+			// initService.hisDrawsRedcode("01,16,20,23,27,31","10073");
+			// initService.hisDrawsRedcode("02,10,17,18,19,29", "10074");
+			// initService.hisDrawsRedcode("05,09,12,13,15,22", "10075");
+			// initService.hisDrawsRedcode("01,12,14,29,31,32", "10076");
+			// initService.hisDrawsRedcode("02,08,14,20,21,24", "10077");
+			// initService.hisDrawsRedcode("01,03,09,11,17,23", "10078");
+			// initService.hisDrawsRedcode("08,11,12,14,18,22", "10079");
+			// initService.hisDrawsRedcode("08,10,13,14,16,23", "10080");
+			// initService.hisDrawsRedcode("02,03,09,24,26,27", "10081");
+			// initService.hisDrawsRedcode("01,08,13,14,27,31", "10082");
+			// initService.hisDrawsRedcode("02,20,21,22,23,31", "10083");
+			// initService.hisDrawsRedcode("02,10,14,18,20,30", "10084");
+			// initService.hisDrawsRedcode("01,08,12,13,24,27", "10085");
+			// initService.hisDrawsRedcode("05,21,28,29,30,31", "10086");
+			// initService.hisDrawsRedcode("01,08,16,17,25,30", "10087");
+			// initService.hisDrawsRedcode("05,06,15,23,27,30", "10087");
+			// initService.hisDrawsRedcode("07,08,09,16,23,26", "10089");
+			// initService.hisDrawsRedcode("01,06,10,15,25,31", "10090");
 
 			// lotterySsqFileService.deleteFileRedCode();
 			// initService.deleteMediaFetch();

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lottery.ssq.dao.LotteryDao;
 import com.lottery.ssq.fetch.ISsqLotteryFetch;
+import com.lottery.ssq.fetch.exact.service.LotterySsqCustomerTaobaoService;
 
 /**
  * 抓取500万/大赢家 用户投注号码
@@ -33,7 +34,13 @@ public class LotterySsqCollectService {
 	ISsqLotteryFetch ssqLotterySinaFetchImpl;
 	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService = null;
 	private LotterySsqWebCollectService lotterySsqWebCollectService=null;
+	private LotterySsqCustomerTaobaoService lotterySsqCustomerTaobaoService;
 
+
+
+	public void setLotterySsqCustomerTaobaoService(LotterySsqCustomerTaobaoService lotterySsqCustomerTaobaoService) {
+		this.lotterySsqCustomerTaobaoService = lotterySsqCustomerTaobaoService;
+	}
 
 	public void setLotterySsqWebCollectService(LotterySsqWebCollectService lotterySsqWebCollectService) {
 		this.lotterySsqWebCollectService = lotterySsqWebCollectService;
@@ -132,6 +139,7 @@ public class LotterySsqCollectService {
 		this.lotterySsqCustomerCaipiaoService.saveCaipiaoProjectRedCode();
 		this.lotterySsqCustomerBetzcService.saveBetzcProjectRedCode();
 		this.lotterySsqWebCollectService.saveSsqWebCollect();
+		this.lotterySsqCustomerTaobaoService.saveTaobaoProjectCode();
 	}
 
 	/**

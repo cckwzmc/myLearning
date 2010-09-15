@@ -48,6 +48,17 @@
 		class="com.lottery.ssq.service.LotterySsqCustomerCaipiaoService">
 		<property name="dao" ref="lotteryDao" />
 	</bean>
+	<!--  淘宝的抓取 -->
+	<bean id="lotterySsqCustomerTaobaoFetchService"
+		class="com.lottery.ssq.fetch.service.LotterySsqCustomerTaobaoFetchService">
+		<property name="lotteryDao" ref="lotteryDao" />
+		<property name="lotteryFetchDao" ref="fetchDao" />
+	</bean>
+	<!-- 淘宝抓取数据的拆分 -->
+	<bean id="lotterySsqCustomerTaobaoService"
+		class="com.lottery.ssq.fetch.exact.service.LotterySsqCustomerTaobaoService">
+		<property name="dao" ref="lotteryDao" />
+	</bean>
 	<bean id="lotterySsqCustomerBetzcService" class="com.lottery.ssq.service.LotterySsqCustomerBetzcService">
 		<property name="dao" ref="lotteryDao" />
 	</bean>
@@ -75,6 +86,7 @@
 		<property name="ssqLotterySohuFetchImpl" ref="ssqLotterySohuFetchImpl"></property>
 		<property name="ssqLotterySinaFetchImpl" ref="ssqLotterySinaFetchImpl"></property>
 		<property name="lotterySsqWebCollectService" ref="lotterySsqWebCollectService"></property>
+		<property name="lotterySsqCustomerTaobaoService" ref="lotterySsqCustomerTaobaoService"></property>
 	</bean>
 	<bean id="lotterySsqConifgService" class="com.lottery.ssq.service.LotterySsqConifgService">
 		<property name="fetchDao" ref="fetchDao" />

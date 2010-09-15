@@ -296,34 +296,39 @@ public class LotterySsqCustomer500WanService extends Thread {
 					}
 					String[] codes = StringUtils.split(code, "@@");
 					for (String ssq : codes) {
-						String[] redCode = StringUtils.split(ssq, "+");
-						String[] blueCode = null;
-						if (redCode.length == 2) {
-							blueCode = StringUtils.split(redCode[1], ",");
-							for (String blue : blueCode) {
-								if (blue.length() > 2 || !StringUtils.isNumeric(blue)) {
-									continue;
-								} else if (blue.length() == 1) {
-									blue = "0" + blue;
+						try {
+							String[] redCode = StringUtils.split(ssq, "+");
+							String[] blueCode = null;
+							if (redCode.length == 2) {
+								blueCode = StringUtils.split(redCode[1], ",");
+								for (String blue : blueCode) {
+									if (blue.length() > 2 || !StringUtils.isNumeric(blue)) {
+										continue;
+									} else if (blue.length() == 1) {
+										blue = "0" + blue;
+									}
+									if (!blueMap.containsKey(blue)) {
+										continue;
+									}
+									Integer tmp = blueMap.get(blue) + 1;
+									blueMap.put(blue, tmp);
 								}
-								if (!blueMap.containsKey(blue)) {
-									continue;
-								}
-								Integer tmp = blueMap.get(blue) + 1;
-								blueMap.put(blue, tmp);
 							}
+							if (redCode[0].startsWith("--1")) {
+								logger.error("使用了胆的方案解析==" + ssq);
+								continue;
+							}
+							String[] redCodes = StringUtils.split(redCode[0], ",");
+							if (redCodes.length < 6 || redCodes.length > 20) {
+								logger.error("方案解析失败==" + ssq);
+								continue;
+							}
+
+							Arrays.sort(redCodes);
+							LotterySsqUtils.selectArray(6, redCodes, resultList);
+						} catch (Exception e) {
+							logger.info("=================" + id);
 						}
-						if (redCode[0].startsWith("--1")) {
-							logger.error("使用了胆的方案解析==" + ssq);
-							continue;
-						}
-						String[] redCodes = StringUtils.split(redCode[0], ",");
-						if (redCodes.length < 6 || redCodes.length > 20) {
-							logger.error("方案解析失败==" + ssq);
-							continue;
-						}
-						Arrays.sort(redCodes);
-						LotterySsqUtils.selectArray(6, redCodes, resultList);
 					}
 				}
 				if (resultList.size() > 2000) {
@@ -419,7 +424,7 @@ public class LotterySsqCustomer500WanService extends Thread {
 			} catch (Exception e) {
 				logger.error(e.getMessage() + e);
 			}
-			if (resultList.size() > 200) {
+			if (resultList.size() > 2000) {
 				this.dao.batchSaveSsqLotteryCollectFetch(resultList);
 				resultList.clear();
 			}

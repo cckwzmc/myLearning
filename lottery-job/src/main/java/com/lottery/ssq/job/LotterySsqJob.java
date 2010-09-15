@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.lottery.ssq.config.LotterySsqConfig;
 import com.lottery.ssq.config.LotterySsqFilterConfig;
+import com.lottery.ssq.fetch.service.LotterySsqCustomerTaobaoFetchService;
 import com.lottery.ssq.service.LotteryInitService;
 import com.lottery.ssq.service.LotterySsqCollectService;
 import com.lottery.ssq.service.LotterySsqConifgService;
@@ -29,6 +30,11 @@ public class LotterySsqJob {
 	private LotterySsqCollectService lotteryCollectService = null;
 	private LotterySsqConifgService lotterySsqConifgService = null;
 	private LotterySsqCustomerBetzcService lotterySsqCustomerBetzcService = null;
+	private LotterySsqCustomerTaobaoFetchService lotterySsqCustomerTaobaoFetchService;
+
+	public void setLotterySsqCustomerTaobaoFetchService(LotterySsqCustomerTaobaoFetchService lotterySsqCustomerTaobaoFetchService) {
+		this.lotterySsqCustomerTaobaoFetchService = lotterySsqCustomerTaobaoFetchService;
+	}
 
 	public void setLotterySsqCustomerCaipiaoService(LotterySsqCustomerCaipiaoService lotterySsqCustomerCaipiaoService) {
 		this.lotterySsqCustomerCaipiaoService = lotterySsqCustomerCaipiaoService;
@@ -101,6 +107,10 @@ public class LotterySsqJob {
 		if (this.lotterySsqCustomerCaipiaoService == null) {
 			this.lotterySsqCustomerCaipiaoService = (LotterySsqCustomerCaipiaoService) context
 					.getBean("lotterySsqCustomerCaipiaoService");
+		}
+		if (this.lotterySsqCustomerTaobaoFetchService == null) {
+			this.lotterySsqCustomerTaobaoFetchService = (LotterySsqCustomerTaobaoFetchService) context
+			.getBean("lotterySsqCustomerTaobaoFetchService");
 		}
 		this.lotterySsqConifgService.initSsqConfig();
 	}
@@ -187,6 +197,16 @@ public class LotterySsqJob {
 		logger.info("抓取盈彩网用户投注开始....................");
 		this.lotterySsqCustomerBetzcService.fetchBetzcProjectCode();
 		logger.info("抓取盈彩网用户投注结束....................");
+	}
+	/**
+	 * 盈彩网用户投注抓取
+	 */
+	public void fetchTaobaoLotterySsqService() {
+		initService();
+		logger.info("淘宝网用户后台抓取任务开始...........");
+		logger.info("抓取淘宝网用户投注开始....................");
+		this.lotterySsqCustomerTaobaoFetchService.saveFecthTaobaoData();
+		logger.info("抓取淘宝网用户投注结束....................");
 	}
 
 	/**

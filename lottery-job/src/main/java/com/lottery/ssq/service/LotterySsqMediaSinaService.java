@@ -47,8 +47,12 @@ public class LotterySsqMediaSinaService {
 	public List<String> getCurrentMediaRedCode(String mediaSina) {
 		List<String> redList = new ArrayList<String>();
 		List<Element> list = HtmlParseUtils.getElementListByTagName(mediaSina, "tr");
+		System.out.println(list.toString());
 		for (Element e : list.subList(1, list.size())) {
 			List<Element> tdList = HtmlParseUtils.getElementListByTagName(e.toString(), "td");
+			if(tdList.toString().indexOf("专业媒体投注数据统计")>-1){
+				break;
+			}
 			Element tdE = tdList.get(3);
 			List<Element> divList = tdE.getAllElements("div");
 			String redCode = "";
