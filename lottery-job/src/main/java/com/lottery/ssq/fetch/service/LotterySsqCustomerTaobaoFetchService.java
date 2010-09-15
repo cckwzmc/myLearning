@@ -89,7 +89,7 @@ public class LotterySsqCustomerTaobaoFetchService extends Thread{
 
 	public List<String> fetchTaobaoSsqData() {
 		List<String> prjDetailUrl = new ArrayList<String>();
-		for (int i = 1; i < 2; i++) {
+		for (int i = 1; i < 300; i++) {
 			try {
 				String uri = StringUtils.replace(taobaoProjectUrl, "@token@", token);
 				uri = StringUtils.replace(uri, "@issue@", this.issue);
@@ -109,6 +109,11 @@ public class LotterySsqCustomerTaobaoFetchService extends Thread{
 				logger.error(e.getMessage() + e);
 			} catch (IOException e) {
 				logger.error(e.getMessage());
+			}
+			try {
+				sleep(2000);
+			} catch (InterruptedException e) {
+				notifyAll();
 			}
 		}
 		return prjDetailUrl;
@@ -177,6 +182,11 @@ public class LotterySsqCustomerTaobaoFetchService extends Thread{
 			if(CollectionUtils.isNotEmpty(codeList)&&codeList.size()>2000){
 				this.lotteryDao.batchSaveSsqLotteryCollectFetch(codeList);
 				codeList.clear();
+			}
+			try {
+				sleep(2000);
+			} catch (InterruptedException e) {
+				notifyAll();
 			}
 		}
 		this.lotteryDao.batchSaveSsqLotteryCollectFetch(codeList);
