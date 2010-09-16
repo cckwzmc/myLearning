@@ -140,7 +140,11 @@ public class LotterySsqUtils {
 	public static void selectDanArray(int k, String dan, String tuo, List<String[]> resultList) {
 		String[] dans = dan.split(",");
 		int sltLen = k - dans.length;
-		selectArray(sltLen, tuo.split(","), resultList);
+		String[] split = tuo.split(",");
+		if (dans.length + split.length < 6 || split.length < sltLen) {
+			return;
+		}
+		selectArray(sltLen, split, resultList);
 	}
 
 	/*
@@ -241,7 +245,7 @@ public class LotterySsqUtils {
 		if (StringUtils.isBlank(code)) {
 			return "";
 		}
-		code=code.trim();
+		code = code.trim();
 		code = StringUtils.replace(code, "　", "");
 		code = StringUtils.replace(code, " + ", "+");
 		code = StringUtils.replace(code, " +", "+");
@@ -270,8 +274,8 @@ public class LotterySsqUtils {
 				redcodes[i] = StringUtils.substring(redcodes[i], 0, 2) + "," + StringUtils.substring(redcodes[i], 2);
 			}
 		}
-		if(codes.length==2){
-			codes[0]=StringUtils.join(redcodes,",");
+		if (codes.length == 2) {
+			codes[0] = StringUtils.join(redcodes, ",");
 			String[] tmpRedcodes = StringUtils.split(codes[1], ",");
 			for (int i = 0; i < tmpRedcodes.length; i++) {
 				tmpRedcodes[i] = tmpRedcodes[i].trim();
@@ -283,14 +287,15 @@ public class LotterySsqUtils {
 					tmpRedcodes[i] = "0" + StringUtils.substring(tmpRedcodes[i], 0, 1) + ","
 							+ StringUtils.substring(tmpRedcodes[i], 1);
 				} else if (tmpRedcodes[i].length() == 4) {
-					tmpRedcodes[i] = StringUtils.substring(tmpRedcodes[i], 0, 2) + "," + StringUtils.substring(tmpRedcodes[i], 2);
+					tmpRedcodes[i] = StringUtils.substring(tmpRedcodes[i], 0, 2) + ","
+							+ StringUtils.substring(tmpRedcodes[i], 2);
 				}
 			}
-			codes[1]=StringUtils.join(tmpRedcodes,",");
-		}else if(codes.length==1){
-			codes[0]=StringUtils.join(redcodes,",");
+			codes[1] = StringUtils.join(tmpRedcodes, ",");
+		} else if (codes.length == 1) {
+			codes[0] = StringUtils.join(redcodes, ",");
 		}
-		return StringUtils.join(codes,"+");
+		return StringUtils.join(codes, "+");
 	}
 
 }

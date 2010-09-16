@@ -142,7 +142,8 @@ public class LotterySsqCustomer500WanService extends Thread {
 			String code = contents[i];
 			String[] codes = StringUtils.split(code, " ");
 			if (codes.length == 7) {
-				code = codes[0] + "," + codes[1] + "," + codes[2] + "," + codes[3] + "," + codes[4] + "," + codes[5] + "+" + codes[6];
+				code = codes[0] + "," + codes[1] + "," + codes[2] + "," + codes[3] + "," + codes[4] + "," + codes[5]
+						+ "+" + codes[6];
 			} else {
 				code = StringUtils.replace(code, " ", ",");
 			}
@@ -275,11 +276,20 @@ public class LotterySsqCustomer500WanService extends Thread {
 							continue;
 						}
 						String dan = StringUtils.substring(redCode[0], 0, StringUtils.indexOf(redCode[0], "|"));
-						String tuo = StringUtils.substring(redCode[0], StringUtils.indexOf(redCode[0], "|") + 1, StringUtils.indexOf(redCode[0], "#"));
+						String tuo = StringUtils.substring(redCode[0], StringUtils.indexOf(redCode[0], "|") + 1,
+								StringUtils.indexOf(redCode[0], "#"));
+						if (StringUtils.isBlank(dan) || StringUtils.isBlank(tuo)) {
+							continue;
+						}
 						String[] dans = dan.split(",");
-						LotterySsqUtils.selectDanArray(6, dan, tuo, danList);
+						try {
+							LotterySsqUtils.selectDanArray(6, dan, tuo, danList);
+						} catch (Exception e) {
+							logger.error(e.getMessage() + e);
+						}
 						for (String[] danCode : danList) {
-							String[] rsDanCode = (StringUtils.join(dans, ",") + "," + StringUtils.join(danCode, ",")).split(",");
+							String[] rsDanCode = (StringUtils.join(dans, ",") + "," + StringUtils.join(danCode, ","))
+									.split(",");
 							if (rsDanCode.length != 6) {
 								continue;
 							}
@@ -349,7 +359,8 @@ public class LotterySsqCustomer500WanService extends Thread {
 	private String parserUrl(String fangan) {
 		String download = LotterySsqFetchConfig.www500wanDowload;
 		if (fangan.toLowerCase().indexOf("onclick") != -1) {
-			download = StringUtils.replace(download, "@pid@", StringUtils.substringBetween(fangan, "list.showProject(", ")"));
+			download = StringUtils.replace(download, "@pid@", StringUtils.substringBetween(fangan, "list.showProject(",
+					")"));
 		} else {
 			download = "http://" + StringUtils.substringBetween(fangan, "http://", "'");
 		}
@@ -441,8 +452,10 @@ public class LotterySsqCustomer500WanService extends Thread {
 
 	public static void main(String[] args) {
 		LotterySsqCustomer500WanService ss = new LotterySsqCustomer500WanService();
-		String tt = "<div class=\"alert_content\" id=\"projectDetailList\">" + "<div class=\"num\"><span class=\"red\">胆: 14,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>"
-				+ "<div class=\"num\"><span class=\"red\">胆: 11,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>" + "</div>";
+		String tt = "<div class=\"alert_content\" id=\"projectDetailList\">"
+				+ "<div class=\"num\"><span class=\"red\">胆: 14,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>"
+				+ "<div class=\"num\"><span class=\"red\">胆: 11,18,29</span><br><span class=\"red\">拖: 02,05,08,13,15,19,20,24,26</span><br><span class=\"blue\">蓝球: 08,13</span></div>"
+				+ "</div>";
 		System.out.println(ss.parserdownloadProjectHtml(tt));
 	}
 }

@@ -151,8 +151,8 @@ public class LotterySsqCustomerDyjService extends Thread {
 	@SuppressWarnings("unchecked")
 	public void saveDyjProjectRedCode() {
 		List<String[]> resultList = new ArrayList<String[]>();
-//		int last = 0;
-//		int page = 200;
+		// int last = 0;
+		// int page = 200;
 		List list = this.dao.getSsqLotteryCollectFetchLimit(0, 0, "1");
 		Map<String, Integer> blueMap = new HashMap<String, Integer>();
 		blueMap.put("01", 0);
@@ -183,12 +183,12 @@ public class LotterySsqCustomerDyjService extends Thread {
 					if (redCode.length == 2) {
 						blueCode = StringUtils.split(redCode[1], ",");
 						for (String blue : blueCode) {
-							if (blue.length() > 2||!StringUtils.isNumeric(blue)) {
+							if (blue.length() > 2 || !StringUtils.isNumeric(blue)) {
 								continue;
 							} else if (blue.length() == 1) {
 								blue = "0" + blue;
 							}
-							if(!blueMap.containsKey(blue)){
+							if (!blueMap.containsKey(blue)) {
 								continue;
 							}
 							Integer tmp = blueMap.get(blue) + 1;
@@ -207,8 +207,8 @@ public class LotterySsqCustomerDyjService extends Thread {
 					}
 				}
 			}
-//			last += page;
-//			list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
+			// last += page;
+			// list = this.dao.getSsqLotteryCollectFetchLimit(last, page, "1");
 		}
 		if (CollectionUtils.isNotEmpty(resultList)) {
 			this.dao.saveSsqLotteryCollectRedCod(resultList);
@@ -241,8 +241,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 	 * 大赢家用户投注抓取
 	 */
 	public void fetchDyjProjectCode() {
-		if(this.dao!=null)
-		{
+		if (this.dao != null) {
 			this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "1");
 		}
 		List<Map<String, String>> list = this.getDyjProject();
@@ -251,7 +250,7 @@ public class LotterySsqCustomerDyjService extends Thread {
 			if ("0".equals(map.get("isupload"))) {
 				continue;
 			}
-			if (this.dao!=null&&this.dao.getCountSsqLotteryCollectFetchByProid(map.get("proid"), "1") > 0) {
+			if (this.dao != null && this.dao.getCountSsqLotteryCollectFetchByProid(map.get("proid"), "1") > 0) {
 				continue;
 			}
 			List<String> pList = this.downloadDyjProject(map.get("id"), map.get("playtype"));
@@ -285,13 +284,14 @@ public class LotterySsqCustomerDyjService extends Thread {
 		}
 		logger.info("========" + "大赢家抓取完成..............................................");
 	}
+
 	public static void main(String[] args) {
-		LotterySsqCustomerDyjService dyjService=new LotterySsqCustomerDyjService();
-		LotterySsqFetchConfig tt=new LotterySsqFetchConfig();
-		LotterySsqConfig jj=new LotterySsqConfig();
-		jj.expect="10094";
-		tt.dyjUrl="http://trade.cpdyj.com/trade/getproject.dyj?lottype=ss&playtype=&sort=allmoney&pageno=@pageno@&sort=renqi&expect=2010094&stype=0&moneytype=undefined&findstr=&sortending=descending&rnd=@random@";
-		tt.dyjDowload="http://trade.cpdyj.com/trade/querycast.go?projectid=@id@&lottype=3&playtype=@playtype@";
+		LotterySsqCustomerDyjService dyjService = new LotterySsqCustomerDyjService();
+		LotterySsqFetchConfig tt = new LotterySsqFetchConfig();
+		LotterySsqConfig jj = new LotterySsqConfig();
+		jj.expect = "10094";
+		tt.dyjUrl = "http://trade.cpdyj.com/trade/getproject.dyj?lottype=ss&playtype=&sort=allmoney&pageno=@pageno@&sort=renqi&expect=2010094&stype=0&moneytype=undefined&findstr=&sortending=descending&rnd=@random@";
+		tt.dyjDowload = "http://trade.cpdyj.com/trade/querycast.go?projectid=@id@&lottype=3&playtype=@playtype@";
 		dyjService.fetchDyjProjectCode();
 	}
 }
