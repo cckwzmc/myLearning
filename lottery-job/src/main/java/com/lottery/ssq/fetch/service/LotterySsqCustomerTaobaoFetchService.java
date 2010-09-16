@@ -92,7 +92,7 @@ public class LotterySsqCustomerTaobaoFetchService extends Thread {
 
 	public List<String> fetchTaobaoSsqData() {
 		List<String> prjDetailUrl = new ArrayList<String>();
-		for (int i = 8; i <= this.maxpage; i++) {
+		for (int i = 1; i <= this.maxpage; i++) {
 			try {
 				String uri = StringUtils.replace(taobaoProjectUrl, "@token@", token);
 				uri = StringUtils.replace(uri, "@issue@", this.issue);
