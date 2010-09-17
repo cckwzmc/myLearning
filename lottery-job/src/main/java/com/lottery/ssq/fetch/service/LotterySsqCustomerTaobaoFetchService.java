@@ -108,7 +108,6 @@ public class LotterySsqCustomerTaobaoFetchService extends Thread {
 				// 打印响应信息
 				String html = HttpHtmlService.inputStreamConvertString(response.getEntity().getContent(), "gb2312");
 				Source source = new Source(html);
-				List<Element> errorList=source.getAllElementsByClass("errorTips");
 				if (this.maxpage <= 1) {
 					List<Element> mList = source.getAllElementsByClass("maxpage");
 					if (CollectionUtils.isNotEmpty(mList)) {
@@ -150,7 +149,14 @@ public class LotterySsqCustomerTaobaoFetchService extends Thread {
 	private void fecthProjectCode(List<String> prjDetailUrl) {
 		List<Map<String, String>> codeList = new ArrayList<Map<String, String>>();
 		String unitedId = "";
-		for (String uri : prjDetailUrl) {
+		if(CollectionUtils.isEmpty(prjDetailUrl)){
+			return ;
+		}
+		for (int i=0;i<prjDetailUrl.size();i++) {
+			String uri =prjDetailUrl.get(i);
+			if(i>0&&i%5==0){
+				this.initTaobaoUrlData();
+			}
 			unitedId = StringUtils.substring(uri, uri.indexOf("united_id=") + 10);
 			uri = StringUtils.replace(taobaoDetailUrl, "@token@", token);
 			uri = StringUtils.replace(uri, "@page@", "1");
