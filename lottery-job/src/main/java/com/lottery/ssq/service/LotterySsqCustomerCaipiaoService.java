@@ -165,14 +165,18 @@ public class LotterySsqCustomerCaipiaoService extends Thread {
 		String retStr = "";
 		// 红球胆码:06,09,20,27 红球拖码:07,10,18,22,23,25,26,32 蓝球号码:03,05,07,11,13
 		if (code.indexOf("红球胆码") != -1) {
-			String[] dans = StringUtils.substringsBetween(code, "红球胆码:", "红球拖码:");
-			for (int i = 0; i < dans.length; i++) {
-				String dan = dans[i].replace(" ", "");
-				if (StringUtils.isNotBlank(dan)) {
-					list.add("--1," + dan);
-					isHaveDan = true;
-				}
-			}
+//			String[] dans = StringUtils.substringsBetween(code, "红球胆码:", "红球拖码:");
+//			for (int i = 0; i < dans.length; i++) {
+//				String dan = dans[i].replace(" ", "");
+//				if (StringUtils.isNotBlank(dan)) {
+//					list.add("--1," + dan);
+//					isHaveDan = true;
+//				}
+//			}
+			code=StringUtils.replace(code, "红球胆码:", "(");
+			code=StringUtils.replace(code, "红球拖码:", "(");
+			code=StringUtils.replace(code, "蓝球号码:", "+");
+			return code;
 		} else if (code.indexOf("红球") != -1) {
 			code = StringUtils.replace(code, "红球:", "\n");
 			code = StringUtils.replace(code, " ", "");

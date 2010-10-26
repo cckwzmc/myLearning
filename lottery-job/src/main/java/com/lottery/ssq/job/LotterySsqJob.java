@@ -244,7 +244,7 @@ public class LotterySsqJob {
 	 */
 	public void genFilterRedCode() {
 		initService();
-		LotterySsqFilterConfig filterConfig=this.lotterySsqConifgService.initFilterConfig();
+		LotterySsqFilterConfig filterConfig=this.lotterySsqConifgService.initFilterConfig(null);
 		if (!this.lotterySsqConifgService.initFetchConfig() || filterConfig==null) {
 			logger.info("抓取配置/过滤配置初始化失败....................");
 			return;
@@ -261,7 +261,7 @@ public class LotterySsqJob {
 	 */
 	public void genFilterRedCodeFromCollectResult() {
 		initService();
-		LotterySsqFilterConfig filterConfig=this.lotterySsqConifgService.initFilterConfig();
+		LotterySsqFilterConfig filterConfig=this.lotterySsqConifgService.initFilterConfig(null);
 		if (!this.lotterySsqConifgService.initFetchConfig() || filterConfig==null) {
 			logger.info("抓取配置/过滤配置初始化失败....................");
 			return;

@@ -15,6 +15,17 @@
 		<property name="lotterySsq500WanMediaFilterService" ref="lotterySsq500WanMediaFilterService"></property>
 		<property name="lotterySsqConsumerFilterService" ref="lotterySsqConsumerFilterService"></property>
 	</bean>
+	<bean id="lotterySsqSelfService" class="com.lottery.ssq.service.self.LotterySsqSelfService">
+		<property name="dao" ref="lotteryDao" />
+		<property name="fetchDao" ref="fetchDao" />
+		<property name="lotterySsqWebCollectService" ref="lotterySsqWebCollectService"></property>
+		<property name="lotterySsqStantardFilterService" ref="lotterySsqStantardFilterService"></property>
+		<property name="lotterySsqHisRedCodeFilterService" ref="lotterySsqHisRedCodeFilterService"></property>
+		<property name="lotterySsqSinaMediaFilterService" ref="lotterySsqSinaMediaFilterService"></property>
+		<property name="lotterySsqWebMediaFilterService" ref="lotterySsqWebMediaFilterService"></property>
+		<property name="lotterySsq500WanMediaFilterService" ref="lotterySsq500WanMediaFilterService"></property>
+		<property name="lotterySsqConifgService" ref="lotterySsqConifgService"></property>
+	</bean>
 	<bean id="fetchDao" class="com.lottery.ssq.fetch.dao.LotteryFetchDao"></bean>
 	<bean id="initLotteryService" class="com.lottery.ssq.service.LotteryInitService">
 		<property name="dao" ref="lotteryDao" />

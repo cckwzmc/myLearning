@@ -105,6 +105,16 @@ public class LotteryFetchDao extends JdbcBaseDao {
 		String sql = "select * from ssq_lottery_filter_config t where t.enabled=1";
 		return this.getJdbcTemplate().queryForList(sql);
 	}
+	/**
+	 * 号码过滤配置
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List getLotterySsqFilterConfig(Integer isSelf) {
+		String sql = "select * from ssq_lottery_filter_config t where t.enabled=1 and t.is_self="+isSelf;
+		return this.getJdbcTemplate().queryForList(sql);
+	}
 
 	/**
 	 * 更新LotterySSqFILTERCONFIG

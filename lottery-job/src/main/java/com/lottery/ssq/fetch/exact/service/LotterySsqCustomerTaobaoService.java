@@ -127,8 +127,8 @@ public class LotterySsqCustomerTaobaoService {
 				resultList.clear();
 			}
 			this.dao.saveCollectBlueCodeResult(blueMap, LotterySsqConfig.expect);
-			if (CollectionUtils.isNotEmpty(danList)) {
-				this.dao.batchSqqLotteryDanResult(dansList, "1");
+			if (CollectionUtils.isNotEmpty(dansList)) {
+				this.dao.batchSqqLotteryDanResult(dansList, "9");
 			}
 		}
 	}

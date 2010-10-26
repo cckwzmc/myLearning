@@ -1,5 +1,6 @@
 package com.lottery.ssq.service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -151,12 +152,21 @@ public class LotterySsqConifgService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public LotterySsqFilterConfig initFilterConfig() {
-		if (StringUtils.isBlank(LotterySsqConfig.expect)) {
+	public LotterySsqFilterConfig initFilterConfig(List filterConfig) {
+		List list = new ArrayList();
+		LotterySsqFilterConfig config = new LotterySsqFilterConfig();
+		if(filterConfig==null)
+		{
+			if (StringUtils.isBlank(LotterySsqConfig.expect)) {
+				return null;
+			}
+			list = this.fetchDao.getLotterySsqFilterConfig();
+		}else{
+			list=filterConfig;
+		}
+		if(CollectionUtils.isEmpty(list)){
 			return null;
 		}
-		List list = this.fetchDao.getLotterySsqFilterConfig();
-		LotterySsqFilterConfig config = new LotterySsqFilterConfig();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Map iMap = (Map) iterator.next();
 			String cfgName = (String) iMap.get("config_name");

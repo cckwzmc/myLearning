@@ -330,15 +330,15 @@ public class LotteryInitService {
 		this.dao.clearHisFetchProjectCode(LotterySsqConfig.expect, "3");
 		String mediaContent = this.dao.getSsqLotteryMediaContentByExpect(LotterySsqConfig.expect, "0");
 		String xmlData = "";
-		if (StringUtils.isBlank(mediaContent) || mediaContent.length() < 100) {
+		if (StringUtils.isBlank(mediaContent) || mediaContent.length() < 500) {
 			xmlData = HttpHtmlService.getXmlContent(LotterySsqFetchConfig.media500WanUrl);
-			if (StringUtils.isBlank(xmlData) || xmlData.length() < 100) {
+			if (StringUtils.isBlank(xmlData) || xmlData.length() < 500) {
 				return;
 			}
 			mediaContent = xmlData;
 		}
 
-		if (StringUtils.isNotBlank(mediaContent) && mediaContent.length() > 100) {
+		if (StringUtils.isNotBlank(mediaContent) && mediaContent.length() > 400) {
 			xmlData = mediaContent;
 			// xmlData = HttpHtmlService.getXmlContent(LotterySsqFetchConfig.media500WanUrl);
 			// if(StringUtils.isNotBlank(xmlData)&&xmlData.length()>100&&StringUtils.isBlank(mediaContent))
@@ -349,6 +349,7 @@ public class LotteryInitService {
 				doc = DocumentHelper.parseText(xmlData);
 			} catch (DocumentException e) {
 				logger.error(e.getMessage());
+				return ;
 			}
 			if (doc != null) {
 				List<String> sinaList = this.lotterySsqMedia500WanService.getCurrentMediaRedCode(doc);

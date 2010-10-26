@@ -8,23 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.Header;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.client.params.CookiePolicy;
-import org.apache.http.conn.ManagedClientConnection;
-import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.ExecutionContext;
@@ -43,19 +41,25 @@ import org.slf4j.LoggerFactory;
 public class WebClient {
 	private DefaultHttpClient client;
 	private String currentURL = null;
-	private static Logger log = LoggerFactory.getLogger(WebClient.class.getName());
+	private static Logger log = LoggerFactory.getLogger(WebClient.class);
 	HttpContext context = new BasicHttpContext();
 
 	public WebClient(String host) {
 		client = new DefaultHttpClient();
+//		DefaultHttpClientConnection conn = new DefaultHttpClientConnection();
+		ConnectionReuseStrategy reuseStrategy = new DefaultConnectionReuseStrategy();
+
+//		context.setAttribute(ExecutionContext.HTTP_CONNECTION, conn);
+//		context.setAttribute(ExecutionContext.HTTP_TARGET_HOST, host);
+		client.setReuseStrategy(reuseStrategy);
 		context.setAttribute(ExecutionContext.HTTP_CONNECTION, client);
 		context.setAttribute(ExecutionContext.HTTP_TARGET_HOST, host);
 		client.setCookieStore(new UpdateableCookieStore());
 		client.setRedirectHandler(new MemorizingRedirectHandler());
 		client.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.BROWSER_COMPATIBILITY);
 		List<Header> headers = new ArrayList<Header>();
-		headers.add(new BasicHeader("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; nl; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13"));
 		client.getParams().setParameter(ClientPNames.DEFAULT_HEADERS, headers);
+		client.setReuseStrategy(new DefaultConnectionReuseStrategy());
 	}
 
 	public String getHostName() {
@@ -152,7 +156,7 @@ public class WebClient {
 		return content;
 	}
 
-	public void closeConnection(String httpRoute) {
+	public void closeConnection() {
 		if (this.client != null) {
 			//HttpHost host = new HttpHost(httpRoute);
 			//HttpRoute route = new HttpRoute(host);

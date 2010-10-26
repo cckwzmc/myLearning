@@ -25,6 +25,7 @@ import com.lottery.ssq.service.LotterySsqConifgService;
 import com.lottery.ssq.service.LotterySsqFileService;
 import com.lottery.ssq.service.LotterySsqService;
 import com.lottery.ssq.service.LotterySsqWebCollectService;
+import com.lottery.ssq.service.self.LotterySsqSelfService;
 
 /**
  * 反向处理，把不存在媒体预测的结果选出来，两种方式 1、把媒体的结果都合并处理。 2、把媒体的结果分开处理。
@@ -45,15 +46,16 @@ public class ReverseTestMain {
 			LotterySsqFileService lotterySsqFileService = (LotterySsqFileService) context.getBean("lotterySsqFileService");
 			lotterySsqConifgService.initSsqConfig();
 			lotterySsqConifgService.initFetchConfig();
-			lotterySsqConifgService.initFilterConfig();
+			lotterySsqConifgService.initFilterConfig(null);
 			ISsqLotteryFetch ssqLotterySohuFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySohuFetchImpl");
 			ISsqLotteryFetch ssqLottery163FetchImpl = (ISsqLotteryFetch) context.getBean("ssqLottery163FetchImpl");
 			ISsqLotteryFetch ssqLotterySinaFetchImpl = (ISsqLotteryFetch) context.getBean("ssqLotterySinaFetchImpl");
 			LotterySsqWebCollectService lotterySsqWebCollectService = (LotterySsqWebCollectService) context.getBean("lotterySsqWebCollectService");
-			LotterySsqCustomerTaobaoFetchService lotterySsqCustomerTaobaoFetchService = (LotterySsqCustomerTaobaoFetchService) context.getBean("lotterySsqCustomerTaobaoFetchService");
-			LotterySsqCustomerTaobaoService lotterySsqCustomerTaobaoService = (LotterySsqCustomerTaobaoService) context.getBean("lotterySsqCustomerTaobaoService");
-			lotterySsqCustomerTaobaoFetchService.saveFecthTaobaoData();
-			lotterySsqCustomerTaobaoService.saveTaobaoProjectCode();
+			LotterySsqSelfService lotterySsqSelfService = (LotterySsqSelfService) context.getBean("lotterySsqSelfService");
+			// LotterySsqCustomerTaobaoFetchService lotterySsqCustomerTaobaoFetchService = (LotterySsqCustomerTaobaoFetchService) context.getBean("lotterySsqCustomerTaobaoFetchService");
+			// LotterySsqCustomerTaobaoService lotterySsqCustomerTaobaoService = (LotterySsqCustomerTaobaoService) context.getBean("lotterySsqCustomerTaobaoService");
+			// lotterySsqCustomerTaobaoFetchService.saveFecthTaobaoData();
+			// lotterySsqCustomerTaobaoService.saveTaobaoProjectCode();
 			// service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());
 			// initService.testHistoryRedCode();
 			// ssqLotterySohuFetchImpl.getSsqLotteryDetail("", "");
@@ -61,12 +63,13 @@ public class ReverseTestMain {
 			// collectservice.collectResultDispose();
 			Set<String> codes = getCodeFromFile("D:/ttcode.txt");
 			if (CollectionUtils.isNotEmpty(codes)) {
-				service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(), codes);
+				service.genFilterRedCodeFromCollectResult(lotterySsqConifgService.initFilterConfig(null), codes);
 			}
 			Set<String> filterCode = getCodeFromFile("D:/ttcode_filter.txt");
 			if (CollectionUtils.isNotEmpty(filterCode)) {
-				service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig(), filterCode);
+				service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig(null), filterCode);
 			}
+			 lotterySsqSelfService.filterLastResult();
 			// service.filterCurrentRedCodeFirst();
 			// initService.initFilterResult();
 			// service.getCurrentExpertSingleResult(lotterySsqConifgService.initFilterConfig());

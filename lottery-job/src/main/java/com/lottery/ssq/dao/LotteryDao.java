@@ -60,6 +60,11 @@ public class LotteryDao extends JdbcBaseDao {
 		return this.getJdbcTemplate().queryForList(sql);
 	}
 	@SuppressWarnings("unchecked")
+	public List getSsqLottoryFilterLastResultLimit(int first, int page) {
+		String sql = "select value from ssq_lottery_filter_last_result t limit " + first + "," + page;
+		return this.getJdbcTemplate().queryForList(sql);
+	}
+	@SuppressWarnings("unchecked")
 	public List getSsqLottoryFilterResultLimit(int first, int page,String value) {
 		String sql = "select value from ssq_lottery_filter_result t where t.value=? order by id limit " + first + "," + page;
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{value});

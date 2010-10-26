@@ -18,7 +18,7 @@ public class Test {
 		try {
 			LotterySsqConifgService lotterySsqConifgService = (LotterySsqConifgService) context.getBean("lotterySsqConifgService");
 			lotterySsqConifgService.initFetchConfig();
-			lotterySsqConifgService.initFilterConfig();
+			lotterySsqConifgService.initFilterConfig(filterConfig);
 			LotterySsqCustomer500WanService ssq500wanService= (LotterySsqCustomer500WanService) context.getBean("lotterySsqCustomer500WanService");
 			LotterySsqCustomerCaipiaoService ssq2CaiService= (LotterySsqCustomerCaipiaoService) context.getBean("lotterySsqCustomerCaipiaoService");
 //			ssq500wanService.save500WanProjectRedCode();
