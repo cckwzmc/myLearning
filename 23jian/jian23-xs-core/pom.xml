@@ -12,7 +12,17 @@
 	<version>1.0.0</version>
 	<name>jian23-xs-core</name>
 	<dependencies>
-
+		
+		<!-- hibernate config -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- hibernate config end -->
+		
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
