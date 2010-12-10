@@ -14,6 +14,7 @@
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider user-service-ref="systemUserService"/>
 	</authentication-manager>
+	
 	<beans:bean id="passwordEncoder"
 		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" />
 	<!-- 授权判断配置, 将授权名称的默认前缀由ROLE_改为A_. -->
