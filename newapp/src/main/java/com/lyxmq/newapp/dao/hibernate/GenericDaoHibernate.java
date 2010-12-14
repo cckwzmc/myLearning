@@ -29,7 +29,6 @@ import com.lyxmq.newapp.dao.GenericDao;
  *      &lt;/bean&gt;
  * </pre>
  *
- * @author <a href="mailto:bwnoll@gmail.com">Bryan Noll</a>
  * @param <T> a type variable
  * @param <PK> the primary key for that type
  */
@@ -82,7 +81,6 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public List<T> getAll() {
         return hibernateTemplate.loadAll(this.persistentClass);
     }
@@ -90,7 +88,7 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public List<T> getAllDistinct() {
         Collection result = new LinkedHashSet(getAll());
         return new ArrayList(result);
@@ -99,7 +97,6 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public T get(PK id) {
         T entity = (T) hibernateTemplate.get(this.persistentClass, id);
 
@@ -114,7 +111,6 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public boolean exists(PK id) {
         T entity = (T) hibernateTemplate.get(this.persistentClass, id);
         return entity != null;
@@ -123,7 +119,6 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public T save(T object) {
         return (T) hibernateTemplate.merge(object);
     }
