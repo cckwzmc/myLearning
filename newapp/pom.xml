@@ -227,7 +227,17 @@
 		</dependency>
 
 		<!-- logging end -->
-
+		<dependency>
+            <groupId>struts-menu</groupId>
+            <artifactId>struts-menu</artifactId>
+            <version>${struts.menu.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>xml-apis</artifactId>
+                    <groupId>xml-apis</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
 
 		<!-- utils begin -->
@@ -348,6 +358,11 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>${sitemesh.version}</version>
 		</dependency>
 	</dependencies>
 	<!-- 插件配置 -->
@@ -573,7 +588,8 @@
 		<slf4j.version>1.6.1</slf4j.version>
 		<logback.version>0.9.26</logback.version>
 		<log4j.version>1.2.14</log4j.version>
-		<jstl.version>1.1.2</jstl.version>
-
+		<jstl.version>1.2</jstl.version>
+		<struts.menu.version>2.4.3</struts.menu.version>
+		<sitemesh.version>2.4.2</sitemesh.version>
 	</properties>
 </project>
