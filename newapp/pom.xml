@@ -596,6 +596,6 @@
 		<jstl.version>1.2</jstl.version>
 		<struts.menu.version>2.4.3</struts.menu.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
-		<urlrewrite.version>3.1.0</urlrewrite.version>
+		<urlrewrite.version>3.2.0</urlrewrite.version>
 	</properties>
 </project>
