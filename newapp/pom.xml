@@ -364,6 +364,11 @@
 			<artifactId>sitemesh</artifactId>
 			<version>${sitemesh.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewritefilter</artifactId>
+			<version>${urlrewrite.version}</version>
+		</dependency>
 	</dependencies>
 	<!-- 插件配置 -->
 	<build>
@@ -591,5 +596,6 @@
 		<jstl.version>1.2</jstl.version>
 		<struts.menu.version>2.4.3</struts.menu.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
+		<urlrewrite.version>3.1.0</urlrewrite.version>
 	</properties>
 </project>
