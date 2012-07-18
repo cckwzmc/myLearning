@@ -1,0 +1,143 @@
+@charset "utf-8";
+
+/*==页面结构==*/
+#bd{ width:950px; margin:10px auto 15px; }
+#bd .bd_left,#bd .bd_right{ display:inline; float:left; width:214px; }
+
+/*==左边==*/
+/*.bd_left .bdLeft_box{ margin-bottom:10px; }*/
+
+/*=频道标题=*/
+.bd_left h3.c_title{ width:182px; height:24px; padding:46px 0 0 32px; font-weight:normal; font-size:12px; color:#FFF; background:url(img/channel/c_title.gif) no-repeat; overflow:hidden; }
+.bd_left h3.c_t_2{ background-position:0 -70px; }
+.bd_left h3.c_t_3{ background-position:0 -140px; }
+.bd_left h3.c_t_4{ background-position:0 -210px; }
+.bd_left h3.c_t_5{ background-position:0 -280px; }
+.bd_left h3.c_t_6{ background-position:0 -350px; }
+.bd_left h3.c_t_7{ background-position:0 -420px; }
+.bd_left h3.c_t_8{ background-position:0 -490px; }
+.bd_left h3.c_t_9{ background-position:0 -560px; }
+.bd_left h3.c_t_10{ background-position:0 -630px; }
+.bd_left h3.c_t_11{ background-position:0 -700px; }
+.bd_left h3.c_t_12{ background-position:0 -770px; }
+.bd_left h3.c_t_13{ background-position:0 -840px; }
+.bd_left h3.c_t_14{ background-position:0 -910px; }
+.bd_left h3.c_t_15{ background-position:0 -980px; }
+
+/*=类别=*/
+.bd_left .types{ height:360px; padding:18px 10px 12px; border-top-width:0px!important; }
+.types dl{ margin-bottom:14px; }
+.types dl dt,.types dl dd{ line-height:18px; }
+.types dl dt{ font-weight:bold; }
+.types dl dd{ text-indent:-0.6em; }
+.types dl dd a{ margin:0 7px; }
+
+/*=全部类别=*/
+.types .alltype{ position:relative; z-index:1; padding-top:0px; }
+.alltype a{ display:block; width:63px; height:16px; line-height:16px; text-align:center; background-position:-1px -65px; }
+.alltype a:hover{ background-position:-65px -65px; }
+.alltype .alltype_con{ display:none; position:absolute; left:60px; top:-50px; width:410px; padding:18px 18px 0; border:3px solid #e70017; background-color:#FFF; }
+.alltype .alltype_con a{ display:inline; }
+
+/*=排行=*/
+.bd_left .top_ten{ height:516px; overflow:hidden; }
+.top_ten ul{ padding:0 11px; }
+.top_ten li{ height:auto!important; min-height:14px; height:14px; padding:7px 0; border-bottom:1px dotted #a9a9a9; }
+.top_ten li.last{ border:0 none; }
+.top_ten li h5{ height:14px; line-height:14px; padding-left:25px; font-weight:normal; font-size:12px; cursor:pointer; background:url(img/channel/number_list.gif) no-repeat 0 0; }
+.top_ten li h5.h_0{ background-position:0 0; }
+.top_ten li h5.h_1{ background-position:0 -14px; }
+.top_ten li h5.h_2{ background-position:0 -28px; }
+.top_ten li h5.h_3{ background-position:0 -42px; }
+.top_ten li h5.h_4{ background-position:0 -56px; }
+.top_ten li h5.h_5{ background-position:0 -70px; }
+.top_ten li h5.h_6{ background-position:0 -84px; }
+.top_ten li h5.h_7{ background-position:0 -98px; }
+.top_ten li h5.h_8{ background-position:0 -112px; }
+.top_ten li h5.h_9{ background-position:0 -126px; }
+.top_ten li .hover_box{ display:none; position:relative; height:80px; overflow:hidden; }
+.hover_box .tags{ display:block; position:absolute; top:0; left:0; width:23px; height:26px; padding-left:2px; font:11px Arial; color:#fff; background-position:-1px -116px; }
+.hover_box .hoverBox_l,.hover_box .hoverBox_r{ display:inline; float:left; width:80px; height:80px; }
+.hover_box .hoverBox_r{ float:right; width:100px; }
+.hover_box .hoverBox_r p{ line-height:18px; }
+.hover_box .hoverBox_r strong{ font-size:14px; color:#f26521; }
+.hover_box .hoverBox_r a.link_buy{ display:block; width:48px; height:21px; line-height:21px; margin-top:5px; color:#fff; text-align:center; background-position:-1px -26px; }
+.hover_box .hoverBox_r a:hover{ background-position:-50px -26px; }
+
+/*=热销广告=*/
+.bd_left .hot_AD{ height:270px; margin-bottom:10px; overflow:hidden; }
+.bd_left .hot_AD a{ display:block; margin-bottom:10px; }
+
+/*=品牌推荐=*/
+.bd_left .brand_box{ height:524px; overflow:hidden; }
+.brand_box .brandBox_con,.brand_box .allbrand{ padding-left:11px; }
+.brand_box .brandBox_con{ margin:10px 0 15px; }
+.brandBox_con a{ display:inline; float:left; width:90px; height:40px; margin:0 6px 8px 0; border:1px solid #d1d1d1; }
+.brandBox_con a:hover{ border-color:#f26521; }
+.allbrand a{ display:block; width:63px; height:16px; line-height:16px; text-align:center; background-position:-1px -203px; }
+.allbrand a:hover{ background-position:-65px -203px; }
+
+/*==右边==*/
+#bd .bd_right{ float:right; width:726px; }
+
+/*=广告条=*/
+.bd_right .ban_box{ margin-bottom:10px; }
+.ban_box .img_list{ width:726px; height:260px; overflow:hidden; }
+.img_list ul{ position:relative; width:726px; height:260px; overflow:hidden; }
+.img_list li{ display:none; position:absolute; }
+.ban_box .handle{ height:32px; margin-top:1px; }
+.ban_box .handle span{ display:inline; float:left; width:20%; height:32px; text-align:center; line-height:32px; background-color:#f3f3f3; cursor:pointer; }
+.ban_box .handle span.curr{ font-weight:bold; color:#FFF; background:#7d7d7d url(img/channel/tab_arrow_down.gif) no-repeat center -1px; }
+
+/*=秒杀=*/
+.bd_right .sec_kill{ height:154px; overflow:hidden; }
+.sec_kill .seck_title{ height:27px; padding:6px 0 0 42px; font:16px Microsoft YaHei, "微软雅黑"; color:#000; background:#f3f3f3 url(img/channel/time.gif) no-repeat 6px; }
+eck_title span{ padding-left:5px; font:14px Arial; color:#b1aeae; }
+.sec_kill .seck_box{ padding:2px 6px 6px; background-color:#f3f3f3; }
+.seck_box .seckBox_con{ height:95px; padding:9px 10px; overflow:hidden; background-color:#FFF; }
+.seckBox_con dl{ display:inline; float:left; width:338px; height:100px; overflow:hidden; }
+.seckBox_con dl.f_right{ float:right; }
+.seckBox_con dt,.seckBox_con dd{ display:inline; float:left; width:100px; }
+.seckBox_con dd{ float:right; width:228px; }
+.seckBox_con dd p{ line-height:20px; }
+.seckBox_con dd span{ margin:3px 0; }
+.seckBox_con dd .kill_btn{ display:inline; float:right; margin-top:-25px; }
+.kill_btn a{ display:block; width:66px; height:25px; text-align:center; line-height:25px; font-weight:bold; color:#FFF!important; background-position:-1px 0; }
+.kill_btn a:hover{ background-position:-68px 0; }
+
+/*=新品推荐、热卖商品、精品推荐=*/
+.bd_right .pro_box{ height:516px; overflow:hidden; }
+.bd_right .one_line{ height:274px; overflow:hidden; }
+.pro_box h3{ font-weight:normal; padding:0 16px 0 34px; background-position:16px -175px; }
+.pro_box h3 p,.pro_box h3 .link_box{ display:inline; float:left; }
+.pro_box h3 p{ font-weight:bold; }
+.pro_box h3 p em{ font-weight:normal; font-style:normal; color:#b1aeae; padding-left:3px; }
+.pro_box h3 .link_box{ float:right; width:auto; height:16px; margin-top:5px; overflow:hidden; }
+.link_box span,.link_box a{ display:inline; float:left; height:16px; margin-left:11px; background:url(img/channel/icon_list.gif) no-repeat; cursor:pointer; }
+.link_box span{ width:14px; margin-left:7px; background-position:-1px -142px; }
+.link_box span.curr{ background-position:-1px -159px; }
+.link_box a{ width:42px; background-position:-1px -99px; }
+.link_box a:hover{ background-position:-44px -99px; }
+.pro_box .tab_con{}
+.tab_con ul{ display:none; }
+.tab_con li{ display:inline; float:left; width:150px; height:222px; margin:20px 0 0 24px; overflow:hidden; }
+.tab_con li a{ display:block; width:150px; height:150px; margin-bottom:5px; line-height:18px; overflow:hidden; }
+.tab_con li p a{ height:auto; }
+.tab_con li em{ color:#f26521; }
+
+/*=========================频道页面950版样式调整=================================*/
+.width_fix{ width:950px!important; }
+/*左边调整*/
+/*.width_fix .bd_left .types{ height:360px; }
+.width_fix .bd_left .hot_AD{ height:270px; }
+.width_fix .bd_left .brand_box{ height:524px; }
+.width_fix .bd_left .brand_box a{ margin-bottom:8px; }
+.width_fix .bd_left .brand_box .brandBox_con{ margin-bottom:5px; }*/
+
+/*右边调整*/
+/*.width_fix .bd_right,.width_fix .bd_right .img_list,.width_fix .bd_right .img_list ul{ width:726px!important; overflow:hidden; }
+.width_fix .bd_right .pro_box{ height:516px; overflow:hidden; }
+.width_fix .bd_right .one_line{ height:274px; overflow:hidden; }
+.width_fix .bd_right .tab_con li{ width:150px; height:222px; margin-left:24px; }
+.width_fix .bd_right .tab_con li a{ width:150px; height:150px; overflow:hidden; }
+.width_fix .bd_right .tab_con li p a{ height:auto; }*/

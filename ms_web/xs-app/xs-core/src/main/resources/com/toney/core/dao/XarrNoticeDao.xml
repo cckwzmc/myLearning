@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiu.portal.dao.XarrNoticeDao">
+	<resultMap id="xarrNoticeResult" type="xarrNotice">
+		<result property="id" column="id"/>
+		<result property="userId" column="user_id"  javaType="java.lang.Long"/>
+		<result property="userName" column="user_name"  javaType="java.lang.String"/>
+		<result property="catentryId" column="catentry_id" javaType="java.lang.Long"/>
+		<result property="checkedContent" column="checked_content" javaType="java.lang.String"/>
+		<result property="checkedType" column="checked_type" javaType="java.lang.Integer"/>
+		<result property="status" column="status" javaType="java.lang.Integer"/>
+		<result property="recommendFlag" column="recommend_flag" />
+		<result property="createDate" column="create_date" />
+		<result property="sendDate" column="send_date" />
+		<result property="sendTimes" column="send_times" />
+		<result property="remark" column="remark"/>
+		<result property="field1" column="field1" />
+		<result property="field2" column="field2" />
+		<result property="field3" column="field3" />
+	</resultMap>
+	<insert id="addXarrNotice" parameterType="xarrNotice">
+		<selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+			select x_arrnotice_seq.nextval from dual
+		</selectKey>
+		insert into x_arrnotice (id,
+			<if test="userId!=null">
+				user_id,
+			</if>
+			<if test="userName!=null">
+				user_name,
+			</if>
+			catentry_id,checked_content,checked_type,
+			status,create_date,send_date,send_times,remark
+			<if test="field1!=null">	
+			,field1
+			</if>
+			<if test="field2!=null">	
+			,field2
+			</if>
+			<if test="field1!=null">	
+			, field3
+			</if>			
+			)
+			values(#{id},
+			<if test="userId!=null">	
+				#{userId},
+			</if>	
+			<if test="userName!=null">	
+				#{userName},
+			</if>	
+				#{catentryId},
+				#{checkedContent},
+				#{checkedType},
+				#{status},
+				sysdate,
+				null,
+				null,
+				null
+				<if test="field1!=null">	
+				,#{field1}
+				</if>
+				<if test="field2!=null">	
+				,#{field2}
+				</if>
+				<if test="field3!=null">	
+				,#{field3}
+				</if>
+		)
+	</insert>
+	<!-- 根据content查询记录 ,user_id,user_name,catentry_id,checked_content,checked_type  -->
+	<select id="getArrivalNoticeListByContact" parameterType="xarrNotice" resultMap="xarrNoticeResult">
+		select id,user_id,user_name,catentry_id,checked_content,checked_type from x_arrnotice t 
+			where  t.checked_content=#{checkedContent} and t.checked_type=#{checkedType} and t.catentry_id=#{catentryId} and t.status=#{status}
+	</select>
+	<!-- 根据content查询记录 ,user_id,user_name,catentry_id,checked_content,checked_type  -->
+	<select id="getArrivalNoticeByContact" parameterType="xarrNotice" resultMap="xarrNoticeResult">
+		<![CDATA[select id,user_id,user_name,catentry_id,checked_content,checked_type from x_arrnotice t 
+			where  t.checked_content=#{checkedContent} and t.checked_type=#{checkedType} and t.catentry_id=#{catentryId} and t.status=#{status}]]>
+	</select>
+	<!-- 更新用户名 -->
+	<update id="updateArrivalNoticeUserName" parameterType="xarrNotice">
+		update x_arrnotice t set t.user_name=#{userName},t.create_date=sysdate where t.id=#{id}
+	</update>
+	<!-- 更新用户信息 -->
+	<update id="updateArrivalNoticeUser" parameterType="xarrNotice">
+		update x_arrnotice t set t.user_name=#{userName},t.user_id=#{userId},t.create_date=sysdate where t.id=#{id}
+	</update>
+	<!-- 更新用户登记时间信息 -->
+	<update id="updateArrivalNoticeCreateDate" parameterType="java.lang.Long">
+		update x_arrnotice t set t.create_date=sysdate where t.id=#{id}
+	</update>
+	
+</mapper>

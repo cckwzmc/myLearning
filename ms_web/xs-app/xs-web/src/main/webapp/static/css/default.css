@@ -1,0 +1,76 @@
+﻿
+
+/*global*/
+
+ol, ul { list-style: none; }
+table {border-collapse: collapse;border-spacing: 0px;}
+fieldset, img { border: 0; }
+body {margin:0px auto 0px;	color:#000000;font: 12px "宋体", Arial, "黑体";background-color:#FFFFFF;}
+*html body {background-image:url(about:blank);background-attachment:fixed;} /* IE6 fixed box hack */
+
+/*清除浮动 start*/
+.clearfix:after {content:".";display:block;height:0;clear:both;	visibility:hidden;}
+.clearfix { display:inline-block; }
+/*标签分类显示*/
+.select_g {clear: left; color: blue; text-align: right;}
+/* Hides from IE-mac \*/
+* html .clearfix { height:1%; }
+.clearfix { display:block; }
+/* End hide from IE-mac */ 
+
+a {color: #004d00;text-decoration: none;}
+a:hover {text-decoration: none;color: #004d00;position:relative;left:1px;top:1px;clip:rect()}
+a.hui2:link, a.hui2:visited, a.hui2:hover, a.hui2:active {color: #666666;text-decoration: none;}
+/*左右榜单*/
+a.BD1:link, a.BD1:visited, a.BD1:hover, a.BD1:active {color: #004d00;text-decoration: none;}
+a.BD2:link, a.BD2:visited, a.BD2:hover, a.BD2:active {color: #999999;text-decoration: none;}
+.list1 {width:190px;height:27px;margin-top:5px;}
+.list2,.list3,.list9 {height:20px;overflow:hidden;border:1px solid #cccccc;border-bottom:0;font-size:14px;font-weight:bold;padding:6px 0 0 18px;background:url(http://image1.cmfu.com/images/qidian_global/new_bg001.gif) 0 0 no-repeat;}
+.list2 {width:170px;text-align:left}
+.list3 {float:left;width:75px;}
+.list9 {float:left;width:83px;}
+.list4 {float:left;width:76px;border-bottom:1px solid #cccccc;background-color:#636563;font-size:14px;font-weight:bold;color:#ffffff;padding-left:19px;padding-top:6px;height:20px}
+.list5 {width:28px;border-top:1px solid #cccccc;border-right:1px solid #cccccc;text-align:center;font-size:14px;font-weight:bold;background-color: #FFFFFF;padding-top:6px;height:20px;float:left}
+.list6 {width:28px;border-bottom:1px solid #cccccc;border-right:1px solid #cccccc;text-align:center;font-size:14px;font-weight:bold;background-color: #636563;color:#ffffff;padding-top:7px;height:19px;float:left}
+.list7 {width:29px;border-bottom:1px solid #cccccc;text-align:center;font-size:14px;font-weight:bold;background-color: #636563;color:#ffffff;padding-top:7px;height:19px;float:left}
+.list10 {width:172px;border-right:1px solid #cccccc;border-left:1px solid #cccccc;padding-top:5px;height:auto;text-align:left;padding-left:8px;padding-right:8px}
+.list10 li.listBD1 {width:172px;border-bottom:1px solid #e4e4e4;padding-top:5px;height:16px;}
+.list11 {width:180px;border-right:1px solid #cccccc;border-left:1px solid #cccccc;border-bottom:1px solid #cccccc;height:15px;padding-right:8px;padding-top:4px;text-align:right}
+.list110 {width:180px;border-right:1px solid #cccccc;border-left:1px solid #cccccc;border-bottom:1px solid #cccccc;height:5px;padding-right:8px;padding-top:4px;text-align:right}
+.list10 .number {float:right;width:38px;padding-right:7px;text-align:right;color:#313131}
+.list10 .number2 {float:right;width:38px;padding-right:7px;text-align:right;color:#313131;margin-top:-3px}
+.list12 {width:180px;border-right:1px solid #cccccc;border-left:1px solid #cccccc;border-bottom:1px solid #cccccc;padding-top:10px;height:123px;text-align:left;padding-left:8px;}
+.list12 li.listBD2 {line-height:22px;margin-right:12px;float:left}
+.list13 {width:172px;border-right:1px solid #cccccc;border-left:1px solid #cccccc;padding:5px 8px 0 8px;height:242px;line-height:20px}
+.list14 {width:172px;border-right:1px solid #cccccc;border-left:1px solid #cccccc;padding:5px 8px 0px 8px;height:182px;line-height:22px;text-align:left}
+.list15 {width:172px;border-right:1px solid #cccccc;border-left:1px solid #cccccc;border-bottom:1px solid #cccccc;padding:5px 8px 0px 8px;height:274px;line-height:20px;text-align:left}
+.orangediv {width: 11px;background-color: #ff6500;margin-right: 5px;float: left;height: 25px;}
+.globalt2 {border-right: #cccccc 1px solid;border-top: #cccccc 1px solid;font-weight: bold;font-size: 14px;background: #636563;border-left: #cccccc 1px solid;line-height: 24px;height: 24px;color: white;}
+/*head+footer*/ 
+a.hui:link, a.hui:hover, a.hui:visited, a.hui:activ {color: #999999;text-decoration: none;}
+a.DH1:link, a.DH1:active, a.DH1:visited {font-size:14px;font-weight:bold;color: white;text-decoration: none;}
+a.DH1:hover {font-size:14px;font-weight:bold;color: white;text-decoration: none;position:relative;left:1px;top:1px;clip:rect()}
+a.black:link, a.black:active, a.black:visited {color: black;text-decoration: none;}
+a.black:hover {text-decoration: none;color: black;position:relative;left:1px;top:1px;clip:rect()}
+
+a.red:link, a.red:active, a.red:visited, a.red:hover {color: red;text-decoration: none;}
+a.red2:link, a.red2:visited, a.red2:hover, a.red2:activ {color:#da1a27;text-decoration: none;}
+
+.ggbottom {clear:both;width:990px;height:40px;text-align:center;margin-top:5px}
+a.blue:link, a.blue:visited, a.blue:hover, a.blue:active {color: blue;text-decoration: none;}
+
+
+
+
+/*Fixed float-login-MaskDiv 20090909*/
+.LoginDiv {border-right: #c0c0c0 2px ridge;border-top: #cceeff 1px solid;display: none;z-index: 1000;background: #fbfdff;left: 275px;border-left: #cceeff 1px solid;border-bottom: #c0c0c0 3px outset;position: absolute;top: 250px;}
+.MaskDiv {display: none;z-index: 999;left: 0px;width: 100%;height: 100%;position: absolute;top: 0px;background-color: #000;text-align: center;filter: alpha(opacity=30);opacity: 0.4;moz-opacity: 0.4;}
+.TitleTR {cursor: pointer;height: 20px;background-color: #dbedf5;}
+.TitleTR td {padding-right: 5px;padding-left: 10px;}
+
+/*----------IE6.0 背景图缓存优化 -----------------*/
+*html html {zoom:expression(function(el){
+	el.style.zoom = "1";
+	try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
+}(this))}
+

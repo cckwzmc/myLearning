@@ -1,0 +1,63 @@
+#reginfo{ margin:10px auto 20px auto; width:950px; height:296px; background:url(http://images.xiu.com/popup/bg_404.jpg) repeat-x; overflow:hidden; position:relative;}
+#rinfo{ margin-top:50px; margin-left:200px; height:72px; }
+#rinfo p{ font-size:14px;}
+#rinfo p strong{ color:#F26520;}
+#sendinfo{margin:10px auto 20px auto; width:950px; background:url(http://images.xiu.com/popup/bg_404.jpg) repeat-x left bottom;*zoom:1; padding:40px 0;}
+#sendinfo:after{ clear:both; display:block; content:"\0020"; height:0; visibility:hidden;}
+#png{float:left; margin-right:25px;width:44px;height:57px;}
+html>body #png { background:url(http://images.xiu.com/popup/bg_ok.png) no-repeat;}
+html #png{filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale', src='images/bg_ok.png');}
+.butbox{ margin-top:20px; margin-left:280px;}
+.butbox input{ margin-right:75px;}
+.binfo{ height:45px; position:absolute; left:0; bottom:0; width:950px; background:#bebebe; clear:both;}
+.binfo img{ float:left; display:block;}
+.leftinfo{ float:left; width:475px;  padding-left:120px; padding-right:10px;}
+.leftinfo p{ font-size:14px;}
+.rightinfo{ border-right:#bababa 1px solid;border-bottom:#bababa 1px solid; border-top:#F2F2F2 1px solid; border-left:#F2F2F2 1px solid; width:235px; float:left; padding:0 10px;*padding:10px;}
+.rightinfo p{ line-height:20px;}
+.leftinfo p strong{color:#F26520;}
+.mar20b{ margin-bottom:20px; margin-top:10px;}
+.loadbut{ clear:both; padding-left:70px; padding-top:20px;}
+.loadbut p{ font-size:12px; line-height:20px;}
+.cOra{color:#F26520;}
+.blue2l:link,.blue2l:visited,.blue2l:hover,.blue2l:active{ color:#181c97; text-decoration:underline;}
+.winbox{ width:292px;}
+.twb{ height:4px; background:url(http://images.xiu.com/popup/bgtwb.png) no-repeat; overflow:hidden; }
+.fwb{ height:4px; background:url(http://images.xiu.com/popup/bgfwb.png) no-repeat; overflow:hidden; }
+
+
+.winbox2{ width:72px;  background:url(http://images.xiu.com/popup/bgWinbox2.gif) no-repeat; height:70px; padding-left:8px;}
+.winbox2 h3{ color:#000; line-height:22px; font-weight:normal;}
+.winbox2 ul{ padding:5px 0;}
+.winbox2 li{ line-height:18px;}
+.winbox2 ul li a:link,.winbox2 ul li a:visited{ color:#000;}
+.winbox2 ul li a:hover{ color:#f90;}
+
+
+.cwb{ padding:0 10px 10px 10px; border-left:#FF9764 1px solid; background:url(http://images.xiu.com/popup/bgcwb.png) #fff repeat-y right top;}
+.cwb td{ color:#646464;}
+.dttable{ line-height:18px; color:#646464;}
+.dttable td{ border-bottom:#eaeaea 1px solid; height:50px;}
+.linkO:link,.linkO:visited{ text-decoration:underline;color:#F26520;}
+.linkO:hover{text-decoration:none;}
+.linkB2:link,.linkB2:visited{ text-decoration:underline;color:#000;}
+.linkB2:hover{text-decoration:none; color:#FF9900;}
+.linkG2:link,.linkG2:visited{ text-decoration:none;color:#646464;}
+.linkG2:hover{text-decoration:none; color:#FF9900; text-decoration:underline;}
+
+.openWin{ color:#FD6900; padding-top:6px; padding-bottom:18px; position:relative; z-index:99;}
+.topOW:after,.botOW:after{ display:block; clear:both; content:"\0020"; height:0; visibility:hidden;}
+.topOW{ height:6px; overflow:hidden;*zoom:1; background:url(http://images.xiu.com/popup/win_bg.png) repeat-x 0 -42px; position:absolute; width:100%; top:0; left:0;}
+.topOW span{ display:block; float:left; width:6px; height:6px; background:url(http://images.xiu.com/popup/win_bg.png) no-repeat;}
+.topOW em{ display:block; float:right; width:6px; height:6px;background:url(http://images.xiu.com/popup/win_bg.png) no-repeat top right;}
+.botOW{ height:18px; overflow:hidden;*zoom:1;background:url(http://images.xiu.com/popup/win_bg.png) repeat-x 0 -23px;width:100%; position:absolute; width:100%; bottom:0; left:0;}
+.botOW span{ display:block; float:left; width:56px; height:17px;background:url(http://images.xiu.com/popup/win_bg.png) no-repeat 0 -6px;}
+.botOW em{ display:block; float:right; width:6px; height:17px;background:url(http://images.xiu.com/popup/win_bg.png) no-repeat right -6px;}
+.cOW{ border-left:#F27330 1px solid; height:100%; background:url(http://images.xiu.com/popup/win_r3_c8.png) #FEF6EB repeat-y right top; padding:0 12px; line-height:18px; text-align:center;}
+
+.winli{  margin-bottom:-3px;  border-bottom:#fff 1px solid; position:relative;border-collapse:separate; margin-top:-3px;}
+.winli_td1{ background:url(http://images.xiu.com/popup/bgwli.png) no-repeat left top; width:22px; height:24px;}
+.winli_td2{ border-top:#FF9560 1px solid; line-height:24px; background:#fff;}
+.winli_td2 strong{ color:#f26521;}
+.winli_td3{ background:url(http://images.xiu.com/popup/bgwli.png) no-repeat right top;width:7px; height:24px;}
+.padBoth{ padding:5px 12px 0 12px;}

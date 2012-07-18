@@ -1,0 +1,111 @@
+﻿@charset "utf-8";
+/* CSS Document */
+#header{ width:970px; margin:0 auto; height:232px; position:relative}
+
+/* 登陆条 */
+.loginbar{ height:26px; padding:4px 15px 0; overflow:hidden;}
+.loginbar .fl a{ line-height:22px; margin:0 3px;}
+#login{float:right}
+#login .loginbox{ padding-top:4px;}
+#login .submit{background: url(http://static.zongheng.com/v2_0/images/pic.gif) -112px -60px;border:0;color:#025b81;height:20px;width:50px;*padding-top:3px}
+#login .regforget{background: url(http://static.zongheng.com/v2_0/images/pic.gif) -174px -60px;border:0;color:#025b81;height:20px;width:113px; float:left;text-align:center; margin-left:8px;*margin-top:1px;}
+#login .regforget a{ line-height:22px}
+#login #msg_count_tip{background:url(http://static.zongheng.com/v2_0/images/pic.gif) -320px -60px; padding-left:20px}
+/* logo */
+#logo{position:absolute;width:190px;height:90px;top:38px;}
+#logo a{ display:block; width:184px; height:55px;background:url(http://static.zongheng.com/v2_0/images/logo.gif) no-repeat;}
+#logo p{color:#153E11;display:block;font-size:13px;letter-spacing:2px;text-decoration:none;width:190px;text-align:center; padding-top:2px;}
+
+
+/* 主导航 */
+#header .nav .banner{ height:60px;padding-left:210px;}
+#header .nav{ padding:14px 0px 0px 0px; clear:both;height:115px}
+#header .nav ul{ background:url(http://static.zongheng.com/v2_0/images/main_nav.gif) 0px 5px no-repeat; margin-top:11px; height:40px; padding-left:1px;float:right;padding-right:2px;}
+#header .nav ul li{ float:left;width:83px;text-align:center; position:relative}
+#header .nav ul li .hot{ position:absolute; width:17px; height:22px; top:-5px;right:0px}
+#header .nav ul li .new{position:absolute;width:17px;height:22px;background:url(http://static.zongheng.com/v2_0/images/main_navNew.gif) no-repeat;right:0px;top:-5px;}
+#header .nav ul li .new_s{position:absolute;width:25px;height:14px;background:url(http://static.zongheng.com/v2_0/images/main_new.gif) no-repeat;right:0px;top:-3px;}
+#header .nav ul li a{display:block;line-height:39px;color:#454545; font-size:13px; line-height:42px}
+#header .nav ul li a.fred{ color:#b0251e}
+#header .nav ul li a:hover,
+#header .nav ul li a.on{display:block;width:83px;height:39px;background:url(http://static.zongheng.com/v2_0/images/pic.gif) -1px -50px; text-decoration:none; color:#fff;font-weight:bold;}
+#header .nav ul li a.on{ font-size:14px}
+/* 分类导航 */
+#header .nav2{ clear:both;text-align:center;color:#025b81; height:26px;line-height:26px;padding-left:105px;position:relative;}
+#header .nav2 a,#header .nav2 a:link,#header .nav2 a:active{color:#025b81;}
+#header .nav2 a:hover{ color:#FE8A01}
+#header .nav2 span{ padding:0 8px;color:#025b81;}
+#header .nav2 a.vip,#header .nav2 a.vip:link,#header .nav2 a.vip:active,#header .nav2 a.vip:hover{ background:url(http://static.zongheng.com/v2_0/images/pic.gif) -580px -398px ; width:98px; height:28px;position:absolute; float:left;top:-4px; padding:2px 0 0 1px;left:20px;_padding-top:3px}
+/* 搜索 */
+.searchbar{ height:46px; overflow:hidden; background:url(http://static.zongheng.com/v2_0/images/pic.gif) 0 -99px;}
+.searchbar .key{ line-height:45px; padding-left:16px; width:455px; float:left; height:45px; color:#888; overflow:hidden}
+.searchbar .key a,
+.searchbar .key a:link,
+.searchbar .key a:active{ color:#fe8a01; margin-right:10px;}
+.searchbar .search{ float:right; padding:11px 16px 0 0;width:465px;}
+.search .text{width:270px; border:1px solid #ccc;padding:3px 5px 0 22px;*padding:2px 5px 1px 22px;font-size:14px;height:19px;line-height:19px; background:#fff url(http://static.zongheng.com/v2_0/images/pic.gif) -950px 4px no-repeat; color:#999;float:left}
+.search_button{ background:url(http://static.zongheng.com/v2_0/images/pic.gif) -870px 0; width:63px; height:24px; border:0;float:left}
+	/* 搜索select */
+.selSearch{float:left;width:68px;background:#fff;height:22px;line-height:22px;border:1px solid #ccc;margin:0 10px;}
+.nowSearch{float:left;width:48px;height:21px;line-height:22px;padding-top:1px;overflow:hidden;padding-left:4px;color:#454545; cursor:pointer}
+.btnSel{float:right;border-left:1px solid #ccc;width:14px;height:22px;}
+.btnSel a{background:url(http://static.zongheng.com/v2_0/images/pic.gif) no-repeat -812px 0;display:block;width:14px;height:22px;}
+.btnSel a:hover{background:url(http://static.zongheng.com/v2_0/images/pic.gif) no-repeat -832px -1px;border:1px solid #fff;width:12px;height:20px;}
+.selOption{ z-index:999;position:absolute;margin-left:-1px;width:68px;background:#fff;border:1px solid #ccc;clear:both; height:auto}
+.selOption a{display:block;height:21px;padding-left:5px;line-height:21px;color:#000;}
+.selOption a:hover{color:#fff;background:#95d5f1;text-decoration:none;}
+	/* 搜索input弹出层 */
+#searchkeyword{ z-index:999;position:absolute;width:297px; border:1px solid #ccc;border-top:0;background:#fff; overflow:auto;*margin-top:-10px;opacity:0.8;filter: Alpha(opacity=80);}
+#searchkeyword a{display:block;height:22px;padding-left:5px;line-height:22px;color:#000;}
+#searchkeyword a:hover{color:#fff;background:#95d5f1;text-decoration:none;}
+#login-block,#userinfo{right:68px;}
+
+/* 对联 */
+.full{ position:absolute;top:200px;background:#dfdfdf;width:100px; overflow:hidden; display:none;height:280px;color:#666}
+.full a.fullclose{ background:url(http://static.zongheng.com/v2_0/images/fullclose.gif) 10px 5px no-repeat; color:#666; padding:0 10px 0 26px;line-height:22px; float:left; _background-position:10px 4px}
+.full a.fullsclose{ background:none; padding:0 3px;}
+.full .small{display:none}
+.fullsamll{ width:30px}
+.fullsamll .small,.full .swf{ display:block; height:260px; overflow:hidden}
+.fullsamll .swf{display:none}
+/* 头部4广告 */
+.flashtab{ width:990px; overflow:hidden; height:40px;}
+.flashtab li{ width:240px; float:left; background:#ccc; margin-right:4px; height:40px; overflow:hidden}
+.flashtab span{ display:none}
+.flashtab li img{ float:left}
+/*广告系统上线之后可删掉*/
+#fourpic{ width:990px; overflow:hidden; height:40px;}
+#fourpic li{ width:240px; float:left; background:#ccc; margin-right:4px; height:40px; overflow:hidden}
+#fourpic span{ display:none}
+#fourpic li img{ float:left}
+
+/* 2010春节头
+.bodycon{ background:#fff; width:970px; margin:0 auto; overflow:hidden}
+body{background:#fff url(http://static.zongheng.com/v2_0/images/2010cj/body.jpg) repeat-x;}
+#header{ background:#fff url(http://static.zongheng.com/v2_0/images/2010cj/headbg.jpg) 0 1px no-repeat}
+#header .nav .banner{ visibility:hidden}
+#logo{background:none;}
+#logo p{ display:none}
+
+#foot{background:url(http://static.zongheng.com/v2_0/images/2010cj/foot.jpg) 0 0 repeat-x;height:140px; overflow:hidden; text-align:center; clear:both}
+#foot .footlink{padding:25px 0 10px;color:#000;background:none;}
+#foot .footlink a:link,#foot .footlink a:visited{ color:#000; margin:0 8px; }
+#foot .footlink a:hover{ color:#454545;}
+#foot .f66{ line-height:24px; color:#ccc}
+*/
+
+/*
+body{background:#fff url(http://static.zongheng.com/v2_0/images/gqbg.jpg) 0 -140px repeat-x;}
+#header{ background:url(http://static.zongheng.com/v2_0/images/gqtop.jpg) 0 1px no-repeat}
+#header .nav .banner{ visibility:hidden}
+#logo{background:none;}
+.loginbar .fl a{ color:#fff}
+
+#foot{background:url(http://static.zongheng.com/v2_0/images/gqbg.jpg) repeat-x;}
+#foot .footlink{color:#fe5603;background:none;}
+#foot .footlink a:link,#foot .footlink a:visited{ color:#fe5603; margin:0 8px; }
+#foot .f66{color:#601c01}
+*/
+
+
+

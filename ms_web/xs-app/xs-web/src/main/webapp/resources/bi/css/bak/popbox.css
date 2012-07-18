@@ -1,0 +1,29 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url(public.css);
+@import url(popup20100513.css);
+@import url(alert.css);
+
+.popbox{ width:460px; background:#FFF7EE; height:280px; padding:2px; border:#F5862C 1px solid; position:relative;}
+.popbox h3{ height:22px; line-height:22px; background:#FFD088; margin:0; padding:0; font-size:12px;*zoom:1;}
+.popbox h3 span{ width:75%; height:22px; float:left; display:block; padding-left:8px;}
+.popbox h3 a{ float:right; width:45px; height:22px; overflow:hidden; display:block; font-weight:normal;}
+.popbox h3 a:link,.popbox h3 a:visited{ color:#5B5B5B; text-decoration:none;}
+.popbox h3 a:hover{ color:#F17700; text-decoration:none;}
+.popbox .pop_line{ width:400px; height:1px; background: url(images/line_03.gif) repeat-x; margin:12px auto; display:block;_margin:12px auto 0px; }
+.popbox .pop_info{ line-height:18px; color:#333; padding:0px 40px 0px 30px; font-size:12px;}
+.popbox .pop_info a{ color: #f35c0f; font-weight:bold;}
+.popbox .pop_info a:hover{ text-decoration:underline;}
+.popbox h2{ font-size:12px; width:410px; height:20px; line-height:20px; margin:0 auto;  padding-left:10px; margin-top:12px;}
+.popbox .pop_info p{ height:20px; line-height:20px; width:400px; }
+.popbox .pop_info .poph_20{ height:20px;}
+.popbox .pop_info span.pop_button{ background:url(images/zhifubutton_03.gif) no-repeat; float:right; width:75px; height:22px; font-size:13px; color:#FFFFFF; text-align:center; line-height:22px; float:left;}
+.popbox p.popwenti{ width:300px;}
+.popbox .pop_info p.popml_15{width:267px; }
+.popbox .pop_info .poppl_33{ height:20px;padding:10px 0 0px 33px;}
+.popbox .pop_info p span.pop_phone { float:left; height:25px; line-height:25px;}
+
+
+.yhpopbox{ height:120px;}
+.yhpopbox .pop_info h2.yb_h{ height:40px; line-height:40px; padding:0px; margin:0;}

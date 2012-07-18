@@ -1,0 +1,453 @@
+body{background:#f0fafe;}
+.wrap{ height:auto}
+/*IE6定位*/
+html{_background-attachment:fixed;_background-image:url(n1othing.txt);}
+/* top按钮 */
+#topa{display:block;bottom:175px;right:20px;background: url(http://static.zongheng.com/v2_0/images/top.gif) no-repeat;height:30px;width:30px; position:fixed; _position:absolute;_top:expression(documentElement.scrollTop+documentElement.clientHeight-175);_bottom:auto; z-index:100;filter:alpha(opacity=50);-moz-opacity:.50;opacity:0.5}
+a#topa:hover{filter:alpha(opacity=100);-moz-opacity:1;opacity:1}
+#bodytop{display:block; width:970px; height:80px;}
+.top{ padding-top:45px;}
+/* 顶部ui */
+#readtop{position:fixed; text-align:right;height:30px;_position:absolute;width:100%;top:0;left:0;_top:expression(documentElement.scrollTop);z-index:30;}
+#readtop .bg{background:url(http://static.zongheng.com/v2_0/images/read.gif) 0 -340px;color:#025b81;height:30px;_margin-right:17px;border-bottom:1px solid #aeaeae;}
+#readtop .nav{float:right;position:relative}
+#readtop .nav a{background:url(http://static.zongheng.com/v2_0/images/read.gif) 0 -420px;height:22px;border:1px solid #aeaeae; color:#025b81;padding-left:5px;line-height:24px;*line-height:26px;display:block;margin-top:3px;overflow:hidden;width:90px;float:left;text-align:left}
+#readtop .nav a:hover{ text-decoration:none;color:#999}
+#readtop .nav em{background:url(http://static.zongheng.com/v2_0/images/read.gif) no-repeat; display:block; float:left;width:16px;height:16px;padding:3px 5px 0 0;}
+#readtop .nav em.ic1{ background-position:0 -827px;}
+#readtop .nav em.ic2{ background-position:0 -797px;}
+#readtop .nav em.ic3{ background-position:0 -767px;}
+#readtop .nav em.ic4{ background-position:0 -737px;}
+#readtop .nav em.ic5{ background-position:0 -707px;}
+#readtop .nav em.ic6{ background-position:0 -855px;}
+#readtop .nav em.ic7{ background-position:0 -885px;}
+#readtop .nav span{background:url(http://static.zongheng.com/v2_0/images/read.gif) right -567px no-repeat;padding-right:14px;}
+#readtop .home,#readbot .home{ border:0;border-left:1px solid #aeaeae;background:url(http://static.zongheng.com/v2_0/images/read.gif) 0 -300px repeat-x; height:30px; display:block; padding:0 10px; line-height:32px; float:right; overflow:hidden; margin:0}
+#readtop .home em,#readbot .home em{background:url(http://static.zongheng.com/v2_0/images/read.gif) 0 -673px no-repeat;display:block;float:left;width:16px;height:16px;padding:6px 8px 0 0}
+#readtop .nav ul li{float:left;width:102px;position:relative}
+#readtop .nav ul li ul{clear:both;position:absolute;top:26px;visibility:hidden;height:auto;background:#f5f5f5;border:1px solid #ccc; width:95px; overflow:hidden;left:0}
+#readtop .nav ul li ul li{text-align:left;border-top:1px dotted #aeaeae;height:24px;overflow:hidden;clear:both;margin-top:-1px;}
+#readtop .nav ul li ul li a{color:#035c7f;background:none;border:0;line-height:24px;overflow:hidden;margin:0;padding:0;width:auto; padding-left:10px;}
+
+#readtop .close{display:block; float:right; background:url(http://static.zongheng.com/v2_0/images/opcl.gif) no-repeat;width:48px; cursor:pointer; height:48px;}
+#readtop .open{ background-position:0 -48px}
+/*底页修改成文字样式  0928*/
+#readtop .wz{float:right;}
+#readtop .wz span{float:left;color:#3e3e3e;line-height:26px;}
+#readtop .wz span a{padding:0px 8px;float:left;}
+#readtop .wz span.newchap{padding-left:8px;}
+#readtop .wz span.newchap a{float:none;padding:0px 2px;}
+
+
+
+/* 底部ui 
+#readbot{position:fixed;height:31px;_position:absolute;width:100%;bottom:-1px;left:0;}
+#readbot .bg{background:url(http://static.zongheng.com/v2_0/images/read.gif) 0 -380px;color:#025b81;height:31px;_margin-right:17px;border-top:1px solid #aeaeae; padding-left:5px;border-bottom:1px solid #aeaeae;}
+*/
+
+
+/* 搜索select */
+.selSearch{float:left;width:88px; margin-top:4px;background:#fff;height:22px; float:left;line-height:22px;border:1px solid #ccc;margin:0 10px; position:relative}
+.nowSearch{float:left;width:48px;height:21px;line-height:22px;padding-top:1px;overflow:hidden;padding-left:4px;color:#454545; cursor:pointer}
+.btnSel{float:right;border-left:1px solid #ccc;width:14px;height:22px;}
+.btnSel a{background:url(http://static.zongheng.com/v2_0/images/pic.gif) no-repeat -812px 0;display:block;width:14px;height:22px;}
+.btnSel a:hover{background:url(http://static.zongheng.com/v2_0/images/pic.gif) no-repeat -832px -1px;border:1px solid #fff;width:12px;height:20px;}
+.selOption{ z-index:999;position:absolute;margin-left:-1px;width:88px;background:#fff;border:1px solid #ccc;clear:both;height:auto; bottom:22px; left:0}
+.selOption a{display:block;height:21px;padding-left:5px;line-height:21px;color:#000;}
+.selOption a:hover{color:#fff;background:#95d5f1;text-decoration:none;}
+
+/* 登陆条 */
+#login{float:left;background:url(http://static.zongheng.com/v2_0/images/read.gif) 0 -300px repeat-x;height:25px; border-right:1px solid #aeaeae; padding:5px 10px 0 10px}
+#login-block,#userinfo{left:5px; position:fixed;_position:absolute; display:none; visibility: hidden;top:30px;_top:expression(documentElement.scrollTop+30);}
+/* title层 */
+#tooltip {position:absolute;z-index:9999;color:#666;font-size:12px;width:180px; background:#f1fbff; border:1px solid #035c84;padding:5px; text-decoration:none;}
+/* 章节列表 */
+.chapter{ background:#fff; height:100%; padding:24px 15px;}
+.chapter h1{ color:#7b4900; font-size:20px; font-family:"黑体"; font-weight:normal; text-align:center; line-height:36px;}
+.chapter h1 em{color:#454545; padding-left:20px;}
+.chapter h1 em a{color:#454545}
+.chapter .fblue{font-weight:bold; font-size:12px}
+.chapter .list,.chapter .listvip,.chapter .listtj{padding:0 9px; height:auto}
+.chapter table{ margin-top:10px;}
+.chapter p{ padding:12px 30px;font-size:14px;color:#666;line-height:24px; border-bottom:1px solid #e0dfdf; text-indent:2em}
+.chapter td a,
+.chapter td a:link,
+.chapter td a:visited{ color:#025b81;line-height:20px;}
+.chapter td span a,
+.chapter td span a:link,
+.chapter td span a:visited{ color:#888;line-height:20px;}
+.chapter td span a:hover,.chapter td a:hover,.chapter .my td a.f66:hover,.chapter .my td span a.f66:hover{ color:#FE8A01}
+.chapter .line{ height:1px; background:#fff; margin-top:-1px; overflow:hidden}
+.chapter .list td,.chapter .listvip td,.chapter .listtj td{border-bottom:1px solid #E1E1E1;font-size:12px;line-height:28px;padding:4px 0 3px 10px;text-align:left;width:25%}
+.chapter .listvip td{ width:33%}
+.chapter .listtj td{width:20%}
+.chapter h2,.chapter h3{background:#f5f5f5;border-top:2px solid #ccc;color:#454545;font-size:14px;text-align:center;line-height:32px;margin-top:15px}
+.chapter h2 em{ color:#c00; padding-left:10px; font-size:12px;}
+.chapter h2 em a,
+.chapter h2 em a:link,
+.chapter h2 em a:visited{color:#c00;font-size:12px; margin:0 6px}
+.chapter h2 a.readPart,.chapter h2 a.readPart:link,.chapter h2 a.readPart:visited{color:#5EB4D8;font-size:12px; margin:0 6px}
+.chapter h3{ text-align:left; color:#025b81; padding:0 12px}
+.chapter h3 a,
+.chapter h3 a:link,
+.chapter h3 a:visited{font-weight:normal; color:#999}
+
+/* 订阅确认 */
+.subture{ background:#fff;padding:24px 15px;}
+.only{width:700px;position:absolute;top:50%;left:50%; margin-left:-350px;}
+.subture .fblue{font-weight:bold; font-size:12px}
+.subture .spline{ height:40px}
+.subture table{padding:0 9px;margin-top:10px;}
+.subture td a.f66,
+.subture td a.f66:link,
+.subture td a.f66:visited{ color:#666;line-height:20px;}
+.subture td a,
+.subture td a:link,
+.subture td a:visited{ color:#7b4900;line-height:20px;}
+.subture .line{ height:1px; background:#fff; margin-top:-1px; overflow:hidden}
+.subture td{border-bottom:1px solid #E1E1E1;font-size:12px;line-height:28px;padding:2px 0 1px 10px;text-align:center;}
+.subture td.tl{ text-align:left}
+.subture th{background:#f5f5f5;border-top:2px solid #ccc;text-align:center;line-height:32px;margin-top:15px;color:#025b81;}
+.subture th a,.subture th a:link,.subture th a:visited,.subture .info .fr ul li a{color:#7b4900;}
+.subture.book td a{float:left;text-align:left}
+.subture.book td{ color:#888}
+.subture.book table{ margin-top:20px}
+.subture span{ color:#fe8a01}
+.subture em,.subture .info .fr p a{ color:#5eb4d8}
+.subture h2{color:#025b81;}
+.subture div.tc{background:#ddf5fe; line-height:48px; height:48px; color:#454545}
+.subture p.tc{ padding-top:15px; clear:both; height:24px; overflow:hidden}
+.subture p.tc input,.subture input.jb,#jbbox td input.submit{background:#FFFFFF url(http://static.zongheng.com/v2_0/images/bg.gif) repeat-x scroll 0 -1065px;border:1px solid #B2B2B2;color:#454545;height:23px;line-height:20px;margin-right:10px;text-align:center; padding:0 20px; cursor:pointer}
+.subture p.tc input.submit{ background-position:0 -1270px;border:1px solid #5EB4D8;}
+.subture .jbdiv{margin-top:10px; padding:10px 20px; background:#f9f9f9; line-height:20px; color:#666}
+.subture input.jb{ color:#c00;margin:5px 10px 0 0; float:left;}
+.subture .info{ height:140px}
+.subture .info a img{ width:80px; height:120px; padding:1px; border:1px solid #e0dfdf; margin:0 20px}
+.subture .info .fr{ width:810px; color:#666}
+.subture .info .fr ul{ height:100px; border-bottom:1px solid #e0dfdf}
+.subture .info .fr ul li{ float:left; width:40%; line-height:30px;}
+.subture .info .fr p{ padding-top:8px}
+.subture p.tc input.vipdbby{background:url(http://static.zongheng.com/v2_0/images/vip_yelan.jpg) no-repeat;border:0px;color:#805608;width:77px;text-align:right;line-height:23px;padding:0px;padding-right:2px;}
+
+/* 末页推荐信息 */
+.ft1{height:100%; padding-bottom:20px; _overflow:hidden}
+.ft1 .con{ width:470px; height:230px; overflow:hidden}
+.ft1 .con.fr{ padding-right:15px}
+.ft1 .con h2{ line-height:30px; padding-top:10px; color:#7b4900}
+.ft1 .con h2 a{color:#7b4900; padding-left:15px}
+.ft1 .con a img{ padding:1px; border:1px solid #e0dfdf; margin:5px 15px; height:160px; width:120px;}
+.ft1 .con p{ text-indent:2em; line-height:20px; height:140px; overflow:hidden; color:#454545}
+.ft1 .con a.fr{ line-height:24px; color:#5eb4d8}
+.ft1 .con a.fr:hover{color:#FE8A01}
+.ft2{height:150px;}
+.ft2 .con{ width:240px; float:left; padding-top:10px;}
+.ft2 .con h3 a{color:#7b4900; line-height:24px;}
+.ft2 .con.fr{ padding-right:15px}
+.ft2 .con a img{ padding:1px; border:1px solid #e0dfdf; margin:5px 10px 0 15px; height:80px; width:60px;}
+.ft2 .con p{ text-indent:2em; line-height:20px; height:60px; overflow:hidden; color:#454545}
+.chapter .my{background:#fff; padding:15px;width:280px; float:left; height:225px}
+.chapter .my.h{height:415px; margin-bottom:20px}
+.chapter .my.vip{height:385px;}
+.chapter .my h3{ margin:0}
+.chapter .my h3.tc{ text-align:center}
+.chapter .my h4 {color:#025b81; padding-top:12px}
+.chapter .my th{ color:#5eb4d8; font-weight:normal; border-bottom:1px solid #ccc; padding:0 8px 3px 0;}
+.chapter .my td{border-bottom:1px solid #E1E1E1;font-size:12px;line-height:28px;padding:2px 0 0px 6px;text-align:left; overflow:hidden;color:#666; height:28px;}
+.chapter .my td a.f66,.chapter .my td a.f66:link,.chapter .my td a.f66:visited{color:#666}
+.chapter .my th span{ line-height:22px;}
+.chapter .my th span.fl{padding-left:8px;}
+.chapter .my th em{ padding:3px 8px 2px 0;color:#888;background:#f5f5f5; margin-left:8px; display:block; float:left}
+.chapter .my th em span{ margin-left:6px; line-height:16px}
+.chapter .my th em span.icomonth{ margin-right:2px;}
+.chapter .my td a.fr{color:#5eb4d8; line-height:28px}
+.ft1:after{content:".";display:block;clear:both;visibility:hidden;height:0;}
+.btable{ padding:0 1px; background:#fff}
+.btable .title{ background:url(http://static.zongheng.com/v2_0/images/bg.gif) 0 -300px;}
+/* 正文 */
+#readcon{ margin:0 60px; clear:both}
+#readcon h2, #readcon h1 {clear:both;color:#7B4900;font-family:"黑体";font-size:20px;font-weight:normal;margin-top:10px;padding-bottom:8px;text-align:center;}
+#readcon h2 {color:#333333;font-family:"宋体";font-size:14px;font-weight:bold;padding:8px 0;}
+#readcon h2 span, #readcon h2 a {color:#888888;font-size:12px;font-weight:normal;line-height:22px;}
+#readcon h2 a {padding-left:15px;}
+#readtext,.listenRead{ padding:5px 0; margin-bottom:15px; }
+#readtext{margin:0px auto 25px;border-top:1px solid #ccc;}
+#readtext p,.listenRead p{ text-indent:2em; font-size:14px; padding:0.8em;line-height:2em;word-wrap:break-word;}
+#readtext .text a,#readcon .text a{padding:0.5em; font-size:14px; color:#5EB4D8}
+
+.button{text-align:center; padding:20px;line-height:1.6em;font-size:14px; color:#025b81}
+.button *{ font-size:14px}
+.button span,
+.button a:link,
+.button a:visited{font-size:14px;color:#025b81; margin:0 10px;}
+.button a.fb:link,
+.button a.fb:visited{color:#c00;}
+.button a:hover,.button a.fb:hover{color:#FE8A01;}
+/** 作者推荐作品 **/
+#readcon #readtext .autj{margin:1em 0.5em;}
+#readcon #readtext .autj *{font-size:14px; line-height:24px; padding:0.2em 0}
+#readcon #readtext .autj h3{height:24px; overflow:hidden;background:url(http://static.zongheng.com/v2_0/images/autj.gif) 2em 3px no-repeat }
+#readcon #readtext .autj span{ text-indent:2em; color:#454545;display:block}
+#readcon #readtext .autj .tc{ color:#999; font-size:12px; line-height:18px; text-align:left; font-weight:normal; padding-left:310px}
+#readcon #readtext .autj .tc a:link,#readcon #readtext .autj .tc a:visited{color:#fe8a01;line-height:18px; font-weight:bold}
+#readcon #readtext .autj .tc a:hover{text-decoration:underline;}
+/*修改阅读底页的样式   2010.06.12*/
+#readcon .dlyd{padding-top:12px;font-size:16px;color:#004797;text-indent:24px;}
+#readcon .dlyd a{font-size:16px; color:#ff0000;}
+#readcon .dlyd a:hover{text-decoration:underline;}
+#readcon .text{text-indent:24px;}
+/*结束*/
+
+
+/** 阅读策略
+#readview{right:0;_right:17px;width:200px; position:fixed;_POSITION:absolute; bottom:25px;z-index:101;display:none}
+#readview .cltable{ margin-top:10px}
+#readview .cltable td{ padding:3px}
+#readview .cltable .select1{ width:90px;border:1px solid #7f9db9;}
+#readview .cltable .select2{ width:56px;}
+#readview .cltable .input_01{ border-color:#7f9db9}
+#readview .cltable .submit{ width:96px; height:21px; border:1px solid #c95d00; background:#fe8a01 url(http://static.zongheng.com/v2_0/images/pic.gif) -840px -610px; color:#fff; line-height:20px}
+**/
+/** 书架弹出
+#tuck {left:10%;width:500px; position:fixed;_POSITION:absolute; TOP:50px;display:none;_top:expression(documentElement.scrollTop+50);}
+#tuck .keep{background:url(http://static.zongheng.com/v2_0/images/read.gif) 0 -490px; height:58px; padding:0 20px;overflow:hidden; font-size:14px}
+#tuck .keep .t,#tuck .keep .t *{line-height:36px; height:30px; overflow:hidden; font-size:14px;}
+#tuck .keep .tr a{display:inline-block; width:40px; height:20px; line-height:20px; background:#ff9d23; color:#fff; border:1px solid  #f60; text-align:center; font-weight:bold; margin-right:6px}
+#tuck .keep .tr a.no{background:#333;border:1px solid #000;}
+#tuck .chapter{ padding:0}
+#tuck .chapter .my{ background:#f7f7f7; width:470px; padding:0; height:auto}
+#tuck .chapter .my th{ color:#035b81; font-weight: bold; border-bottom:0; padding:0 0 3px 0;}
+#tuck .chapter .my td{ border-bottom:0}
+#tuck .chapter .my td .f14,#tuck .chapter .my td .fau{ color:#6e2d05;}
+#tuck .chapter .my td .view{ font-size:14px;color:#c0994f; display:block; text-align:center}
+ **/
+/** 评论弹出 **/
+#fbpl {left:10%;width:650px; position:fixed;_POSITION:absolute; TOP:450px;display:none;_top:expression(documentElement.scrollTop+450);}
+#fbpl em{background:url(http://static.zongheng.com/v2_0/images/pic.gif) -430px -606px no-repeat;width:20px;height:20px;display:block; float:left}
+#fbpl em.zd{ background:url(http://static.zongheng.com/v2_0/images/pic.gif) -430px -673px no-repeat;}
+.remarkps{ padding-top:10px; width:630px; height:260px}
+.remarkps div.fl{ width:370px;padding-left:10px;padding-top:5px; overflow:auto; height:255px;}
+.remarkps div.fl p{ float:left; line-height:27px;color:#666}
+.remarkps div.fl span.fl a{ line-height:27px;color:#666}
+.remarkps div.fl .input_01{ width:322px;}
+.remarkps div.fl textarea{ border:1px solid #ccc; width:357px; height:140px; font-family:14px; padding:5px;}
+.remarkps div.fl .submit{ width:83px; height:27px; background:url(http://static.zongheng.com/v2_0/images/pic.gif) -652px -160px; border:0; font-size:14px; color:#fff;}
+
+/*评论表情*/
+.comicview{border:1px solid #c8c8c8;height:230px;width:242px;}
+.comicview .comicview_tit{background:url(http://static.zongheng.com/v2_0/images/bg.gif) repeat-x 0 -220px;height:28px;border-bottom:1px solid #c8c8c8;}
+.comicview .comicview_tit span{float:left;width:66px;height:22px;overflow:hidden;text-align:center;color:#666;margin-left:8px;display:inline;position:relative;top:7px;line-height:24px;cursor:pointer;}
+.comicview .comicview_tit span.now{background:url(http://static.zongheng.com/v2_0/images/comicview_tab.gif) no-repeat;color:#ff9c00;font-weight:bold;}
+.comicview .comic{height:172px;overflow:hidden;width:242px;}
+.comicview .comic td{text-align:center;vertical-align:middle;height:36px;}
+.comicview .showimg{height:28px;background:#f7f7f7;border-top:1px solid #c8c8c8;;width:242px;}
+.comicview .showimg span{float:left;border-right:1px solid #dad7cb;width:26px;height:28px;cursor:pointer;text-align:center;line-height:24px;}
+.comicview .showimg .now{background:#ccc;font-weight:bold;border-right:1px solid #fff;}
+/** 红黑票弹出 **/
+#rbticket{left:50%;width:520px; position:fixed;_POSITION:absolute; TOP:80px; display:none;_top:expression(documentElement.scrollTop+80);}
+.work .rbticket{clear:both;background:url(http://static.zongheng.com/v2_0/images/rb.gif) 0 30px no-repeat; height:50px;width:326px; margin:0 auto; padding:45px 72px 0; position:relative}
+.work .rbticket .percent{width:327px;height:27px;clear:both; background:url(http://static.zongheng.com/v2_0/images/rb.gif) 0 -173px;}
+.work .rbticket .percent .tiao{height:27px;float:left;background:url(http://static.zongheng.com/v2_0/images/rb.gif) left -85px no-repeat; width:50%; border-right:1px solid #fff;position:relative;}
+.work .rbticket .percent .tiao p{width:157px;text-align:center; height:30px;line-height:26px; color:#454545; display:block;background:url(http://static.zongheng.com/v2_0/images/rb.gif) 0 -120px; padding:0;position:absolute;right:-80px; top:-35px;}
+.work .rbticket .btnleft,.work .rbticket .btnright,.work .rbticket a.btnleft:hover,.work .rbticket a.btnright:hover{ width:36px; height:36px; background:url(http://static.zongheng.com/v2_0/images/rb.gif) -432px -132px; display:block; position:absolute;left:11px;top:41px}
+.work .rbticket .btnleft,.work .rbticket .btnright{ background:none}
+.work .rbticket .btnright,.work .rbticket a.btnright:hover{ background-position:-432px -86px; left:424px; top:40px;height:37px}
+.work .rbticket .pnum{ padding-top:10px;}
+.work .rbticket .pnum .fl{ color:#ac0101}
+.work .rbticket .pnum .fr{ color:#454545}
+
+/** 右键菜单 **/
+#memu,#jqContextMenu{right:100px;width:140px; position:fixed;_POSITION:absolute; TOP:240px; background:#fff url(http://static.zongheng.com/v2_0/images/read.gif) no-repeat; height:291px; overflow:hidden; padding-left:30px; border:1px solid #cccccc; border-left:0}
+#memu a,#jqContextMenu a{ color:#025b81;}
+#memu ul,#jqContextMenu ul{ clear:both; height:auto; border-bottom:1px solid #ccc; padding:3px 0 4px 15px}
+#memu ul li,#jqContextMenu ul li{ height:20px; line-height:20px;}
+
+/* 调查 
+#authortp{left:20%;width:700px; position:fixed;_POSITION:absolute; TOP:80px; display:none;_top:expression(documentElement.scrollTop+80);}
+.authortp{padding:20px 15px;}
+.authortp h1{ font-size:14px; color:#7b4900; font-weight:normal; line-height:22px; padding:0 5px}
+.authortp td{ padding:5px; line-height:20px; color:#454545}
+.authortp td .perce{background:#eee; height:10px; overflow:hidden; width:200px;}
+.authortp td .perce em{ border:1px solid #fff;border-width:0 1px;background:url(http://static.zongheng.com/v2_0/images/bg.gif) repeat-x; height:10px; overflow:hidden;display:block}
+.authortp td .perce em.n1{ background-position:0 -1312px; border-color:#dc6b00}
+.authortp td .perce em.n2{ background-position:0 -1339px; border-color:#679800}
+.authortp td .perce em.n3{ background-position:0 -1364px; border-color:#10a1ce}
+.authortp td .perce em.n4{ background-position:0 -1390px; border-color:#ac0101}
+.authortp td input.submit{background:url(http://static.zongheng.com/v2_0/images/bg.gif) repeat-x scroll 0 -1270px;border:1px solid #5EB4D8;color:#454545;cursor:pointer;height:23px;line-height:20px;margin-right:10px;padding:0 10px;text-align:center; margin-left:20px;}
+*/
+/* 举报 
+#jbbox{left:50%; margin-left:-200px;width:400px; position:fixed;_POSITION:absolute; TOP:50%; margin-top:-100px; display:none;_top:expression(documentElement.clientHeight/2);}
+#jbbox .con{ margin-top:10px}
+#jbbox .con td{ padding:5px;line-height:20px;}
+#jbbox .con td.tc{ color:#025b81; padding:10px;}
+#jbbox .con td span{ color:#666; }
+#jbbox textarea{ height:100px; width:90%;}
+*/
+#readbot .bg .fl a.laba_a,#readbot .bg .fl a.laba_b{background:url(http://static.zongheng.com/v2_0/images/laba.gif) 0 -70px repeat-x;border:0px solid #AEAEAE;display:block;float:left;height:31px;border-right-width:1px;line-height:32px;color:#000; margin:0 4px 0 0}
+#readbot .bg .fl a.laba_b{ background-position:0 -30px; color:#ae1d01}
+#readbot .bg .fl a.laba_a span,#readbot .bg .fl a.laba_b span{background:url(http://static.zongheng.com/v2_0/images/laba.gif) 62px -10px no-repeat; padding-right:22px;}
+#laba ul li{line-height:30px;}
+#laba ul li a{color:#FE8A01; text-decoration:none}
+#laba ul li a.fblue{color:#5eb4d8;}
+#laba ul li a.fred{color:#ff4772;}
+#laba ul li a:hover{text-decoration:underline}
+.maylike{line-height:30px;margin-right:10px;}
+.maylike span{color:#5eb4d8;font-weight:bold;}
+.maylike a{margin:0px 10px;}
+
+.chose{font-weight:bold;padding:10px 0px 30px 14px;line-height:19px;width:970px;margin:0px auto;}
+.chose .chosebg{background:url(http://static.zongheng.com/v2_0/images/ys.gif) no-repeat 92px 1px;}
+.chose .chosebg em{float:left;}
+.chose .chosebg a{float:left;margin-left:3px;width:15px;height:15px;cursor:pointer;font-size:0px;}
+.chose .choseft,.chose .default{padding-left:10px;}
+.chose .choseft em{font-weight:normal;cursor:pointer;}
+.chose .choseft em.now{text-decoration:underline;}
+.chose .default span{cursor:pointer;background:url(http://static.zongheng.com/v2_0/images/pic.gif) repeat scroll -802px -551px;border:1px solid #ccc;display:inline-block;font-weight:normal;text-align:center;width:60px;}
+.chose .default em.new{background: url(http://static.zongheng.com/v2_0/images/ahtohrnew.gif) no-repeat right top;display:inline-block;width:24px;height:14px;}
+.quickmode{padding-top:30px;color:#035f0e;}
+.quickmode a,.quickmode a:link,.quickmode a:visited,.quickmode a:hover{color:#035f0e;}
+/*新增宽度调整 2011.11.17*/
+.chose .select{width:150px;position:relative;z-index:20;}
+.chose .select .wz{float:left;}
+.chose .select .select_box{float:right;width:80px;height:18px;border:1px solid #ccc;overflow:hidden;font-weight:normal;background-color:#fff;line-height:18px;}
+.chose .select .select_box em.val{float:left;padding-left:6px;width:50px;cursor:default;}
+.chose .select .select_box em.but{float:right;background:url(http://static.zongheng.com/v2_0/images/auto_width.gif) 0px -1px;width:22px;height:22px;margin:-1px -1px 0px 0px;overflow:hidden;}
+.chose .select .select_list{border:1px solid #ccc;width:80px;background-color:#fff;font-weight:normal;height:95px;display:none;position:absolute;left:78px;top:19px;}
+.chose .select .select_list li{padding-left:6px;cursor:default;width:74px;}
+.chose .select .select_list li.setbg{background-color:#e4e4e4;}
+.chose .select .select_list li.advise{color:#6f9a37;}
+.chose .select .select_list li.noadvise{color:#c10000;}
+
+/*加入书签按钮*/
+#jrsq{display:block;bottom:215px;right:20px;background:url(http://static.zongheng.com/v2_0/images/jsq.gif) no-repeat;height:91px;width:26px; position:fixed; _position:absolute;_top:expression(documentElement.scrollTop+documentElement.clientHeight-275);_bottom:auto; z-index:100;}
+/*末页封推  2010.11.29*/
+.tp{width:622px;}
+.tp .xts{width:600px;border:1px solid #90c4db;background:#d6f4ff;padding:10px;height:72px;overflow:hidden;}
+.tp .xts h1{font-size:14px;color:#013e58;}
+.tp .xts p{font-size:14px;color:#013e58;padding-top:5px;line-height:22px;}
+.tp .xts p a{color:#fe8a01;font-size:14px;}
+.tp .xts p span{font-size:14px;color:#de0000;}
+.tp .xts img{vertical-align:middle;cursor:pointer;float:right;margin-right:20px;}
+.tp .title{padding-left:27px;background:url(http://static.zongheng.com/v2_0/images/my_pld.gif) repeat-x left bottom;height:29px;overflow:hidden;}
+.tp .title dt{width:96px;float:left;text-align:center;line-height:29px;cursor:pointer;margin-left:3px;font-size:14px;}
+.tp .title dt.normal{background:url(http://static.zongheng.com/v2_0/images/my_pltitno.gif) no-repeat;height:29px;color:#fff;}
+.tp .title dt.active{background:url(http://static.zongheng.com/v2_0/images/my_pltitac.gif) no-repeat;height:29px;font-weight:bold;color:#025b81;}
+.tp .title .cz{background:url(http://static.zongheng.com/v2_0/images/my_cz.gif) no-repeat;width:64px;height:24px;line-height:26px;padding-left:28px;overflow:hidden;}
+.tp .title .cz a{color:#e00000;}
+.tp .pl{padding-left:25px;padding-top:20px;background:#d6f4ff;height:315px;overflow:hidden;}
+.tp .pl .hp p{padding-top:28px;}
+.tp .pl .pc p{padding:6px 0px;}
+.tp .pl p a{color:#025b81;font-weight:bold;}
+.tp .pl p.red{color:#e50000;}
+.tp .pl p.tc{text-align:center;height:auto;}
+.tp .pl p span.red{color:#e50000;padding:0px 5px;}
+.tp .pl p span.red a{color:#e50000;}
+.tp .pl p span.yellow{color:#6c4200;font-size:14px;}
+.tp .pl p span.yellow a{color:#6c4200;font-size:14px;}
+.tp .pl p input{margin-left:20px;margin-right:5px;}
+.tp .pl p input.fir{margin-left:5px;}
+.tp .pl p .plan{background:url(http://static.zongheng.com/v2_0/images/my_butbg.gif) no-repeat;width:84px;height:24px;border:0px;color:#000;cursor:pointer;}
+.tp .pl .pc .pcinput{height:24px;width:452px;border:1px solid #b0b8c5;line-height:24px;color:#a9a9a9;margin:4px 0px;}
+.tp .pl .pc .pcarea{border:1px solid #b0b8c5;width:452px;height:86px;color:#a9a9a9;}
+.tp .pl .plc .pcarea{height:135px;}
+.myfr{width:338px;float:right;}
+.oh{width:334px;height:120px;overflow:hidden;}
+.oh .title h2{padding:5px 0px 0px 10px;color:#131313;}
+.oh .zp{width:160px;padding-left:4px;}
+.oh .zp img{width:64px;height:84px;}
+.oh .zp h3 a{color:#fe8a01;}
+.oh .zp p{padding-top:6px;color:#025b81;}
+.oh .zp p span{color:#383838;}
+.xzph{padding:0px 1px;background:#fff;height:234px;overflow:hidden;width:334px;}
+.xzph .title{background:url(http://static.zongheng.com/v2_0/images/my_rigbg.gif) repeat-x;height:29px;padding-left:8px;}
+.xzph .title dt{float:left;}
+.xzph .title dt.normal,.xzph .title dt.active{border-style:solid;border-color:#e0dfdf;height:28px;line-height:28px;overflow:hidden;margin-top:1px;padding:0px 5px;cursor:pointer;}
+.xzph .title dt.normal{border-width:0px 1px 1px;background:#f1f1f1;color:#222222;}
+.xzph .title dt.active{border-width:0px 1px 0px;background:#fff;color:#025b81;font-weight:bold;}
+.xzph .title dt#myplc_Title1,.xzph .title dt#myplc_Title2{border-left:0px;}
+.xzph .plnr td{text-align:center;height:24px;background:url(http://static.zongheng.com/v2_0/images/xdashed.gif) repeat-x 0 bottom;}
+.xzph .plnr td a{color:#065b7a;}
+.xzph .plnr td.top3 a{color:#fc8f00;font-weight:bold;}
+.xzph .plnr td.top3dj{color:#f90009;}
+.xzph .plnr .tr{padding-right:8px;}
+.xzph .plnr table{background:url(http://static.zongheng.com/v2_0/images/ph50list.gif) no-repeat -4px 18px;width:98%;margin:0px auto;}
+.xzph .plnr th{height:22px;border-bottom:1px solid #dfdfdf;}
+.xzph .plnr .help{padding:8px;}
+.xzph .plnr .help a{color:#0b9ed2;}
+.xzph .plnr ul{height:auto;}
+.xzph .plnr ul li{background:url(http://static.zongheng.com/v2_0/images/pic.gif) no-repeat -950px -273px;padding-left:25px;line-height:24px;}
+.xzph .plnr ul li a{color:#454545;}
+.xzph .plnr ul li span.zh{float:right;width:68px;padding-right:5px;overflow:hidden;text-align:left;white-space:nowrap;}
+.xzph .plnr ul li span.zh a{color:#888;}
+.xzph .plnr ul li span.sname a{color:#fe8a01;}
+.bangd{width:235px;float:left;}
+.bangd .ph .title{background:url(http://static.zongheng.com/v2_0/images/myft_djbg.gif) no-repeat;}
+.mar10in{margin-left:10px;display:inline;}
+/* 红黑排行榜 */
+#rb h3{padding-left:8px}
+#rb h3 dd{float:left;display:block;}
+#rb h3 dd#rb1{left:55px}
+#rb h3 dd a{display:block;width:48px;height:28px;overflow:hidden;line-height:28px;text-align:center;color:#5eb4d8; }
+#rb h3 dd.normal a{background:#f1f1f1;width:46px;height:27px;border:1px solid #e0dfdf; border-top-width:0; }
+#rb h3 dd.active a{background:#fff;width:46px;border:1px solid #e0dfdf; border-width:0 1px; }
+#rb h3 dd.active a:hover,#rb h3 dd a:hover{text-decoration:none}
+#rb .con .ment{margin-top:-28px;}
+/*末页封推*/
+.ftr{height:464px;overflow:hidden;}
+.ftr .con{width:320px; height:200px;overflow:hidden;padding-top:10px;}
+.ftr .con.fr{ padding-right:15px}
+.ftr .con h2{padding:3px 0px;color:#7b4900;}
+.ftr .con h2 a{color:#7b4900;}
+.ftr .con a img{ padding:1px; border:1px solid #e0dfdf; margin:5px 15px; height:160px; width:120px;}
+.ftr .con span{color:#454545;font-weight:bold;}
+.ftr .con p{ text-indent:2em; line-height:16px; height:128px; overflow:hidden; color:#454545;}
+.ftr .con a.fr,.ftr .con span a{color:#5eb4d8;line-height:18px;}
+.ftr .con a.fr:hover,.ftr .con span a:hover{color:#FE8A01;}
+/*末页封推精选*/
+.ftjx{width:622px;float:left;height:365px;overflow:hidden;}
+.ftjx .con{width:286px;float:left;padding-top:15px;padding-left:10px;}
+.ftjx .con h3 a{color:#7b4900;line-height:24px;}
+.ftjx .con a img{padding:1px;border:1px solid #e0dfdf;margin:5px 10px 0 15px;height:80px;width:60px;}
+.ftjx .con p{text-indent:2em;line-height:20px;height:60px;overflow:hidden;color:#454545;padding-right:30px;}
+/*新版全文阅读及单张阅读提示框*/
+.flashchapter{background:url(http://static.zongheng.com/v2_0/images/flash_bg.gif) repeat-x;height:152px;width:434px;overflow:hidden;position:absolute;}
+.flashchapter .close_flash{float:right;width:14px;height:14px;background:url(http://static.zongheng.com/v2_0/images/flash_close.gif) no-repeat;margin:16px 12px 0px 0px;cursor:pointer;}
+.flashchapter p{font-size:14px;color:#a90000;padding:40px 40px 0px;text-indent:28px;line-height:22px;}
+.flashchapter .anniu{text-align:center;padding-top:20px;}
+.flashchapter .anniu span{background:url(http://static.zongheng.com/v2_0/images/flash_anniu.gif) no-repeat;width:79px;height:27px;display:inline-block;text-align:center;line-height:27px;overflow:hidden;color:#00244d;}
+.flashchapter .anniu span a{color:#00244d;}
+.flashchapter .anniu span.mar{margin-left:60px;}
+
+/* vip章节订阅 */
+.subture .info .fr p span.f5e{ color:#5EB4D8;}
+/*快捷翻上下章节 右侧漂浮*/
+.short_chap{border:1px solid #e4e4e4;background-color:#f5f5f5;width:14px;padding:5px;position:fixed;right:20px;bottom:314px;color:#878787;_position:absolute;_top:expression(documentElement.scrollTop+documentElement.clientHeight-414);_bottom:auto;}
+.short_chap .prev{background:url(http://static.zongheng.com/v2_0/images/auto_width.gif) no-repeat -33px 2px;float:left;width:14px;text-align:center;padding-top:12px;height:42px;}
+.short_chap .next{background:url(http://static.zongheng.com/v2_0/images/auto_width.gif) no-repeat -62px 44px;float:left;width:14px;text-align:center;padding-bottom:12px;height:42px;}
+.short_chap .noprev{background-position:-96px 2px;}
+.short_chap .nonext{background-position:-128px 44px;}
+.short_chap .line{height:0px;border-top:1px solid #bfbfbf;border-bottom:1px solid #fff;float:left;width:14px;overflow:hidden;margin:6px 0px;}
+.short_chap a,.short_chap a:link,.short_chap a:visited,.short_chap a:active{color:#2a9cd8;}
+.short_chap a:hover{color:#fe8a01;}
+
+/*弹层*/
+.viptp_tc{ width:600px; height:460px;position:relative;color:#3e3e3e; border:1px solid #025b81; background-color:#f1f6f8;}
+.viptp_tc .title{ background:url(http://static.zongheng.com/v2_0/images/tc_title.gif) repeat-x; height:31px; overflow:hidden;padding:7px 0 0 21px;}
+.viptp_tc .title dt{ float:left; margin-right:10px; background:url(http://static.zongheng.com/v2_0/images/tc_normal.gif) no-repeat; width:82px; height:24px; line-height:25px; padding:0; text-align:center; color:#252525;}
+.viptp_tc .title .active{ background:url(http://static.zongheng.com/v2_0/images/tc_active.gif) no-repeat; color:#025b81;}
+.viptp_tc .undis{ display:none;}
+.viptp_tc a.f02{ color:#025b81;}
+.viptp_tc a.f02:hover{ color:#f00000;}
+.tc_content0,.tc_content1{ padding:20px 30px;}
+.tc_content0 p,.tc_content1 p{ font-size:14px;}
+.tc_content0 form,.tc_content1 form{ line-height:35px; padding:10px 0;}
+.tc_content0 form span,.tc_content1 form span{ width:100px; display:inline-block;}
+.tc_content0 form .xpl input,.tc_content1 form .xpl input{ height:24px; border-style:none; border:1px solid #baccd6; width:350px; padding:1px 3px 0 3px;}
+.tc_content0 form .xpl span,.tc_content1 form .xpl span{width:40px; height:27px;}
+.tc_content0 form .xpl textarea,.tc_content1 form .xpl textarea{ margin:8px 0 0 0; padding:3px; border-style:none; border:1px solid #baccd6;}
+.tc_ye{ font-size:14px; background:url(http://static.zongheng.com/v2_0/images/tc_bg2.gif) repeat-x; height:31px; width:506px; line-height:34px; border:1px solid #baccd6; padding-left:15px; margin-top:22px;}
+.viptp_tc input.ok{ border-style:none; background:url(http://static.zongheng.com/v2_0/images/tc_ok.gif) no-repeat; height:27px; width:72px; position:absolute; top:410px; left:190px; text-indent:-9999px;}
+.viptp_tc input.cancel{ border-style:none; background:url(http://static.zongheng.com/v2_0/images/tc_qx.gif) no-repeat; height:27px; width:72px; position:absolute; top:410px; left:290px; text-indent:-9999px;}
+.viptp_tc input.qx02{ border-style:none; background:url(http://static.zongheng.com/v2_0/images/tc_qx02.gif) no-repeat; height:18px; width:17px; position:absolute; top:6px; right:10px; text-indent:-9999px;}
+
+/*隐藏作者投票*/
+#authortp{display:none;}

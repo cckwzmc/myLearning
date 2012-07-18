@@ -1,0 +1,251 @@
+@charset "utf-8";
+/* CSS Document */
+
+body,html{ height:100%;}
+/**==公用背景==**/
+.login_Div h2,
+.login_Div .user_Login .anather_userLogin .layer1,
+.login_Div .user_Login .anather_userLogin .layer2,
+.login_Div .user_Login .anather_userLogin .layer3,
+.login_Div .user_Login .anather_userLogin .layer4,
+.login_Div .login_nav .login_edit,.login_title,
+.login_Div m,
+.login_Div .userTabs .eMailH .rond,
+.login_Div .userTabs .eMailH,
+.login_Div .userTabs .eMail,
+.login_Div .userTabs .phone,
+.login_Div .userTabs .phoneH .rond,
+.login_Div .userTabs .phoneH,
+.login_Div .userRegDiv .anather_userLogin .login_edit,
+.improve .ErrorElements .welDiv h2{background-image:url(img/login/login_base.gif); background-position:0 0; background-repeat:no-repeat;}
+.login_Div .user_Login .user_ul .submite,
+.login_Div .userRegDiv .user_ul li .submite,
+.login_Div .userRegDiv .freeCode,
+.login_Div .userRegDiv .Regsucce .layer3 a,
+.login_Div .phoneRegsucce .regSucce_ul .restsub,
+.login_Div .phoneRegsucce .regSucce_ul .myGohst,
+.sure,.RetrievePassword .Retrieve_leftNav .layer1,
+.RetrievePassword .Retrieve_leftNav .layer2,
+.ErrorDiv .ErrorElements .errorTxt .layer1,.e .layer1,
+.improve .ErrorElements .welDiv .otable .freeCode{ background:url(img/login/all_b_style_bg.gif) 0 0 no-repeat;}
+/**==登录首页==**/
+.login_Div{position:relative;border:1px solid #dfdfdf;width:948px;margin:0 auto;}
+.login_Div h2{ height:32px; background-position:0 -237px;background-repeat:repeat-x; line-height:32px; color:#555; text-indent:15px; font-size:12px;}
+.login_Div h2 span{ font-weight:normal;font-size:12px; margin-left:10px;}
+.login_Div h2 span a{color:#032EAB;text-decoration:underline;margin-left:3px;}
+.login_Div h2 .hasUserName{ float:right; padding-right:10px; font-size:12px; font-weight:normal;}
+.login_Div .user_Login{width:510px;height:390px; margin-left:440px;}
+.login_Div .user_Login .user_ul{ padding-left:170px; padding-top:55px; width:360px; height:225px;}
+.login_Div .user_Login .user_ul input{ vertical-align:middle;}
+.login_Div .user_Login .user_ul li{ position:relative; padding-bottom:15px; z-index:1;}
+.login_Div .userTxtModel{ border-color:#cac9c9; border-width:0 1px 1px 1px; border-style:solid; background:#fff; position:absolute; top:55px; left:340px; z-index:999; overflow:hidden; display:none;}
+.login_Div .userTxtModel ul{}
+.login_Div .userTxtModel ul li{ height:18px; line-height:18px; padding:2px 10px;}
+.login_Div .userTxtModel ul li.on{ background:#ee4d17; color:#fff;}
+.login_Div .userTxtModel ul li.on a{ color:#fff;}
+.login_Div .user_Login .user_ul li img{ vertical-align:middle;}
+.login_Div .user_Login .user_ul li label{ position:absolute; width:150px; left:-150px; top:0px; height:28px; line-height:28px; text-align:right; font-size:14px; color:#000; z-index:3;}
+.login_Div  .blue{ color:#032eab; text-decoration:underline; margin-left:3px;}
+.login_Div .bluea{ position:absolute; top:20px; left:100px;}
+.login_Div  .blue:hover,.login_Div .user_Login .anather_userLogin .colorTxt{ color:#f26521; text-decoration:none;}
+.login_Div .user_Login .user_ul li .txtecho{border:1px solid #cac9c9; padding:2px 5px 6px; width:190px; color:#888;}
+.login_Div .user_Login .user_ul li .cl_orange{ border:1px solid orange;}
+.login_Div .user_Login .user_ul li .cl_red{ border:1px solid red;}
+.login_Div .user_Login .user_ul li .yCodeWidth{ width:100px;}
+.login_Div .user_Login .user_ul li .serr{ display:block; color:red; display:;}
+.login_Div .user_Login .user_ul .sub_li{ padding:15px 0 0px;}
+.login_Div .user_Login .user_ul .submite{ background-position:0 -80px; height:28px; width:83px; overflow:hidden; display:block; font-size:14px; line-height:28px; text-indent:15px; color:#fff; font-weight:bold;margin-right:20px; overflow:hidden;}
+.login_Div .user_Login .user_ul .submite:hover{ background-position:-87px -80px;}
+.login_Div .user_Login .iP_login{ color:#8c8c8c; background:url(img/login/line_x.gif) 0 bottom repeat-x; height:18px; line-height:18px; padding:10px 0; padding-left:90px; margin:0 20px;}
+.login_Div .user_Login .anather_userLogin{ padding-left:110px; padding-top:5px;}
+.login_Div .user_Login .anather_userLogin p{ padding:4px 0; color:#dfdfdf;}
+.login_Div .user_Login .anather_userLogin .layer1,.login_Div .user_Login .anather_userLogin .layer2,
+.login_Div .user_Login .anather_userLogin .layer3,.login_Div .user_Login .anather_userLogin .layer4{ padding-left:18px;}
+.login_Div .user_Login .anather_userLogin .layer1{ background-position:-86px -63px;}
+.login_Div .user_Login .anather_userLogin .layer2{ background-position:-76px -106px; padding-left:27px;}
+.login_Div .user_Login .anather_userLogin .layer3{ background-position:-86px -149px;}
+.login_Div .user_Login .anather_userLogin .layer4{ background-position:-86px -197px;}
+
+
+
+.login_Div .login_nav{ height:360px; width:425px;/* background:url(img/login/line_y.gif) right 0 repeat-y;*/ position:absolute; top:50px; left:10px;}
+.login_Div .login_nav .login_img{ /*background:url(../../img/adv/login_left.jpg) 0 0 no-repeat;*/ width:382px; height:328px; overflow:hidden; margin-left:30px;}
+.login_Div .login_nav .login_edit{ background-position:-82px -28px; margin-top:12px; padding-left:25px; height:20px; line-height:20px;}
+
+.login_title{ font-size:12px; width:950px; margin:0 auto 12px auto;font-weight:normal; background-position:-90px 7px; height:22px; line-height:22px; text-indent:15px;}
+.login_Div m{ display:block; height:11px; width:13px; position:absolute; margin:0; padding:0;}
+.login_Div .leftNav{ background-position:0 0; left:-1px; top:-1px;}
+.login_Div .rightNav{ background-position:-14px 0; right:-1px; top:-1px;}
+
+
+/**==注册页面==**/
+.login_Div .userRegDiv{width:900px; height:490px; margin:0 auto;}
+.login_Div .userRegDiv .user_ul{ padding-left:340px; padding-top:30px; width:560px;  display:none;}
+.login_Div .userRegDiv .user_ul li{ padding:0 0 15px;}
+.login_Div .userTabs{ border-bottom:1px solid #ee4d17; height:39px; padding-left:188px; padding-top:30px;}
+.login_Div .userTabs li{ width:262px; height:38px; float:left; background-color:#f9f9f9; border-top:1px solid #e4e4e4; border-left:1px solid #e4e4e4; border-right:1px solid #e4e4e4; font-weight:bold; line-height:38px; position:relative; font-size:14px; cursor:pointer; text-indent:100px;}
+.login_Div .userTabs .eMailH,.login_Div .userTabs .phoneH{ background-color:#ee4d17; height:39px; margin-bottom:-1px; border:none; color:#fff; line-height:39px;} 
+.login_Div .userTabs .eMailH{ background-color:#ee4d17; background-position:0 -282px; height:39px; margin-bottom:-1px; border:none; color:#fff;}
+.login_Div .userTabs .eMailH .rond,.login_Div .userTabs .phoneH .rond{ width:13px; height:8px; overflow:hidden; position:absolute; bottom:-9px; _bottom:-10px; left:48%; background-position:-58px 0;}
+.login_Div .userTabs .eMail{ background-position:4px -395px;}
+.login_Div .userTabs .phone{ background-position:0 -345px;}
+.login_Div .userTabs .phoneH{ background-position:-4px -444px;}
+.login_Div .userRegDiv .user_ul .tlColor{ color:#ef2804;}
+.login_Div .userRegDiv .user_ul li .on{ border:2px solid #ef2804; padding:1px 5px 5px;}
+.login_Div .userRegDiv .user_ul li img{ vertical-align:middle;}
+.login_Div .userRegDiv .user_ul li .submite{ height:26px; background-position:0 0 ; line-height:26px; text-align:center; text-indent:0;}
+.login_Div .userRegDiv .user_ul li .submite:hover{ background-position:-87px 0;}
+.login_Div .userRegDiv .user_ul  .sub_li{ padding-top:20px; padding-bottom:30px;}
+.login_Div .userRegDiv .anather_userLogin{ background:url(img/login/line_x.gif) top repeat-x; padding-left:260px; position:relative; z-index:1;}
+.login_Div .userRegDiv .anather_userLogin p{ padding:4px 0;}
+.login_Div .userRegDiv .anather_userLogin .login_edit{ padding:0; background-position:-82px -25px; padding-left:25px; height:22px; line-height:22px; z-index:2; width:150px; right:-55px; bottom:0px; position:absolute;}
+.login_Div .userRegDiv .freeCode,.improve .ErrorElements .welDiv .otable .freeCode{ height:21px; width:100px; display:inline-block; text-align:center; background-position:0 -204px; margin-left:10px; line-height:21px;}
+.login_Div .userRegDiv .contants{ width:900px; height:350px; overflow:hidden;}
+
+
+.login_Div .userRegDiv .Regsucce{ height:250px; width:450px; margin:0 auto; padding-top:20px;}
+.login_Div .userRegDiv .Regsucce p{ margin-top:30px; text-align:center; color:#000;}
+.login_Div .userRegDiv .Regsucce .layer1{ background:url(../../img/adv/aoc.gif) center center no-repeat; height:22px; line-height:22px;}
+.login_Div .userRegDiv .Regsucce .layer2 strong{ color:#f26521;}
+.login_Div .userRegDiv .Regsucce .layer3 { margin-top:50px;}
+.login_Div .userRegDiv .Regsucce .layer3 a{ display:block; height:28px; width:122px; background-position:0 -108px; color:#fff; font-size:14px; font-weight:bold; text-align:left; text-indent:10px; line-height:28px; margin:0 auto;}
+.login_Div .userRegDiv .Regsucce .layer3 a:hover{background-position:0 -136px; color:#fff;}
+
+.login_Div .users{ height:445px;}
+.login_Div .users .anather_userLogin b{ display:block; height:20px; line-height:20px; margin:10px 0;}
+.login_Div .users .anather_userLogin p{ color:#444; line-height:18px; padding:0;}
+.login_Div .users .anather_userLogin .d{ background:url(img/login/dbg.gif) 0 7px no-repeat; padding-left:10px;}
+.login_Div .users .anather_userLogin .edit{ top:auto; bottom:-7px; left:auto; right:-50px;}
+
+/**== 手机注册成功 ==**/
+.login_Div .phoneRegsucce{ margin-left:0; height:450px; width:610px;}
+.login_Div .login_nav_layer{ right:25px; left:auto; background:none; width:312px; height:380px;}
+.login_Div .login_nav_layer .login_edit{ float:right; margin-right:10px; margin-top:16px;}
+.login_Div .login_nav_layer .login_img{ background:none; height:380px; width:300px; overflow:hidden;}
+.login_Div .login_nav_layer .login_img{ height:380px; width:300px; overflow:hidden;}
+.login_Div .phoneRegsucce .regSucce_ul{ width:390px; padding-left:120px; margin:0 auto; padding-top:30px; height:270px; background:url(img/login/ri.gif) 25px 80px no-repeat;}
+.login_Div .phoneRegsucce .regSucce_ul li{ height:30px; line-height:30px;}
+.login_Div .phoneRegsucce .regSucce_ul .fonth2{ font-size:20px; font-weight:bold; color:#000; font-family:"黑体"; padding-top:50px;}
+.login_Div .phoneRegsucce .regSucce_ul li .orange{ color:#e46f27;}
+.login_Div .phoneRegsucce .regSucce_ul .restsub{ height:26px; line-height:26px; width:83px; overflow:hidden; font-weight:bold; color:#fff; background-position:0 -26px; display:inline-block; text-align:center;}
+.login_Div .phoneRegsucce .regSucce_ul .restsub:hover{ background-position:-87px -26px;}
+.login_Div .phoneRegsucce .regSucce_ul .myGohst{ height:28px; width:122px; background-position:0 -108px; color:#fff; font-weight:bold; line-height:28px; display:inline-block; text-indent:10px; margin-left:30px; overflow:hidden; margin-bottom:-1px;}
+.login_Div .phoneRegsucce .regSucce_ul .myGohst:hover{ background-position:0 -136px;}
+.login_Div .phoneRegsucce .regSucce_ul .mastGet{height:30px; padding:30px 0 30px 30px;}
+.login_Div .phoneRegsucce .regSucce_ul .txtc{ text-align:left; padding-left:100px; font-size:14px; color:#888;}
+.login_Div .phoneRegsucce .anather_userLogin{ background:url(img/login/line_x.gif) top repeat-x; margin:20px 10px; padding-top:10px;}
+.login_Div .phoneRegsucce .anather_userLogin p{ color:#444;}
+.login_Div .phoneRegsucce .anather_userLogin .layer1{ font-size:14px; color:#e46f27; background:url(img/login/email.gif) 0 0 no-repeat; height:33px; display:block; width:100px; margin:0 auto; padding-left:60px; line-height:33px; margin-top:20px;}
+.login_Div .phoneRegsucce .anather_userLogin .layer2{ font-size:14px; color:#e46f27; background:url(img/login/phone.gif) 0 0 no-repeat; height:50px; display:block; width:100px; margin:0 auto; padding-left:60px; line-height:50px; margin-top:10px;}
+
+
+/**==找回密码==**/
+.RetrievePassword .Retrieve_leftNav{ width:600px; padding:0 20px; height:320px; margin:0 0 20px; background:url(img/login/line_y.gif) right 0 repeat-y;}
+.RetrievePassword .Retrieve_leftNav .userTabs{ padding-left:35px;}
+.RetrievePassword .Retrieve_leftNav .user_ul{ padding-left:188px; width:400px;}
+.RetrievePassword .Retrieve_leftNav .user_ul .r_NvaTitle{ position:relative; margin-left:-188px; z-index:3; margin-bottom:20px; width:600px; text-align:center;}
+.RetrievePassword .Retrieve_leftNav .user_ul .r_NvaTitle .cl{ color:#f8242f;}
+.RetrievePassword .Retrieve_leftNav .at,.RetrievePassword .Retrieve_leftNav .at img{ height:25px; width:63px; overflow:hidden; display:inline-block;}
+.RetrievePassword .Retrieve_leftNav .user_ul .tl{ text-align:left; padding-left:20px; line-height:30px; color:#000;}
+.RetrievePassword .Retrieve_leftNav .user_ul .t2{ padding-left:90px;}
+.RetrievePassword .Retrieve_leftNav .user_ul .tl b{ color:#f26521;}
+.RetrievePassword .Retrieve_leftNav .contants{ width:auto; height:auto;}
+.RetrievePassword .Retrieve_righNav{ width:270px; height:180px; position:absolute; right:0px; top:140px; line-height:22px;}
+.RetrievePassword .Retrieve_righNav strong{ color:#000;}
+.RetrievePassword .Retrieve_righNav p{ padding-bottom:20px;}
+.RetrievePassword .Retrieve_righNav p b{ color:red;}
+.sure{ background-position:0 -80px; height:28px; width:83px; overflow:hidden; display:block; font-size:14px; line-height:28px; text-indent:15px; color:#fff; font-weight:bold;}
+.sure:hover{ background-position:-87px -80px; color:#fff;}
+.RetrievePassword .Retrieve_leftNav .layer1,.RetrievePassword .Retrieve_leftNav .layer2,
+.RetrievePassword .Retrieve_leftNav .layer1:hover,.RetrievePassword .Retrieve_leftNav .layer2:hover,.ErrorDiv .ErrorElements .errorTxt .layer1,.ErrorDiv .ErrorElements .errorTxt .layer1:hover,.e .layer1,.e .layer1:hover{color:#fff; font-weight:bold; display:block; overflow:hidden; font-size:14px; display:inline-block;}
+.RetrievePassword .Retrieve_leftNav .layer1,.ErrorDiv .ErrorElements .errorTxt .layer1,.e .layer1{ height:26px; width:83px; background-position:0 -26px; text-align:center; line-height:26px; margin-right:50px;}
+.RetrievePassword .Retrieve_leftNav .layer2{ height:28px; width:122px; background-position:0 -108px; text-indent:10px; line-height:28px; margin-left:50px;}
+.RetrievePassword .Retrieve_leftNav .layer1:hover,.ErrorDiv .ErrorElements .errorTxt .layer1:hover{ background-position:-87px -26px;}
+.RetrievePassword .Retrieve_leftNav .layer2:hover{ background-position:0 -136px;}
+
+
+
+
+
+/**系统异常**/
+.all_mask{ background:#000;opacity:0.5;filter:alpha(opacity=50); position:absolute; left:0; top:0; bottom:0; height:100%; width:100%; z-index:99;}
+.ErrorDiv,.ErrorDiv .ErrorElements,.ErrorDiv .ErrorElements .errorMask{height:235px; width:516px;overflow:hidden;}
+.ErrorDiv{position:absolute; z-index:9999; left:30.3%; top:38%;}
+.ErrorDiv .ErrorElements{ position:relative;z-index:9999;}
+.ErrorDiv .ErrorElements .errorMask{background:url(img/login/arr_bg.png) 0 0 no-repeat; position:absolute; left:0; top:0; z-index:11;opacity:0.90;filter:alpha(opacity=90);z-index:99;}
+.ErrorDiv .ErrorElements .errorTxt{position:absolute; left:0; top:0; z-index:99; color:#000; padding:40px 0 0 110px;}
+.ErrorDiv .ErrorElements .errorTxt h2{ font-size:20px; display:block; padding-bottom:40px; height:24px;}
+.ErrorDiv .ErrorElements .errorTxt p{ padding-bottom:5px;}
+.ErrorDiv .ErrorElements .errorTxt p .blue{ color:#0b03a7; text-decoration:underline;}
+.ErrorDiv .ErrorElements .errorTxt p .blue:hover{color:#f26521;text-decoration:none;}
+.ErrorDiv .ErrorElements .errorTxt .layer1,.e .layer1{ margin-top:10px; margin-left:110px; background-position:0 -52px; height:28px;}
+.ErrorDiv .ErrorElements .errorTxt .layer1:hover,.e .layer1:hover{ background-position:-87px -52px;}
+.ErrorDiv .ErrorElements .cloed,#userLogin .cloed{ background:url(img/login/arr_but.png) 0 -25px no-repeat; width:21px; height:21px; position:absolute; top:5px; right:10px; display:block; z-index:999;}
+.ErrorDiv .ErrorElements .cloed:hover,#userLogin .cloed:hover{ background:url(img/login/arr_but.png) 0 0 no-repeat;}
+.ErrorDiv .ErrorElements .welDiv{padding:10px;width:90%;}
+.ErrorDiv .ErrorElements .welDiv p{text-align:center;}
+.ErrorDiv .ErrorElements .welDiv .layer1{margin-left:200px;}
+.improve{height:auto;}
+.improve .ErrorElements{height:500px;}
+.improve .ErrorElements .errorMask{background:#fff;height:300px;border:3px solid orange;width:510px;}
+.improve .ErrorElements .welDiv{padding:3px;width:510px;}
+.improve .ErrorElements .welDiv h2{background-position:0 -237px;font-size:14px;margin:0;padding:0;height:32px;line-height:32px;background-repeat:repeat-x;padding-left:10px;}
+.improve .ErrorElements .welDiv p{border-bottom:1px solid #ccc; margin:10px 50px;display:block;height:30px;line-height:30px; }
+.improve .ErrorElements .welDiv .otable{margin:0 50px;}
+.improve .ErrorElements .welDiv .otable td{padding-bottom:10px;vertical-align:top;}
+.improve .ErrorElements .welDiv .otable .textrae{width:300px;height:100px;border:1px solid #ccc;}
+.improve .ErrorElements .welDiv .otable .txt{border:1px solid #ccc;width:300px;}
+.improve .ErrorElements .welDiv .preferenttial td{padding:10px 5px;}
+.improve .ErrorElements .welDiv .preferenttial td input{vertical-align:middle;}
+.improve .ErrorElements .welDiv .preferenttial td .txt{border:1px solid #ccc;width:170px;padding:3px 5px 5px;}
+.improve .ErrorElements .welDiv .preferenttial td.tr{text-align:right;}
+.improve .ErrorElements .welDiv .preferenttial td .txw{width:50px;}
+.improve .ErrorElements .welDiv b{color:red;font-weight:normal;margin-left:20px;font-size:12px;line-height:20px;}
+.improve .ErrorElements .span{height:39px;display:block}
+/**快捷登录**/
+#userLogin{ position:absolute; top:30%; left:30%; z-index:99999; background:#fff; width:520px; height:450px; overflow:hidden; border:2px solid #444;}
+#userLogin .login_Div{ width:auto;}
+#userLogin .login_Div .user_Login{ margin:0;}
+#userLogin .login_Div .user_Login .user_ul{ padding-left:150px; padding-top:30px;}
+
+
+
+/**new Login**/
+#userxiuUl{width:400px;height:50px;padding-left:130px;}
+#userxiuUl li{float:left;height:22px; display:inline; width:120px;line-height:22px;text-align:center;margin-top:16px;background:#f7f7f7;}
+#userxiuUl li.on{background:#EE4D17;color:#fff;font-weight:bold;}
+#userxiuUl li.on a{color:#fff;}
+.bd_login .tab_ul li a{background:url(img/userCenter/user_center.gif) 0 0 no-repeat;}
+.bd_login .bd_tab .user_ul{padding-top:0;height:215px;}
+.bd_login .bd_tab .user_ul .sub_li {padding-top:5px;}
+.bd_login .bd_tab .user_ul .sub_li .bluea{top:10px;}
+.bd_login .bd_tab .u{height:180px;}
+.bd_login .bd_tab .u li{padding-bottom:8px;}
+.bd_login .bd_Log{padding-top:20px;height:370px;}
+.bd_login .tab_ul{ width:370px; height:27px; overflow:hidden; border-bottom:2px solid #fba540;  padding-left:130px;}
+.bd_login .tab_ul li{ display:inline; float:left; height:27px; width:114px; text-align:center; margin-right:10px;}
+.bd_login .tab_ul li a{ display:block; height:27px; width:114px; overflow:hidden; font-size:12px; color:#444; background-position:0 -439px; line-height:27px;font-weight:bold;}
+
+<!--start by wangmingjin-->
+<!--.bd_login .tab_ul li a:hover,.bd_login .tab_ul li .on{ font-weight:bold; color:#fff; background-position:0 -412px;}-->
+.bd_login .tab_ul li .on{ font-weight:bold; color:#fff; background-position:0 -412px;}
+
+<!--end by wangmingjin-->
+.bd_login .bd_tab .userTabs{padding:20px 0 0;border-bottom:none;padding-left:130px;margin-bottom:10px;height:20px;}
+.bd_login .bd_tab .userTabs li{width:120px;border:none;height:20px;line-height:20px;background-image:none;text-align:center;text-indent:0;font-size:12px;font-weight:normal;}
+.bd_login .bd_tab .user_ul{padding-left:130px;}
+.login_Div .userRegDiv .user_ul li .cur{color:#999; background-image:none; cursor:default;}
+.bd_login .bd_tab .userTabs li.eMailH ,.bd_login .bd_tab .userTabs li.phoneH{font-weight:bold;}
+
+/***********系统异常**************/
+.e{width:850px;margin:auto;padding:150px 50px 200px;text-align:center;}
+.e h2{display:block;height:35px;font-size:16px;text-align:left;line-height:35px;width:600px;margin: 0 auto;background:#fff;border-top:1px solid #dfdfdf;border-bottom:1px solid #dfdfdf; text-indent:95px;position:relative;color:blue;}
+.e h2 span{display:block;height:22px;width:23px;position:absolute;top:4px;left:-55px;overflow:hidden; background:url(img/02461220.gif) 0 0 no-repeat;}
+.e p{width:450px;margin:0 auto;text-align:left;line-height:25px; padding:10px 10px 10px 100px;}
+.e .layer1{margin-left:300px; float:left; margin-top:50px;}
+
+/***********登录验证**************/
+.passwd_intensity_cellspacing{ border-collapse:collapse;border:1px solid #ccc; background:#eee;width:120px; display:inline-block; position:absolute; top:2px; left:230px;}
+.passwd_intensity_cellspacing td{border:1px solid #ccc;width:40px; text-align:center;font-size:12px;}
+.check_right_none {background:url(img/share/b2_right.png) no-repeat scroll 0 0 transparent; width:16px; height:16px; display: none;margin-left:2px;vertical-align:middle;	}
+.check_right_display {background:url(img/share/b2_right.png) no-repeat scroll 0 0 transparent; width:16px; height:16px; display: inline-block;margin-left:2px;vertical-align:middle;	}

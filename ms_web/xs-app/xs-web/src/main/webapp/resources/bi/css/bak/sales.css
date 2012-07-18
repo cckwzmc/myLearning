@@ -1,0 +1,122 @@
+@charset "utf-8";
+/* CSS Document */
+
+/**== 页面初始化样式_start ==**/
+body, dl, dt, dd, ol, ul, h1, h2, h3, h4, h5, form, fieldset, input, textarea, buttom, blockquote, pre, p, td, th { margin:0; padding:0; }
+body, input, option, buttom, select, textarea, table { font:12px/1.5 tahoma, arial, 宋体, sans-serif }
+fieldset, img { border:none; }
+table { border-collapse:collapse; }
+body { background:#fff; color:#5b5b5b; }
+ul, ol { list-style-type:none; }
+a { color:#5b5b5b; text-decoration:none; }
+a:hover { color:#f26521; text-decoration:none; }
+/**== 常用便捷公用样式_start ==**/
+.abso { position:absolute; }
+.rela { position:relative; }
+.hide { display:none; }
+.cl{ clear:both;}
+
+.layerDiv{width:950px; margin:0 auto;}
+.layerDiv .h2{ float:left; width:210px;  padding-right:60px;height:85px; padding-top:10px;overflow:hidden;}
+.layerDiv .p{ width:330px; float:left; height:28px; padding-top:45px;}
+.layerDiv .t{ position:absolute; right:0; top:45px; height:25px;}
+.layerDiv .t a{ padding:0 5px;}
+.layerDiv .user{ background:url(img/sales/s_Sales_106.jpg) 0 0 no-repeat; height:26px; width:302px; position:absolute; right:0; top:0; z-index:10px; padding-left:10px; line-height:24px;}
+
+.layerMenu{ background:url(img/sales/s_Sales_26.jpg) 0 0 repeat-x; margin-bottom:12px;}
+.layerMenu .menu{ width:950px; margin:0 auto; height:36px;}
+.layerMenu .menu li{ float:left;}
+.layerMenu .menu li a{ color:#fff; line-height:36px; background:url(img/sales/s_Sales_27.jpg) right 0 no-repeat; display:block; padding:0 20px; width:60px; text-align:center; position:relative; z-index:2;}
+.layerMenu .menu li a .hot{ position:absolute; z-index:3; background:url(img/sales/List_29.gif) 0 0 no-repeat; height:14px; width:26px; top:-5px; right:10px;}
+.layerMenu .menu li a:hover,.layerMenu .menu li a.cur{ background:url(img/sales/s_Sales_28.jpg) 0 0 repeat-x; font-weight:bold; }
+.layerMenu .layerMore{ background:#eee; border-bottom:1px solid #cbcbcb;padding-left:15px;}
+.layerMenu .layerMore p{ width:860px; margin:0 auto; padding-left:30px;  height:30px; position:relative; padding-right:60px; overflow:hidden;}
+.layerMenu .layerMore p a{ line-height:30px; padding:0 2px; display:inline-block;}
+.layerMenu .layerMore p a.more{ position:absolute; background:url(img/sales/s_Sales_33.jpg) 0 13px no-repeat; right:15px; top:0; padding-left:10px;}
+
+.layerDiv .pad{width:950px; overflow:hidden; margin-bottom:12px; }
+.layerDiv .elementSideDiv{ width:664px; float:left; height:auto;}
+.layerDiv .elementSideDiv h2{ border-bottom:1px solid #c61400; padding-bottom:1px; height:22px; overflow:hidden; position:relative;}
+.layerDiv .elementSideDiv h2 p{ background:url(img/sales/s_Sales_38.jpg) 0 0  no-repeat; width:186px; height:22px; overflow:hidden; text-indent:22px; line-height:22px; font-size:12px;  color:#fff; font-weight:bold;}
+.layerDiv .elementSideDiv h2 span{ position:absolute; height:22px; width:100px; text-align:right; padding:0 5px; line-height:22px; background:#d81400; right:0; bottom:1px; color:#fff; font-size:12px; font-weight:normal;}
+.layerDiv .elementSideDiv .sulGoods{ width:660px; z-index:0; margin-top:12px;}
+.layerDiv .elementSideDiv .sulGoods li{ position:relative; z-index:0; margin-bottom:15px; border:1px solid #dcdcdc; padding:1px ; width:660px;}
+.layerDiv .elementSideDiv .sulGoods li .span{ position:absolute; font-size:14px; font-weight:bold; color:#e91309; top:121px; left:6px; width:80px; text-align:right;}
+.layerDiv .elementSideDiv .sulGoods li .sxttme{ background:url(img/sales/s_Sales_74.jpg) 0 0 no-repeat; height:19px; width:62px; overflow:hidden; position:absolute; bottom:20px; left:55%; text-indent:-999px;}
+.layerDiv .elementSideDiv .sulGoods li .sTables{ width:660px; background:url(img/sales/s_Sales_34.jpg) 0 0px repeat-x; height:22px; overflow:hidden; line-height:22px;}
+.layerDiv .elementSideDiv .sulGoods li .sTables .s{ background:url(img/sales/s_Sales_70.jpg) 5px 4px no-repeat; height:22px; line-height:22px; padding-left:15px;}
+.layerDiv .elementSideDiv .sulGoods li .sTables td{ padding-left:10px; color:#000;}
+.layerDiv .elementSideDiv .sulGoods li a,.layerDiv .elementSideDiv .sulGoods li a img{ display:block; height:160px; width:660px; overflow:hidden;}
+.layerDiv .elementSideDiv .sulGoods li.hn{ border:none; height:25px; margin-bottom:5px; }
+.layerDiv .elementSideDiv .sulGoods li.hn h2 { height:18px; border-bottom:1px solid #6c6c6c;}
+.layerDiv .elementSideDiv .sulGoods li.hn h2 p{ display:block; background:url(img/sales/s_Sales_66.jpg) 0 0 no-repeat; width:80px; height:18px; line-height:18px;}
+.layerDiv .elementSideDiv .sulGoods li.hn h2 span{ background:#686868; width:60px; line-height:18px; height:18px; text-align:center;}
+
+.layerDiv .elementSideRight{ width:250px; float:right;}
+.layerDiv .elementSideRight .scrollImge{ width:250px; height:216px; overflow:hidden; margin-bottom:12px;}
+#item_ul li{background:url(img/s_content.gif) 0 0 no-repeat;}
+.itm_t { width:250px; height:216px; position:relative; z-index:5; }
+.itm_t a { width:250px; height:216px; overflow:hidden; position:absolute; left:0; top:0; }
+.itm_t a, .itm_t img { width:250px; height:216px; overflow:hidden; }
+.itm_t #item_ul { position:absolute; bottom:10px; right:10px; width:120px; z-index:99; }
+.itm_t #item_ul li { display:block; height:17px; width:17px; overflow:hidden; margin:0 2px; float:left; background-position:-433px -670px; font-weight:bold; text-align:center; cursor:pointer; color:#fff; }
+.itm_t #item_ul li.on { background-position:-433px -653px; color:#fff; }
+#item_list{ overflow:hidden}
+#itemLI{ position:absolute; width:1250px}
+#itemLI a,#itemLI a img{ position:static; float:left; display:block}
+.more_brand{ clear:both}
+
+.layerDiv .elementSideRight h2{ background:url(img/sales/s_Sales_56.jpg) 0 0 no-repeat; height:32px; text-indent:-999px; width:250px; overflow:hidden;}
+.layerDiv .elementSideRight .sttrGoodsList{ width:248px; border-left:1px solid #e0e0e0; border-bottom:1px solid #e0e0e0; border-right:1px solid #e0e0e0; padding-bottom:20px; position:relative;}
+.layerDiv .elementSideRight .sttrGoodsList p{ border-bottom:1px dashed #e0e0e0; width:230px; margin:0 auto; height:75px; padding-top:10px;}
+.layerDiv .elementSideRight .sttrGoodsList p a,.layerDiv .elementSideRight .sttrGoodsList p a img{ display:block; height:70px; width:115px;}
+.layerDiv .elementSideRight .sttrGoodsList p a{ float:left;}
+.layerDiv .elementSideRight .sttrGoodsList a.but{ background:url(img/sales/s_Sales_63.jpg) 0 0 no-repeat; width:95px; height:20px; overflow:hidden; position:absolute; bottom:-21px; left:-1px; text-indent:-999px;}
+
+.bListImg{ width:950px; margin:12px auto; border:1px solid #ccc; padding:1px;}
+.bListImg h2{ height:26px; border-bottom:1px solid #ededed; padding-bottom:1px; background:#ededed; line-height:26px; display:block; padding-left:20px; font-size:12px; font-weight:normal;}
+.bListImg h2 a{ margin:0 5px;}
+.bListImg p{ padding:15px 10px;}
+.bListImg p img{ margin:0 15px;}
+.bListImg .servece{ background:url(img/sales/s_Sales_98.jpg) 0 0 repeat-x; height:126px; border-top:1px solid #ccc;}
+.bListImg .servece ul{ width:950px; display:block; margin:10px 0;}
+.bListImg .servece ul li{ float:left; border-right:1px solid #ccc; height:110px; padding:0 10px;}
+.bListImg .servece ul li.layer{ padding-top:15px; height:95px;}
+.bListImg .servece ul li.list{ width:425px;}
+.bListImg .servece ul li.list p{ width:85px; float:left;}
+.bListImg .servece ul li.list p b{ background:url(img/sales/s_Sales_101.jpg) 0 4px no-repeat; display:block;}
+.bListImg .servece ul li.list p b a{ padding-left:10px; font-size:14px;}
+.bListImg .servece ul li.list p a{ display:block; padding-left:15px; padding-bottom:1px;}
+
+/*List*/
+.layerDiv .lsitLayer{ position:relative; background:url(img/sales/List_03.jpg) -1px -1px no-repeat; height:69px; border:1px solid #dfdfdf; padding-left:80px; margin-bottom:32px; z-index:0;}
+.layerDiv .lsitLayer a{ margin:10px 5px 0; display:inline-block;}
+.layerDiv .lsitLayer a.absoa{ background:url(img/sales/s_Sales_63.jpg) 0 0 no-repeat; height:20px; width:95px; overflow:hidden; position:absolute; bottom:-21px; left:50%; text-indent:-999px; z-index:2;}
+.layerDiv .prePage{ width:950px; margin:0 0 10px; position:relative; height:21px;}
+.layerDiv .prePage p a{ display:inline-block; background:url(img/sales/List_15.jpg) 0 0 no-repeat; width:43px; height:21px; overflow:hidden; margin:0 5px; line-height:21px; padding-left:5px; position:relative; margin-bottom:-5px;}
+.layerDiv .prePage p a.b{background:url(img/sales/List_17.jpg) 0 0 no-repeat;}
+.layerDiv .prePage p a.top{background:url(img/sales/bgsort.jpg) 0 -42px no-repeat;}
+
+.layerDiv .prePage .page{ position:absolute; right:0; top:0; height:21px; width:250px;}
+.layerDiv .prePage .page a{ display:inline-block; margin:0 3px;white-space:nowrap;}
+.layerDiv .prePage .page a:hover{ text-decoration:line-through;}
+.layerDiv .prePage .page a.s1,.layerDiv .prePage .page a.s2,.layerDiv .prePage .page a.s3,.layerDiv .prePage .page a.s4{ width:15px; height:21px; overflow:hidden; text-indent:-99px; position:relative; margin-bottom:-5px;}
+.layerDiv .prePage .page a.s1{ background:url(img/sales/List_20.jpg) center center no-repeat;}
+.layerDiv .prePage .page a.s2{ background:url(img/sales/List_22.jpg) center center no-repeat;}
+.layerDiv .prePage .page a.s3{ background:url(img/sales/List_24.jpg) center center no-repeat;}
+.layerDiv .prePage .page a.s4{ background:url(img/sales/List_26.jpg) center center no-repeat;}
+
+.layerDiv .elementsmasterlister{ border:1px solid #ccc; width:950px; overflow:hidden; margin-bottom:12px;}
+.layerDiv  .elementsmasterlister_ul{ width:980px; margin:25px 30px 0;}
+.layerDiv  .elementsmasterlister_ul li{ float:left; margin-right:25px; display:inline; margin-bottom:35px;}
+.layerDiv  .elementsmasterlister_ul li .isa{ width:200px; height:200px; border:1px solid #ccc; padding:1px; margin-bottom:15px; display:block;}
+.layerDiv  .elementsmasterlister_ul li .isa img{ height:200px; width:200px; overflow:hidden;}
+.layerDiv  .elementsmasterlister_ul li p{ border:1px solid #ccc; background:url(img/sales/s_Sales_98.jpg) 0 bottom repeat-x; height:100px; width:202px; overflow:hidden;}
+.layerDiv  .elementsmasterlister_ul li p span{ display:block; padding:4px 0; position:relative; width:190px; margin:0 auto;}
+.layerDiv  .elementsmasterlister_ul li p .layer{ height:36px; line-height:18px; width:200px; overflow:hidden;}
+.layerDiv  .elementsmasterlister_ul li p .layer1 .font{ background:url(img/sales/List_27.jpg) 0 4px no-repeat; color:#d20b06; font-weight:bold; padding-left:10px;}
+.layerDiv  .elementsmasterlister_ul li p .layer2 del{background:url(img/sales/List_28.jpg) 0 4px no-repeat; padding-left:10px; }
+.layerDiv  .elementsmasterlister_ul li p .layer1 small,.layerDiv  .elementsmasterlister_ul li p .layer2 small{ position:absolute; top:2px; right:0; display:block; border:1px solid #ccc; padding:1px 3px; background:#fff; font-size:12px; height:16px; line-height:16px;}
+.layerDiv  .elementsmasterlister_ul li p .layer1 small font{color:red;}
+
+.footer{ width:950px; margin:10px auto; text-align:center; padding:10px 0;}
