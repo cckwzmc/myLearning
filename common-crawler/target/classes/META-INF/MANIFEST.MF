@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: toney.li
+Build-Jdk: 1.6.0_25
+Specification-Title: common-crawler
+Specification-Version: 1.0
+Implementation-Title: common-crawler
+Implementation-Version: 1.0
+Implementation-Vendor-Id: com.toney.crawler
+Created-By: Maven Integration for Eclipse
+
