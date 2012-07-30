@@ -24,18 +24,6 @@ public class UserAuthInfo extends BaseObject {
     private String loginFlag; // 是否是代理登录,0:代表是客服代理客户登录，1：正常登录
     private String clientIpAddress; // 客户访问IP地址
 
-    private String unionFlag; // 来自联合登陆用户的标识
-    private String unionPartnerId; // 来自联合登陆用户的id
-    private Long memberId;
-    
-    public Long getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(Long memberId) {
-		this.memberId = memberId;
-	}
-
 	public String getSsoTokenId() {
         return ssoTokenId;
     }
@@ -92,21 +80,6 @@ public class UserAuthInfo extends BaseObject {
         this.clientIpAddress = clientIpAddress;
     }
 
-    public String getUnionFlag() {
-        return unionFlag;
-    }
-
-    public void setUnionFlag(String unionFlag) {
-        this.unionFlag = unionFlag;
-    }
-
-    public String getUnionPartnerId() {
-        return unionPartnerId;
-    }
-
-    public void setUnionPartnerId(String unionUserId) {
-        this.unionPartnerId = unionUserId;
-    }
 
     @Override
     public String toString() {
