@@ -19,7 +19,8 @@
     <property name="ignoreUnresolvablePlaceholders" value="true" />
     <property name="locations">
       <list>
-        <value>classpath:application.properties</value>
+        <value>classpath:conf/dbconfig.properties</value>
+        <value>classpath:conf/application.properties</value>
       </list>
     </property>
   </bean>
@@ -34,9 +35,10 @@
       <property name="cacheMappings">
         <props>
           <!-- cache for 2 hour -->
-          <prop key="/resources/**">0</prop>
+          <prop key="/resources/**">${web.assets.expired_time}</prop>
+          <prop key="/script/constants.js">${web.dynamic.constantjs.expired_time}</prop>          
           <!-- don't set cache headers -->
-          <prop key="/**">0</prop>
+          <prop key="/**">${web.dynamic.expired_time}</prop>
         </props>
       </property>
     </bean>
@@ -49,7 +51,20 @@
     </bean>
   </mvc:interceptors>
 
-  <bean id="handlerPortalExceptionResolver" class="com.toney.mvc.web.exception.resolver.HandlerPortalExceptionResolver" />
+  <bean id="exceptionResolver"
+      class="com.toney.mvc.web.exception.resolver.SimplePortalMappingExceptionResolver">
+      <property name="exceptionMappings">
+         <props>
+                <prop key="com.xiu.portal.exception.PortalBaseException">error/exception</prop>
+            </props>
+        </property>
+         <property name="statusCodes">    
+             <props>    
+                 <prop key="error/exception">500</prop>   
+             </props>    
+         </property>        
+        <property name="warnLogCategory" value="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver" />
+  </bean>
 
   <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
     <property name="order" value="1" />	
@@ -84,9 +99,24 @@
     </property>
 
   </bean>
+  
+  <bean id="beansWrapper" class="freemarker.ext.beans.BeansWrapper">
+    <property name="exposureLevel" value="#{T(freemarker.ext.beans.BeansWrapper).EXPOSE_SAFE}" />
+  </bean>
 
+  <bean id="appconfigModel" class="com.toney.mvc.web.ext.freemarker.ApacheCommonConfigurationModel">
+    <constructor-arg type="freemarker.ext.beans.BeansWrapper" ref="beansWrapper" />  
+    <constructor-arg type="org.apache.commons.configuration.Configuration" ref="databaseConfiguration" />
+  </bean>
+  
+  <bean id="staticModel" factory-bean="beansWrapper" factory-method="getStaticModels"/>
+  
+  <bean id="userAuthInfoHolderModel" factory-bean="staticModel" factory-method="get">
+    <constructor-arg type="java.lang.String" value="com.toney.mvc.web.utils.UserAuthInfoHolder" />
+  </bean>
+  
   <!-- FreeMarker Configurer and View Resolver -->
-  <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+  <bean id="freemarkerConfig" class="com.toney.mvc.web.ext.freemarker.FreeMarkerConfigurerExt">
     <property name="templateLoaderPath" value="/WEB-INF/views/" />
     <property name="freemarkerSettings">
       <props>
@@ -95,17 +125,20 @@
         <prop key="number_format">0.######</prop>
         <prop key="classic_compatible">${freemarker.classic_compatible}</prop>
         <prop key="template_update_delay">${freemarker.template_update_delay}</prop>
-        <!-- <prop key="template_exception_handler">${freemarker.template_exception_handler}</prop> -->
+        <prop key="template_exception_handler">${freemarker.template_exception_handler}</prop>
       </props>
     </property>
     <property name="freemarkerVariables">
       <map>
         <entry key="xml_escape" value-ref="fmXmlEscape" />
+        <entry key="appconfig"  value-ref="appconfigModel" />
+        <entry key="userAuthInfoHolder"  value-ref="userAuthInfoHolderModel" />
       </map>
     </property>
   </bean>
 
   <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+
   <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
     <property name="order" value="2" />
     <property name="exposeRequestAttributes" value="true" />
@@ -117,6 +150,7 @@
   </bean>
   <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
   <bean id="annotationMethodHandlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <!-- TODO: 需确认messageConverters是否可被删除 -->
     <property name="messageConverters">
       <list>
         <ref bean="mappingJacksonHttpMessageConverter" />
@@ -130,6 +164,7 @@
       </bean>
     </property>
   </bean>
+  <!-- 需确认mappingJacksonHttpMessageConverter的配置是否可被删除  -->
   <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
     <property name="supportedMediaTypes">
       <list>
@@ -139,6 +174,7 @@
   </bean>
 
   <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+  <!-- 需确认restTemplate的配置是否可被删除  -->  
   <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
     <property name="messageConverters">
       <list>

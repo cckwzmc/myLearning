@@ -119,15 +119,15 @@ public final class IPUtil {
     /**
      * 172.16.x.x至172.31.x.x 是内网ip
      * 
-     * @param ip
+     * @param ipString
      * @return
      */
-    private static boolean isFrom16To31(String ip) {
+    private static boolean isFrom16To31(String ipString) {
 
         boolean result = false;
 
         try {
-            String[] ipArr = ip.split("\\.");
+            String[] ipArr = ipString.split("\\.");
 
             int sendPart = Integer.parseInt(ipArr[1]);
 
@@ -135,8 +135,7 @@ public final class IPUtil {
                 result = true;
             }
         } catch (Exception e) {
-            //FIXME:
-            LOGGER.debug("IP String: {}", ip, e);
+            LOGGER.warn("Failed to parse IP String: {}", ipString, e);
         }
 
         return result;

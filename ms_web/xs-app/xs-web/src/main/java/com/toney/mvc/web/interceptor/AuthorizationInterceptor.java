@@ -7,7 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.MDC;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.web.method.HandlerMethod;
@@ -15,9 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.toney.core.model.UserAuthInfo;
 import com.toney.mvc.web.annotation.AuthRequired;
+import com.toney.mvc.web.contants.AuthLevel;
 import com.toney.mvc.web.contants.Constants;
 import com.toney.mvc.web.contants.UrlConstants;
 import com.toney.mvc.web.interceptor.validator.AuthorizationValidator;
+import com.toney.mvc.web.utils.RequestUtil;
 import com.toney.mvc.web.utils.UserAuthInfoHolder;
 
 /**
@@ -31,7 +33,7 @@ import com.toney.mvc.web.utils.UserAuthInfoHolder;
  **************************************************************** 
  */
 public class AuthorizationInterceptor extends AnnotationBasedIgnoreableInterceptor {
-    protected XLogger logger = XLoggerFactory.getXLogger(getClass());
+    protected static final XLogger LOGGER = XLoggerFactory.getXLogger(AuthorizationInterceptor.class);
 
     private List<AuthorizationValidator> validators;
 
@@ -43,33 +45,53 @@ public class AuthorizationInterceptor extends AnnotationBasedIgnoreableIntercept
         this.validators = validators;
     }
 
+    /**
+     *  (non-Javadoc)
+     * @see com.xiu.portal.web.interceptor.AnnotationBasedIgnoreableInterceptor#preHandleInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
+     * {@inheritDoc}
+     */
     @Override
     protected boolean preHandleInternal(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         //用于区分mvc:resources, 正常的Controller请求
-        if (handler==null || !handler.getClass().isAssignableFrom(HandlerMethod.class)) {
-            return true;
-        }
-        
-        HandlerMethod method = (HandlerMethod) handler;
-        AuthRequired ar = method.getBeanType().getAnnotation(AuthRequired.class);
-        if (ar == null) {
-            ar = method.getMethodAnnotation(AuthRequired.class);
-        }
-        
-        if (ar == null) {
+        if (handler==null || !HandlerMethod.class.isAssignableFrom(handler.getClass())) {
             return true;
         }
 
+        MDC.put(Constants.MDC_SSOUSERID_KEY, "-");
+
+        HandlerMethod method = (HandlerMethod) handler;
+        AuthLevel level = getAuthLevelFromHandler(method);
+
+        if (AuthLevel.NONE == level) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Authorize {}.{} AuthLevel={} [SKIPPED]", 
+                        new Object[] { method.getBeanType().getSimpleName(), method.getMethod().getName(),
+                        level} );
+            }
+            return true;
+        }
+
+        boolean isAllowed = false;
         for (AuthorizationValidator validator : validators) {
-            if (validator.validate(request)) {
+            if (validator.validate(request, level)) {
                 setUserAuthInfo(request);
-                return true;
+                isAllowed = true;
+                break;
             }
         }
+        
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Authorize {}.{} AuthLevel={} [{}]", 
+                    new Object[] { method.getBeanType().getSimpleName(), method.getMethod().getName(),
+                        level, isAllowed ? "PASSED" : "DENIED" } );
+        }
 
-        if (StringUtils.equals("json", request.getParameter("_format"))
-                || StringUtils.equals("jsonp", request.getParameter("_format"))) {
+        if (isAllowed) {
+            return true;
+        }
+        
+        if (RequestUtil.isJsonRequest(request)) {
             // TODO: 对于4xx/5xx错误是否需要使用统一的JsonPackageWrapper格式？
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
@@ -95,13 +117,15 @@ public class AuthorizationInterceptor extends AnnotationBasedIgnoreableIntercept
     private void setUserAuthInfo(HttpServletRequest request) {
         UserAuthInfo user = (UserAuthInfo) request.getAttribute(Constants.USER_AUTH_INFO_ATTR);
         if (user != null) {
+            MDC.put(Constants.MDC_SSOUSERID_KEY, String.valueOf(user.getSsoUserId()));
             UserAuthInfoHolder.setUserAuthInfo(user);
         }
     }
 
     private void clearUserAuthInfo(HttpServletRequest request) {
-        // TODO: Make sure it must be call
+        // 经测试确认，Controller出异常时会调用afterCompletionInternal
         UserAuthInfoHolder.clear();
+        MDC.remove(Constants.MDC_SSOUSERID_KEY);
     }
 
     private String composeLoginURL(HttpServletRequest request) {
@@ -110,14 +134,22 @@ public class AuthorizationInterceptor extends AnnotationBasedIgnoreableIntercept
         sbuf.append(UrlConstants.LOGIN_ROOT_URL);
         try {
             String encodeURL = URLEncoder.encode(backURL, "UTF-8");
-            sbuf.append("?backURL=");
+            sbuf.append("?rd=");
             sbuf.append(encodeURL);
         } catch (UnsupportedEncodingException e) {
             // FIXME: throw exception while logging
-            logger.warn("Get exception while encode url: {}", backURL, e);
+            LOGGER.warn("Get exception while encode url: {}", backURL, e);
         }
 
         return sbuf.toString();
+    }
+    
+    private AuthLevel getAuthLevelFromHandler(HandlerMethod method) {
+        AuthRequired ar = method.getMethodAnnotation(AuthRequired.class);        
+        if (ar == null) {
+            ar = method.getBeanType().getAnnotation(AuthRequired.class);
+        }
+        return (ar == null)? AuthLevel.NONE : ar.value();
     }
 
 }

@@ -5,6 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.toney.mvc.web.contants.AuthLevel;
+
+
 /**
  *************************************************************** 
  * <p>
@@ -18,5 +21,5 @@ import java.lang.annotation.Target;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthRequired {
-
+    AuthLevel value() default AuthLevel.STRICT;
 }
