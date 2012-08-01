@@ -10,13 +10,8 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.xiu.portal">
+	<logger name="com.toney">
 		<level value="WARN" />
-	</logger>
-
-	<!-- EI AccessLog Loggers, suggest let it output to a file in production env -->	
-	<logger name="com.xiu.portal.utils.HessianClientInterceptor">
-		<level value="INFO" />
 	</logger>
 
 	<!-- BoneCP Loggers, suggest let it output to a file in production env-->

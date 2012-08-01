@@ -38,7 +38,7 @@
      </appender>
 	
 	<!-- Application ERROR Loggers -->
-	<logger name="com.xiu">
+	<logger name="com.toney">
 		<level value="ERROR" />
 		<appender-ref ref="errorAppender" />
 	</logger>
@@ -50,23 +50,11 @@
 	
 	
 	<!-- Application Loggers -->
-	<logger name="com.xiu.portal">
+	<logger name="com.toney">
 		<level value="INFO" />
 		<appender-ref ref="appAppender" />
 	</logger>
 	
-	<!-- EI AccessLog Loggers, suggest let it output to a file in production env -->
-	<logger name="com.xiu.portal.utils.HessianClientInterceptor">
-		<level value="INFO" />
-		<appender-ref ref="eiAppender" />
-	</logger>
-	
-	<!-- EI   Loggers, suggest let it output to a single file in production env -->
-	<logger name="com.xiu.portal.ei">
-		<level value="INFO" />
-		<appender-ref ref="eiAppender" />
-	</logger>
-
 	<!-- BoneCP Loggers, suggest let it output to a file in production env-->
 	<logger name="com.jolbox.bonecp">
 		<level value="WARN" />

@@ -185,7 +185,7 @@
         </plugins>
     </build>
     <properties>
-        <freemarker.version>2.3.16</freemarker.version>
+        <freemarker.version>2.3.19</freemarker.version>
         <jackson.version>1.8.2</jackson.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <commons-io.version>2.2</commons-io.version>

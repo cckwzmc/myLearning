@@ -37,18 +37,13 @@
      </appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.xiu.portal">
+	<logger name="com.toney">
 		<level value="INFO" />
 	</logger>
 	
-	<!-- EI AccessLog Loggers, suggest let it output to a file in online env -->
-	<logger name="com.xiu.portal.utils.HessianClientInterceptor">
-		<level value="INFO" />
-		<appender-ref ref="eiAppender" />
-	</logger>
 	
 	<!-- Exception Loggers, suggest let it output to error  file in online env -->
-	<logger name="com.xiu.portal.web.exception.resolver.SimplePortalMappingExceptionResolver">
+	<logger name="com.toney.mvc.web.exception.resolver.SimplePortalMappingExceptionResolver">
 		<level value="INFO" />
 		<appender-ref ref="errorAppender" />
 	</logger>
