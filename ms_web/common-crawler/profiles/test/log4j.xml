@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.xiu.portal">
+	<logger name="com.toney">
 		<level value="info" />
 	</logger>
 	
