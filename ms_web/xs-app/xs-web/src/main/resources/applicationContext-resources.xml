@@ -9,11 +9,12 @@
     <bean name="databaseConfiguration"
         class="org.apache.commons.configuration.DatabaseConfiguration">
         <constructor-arg type="javax.sql.DataSource" ref="dataSource" />
-        <constructor-arg index="1" value="APPCONFIGS" />
-        <constructor-arg index="2" value="NAME" />  
-        <constructor-arg index="3" value="KEY" />
-        <constructor-arg index="4" value="VALUE" />
-        <constructor-arg index="5" value="global" />
+        <constructor-arg index="1" value="DEDE_SYSCONFIG" />
+        <constructor-arg index="2" value="VARNAME" />  
+        <constructor-arg index="3" value="INFO" />
+        <constructor-arg index="4" value="GROUPID" />
+        <constructor-arg index="5" value="TYPE" />
+        <constructor-arg index="6" value="VALUE" />
     </bean>
  
     <bean id="applicationPropertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

@@ -7,5 +7,6 @@
 
 	<!-- Activates scanning of @Autowired -->
 	<context:annotation-config />
-
+	<import resource="applicationContext-dao.xml"/>
+	<import resource="applicationContext-service.xml"/>
 </beans>

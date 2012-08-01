@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.core.dao.ChannelTypeDao">
+	<resultMap id="channelTypeResult" type="channelType">
+		<result property="id" column="id" />
+		<result property="nid" column="nid" />
+		<result property="typeName" column="typename" />
+		<result property="mainTable" column="maintable" />
+		<result property="addTable" column="addtable" />
+		<result property="addCon" column="addcon" />
+		<result property="manCon" column="mancon" />
+		<result property="editCon" column="editcon" />
+		<result property="userAddCon" column="useraddcon" />
+		<result property="userManCon" column="usermancon" />
+		<result property="userEditCon" column="usereditcon" />
+		<result property="fieldSet" column="fieldset" />
+		<result property="listFields" column="listfields" />
+		<result property="allFields" column="allfields" />
+		<result property="isSystem" column="issystem" />
+		<result property="isShow" column="isshow" />
+		<result property="isSend" column="issend" />
+		<result property="arcSta" column="arcsta" />
+		<result property="userType" column="usertype" />
+		<result property="sendRank" column="sendrank" />
+		<result property="isDefault" column="isdefault" />
+		<result property="needDes" column="needdes" />
+		<result property="needPic" column="needpic" />
+		<result property="titleName" column="titlename" />
+		<result property="onlyOne" column="onlyone" />
+		<result property="dfcId" column="dfcid" />
+	</resultMap>
+	<select id="getAllEnabledChannelType" resultMap="channelTypeResult" resultType="java.util.List">
+		<![CDATA[
+			select id,
+			       nid,
+			       typename,
+			       maintable,
+			       addtable,
+			       addcon,
+			       mancon,
+			       editcon,
+			       useraddcon,
+			       usermancon,
+			       usereditcon,
+			       fieldset,
+			       listfields,
+			       allfields,
+			       issystem,
+			       isshow,
+			       issend,
+			       arcsta,
+			       usertype,
+			       sendrank,
+			       isdefault,
+			       needdes,
+			       needpic,
+			       titlename,
+			       onlyone,
+			       dfcid
+			  from dede_channeltype t order by id
+		]]>
+	</select>
+	<select id="getAllChannelType" resultMap="channelTypeResult" resultType="java.util.List">
+		<![CDATA[
+			select id,
+			       nid,
+			       typename,
+			       maintable,
+			       addtable,
+			       addcon,
+			       mancon,
+			       editcon,
+			       useraddcon,
+			       usermancon,
+			       usereditcon,
+			       fieldset,
+			       listfields,
+			       allfields,
+			       issystem,
+			       isshow,
+			       issend,
+			       arcsta,
+			       usertype,
+			       sendrank,
+			       isdefault,
+			       needdes,
+			       needpic,
+			       titlename,
+			       onlyone,
+			       dfcid
+			  from dede_channeltype t  order by id
+		]]>
+	</select>
+	<select id="getChannelTypeById" parameterType="java.lang.Integer"  resultMap="channelTypeResult">
+		<![CDATA[
+			select id,
+			       nid,
+			       typename,
+			       maintable,
+			       addtable,
+			       addcon,
+			       mancon,
+			       editcon,
+			       useraddcon,
+			       usermancon,
+			       usereditcon,
+			       fieldset,
+			       listfields,
+			       allfields,
+			       issystem,
+			       isshow,
+			       issend,
+			       arcsta,
+			       usertype,
+			       sendrank,
+			       isdefault,
+			       needdes,
+			       needpic,
+			       titlename,
+			       onlyone,
+			       dfcid
+			  from dede_channeltype t where t.id=#{id}  order by id
+		]]>
+	</select>
+	<select id="getChannelTypeByNId" parameterType="java.lang.String"  resultMap="channelTypeResult">
+		<![CDATA[
+			select id,
+			       nid,
+			       typename,
+			       maintable,
+			       addtable,
+			       addcon,
+			       mancon,
+			       editcon,
+			       useraddcon,
+			       usermancon,
+			       usereditcon,
+			       fieldset,
+			       listfields,
+			       allfields,
+			       issystem,
+			       isshow,
+			       issend,
+			       arcsta,
+			       usertype,
+			       sendrank,
+			       isdefault,
+			       needdes,
+			       needpic,
+			       titlename,
+			       onlyone,
+			       dfcid
+			  from dede_channeltype t where t.nid=#{nameId}  order by id
+		]]>
+	</select>
+</mapper>

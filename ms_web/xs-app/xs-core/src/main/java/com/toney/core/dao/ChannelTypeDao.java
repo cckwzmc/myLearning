@@ -2,6 +2,8 @@ package com.toney.core.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.toney.core.model.ChannelTypeModel;
 
 /**
@@ -9,6 +11,7 @@ import com.toney.core.model.ChannelTypeModel;
  * 频道类型
  * 
  */
+@Repository("channelTypeDao")
 public interface ChannelTypeDao {
 	/**
 	 * 获取所有可用的频道类型。

@@ -3,6 +3,8 @@ package com.toney.core.model;
 import java.util.Collections;
 import java.util.List;
 
+import com.toney.core.constants.Constants;
+
 /**
  * 
  * 分页使用.
@@ -11,7 +13,7 @@ import java.util.List;
 public class Page<T> {
 
     // 默认分页条数.
-    public static final int DEFAULT_PAGESIZE = 15;
+    public static final int DEFAULT_PAGESIZE = Constants.DEFAULT_PAGE_SIZE;
 
     // 分页参数
     protected int pageNo = 1;

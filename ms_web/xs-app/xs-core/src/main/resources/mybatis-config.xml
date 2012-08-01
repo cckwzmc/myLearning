@@ -11,6 +11,14 @@
 	</settings>
 	<typeAliases>
 		<typeAlias alias="user" type="com.toney.core.model.User" />
+		<typeAlias alias="channelType" type="com.toney.core.model.ChannelTypeModel" />
+		<typeAlias alias="channel" type="com.toney.core.model.ChannelDetailModel" />
+		<typeAlias alias="article" type="com.toney.core.model.ArticleModel" />
+		<typeAlias alias="articleBase" type="com.toney.core.model.ArticleBaseModel" />
+		<typeAlias alias="articleTiny" type="com.toney.core.model.ArticleTinyModel" />
+		<typeAlias alias="articleSysTag" type="com.toney.core.model.ArticleSysTagModel" />
+		<typeAlias alias="articleExtend" type="com.toney.core.model.ArticleExtendModel" />
+		<typeAlias alias="area" type="com.toney.core.model.AreaModel" />
 	</typeAliases>
 	<!-- <mappers> <mapper resource="sqlmaps/UserSQL.xml" /> </mappers> -->
 </configuration>

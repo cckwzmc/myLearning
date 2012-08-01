@@ -208,4 +208,13 @@ public class Constants {
 	public static final int PRODUCT_SOLDOUT=0;
 	//商品上架
 	public static final int PRODUCT_ONSALE=1;
+	
+	/**
+	 * 后台管理默认每页记录数。 
+	 */
+	public static final int DEFAULT_PAGE_SIZE = 15;
+	/**
+	 * 出版默认默认每页记录数。 
+	 */
+	public static final int DEFAULT_PUBLISH_PAGE_SIZE = 10000;
 }

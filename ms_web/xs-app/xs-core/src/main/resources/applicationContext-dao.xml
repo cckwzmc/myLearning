@@ -14,7 +14,7 @@
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.xiu.portal.dao" />
+		<property name="basePackage" value="com.toney.core.dao" />
 	</bean>
 
 	<!-- 配置事务管理器，使用jdbc事务 -->
@@ -23,6 +23,6 @@
 	</bean>
 
     <!-- Activates scanning of @Repository -->
-    <context:component-scan base-package="com.xiu.portal.dao"/>
+    <context:component-scan base-package="com.toney.core.dao"/>
 
 </beans>

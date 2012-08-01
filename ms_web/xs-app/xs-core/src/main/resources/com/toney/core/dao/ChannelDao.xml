@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.core.dao.ChannelDao">
+	<resultMap type="channel" id="channelResult">
+		<result property="id" column="id" />
+		<result property="reId" column="reid" />
+		<result property="topId" column="topid" />
+		<result property="sortRank" column="sortrank" />
+		<result property="typeName" column="typename" />
+		<result property="typeDir" column="typedir" />
+		<result property="isDefault" column="isdefault" />
+		<result property="defaultName" column="defaultname" />
+		<result property="isSend" column="issend" />
+		<result property="channelTypeId" column="channeltypeid" />
+		<result property="maxPage" column="maxpage" />
+		<result property="isPart" column="ispart" />
+		<result property="coRank" column="corank" />
+		<result property="tempIndex" column="tempindex" />
+		<result property="templist" column="templist" />
+		<result property="tempArticle" column="temparticle" />
+		<result property="nameRule" column="namerule" />
+		<result property="nameRule2" column="namerule2" />
+		<result property="modName" column="modname" />
+		<result property="description" column="description" />
+		<result property="keywords" column="keywords" />
+		<result property="seoTitle" column="seotitle" />
+		<result property="moreSite" column="moresite" />
+		<result property="sitePath" column="sitepath" />
+		<result property="siteUrl" column="siteurl" />
+		<result property="isHidden" column="ishidden" />
+		<result property="cross" column="cross" />
+		<result property="crossId" column="crossid" />
+		<result property="content" column="content" />
+		<result property="smallTypes" column="smalltypes" />
+	</resultMap>
+	<select id="getAllChannelType" resultMap="channelResult" resultType="java.util.List">
+		<![CDATA[select id,
+				reid,
+				topid,
+				sortrank,
+				typename,
+				typedir,
+				isdefault,
+				defaultname,
+				issend,
+				channeltype,
+				maxpage,
+				ispart,
+				corank,
+				tempindex,
+				templist,
+				temparticle,
+				namerule,
+				namerule2,
+				modname,
+				description,
+				keywords,
+				seotitle,
+				moresite,
+				sitepath,
+				siteurl,
+				ishidden,
+				crossid,
+				content,
+				smalltypes from dede_arctype t order by id,reid,sortrank]]>
+	</select>
+	<select id="getAllShowChannelType" resultMap="channelResult" resultType="java.util.List">
+		<![CDATA[select id,
+				reid,
+				topid,
+				sortrank,
+				typename,
+				typedir,
+				isdefault,
+				defaultname,
+				issend,
+				channeltype,
+				maxpage,
+				ispart,
+				corank,
+				tempindex,
+				templist,
+				temparticle,
+				namerule,
+				namerule2,
+				modname,
+				description,
+				keywords,
+				seotitle,
+				moresite,
+				sitepath,
+				siteurl,
+				ishidden,
+				crossid,
+				content,
+				smalltypes from dede_arctype t  where t.ishidden=0  order by id,reid,sortrank]]>
+	</select>
+	<select id="getChannelTypeById" resultMap="channelResult" parameterType="java.lang.Integer">
+		<![CDATA[select id,
+				reid,
+				topid,
+				sortrank,
+				typename,
+				typedir,
+				isdefault,
+				defaultname,
+				issend,
+				channeltype,
+				maxpage,
+				ispart,
+				corank,
+				tempindex,
+				templist,
+				temparticle,
+				namerule,
+				namerule2,
+				modname,
+				description,
+				keywords,
+				seotitle,
+				moresite,
+				sitepath,
+				siteurl,
+				ishidden,
+				crossid,
+				content,
+				smalltypes from dede_arctype t  where t.ishidden=0 and t.id=#{id}  order by id,reid,sortrank]]>
+	</select>
+</mapper>

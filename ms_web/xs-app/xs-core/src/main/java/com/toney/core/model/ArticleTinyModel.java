@@ -13,7 +13,7 @@ public class ArticleTinyModel extends BaseObject{
 	private Long id;         
 	private Integer typeId;         
 	private String typeId2;         
-	private Integer arcrank;         
+	private Integer arcRank;         
 	private Integer channelId;         
 	private Long createDate;         
 	private Long sortRank;         
@@ -36,11 +36,12 @@ public class ArticleTinyModel extends BaseObject{
 	public void setTypeId2(String typeId2) {
 		this.typeId2 = typeId2;
 	}
-	public Integer getArcrank() {
-		return arcrank;
+
+	public Integer getArcRank() {
+		return arcRank;
 	}
-	public void setArcrank(Integer arcrank) {
-		this.arcrank = arcrank;
+	public void setArcRank(Integer arcRank) {
+		this.arcRank = arcRank;
 	}
 	public Integer getChannelId() {
 		return channelId;
@@ -69,7 +70,7 @@ public class ArticleTinyModel extends BaseObject{
 	@Override
 	public String toString() {
 		return "ArticleTinyModel [id=" + id + ", typeId=" + typeId
-				+ ", typeId2=" + typeId2 + ", arcrank=" + arcrank
+				+ ", typeId2=" + typeId2 + ", arcRank=" + arcRank
 				+ ", channelId=" + channelId + ", createDate=" + createDate
 				+ ", sortRank=" + sortRank + ", mid=" + mid + "]";
 	}  

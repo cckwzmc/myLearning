@@ -30,7 +30,7 @@
         <level value="debug" />
     </logger>
    
-    <logger name="com.xiu">
+    <logger name="com.toney">
         <level value="DEBUG"/>
     </logger>
 

@@ -10,6 +10,7 @@
         <property name="ignoreResourceNotFound" value="true" />
 		<property name="locations">
             <list>
+                <value>classpath:dbconfig.properties</value>
                 <value>classpath:application.properties</value>
             </list>
         </property>	
@@ -23,7 +24,7 @@
 	</bean>
 
 
-	<bean name="CommonsConfigurationFactoryBean" class="com.xiu.portal.utils.CommonsConfigurationFactoryBean">
+	<bean name="CommonsConfigurationFactoryBean" class="com.toney.core.utils.CommonsConfigurationFactoryBean">
 		<constructor-arg ref="DatabaseConfiguration" />
 	</bean>
   -->
@@ -52,5 +53,5 @@
         <property name="password" value="xiu_goods" />
     </bean>  
     -->  
-    <bean id="springResourceLocator" class="com.xiu.portal.utils.SpringResourceLocator" scope="singleton" />
+    <bean id="springResourceLocator" class="com.toney.core.utils.SpringResourceLocator" scope="singleton" />
 </beans>

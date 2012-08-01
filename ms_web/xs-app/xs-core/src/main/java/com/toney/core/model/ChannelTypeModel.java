@@ -1,5 +1,7 @@
 package com.toney.core.model;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * @author toney.li 频道类型，如：文章、图片、商店、
  */
@@ -74,12 +76,12 @@ public class ChannelTypeModel extends BaseObject {
 	 */
 	private Integer isSend;
 	private Integer arcSta;
-	private Integer userType;
+	private String userType;
 	private Integer sendRank;
 	private Integer isDefault;
 	private Integer needDes;
 	private Integer needPic;
-	private Integer titleName;
+	private String titleName;
 	private Integer onlyOne;
 	private Integer dfcId;
 
@@ -223,14 +225,6 @@ public class ChannelTypeModel extends BaseObject {
 		this.arcSta = arcSta;
 	}
 
-	public Integer getUserType() {
-		return userType;
-	}
-
-	public void setUserType(Integer userType) {
-		this.userType = userType;
-	}
-
 	public Integer getSendRank() {
 		return sendRank;
 	}
@@ -263,11 +257,19 @@ public class ChannelTypeModel extends BaseObject {
 		this.needPic = needPic;
 	}
 
-	public Integer getTitleName() {
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public String getTitleName() {
 		return titleName;
 	}
 
-	public void setTitleName(Integer titleName) {
+	public void setTitleName(String titleName) {
 		this.titleName = titleName;
 	}
 
@@ -306,5 +308,195 @@ public class ChannelTypeModel extends BaseObject {
 				+ ", needPic=" + needPic + ", titleName=" + titleName
 				+ ", onlyOne=" + onlyOne + ", dfcId=" + dfcId + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((addCon == null) ? 0 : addCon.hashCode());
+		result = prime * result
+				+ ((addTable == null) ? 0 : addTable.hashCode());
+		result = prime * result
+				+ ((allFields == null) ? 0 : allFields.hashCode());
+		result = prime * result + ((arcSta == null) ? 0 : arcSta.hashCode());
+		result = prime * result + ((dfcId == null) ? 0 : dfcId.hashCode());
+		result = prime * result + ((editCon == null) ? 0 : editCon.hashCode());
+		result = prime * result
+				+ ((fieldSet == null) ? 0 : fieldSet.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((isDefault == null) ? 0 : isDefault.hashCode());
+		result = prime * result + ((isSend == null) ? 0 : isSend.hashCode());
+		result = prime * result + ((isShow == null) ? 0 : isShow.hashCode());
+		result = prime * result
+				+ ((isSystem == null) ? 0 : isSystem.hashCode());
+		result = prime * result
+				+ ((listFields == null) ? 0 : listFields.hashCode());
+		result = prime * result
+				+ ((mainTable == null) ? 0 : mainTable.hashCode());
+		result = prime * result + ((manCon == null) ? 0 : manCon.hashCode());
+		result = prime * result + ((needDes == null) ? 0 : needDes.hashCode());
+		result = prime * result + ((needPic == null) ? 0 : needPic.hashCode());
+		result = prime * result + ((nid == null) ? 0 : nid.hashCode());
+		result = prime * result + ((onlyOne == null) ? 0 : onlyOne.hashCode());
+		result = prime * result
+				+ ((sendRank == null) ? 0 : sendRank.hashCode());
+		result = prime * result
+				+ ((titleName == null) ? 0 : titleName.hashCode());
+		result = prime * result
+				+ ((typeName == null) ? 0 : typeName.hashCode());
+		result = prime * result
+				+ ((userAddCon == null) ? 0 : userAddCon.hashCode());
+		result = prime * result
+				+ ((userEditCon == null) ? 0 : userEditCon.hashCode());
+		result = prime * result
+				+ ((userManCon == null) ? 0 : userManCon.hashCode());
+		result = prime * result
+				+ ((userType == null) ? 0 : userType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChannelTypeModel other = (ChannelTypeModel) obj;
+		if (addCon == null) {
+			if (other.addCon != null)
+				return false;
+		} else if (!addCon.equals(other.addCon))
+			return false;
+		if (addTable == null) {
+			if (other.addTable != null)
+				return false;
+		} else if (!addTable.equals(other.addTable))
+			return false;
+		if (allFields == null) {
+			if (other.allFields != null)
+				return false;
+		} else if (!allFields.equals(other.allFields))
+			return false;
+		if (arcSta == null) {
+			if (other.arcSta != null)
+				return false;
+		} else if (!arcSta.equals(other.arcSta))
+			return false;
+		if (dfcId == null) {
+			if (other.dfcId != null)
+				return false;
+		} else if (!dfcId.equals(other.dfcId))
+			return false;
+		if (editCon == null) {
+			if (other.editCon != null)
+				return false;
+		} else if (!editCon.equals(other.editCon))
+			return false;
+		if (fieldSet == null) {
+			if (other.fieldSet != null)
+				return false;
+		} else if (!fieldSet.equals(other.fieldSet))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (isDefault == null) {
+			if (other.isDefault != null)
+				return false;
+		} else if (!isDefault.equals(other.isDefault))
+			return false;
+		if (isSend == null) {
+			if (other.isSend != null)
+				return false;
+		} else if (!isSend.equals(other.isSend))
+			return false;
+		if (isShow == null) {
+			if (other.isShow != null)
+				return false;
+		} else if (!isShow.equals(other.isShow))
+			return false;
+		if (isSystem == null) {
+			if (other.isSystem != null)
+				return false;
+		} else if (!isSystem.equals(other.isSystem))
+			return false;
+		if (listFields == null) {
+			if (other.listFields != null)
+				return false;
+		} else if (!listFields.equals(other.listFields))
+			return false;
+		if (mainTable == null) {
+			if (other.mainTable != null)
+				return false;
+		} else if (!mainTable.equals(other.mainTable))
+			return false;
+		if (manCon == null) {
+			if (other.manCon != null)
+				return false;
+		} else if (!manCon.equals(other.manCon))
+			return false;
+		if (needDes == null) {
+			if (other.needDes != null)
+				return false;
+		} else if (!needDes.equals(other.needDes))
+			return false;
+		if (needPic == null) {
+			if (other.needPic != null)
+				return false;
+		} else if (!needPic.equals(other.needPic))
+			return false;
+		if (nid == null) {
+			if (other.nid != null)
+				return false;
+		} else if (!nid.equals(other.nid))
+			return false;
+		if (onlyOne == null) {
+			if (other.onlyOne != null)
+				return false;
+		} else if (!onlyOne.equals(other.onlyOne))
+			return false;
+		if (sendRank == null) {
+			if (other.sendRank != null)
+				return false;
+		} else if (!sendRank.equals(other.sendRank))
+			return false;
+		if (titleName == null) {
+			if (other.titleName != null)
+				return false;
+		} else if (!titleName.equals(other.titleName))
+			return false;
+		if (typeName == null) {
+			if (other.typeName != null)
+				return false;
+		} else if (!typeName.equals(other.typeName))
+			return false;
+		if (userAddCon == null) {
+			if (other.userAddCon != null)
+				return false;
+		} else if (!userAddCon.equals(other.userAddCon))
+			return false;
+		if (userEditCon == null) {
+			if (other.userEditCon != null)
+				return false;
+		} else if (!userEditCon.equals(other.userEditCon))
+			return false;
+		if (userManCon == null) {
+			if (other.userManCon != null)
+				return false;
+		} else if (!userManCon.equals(other.userManCon))
+			return false;
+		if (userType == null) {
+			if (other.userType != null)
+				return false;
+		} else if (!userType.equals(other.userType))
+			return false;
+		return true;
+	}
+
 
 }

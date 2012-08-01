@@ -11,7 +11,7 @@ public class ArticleSysTagModel extends BaseObject {
 	 */
 	private static final long serialVersionUID = 7103579703765533997L;
 
-	private int sortid;
+	private int sortId;
 
 	/**
 	 * 标签缩写
@@ -20,15 +20,8 @@ public class ArticleSysTagModel extends BaseObject {
 	/**
 	 * 标签名称
 	 */
-	private String attname;
+	private String attName;
 
-	public int getSortid() {
-		return sortid;
-	}
-
-	public void setSortid(int sortid) {
-		this.sortid = sortid;
-	}
 
 	public String getAtt() {
 		return att;
@@ -38,17 +31,59 @@ public class ArticleSysTagModel extends BaseObject {
 		this.att = att;
 	}
 
-	public String getAttname() {
-		return attname;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((att == null) ? 0 : att.hashCode());
+		result = prime * result + ((attName == null) ? 0 : attName.hashCode());
+		result = prime * result + sortId;
+		return result;
 	}
 
-	public void setAttname(String attname) {
-		this.attname = attname;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArticleSysTagModel other = (ArticleSysTagModel) obj;
+		if (att == null) {
+			if (other.att != null)
+				return false;
+		} else if (!att.equals(other.att))
+			return false;
+		if (attName == null) {
+			if (other.attName != null)
+				return false;
+		} else if (!attName.equals(other.attName))
+			return false;
+		if (sortId != other.sortId)
+			return false;
+		return true;
+	}
+
+	public int getSortId() {
+		return sortId;
+	}
+
+	public void setSortId(int sortId) {
+		this.sortId = sortId;
+	}
+
+	public String getAttName() {
+		return attName;
+	}
+
+	public void setAttName(String attName) {
+		this.attName = attName;
 	}
 
 	@Override
 	public String toString() {
-		return "ArticleSysTagModel [sortid=" + sortid + ", att=" + att
-				+ ", attname=" + attname + "]";
+		return "ArticleSysTagModel [sortId=" + sortId + ", att=" + att
+				+ ", attName=" + attName + "]";
 	}
 }

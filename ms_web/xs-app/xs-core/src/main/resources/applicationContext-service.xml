@@ -39,7 +39,5 @@
     </tx:advice>
 
     <!-- Activates scanning of @Service -->
-    <context:component-scan base-package="com.xiu.portal.biz"/>
-    <context:component-scan base-package="com.xiu.portal.ei"/>
-     
+    <context:component-scan base-package="com.toney.core.biz"/>
 </beans>
