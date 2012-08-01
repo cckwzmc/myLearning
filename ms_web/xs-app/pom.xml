@@ -30,6 +30,7 @@
 							<quiet>true</quiet>
 							<files>
 								<file>${project.basedir}/profiles/test/application.properties</file>
+								<file>${project.basedir}/profiles/test/dbconfig.properties</file>
 							</files>
 						</configuration>
 					</execution>
