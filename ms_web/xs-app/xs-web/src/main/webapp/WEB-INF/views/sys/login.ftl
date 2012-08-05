@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Toney Administrator's login</title>
-<link href="${appconfig("url.static_url")}css/login.css" rel="stylesheet" type="text/css"/>
-<#include "common/sys_head.ftl">
+<#include "./common/sys_head.ftl">
+<link href="${staticUrl}/css/login.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript">
 	$(document).ready(){
 		if(top!=this) {
@@ -31,6 +31,6 @@
 		</form>
 	   </div>
 	</div>
-<#include "/common/sys_footer.ftl"/>
+<#include "./common/sys_footer.ftl"/>
 </body>
 </html>
