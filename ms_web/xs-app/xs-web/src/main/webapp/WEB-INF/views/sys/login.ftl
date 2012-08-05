@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Toney Administrator's login</title>
-<link href="${staticUrl}css/login.css" rel="stylesheet" type="text/css"/>
+<link href="${appconfig("url.static_url")}css/login.css" rel="stylesheet" type="text/css"/>
 <#include "common/sys_head.ftl">
 <script type="text/javascript">
 	$(document).ready(){
@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div id="login-box">
-	   <div class="login-top"><a href="${domainUrl}" target="_blank" title="返回网站主页">返回网站主页</a></div>
+	   <div class="login-top"><a href="" target="_blank" title="返回网站主页">返回网站主页</a></div>
 	   <div class="login-main">
 	    <form name="loginForm" method="post" action="sys/login">
 	      <dl>

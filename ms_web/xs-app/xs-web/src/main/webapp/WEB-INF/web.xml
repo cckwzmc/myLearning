@@ -84,5 +84,6 @@
   	<welcome-file>index.jsp</welcome-file>
   	<welcome-file>index.hmtl</welcome-file>
   	<welcome-file>index.hmt</welcome-file>
+  	<welcome-file>index</welcome-file>
   </welcome-file-list>
 </web-app>
