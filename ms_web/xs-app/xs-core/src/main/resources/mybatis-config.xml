@@ -19,6 +19,7 @@
 		<typeAlias alias="articleSysTag" type="com.toney.core.model.ArticleSysTagModel" />
 		<typeAlias alias="articleExtend" type="com.toney.core.model.ArticleExtendModel" />
 		<typeAlias alias="area" type="com.toney.core.model.AreaModel" />
+		<typeAlias alias="administrator" type="com.toney.core.model.AdministratorModel" />
 	</typeAliases>
 	<!-- <mappers> <mapper resource="sqlmaps/UserSQL.xml" /> </mappers> -->
 </configuration>

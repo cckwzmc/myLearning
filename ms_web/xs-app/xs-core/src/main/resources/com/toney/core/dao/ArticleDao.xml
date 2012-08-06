@@ -6,7 +6,7 @@
 	<resultMap type="article" id="articleResult">
 		<collection property="articleBase"></collection>
 	</resultMap>
-	<select id="getAllArea" resultMap="areaResult" resultType="java.util.List">
+	<select id="getAllArea" resultMap="articleResult" resultType="java.util.List">
 		<![CDATA[ select id,name,reid,disorder from dede_area t order by id ,reid,disorder]]>
 	</select>
 </mapper>
