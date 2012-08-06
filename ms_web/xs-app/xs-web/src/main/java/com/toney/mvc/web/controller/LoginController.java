@@ -1,5 +1,6 @@
 package com.toney.mvc.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  */
 @Controller
-@RequestMapping(value="/gen")
-public class IndexGenController {
-	public String genIndexPage(){
-		return "";
+@RequestMapping(value="/sys")
+public class LoginController {
+	/**
+	 * @return
+	 */
+	@RequestMapping(value="logined")
+	public String login(){
+		
+		return "sys/main";
 	}
 }

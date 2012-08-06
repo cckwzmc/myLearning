@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
+import com.toney.core.model.AdministratorModel;
 import com.toney.core.model.UserAuthInfo;
 import com.toney.core.utils.SpringResourceLocator;
 
@@ -141,6 +142,10 @@ public final class CookieStoreUtil {
 	 * 清理用户登录cookie信息。
 	 */
 	public static void clearUserCookie() {
+		
+	}
+
+	public static void storeAdministrator(AdministratorModel administrator) {
 		
 	}
 }

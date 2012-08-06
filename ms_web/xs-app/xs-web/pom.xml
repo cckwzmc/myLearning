@@ -86,6 +86,11 @@
         	<artifactId>commons-fileupload</artifactId>
         	<version>${commons-fileupload.version}</version>
         </dependency>
+        <!-- <dependency>
+	    	<groupId>org.gatein.captcha</groupId>
+			<artifactId>simplecaptcha</artifactId>
+	    	<version>${simplecaptcha.version}</version>
+	    </dependency> -->
     </dependencies>
     <build>
         <plugins>

@@ -19,7 +19,7 @@
 	<div id="login-box">
 	   <div class="login-top"><a href="" target="_blank" title="返回网站主页">返回网站主页</a></div>
 	   <div class="login-main">
-	    <form name="loginForm" method="post" action="sys/login">
+	    <form name="loginForm" method="post" action="${rc.getContextPath()}/sys/logined">
 	      <dl>
 		   <dt>用户名：</dt>
 		   <dd><input type="text" name="username" id="username"/></dd>
