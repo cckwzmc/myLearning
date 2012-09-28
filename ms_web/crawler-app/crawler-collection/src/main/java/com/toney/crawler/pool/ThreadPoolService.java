@@ -14,7 +14,7 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.toney.crawler.biz.CrawlerBizManager;
+import com.toney.crawler.collection.biz.CrawlerBizManager;
 
 
 /**

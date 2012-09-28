@@ -1,4 +1,4 @@
-package com.toney.crawler.jobs;
+package com.toney.crawler.collection.jobs;
 
 /**
  * 
