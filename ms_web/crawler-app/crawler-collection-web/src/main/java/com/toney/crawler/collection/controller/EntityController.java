@@ -1,4 +1,4 @@
-package com.toney.crawler.controller;
+package com.toney.crawler.collection.controller;
 
 import javax.inject.Inject;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 
-import com.toney.crawler.model.MyEntity;
+import com.toney.crawler.collection.model.MyEntity;
 import com.toney.crawler.web.service.EntityService;
 
 /**

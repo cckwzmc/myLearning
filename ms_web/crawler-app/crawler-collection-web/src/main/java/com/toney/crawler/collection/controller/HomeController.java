@@ -1,4 +1,4 @@
-package com.toney.crawler.controller;
+package com.toney.crawler.collection.controller;
 
 import javax.inject.Inject;
 
