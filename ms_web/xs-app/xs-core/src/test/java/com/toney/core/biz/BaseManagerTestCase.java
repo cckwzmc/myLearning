@@ -17,7 +17,7 @@ import com.toney.core.utils.ConvertUtil;
  * 
  */
 @ContextConfiguration(locations = { "classpath:/applicationContext-test.xml", "classpath:/applicationContext-core.xml"
-		, "classpath:/applicationContext-test-remote.xml" 
+		,"classpath:/applicationContext-cache.xml" //"classpath:/applicationContext-test-remote.xml",
 		})
 public abstract class BaseManagerTestCase extends AbstractTransactionalJUnit4SpringContextTests {
 

@@ -33,7 +33,7 @@ public class SimplePortalMappingExceptionResolver extends SimpleMappingException
 
         if ((model != null) && (ex != null)) {
             if (RequestUtil.isJsonRequest(request) && PortalBaseException.class.isAssignableFrom(ex.getClass())) { 
-                model.addObject(Constants.JSON_MODEL__DATA, new JsonPackageWrapper(JsonPackageWrapper.S_ERR,
+                model.addObject(Constants.JSON_MODEL_DATA, new JsonPackageWrapper(false,
                         ((PortalBaseException) ex).getMessageWithSupportCode()));
             }
             model.addObject("errorMsg", generateErrorMessage(request, response, ex));

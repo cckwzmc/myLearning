@@ -15,11 +15,13 @@
 		<typeAlias alias="channel" type="com.toney.core.model.ChannelDetailModel" />
 		<typeAlias alias="article" type="com.toney.core.model.ArticleModel" />
 		<typeAlias alias="articleBase" type="com.toney.core.model.ArticleBaseModel" />
+		<typeAlias alias="articleExtend" type="com.toney.core.model.ArticleExtendModel" />
 		<typeAlias alias="articleTiny" type="com.toney.core.model.ArticleTinyModel" />
 		<typeAlias alias="articleSysTag" type="com.toney.core.model.ArticleSysTagModel" />
-		<typeAlias alias="articleExtend" type="com.toney.core.model.ArticleExtendModel" />
 		<typeAlias alias="area" type="com.toney.core.model.AreaModel" />
 		<typeAlias alias="administrator" type="com.toney.core.model.AdministratorModel" />
+		<typeAlias alias="sysConfig" type="com.toney.core.model.SysConfigModel" />
+		<typeAlias alias="templateManager" type="com.toney.core.model.TemplateManagerModel" />
 	</typeAliases>
 	<!-- <mappers> <mapper resource="sqlmaps/UserSQL.xml" /> </mappers> -->
 </configuration>

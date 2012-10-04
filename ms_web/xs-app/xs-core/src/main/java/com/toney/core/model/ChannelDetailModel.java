@@ -20,7 +20,7 @@ public class ChannelDetailModel extends BaseObject {
 	 */
 	private Integer reId;
 	/**
-	 * 是否顶级Id 0:否，1：是
+	 * 是否顶级Id 0:是，1：否
 	 */
 	private Integer topId;
 	/**

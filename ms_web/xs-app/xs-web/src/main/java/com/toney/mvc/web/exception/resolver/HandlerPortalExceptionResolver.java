@@ -138,10 +138,10 @@ public class HandlerPortalExceptionResolver extends AbstractHandlerExceptionReso
 
         ModelAndView mav = new ModelAndView();
 
-        JsonPackageWrapper jpw = new JsonPackageWrapper(JsonPackageWrapper.S_ERR);
+        JsonPackageWrapper jpw = new JsonPackageWrapper();
         // TODO: 加入自定制错误消息
         jpw.setSmsg(ex.getMessage());
-
+        jpw.setSuccess(false);
         mav.addObject("exception", ex);
         mav.addObject("data", jpw);
         mav.setViewName("error/exception");
@@ -210,10 +210,10 @@ public class HandlerPortalExceptionResolver extends AbstractHandlerExceptionReso
 
         ModelAndView mav = new ModelAndView();
 
-        JsonPackageWrapper jpw = new JsonPackageWrapper(JsonPackageWrapper.S_ERR);
+        JsonPackageWrapper jpw = new JsonPackageWrapper();
         // TODO: 加入自定制错误消息
         jpw.setSmsg(ex.getMessage());
-
+        jpw.setSuccess(false);
         mav.addObject("exception", ex);
         mav.addObject("data", jpw);
         mav.setViewName("error/exception");

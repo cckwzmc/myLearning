@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.toney.core.model.ArticleBaseModel;
 import com.toney.core.model.ArticleModel;
 
 /**
@@ -29,4 +30,11 @@ public interface ArticleDao {
 	
 	
 	public ArticleModel getArticleModelById(Long id);
+
+	/**
+	 * @param map
+	 * 读取
+	 */
+	public List<ArticleModel> getArticleBaseModelList(ArticleQueryModel model);
+	
 }

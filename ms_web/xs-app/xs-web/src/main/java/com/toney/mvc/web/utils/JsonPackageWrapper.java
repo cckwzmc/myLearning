@@ -5,20 +5,22 @@ package com.toney.mvc.web.utils;
  * @Description: JSON统一输出格式.
  * @author toney.li
  * @date 2012-3-22 下午3:47:42
- * 
+ * <ul>
+ * 	<li>success是否成功，默认为成功.</li>
+ * 	<li>scode如果失败则返回失败码.</li>
+ * 	<li>smsg如果失败则返回失败信息.</li>
+ * 	<li>data返回数据.</li>
+ * </ul>
  */
 public class JsonPackageWrapper {
-    final static public String S_OK = "0";
-    final static public String S_ERR = "-1";
-
+	private Boolean success=true;
     private String scode;
     private String smsg;
-    private String errorCode;
 
     private Object data;
 
     public JsonPackageWrapper() {
-        scode = JsonPackageWrapper.S_OK;
+    	scode="";
         smsg = "";
         data = null;
     }
@@ -33,6 +35,18 @@ public class JsonPackageWrapper {
         this.scode = scode;
         this.smsg = smessage;
         this.data = null;
+    }
+    public JsonPackageWrapper(boolean success,String smessage) {
+    	this.success=success;
+    	this.scode = "";
+    	this.smsg = smessage;
+    	this.data = null;
+    }
+    public JsonPackageWrapper(boolean success,String scode, String smessage) {
+    	this.success=success;
+    	this.scode = scode;
+    	this.smsg = smessage;
+    	this.data = null;
     }
 
     public JsonPackageWrapper(String scode, Object data) {
@@ -63,15 +77,15 @@ public class JsonPackageWrapper {
         this.smsg = smessage;
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
+    public Boolean getSuccess() {
+		return success;
+	}
 
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
+	public void setSuccess(Boolean success) {
+		this.success = success;
+	}
 
-    public Object getData() {
+	public Object getData() {
         return data;
     }
 

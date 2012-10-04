@@ -1,9 +1,9 @@
 package com.toney.core.model;
 
-import org.springframework.stereotype.Repository;
 
 /**
  * @author toney.li 频道类型，如：文章、图片、商店、
+ * 对应dede_channeltype
  */
 public class ChannelTypeModel extends BaseObject {
 

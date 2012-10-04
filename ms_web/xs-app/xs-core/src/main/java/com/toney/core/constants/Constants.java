@@ -2,6 +2,8 @@ package com.toney.core.constants;
 
 public class Constants {
 
+	public static final Integer CHANNEL_TOP_TYPE=1;
+	public static final Integer CHANNEL_CHILDRENS_TYPE=1;
 	/**
 	 * 收货地址类型编码
 	 */

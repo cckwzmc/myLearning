@@ -8,8 +8,8 @@ import com.toney.core.model.ChannelTypeModel;
 
 /**
  * @author toney.li
- * 频道类型
- * 
+ * 频道类型<br/>
+ * 对应 dede_channeltype
  */
 @Repository("channelTypeDao")
 public interface ChannelTypeDao {

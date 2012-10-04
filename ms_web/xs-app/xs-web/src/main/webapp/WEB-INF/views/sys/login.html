@@ -16,6 +16,16 @@
 </script>
 </head>
 <body>
+<#import "macro/greet.html" as g/>
+<@g.greet/>
+<@channel_list>
+	<#list tag_list as rs>
+		${rs.id}
+	</#list>
+	<a ></a>
+</@channel_list>
+<@art_list orderby="click">
+</@art_list>
 	<div id="login-box">
 	   <div class="login-top"><a href="" target="_blank" title="返回网站主页">返回网站主页</a></div>
 	   <div class="login-main">

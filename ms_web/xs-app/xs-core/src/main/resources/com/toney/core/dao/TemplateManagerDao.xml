@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.core.dao.TemplateManagerDao">
+
+	<resultMap id="templateManagerResult" type="templateManager">
+		<result property="id" column="aid" />
+		<result property="templateName" column="templatename" />
+		<result property="groupId" column="groupid" />
+		<result property="groupName" column="groupname" />
+		<result property="desc" column="description" />
+		<result property="createDate" column="createdate" />
+		<result property="publishPath" column="publishpath" />
+		<result property="value" column="value" />
+		<result property="isEnable" column="isenable" />
+	</resultMap>
+	<select id="getAll" resultMap="templateManagerResult" resultType="java.util.List">
+		<![CDATA[select id,templatename,groupid,groupname,description,createdate,value,isenable,publishpath from dede_templage_manager t]]>
+	</select>
+
+</mapper>

@@ -56,5 +56,5 @@ public final class Constants {
 	/**
 	 * json 数据
 	 */
-	public static final String JSON_MODEL__DATA = "data";
+	public static final String JSON_MODEL_DATA = "data";
 }

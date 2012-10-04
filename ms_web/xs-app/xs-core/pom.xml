@@ -263,11 +263,22 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 	</dependencies>
 	<properties>
-		<mybatis.spring.version>1.1.0</mybatis.spring.version>
+		<mybatis.spring.version>1.1.1</mybatis.spring.version>
 		<hibernate-validator.version>4.0.2.GA</hibernate-validator.version>
 		<commons-digester.version>2.1</commons-digester.version>
 		<hessian.version>4.0.7</hessian.version>
+		<ehcache.version>2.6.0</ehcache.version>
 	</properties>
 </project>

@@ -9,4 +9,5 @@
 	<context:annotation-config />
 	<import resource="applicationContext-dao.xml"/>
 	<import resource="applicationContext-service.xml"/>
+	<import resource="applicationContext-cache.xml"/>
 </beans>

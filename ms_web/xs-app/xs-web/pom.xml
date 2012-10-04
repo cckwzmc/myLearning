@@ -91,6 +91,11 @@
 			<artifactId>simplecaptcha</artifactId>
 	    	<version>${simplecaptcha.version}</version>
 	    </dependency> -->
+        <dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-asm</artifactId>
+        	<version>${spring.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
