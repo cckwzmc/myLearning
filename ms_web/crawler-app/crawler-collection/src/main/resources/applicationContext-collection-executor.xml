@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+						http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<bean id="crawlerHomeTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5"/>
+		<property name="maxPoolSize" value="10"/>
+		<property name="queueCapacity" value="1000"/>
+		<!-- 
+		<property name="rejectedExecutionHandler" ref="java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy()"/>
+		 -->
+	</bean>
+	<bean id="crawlerServiceExecutor" class="com.toney.crawler.collection.concurrent.CrawlerServiceExecutorImpl" scope="singleton" init-method="startExecutor">
+		<property name="crawlerHomeTaskExecutor" ref="crawlerHomeTaskExecutor"></property>
+	</bean>
+	<bean id="crawlerHomeService" class="com.toney.crawler.collection.concurrent.CrawlerHomeService" scope="prototype"></bean>
+	<context:component-scan base-package="com.toney.crawler.collection.concurrent"/>
+</beans>

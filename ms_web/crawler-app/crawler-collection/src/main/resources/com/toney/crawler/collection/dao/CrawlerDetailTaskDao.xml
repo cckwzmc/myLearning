@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.crawler.collection.dao.CrawlerDetailTaskDao">
+	<resultMap type="crawlerDetailTask" id="crawlerDetailTaskResult">
+		<result property="cdid" column="cdid"/>
+		<result property="clid" column="clid"/>
+		<result property="url" column="url"/>
+		<result property="title" column="title"/>
+		<result property="createDate" column="createdate"/>
+		<result property="status" column="status"/>
+		<result property="isEnable" column="isenable"/>
+	</resultMap>
+	
+	<select id="getAll" resultMap="crawlerDetailTaskResult" resultType="java.util.List">
+		<![CDATA[select cdid,clid,url,title,createdate,status,isenable from dede_crawler_dttask t ]]>
+	</select>
+	
+	<select id="getEnabledAll" resultMap="crawlerDetailTaskResult" resultType="java.util.List"  parameterType="com.toney.crawler.collection.model.CrawlerDetailTaskModel">
+		<![CDATA[select cdid,clid,url,title,createdate,status,isenable from dede_crawler_dttask t where t.isenable=#{isEnable}]]>
+	</select>
+	<insert id="insert" parameterType="com.toney.crawler.collection.model.CrawlerDetailTaskModel">
+		insert into dede_crawler_dttask(clid,url,title,createdate,status,isenable) value(#{clid},#{url},#{title},UNIX_TIMESTAMP(),#{status},#{isEnable})
+	</insert>
+	<update id="updateStatus" parameterType="com.toney.crawler.collection.model.CrawlerDetailTaskModel">
+		update dede_crawler_dttask set status=#{status} where cdid=#{cdid}
+	</update>
+	<update id="updateIsEnable" parameterType="com.toney.crawler.collection.model.CrawlerDetailTaskModel">
+		update dede_crawler_dttask set isenable=#{isEnable} where cdid=#{cdid}
+	</update>
+</mapper>

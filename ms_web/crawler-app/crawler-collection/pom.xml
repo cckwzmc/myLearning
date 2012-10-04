@@ -88,8 +88,7 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -144,6 +143,15 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>com.toney.crawler</groupId>
+			<artifactId>crawler-common</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 			<version>${spring.version}</version>
@@ -183,7 +191,10 @@
 			<artifactId>${jdbc.artifactId}</artifactId>
 			<version>${jdbc.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -253,7 +264,7 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<mybatis.spring.version>1.1.0</mybatis.spring.version>
+		<mybatis.spring.version>1.1.1</mybatis.spring.version>
 		<hibernate-validator.version>4.0.2.GA</hibernate-validator.version>
 		<commons-digester.version>2.1</commons-digester.version>
 		<hessian.version>4.0.7</hessian.version>

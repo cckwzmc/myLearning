@@ -14,9 +14,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.toney</groupId>
-			<artifactId>xs-core</artifactId>
-			<version>1.0.0</version>
+			<groupId>com.toney.crawler</groupId>
+			<artifactId>crawler-collection</artifactId>
+			<version>1.0</version>
 		</dependency>
 		<!-- Spring -->
 		<dependency>
@@ -88,6 +88,14 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>${commons-fileupload.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>		
 	</dependencies>
 	<build>
 		<plugins>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.crawler.collection.dao.CrawlerTaskDao">
+	<resultMap type="crawlerTask" id="crawlerTaskResult">
+		<result property="cid" column="cid"/>
+		<result property="siteName" column="siteName"/>
+		<result property="url" column="url"/>
+		<result property="description" column="description"/>
+		<result property="createDate" column="createdate"/>
+		<result property="listWords" column="listwords"/>
+		<result property="stopWords" column="stopwords"/>
+		<result property="isEnable" column="isenable"/>
+	</resultMap>
+	
+	<select id="getAll" resultMap="crawlerTaskResult" resultType="java.util.List">
+		<![CDATA[select t.cid,t.sitename,t.url,t.description,t.createdate,t.listwords,t.stopwords,t.isenable from dede_crawler_task t ]]>
+	</select>
+</mapper>

@@ -5,7 +5,11 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="xs-core-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/xs-core/xs-core">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/webapp"/>
+        <dependent-module archiveName="crawler-collection-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/crawler-collection/crawler-collection">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="crawler-common-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/crawler-common/crawler-common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="crawler-collection-web"/>

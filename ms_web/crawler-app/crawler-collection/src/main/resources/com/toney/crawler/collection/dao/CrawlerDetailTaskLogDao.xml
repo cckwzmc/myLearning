@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.crawler.collection.dao.CrawlerDetailTaskLogDao">
+	<resultMap type="crawlerDetailTaskLog" id="crawlerDetailTaskLogResult">
+		<result property="id" column="id"/>
+		<result property="cdid" column="cdid"/>
+		<result property="createDate" column="createdate"/>
+		<result property="result" column="result"/>
+	</resultMap>
+	<insert id="insert" parameterType="com.toney.crawler.collection.model.CrawlerDetailTaskLogModel">
+		insert into dede_crawler_dttask(cdid,createdate,result) value(#{cdid},UNIX_TIMESTAMP(),#{result})
+	</insert>
+</mapper>

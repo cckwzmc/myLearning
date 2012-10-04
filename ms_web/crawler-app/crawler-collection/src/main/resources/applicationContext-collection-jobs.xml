@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-lazy-init="true">
+	<bean id="crawlerPageJob" class="com.toney.crawler.collection.jobs.CrawlerPageJobImpl"/> 
+	<!-- 起动Bean -->
+	<bean id="projectDupJobs"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="crawlerHomeTrigger" />
+			</list>
+		</property>
+		<!-- 是否持久化RAMJobStore内容运行方式 -->
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.jobStore.class">
+					org.quartz.simpl.RAMJobStore
+				</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 深度抓取 -->
+	<bean id="crawlerHomeJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="crawlerPageJob" />
+		</property>
+		<property name="concurrent" value="false"></property>
+		<property name="targetMethod">
+			<value>crawlerHome</value>
+		</property>
+	</bean>
+	<bean id="crawlerHomeTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="crawlerHomeJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0/1 * * * ?</value>
+		</property>
+	</bean>
+</beans>	

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.crawler.collection.dao.CrawlerXmlDao">
+	<resultMap type="crawlerXml" id="crawlerXmlResult">
+		<result property="id" column="id"/>
+		<result property="cid" column="cid"/>
+		<result property="type" column="type"/>
+		<result property="createDate" column="createdate"/>
+		<result property="crawlerXml" column="crawlerxml"/>
+		<result property="isEnable" column="isenable"/>
+	</resultMap>
+	<select id="getAll" resultMap="crawlerXmlResult" resultType="java.util.List">
+		<![CDATA[select id,cid,type,createdate,crawlerxml,isenable  from dede_crawler_xml t]]>
+	</select>
+	<select id="getCrawlerXmlById" resultMap="crawlerXmlResult" resultType="java.util.List" parameterType="com.toney.crawler.collection.model.CrawlerXmlModel">
+		<![CDATA[select id,cid,type,createdate,crawlerxml,isenable  from dede_crawler_xml t where t.cid=#{cid} and t.type=#{type}]]>
+	</select>
+	<select id="updateCrawlerXml" resultMap="crawlerXmlResult" resultType="java.util.List" parameterType="com.toney.crawler.collection.model.CrawlerXmlModel">
+		<![CDATA[update dede_crawler_xml t set t.crawlerxml=#{crawlerXml} where t.id=#{id}]]>
+	</select>
+</mapper>
