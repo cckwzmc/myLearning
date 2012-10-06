@@ -8,6 +8,7 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.stereotype.Component;
 
 import com.toney.crawler.collection.biz.CrawlerTaskManager;
 
@@ -58,6 +59,7 @@ public class CrawlerServiceExecutorImpl implements CrawlerServiceExecutor{
 		}
 	}
 	
+	@Component
 	class CallHandler implements Runnable{
 		
 		public CallHandler(Long t){
