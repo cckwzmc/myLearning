@@ -1,26 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:p="http://www.springframework.org/schema/p"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:batch="http://www.springframework.org/schema/batch" xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
 						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
-						http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+						http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+						http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+						http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+	<!-- batch 事务管理 -->
 
-	<bean id="crawlerHomeTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="5"/>
-		<property name="maxPoolSize" value="10"/>
-		<property name="queueCapacity" value="1000"/>
-		<!-- 
-		<property name="rejectedExecutionHandler" ref="java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy()"/>
-		 -->
+
+	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="transactionManager" />
 	</bean>
-	<bean id="crawlerServiceExecutor" class="com.toney.crawler.collection.concurrent.CrawlerServiceExecutorImpl" scope="singleton" init-method="startExecutor">
-		<property name="crawlerHomeTaskExecutor" ref="crawlerHomeTaskExecutor"></property>
+
+	<bean class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
 	</bean>
-	<bean id="crawlerHomeService" class="com.toney.crawler.collection.concurrent.CrawlerHomeService" scope="prototype"></bean>
-	<context:component-scan base-package="com.toney.crawler.collection.concurrent"/>
+	<!-- batch transactionManager end -->
+
+	<batch:job id="crawlerHomeTaskExecutionJob">
+		<batch:step id="crawlerHomeTaskExecutionStep">
+			<batch:tasklet task-executor="crawlerHomeTaskExecutor" throttle-limit="4"><!-- writer="crawlerHomeTaskWriter" processor="crawlerHomeTaskReaderProcessor" -->
+				<batch:chunk reader="crawlerHomeTaskReader" writer="crawlerHomeTaskWriter" processor="crawlerHomeTaskProcess"
+					commit-interval="10">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+
+	<task:executor id="crawlerHomeTaskExecutor" queue-capacity="1000" pool-size="5" />
+	<bean id="crawlerHomeTaskReader" class="org.springframework.batch.item.database.JdbcPagingItemReader">
+		<property name="dataSource" ref="dataSource" />
+		<property name="rowMapper" ref="crawlerTaskModel" />
+		<property name="queryProvider" ref="crawlerHomeTaskProvider" />
+	</bean>
+	<bean id="crawlerHomeTaskWriter" class="com.toney.crawler.collection.executor.CrawlerHomeTaskWriterImpl">
+	</bean>
+	<bean id="crawlerHomeTaskProcess" class="com.toney.crawler.collection.executor.CrawlerHomeTaskProcessImpl">
+	</bean>
+	<bean id="crawlerTaskModel" class="com.toney.crawler.collection.model.CrawlerTaskModel"></bean>
+	<bean id="crawlerHomeTaskProvider" class="org.springframework.batch.item.database.support.MySqlPagingQueryProvider">
+		<property name="selectClause"
+			value="t.cid,t.sitename siteName,t.url,t.description,t.createdate createDate,t.listwords listWords,t.stopwords stopWords,t.isenable isEnable" />
+		<property name="fromClause" value="dede_crawler_task t where t.isenable=1" />
+		<property name="sortKey" value="t.createdate" />
+	</bean>
+
+	<!-- <bean id="crawlerHomeTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"> <property name="corePoolSize" 
+		value="5"/> <property name="maxPoolSize" value="10"/> <property name="queueCapacity" value="1000"/> <property name="rejectedExecutionHandler" 
+		ref="java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy()"/> </bean> -->
+	<!-- <bean id="crawlerServiceExecutor" class="com.toney.crawler.collection.concurrent.CrawlerServiceExecutorImpl" scope="singleton" init-method="startExecutor"> 
+		<property name="crawlerHomeTaskExecutor" ref="crawlerHomeTaskExecutor"></property> </bean> <bean id="crawlerHomeService" class="com.toney.crawler.collection.concurrent.CrawlerHomeService" 
+		scope="prototype"></bean> <context:component-scan base-package="com.toney.crawler.collection.concurrent" /> -->
 </beans>

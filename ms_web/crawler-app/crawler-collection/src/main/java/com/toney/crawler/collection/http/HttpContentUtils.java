@@ -2,13 +2,15 @@ package com.toney.crawler.collection.http;
 
 import java.io.IOException;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
@@ -16,6 +18,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
@@ -30,6 +33,7 @@ public class HttpContentUtils {
 	 * 重试次数
 	 */
 	private static Integer retryCount = 3;
+//	private static String setChar = "GBK";
 	private static String setChar = "UTF-8";
 	private static HttpParams httpParams;
 	private static int connTimeOut=20 * 1000;
@@ -39,11 +43,14 @@ public class HttpContentUtils {
 
 	static{
 		httpParams = new BasicHttpParams();
+		httpParams.setParameter("charset",setChar);
 		// 设置连接超时和 Socket 超时，以及 Socket 缓存大小
 		HttpConnectionParams.setConnectionTimeout(httpParams, connTimeOut);
 		HttpConnectionParams.setSoTimeout(httpParams, soTimeOut);
 		HttpConnectionParams.setSocketBufferSize(httpParams, buffSize);
 		HttpProtocolParams.setUserAgent(httpParams, userAgent);
+		HttpProtocolParams.setContentCharset(httpParams, setChar);
+		HttpProtocolParams.setHttpElementCharset(httpParams, setChar);
 	}
 
 	public String getSetChar() {
@@ -70,14 +77,18 @@ public class HttpContentUtils {
 	 * @return
 	 */
 	public static String getContentByGET(String url) {
+		
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		try {
-			HttpGet httpGet = new HttpGet(url);
-			httpGet.setParams(httpParams);
+			HttpUriRequest httpGet = new HttpGet(url);
+//			httpGet.setParams(httpParams);
 			HttpRequestRetryHandler retryHandler=new DefaultHttpRequestRetryHandler(retryCount, true);
 			httpClient.setHttpRequestRetryHandler(retryHandler);
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			String resBody = httpClient.execute(httpGet, responseHandler);
+			HttpResponse httpResponse = httpClient.execute(httpGet);
+			String resBody = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+//			String resBody = httpClient.execute(httpGet, responseHandler);
+			//resBody=new String(resBody.getBytes(),"UTF-8");
 			LOGGER.debug("~~~~~~~~~~~~~~start crawler~~~~~~~~~~~~~~~~~~");
 			LOGGER.debug(resBody);
 			LOGGER.debug("~~~~~~~~~~~~~~end crawler~~~~~~~~~~~~~~~~~~");
@@ -99,16 +110,24 @@ public class HttpContentUtils {
 	 * @param entity
 	 * @return
 	 */
-	public static String getContentByPost(String url, MultipartEntity entity) {
+	public static String getContentByPost(String url,HttpEntity  entity) {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		try {
 			HttpPost httpPost = new HttpPost(url);
 			httpPost.setParams(httpParams);
-			httpPost.setEntity(entity);
+			if(entity!=null){
+				httpPost.setEntity(entity);
+			}
 			HttpRequestRetryHandler retryHandler=new DefaultHttpRequestRetryHandler(retryCount, true);
 			httpClient.setHttpRequestRetryHandler(retryHandler);
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			String resBody = httpClient.execute(httpPost, responseHandler);
+//			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+			String resBody="";
+			if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK){
+				resBody = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+			}
+//			String resBody = httpClient.execute(httpPost, responseHandler);
 			LOGGER.debug("~~~~~~~~~~~~~~start crawler~~~~~~~~~~~~~~~~~~");
 			LOGGER.debug(resBody);
 			LOGGER.debug("~~~~~~~~~~~~~~end crawler~~~~~~~~~~~~~~~~~~");

@@ -28,7 +28,7 @@
 		<property name="targetObject">
 			<ref bean="crawlerPageJob" />
 		</property>
-		<property name="concurrent" value="false"></property>
+		<property name="concurrent" value="true"></property>
 		<property name="targetMethod">
 			<value>crawlerHome</value>
 		</property>
