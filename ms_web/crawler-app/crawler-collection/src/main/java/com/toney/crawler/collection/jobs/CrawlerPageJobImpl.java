@@ -2,10 +2,18 @@ package com.toney.crawler.collection.jobs;
 
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.support.SimpleJobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.toney.crawler.collection.Exception.CrawlerException;
-import com.toney.crawler.collection.concurrent.CrawlerServiceExecutor;
+import com.toney.crawler.collection.executor.CrawlerServiceExecutor;
 import com.toney.crawler.common.exception.BusinessException;
 
 /**
@@ -19,13 +27,27 @@ import com.toney.crawler.common.exception.BusinessException;
 public class CrawlerPageJobImpl implements CrawlerPageJob {
 	private static final XLogger logger = XLoggerFactory.getXLogger(CrawlerPageJobImpl.class);
 
-	@Autowired
-	private CrawlerServiceExecutor crawlerServiceExecutor;
-
+//	@Autowired
+//	private CrawlerServiceExecutor crawlerServiceExecutor;
+	@Autowired Job crawlerHomeTaskExecutionJob;
+	@Autowired JobLauncher jobLauncher;
 	@Override
 	public void crawlerHome() throws CrawlerException {
 		logger.info("...开始抓取首页...");
-		crawlerServiceExecutor.startExecutor();
+		JobParameters arg1=new JobParameters();
+		try {
+//			JobLauncher jobLauncher=new SimpleJobLauncher();
+			jobLauncher.run(crawlerHomeTaskExecutionJob, arg1);
+		} catch (JobExecutionAlreadyRunningException e) {
+			logger.error("CrawlerPageJobImpl",e);
+		} catch (JobRestartException e) {
+			logger.error("CrawlerPageJobImpl",e);
+		} catch (JobInstanceAlreadyCompleteException e) {
+			logger.error("CrawlerPageJobImpl",e);
+		} catch (JobParametersInvalidException e) {
+			logger.error("CrawlerPageJobImpl",e);
+		}
+		//crawlerServiceExecutor.startExecutor();
 		logger.info("...结束抓取首页...");
 	}
 

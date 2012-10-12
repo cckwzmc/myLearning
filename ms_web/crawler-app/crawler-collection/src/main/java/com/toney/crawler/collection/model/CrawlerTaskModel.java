@@ -1,12 +1,17 @@
 package com.toney.crawler.collection.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import com.toney.crawler.common.model.BaseObject;
 
 /**
  * @author toney.li<br/>
  *         dede_crawler_task
  */
-public class CrawlerTaskModel extends BaseObject {
+public class CrawlerTaskModel extends BaseObject implements RowMapper {
 	/**
 	 * 
 	 */
@@ -88,5 +93,19 @@ public class CrawlerTaskModel extends BaseObject {
 	public String toString() {
 		return "CrawlerCollectionTaskModel [cid=" + cid + ", siteName=" + siteName + ", url=" + url + ", description=" + description
 				+ ", createDate=" + createDate + ", listWords=" + listWords + ", stopWords=" + stopWords + ", isEnable=" + isEnable + "]";
+	}
+
+	@Override
+	public CrawlerTaskModel mapRow(ResultSet rs, int arg1) throws SQLException {
+		CrawlerTaskModel model=new CrawlerTaskModel();
+		model.setCid(rs.getInt("cid"));
+		model.setCreateDate(rs.getLong("createDate"));
+		model.setDescription(rs.getString("description"));
+		model.setIsEnable(rs.getInt("isEnable"));
+		model.setListWords(rs.getString("listWords"));
+		model.setSiteName(rs.getString("siteName"));
+		model.setStopWords(rs.getString("stopWords"));
+		model.setUrl(rs.getString("url"));
+		return model;
 	}
 }

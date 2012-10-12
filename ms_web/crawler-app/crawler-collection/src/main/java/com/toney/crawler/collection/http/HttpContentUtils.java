@@ -1,4 +1,4 @@
-package com.toney.crawler.http;
+package com.toney.crawler.collection.http;
 
 import java.io.IOException;
 

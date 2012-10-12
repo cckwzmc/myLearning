@@ -1,4 +1,4 @@
-package com.toney.crawler.pool;
+package com.toney.crawler.collection.pool;
 
 import java.util.LinkedList;
 import java.util.Queue;

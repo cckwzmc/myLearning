@@ -1,4 +1,4 @@
-package com.toney.crawler.pool;
+package com.toney.crawler.collection.pool;
 
 /**
  * @author toney.li
