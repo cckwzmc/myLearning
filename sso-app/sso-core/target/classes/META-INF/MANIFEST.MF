@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: sso-core
+Implementation-Version: 1.0
+Implementation-Vendor-Id: com.toney.sso
+Build-Jdk: 1.6.0_26
+Built-By: ly_zy_ljh
+Created-By: Maven Integration for Eclipse
+Specification-Title: sso-core
+Specification-Version: 1.0
+
