@@ -1,0 +1,1 @@
+<#assign staticUrl=appconfig("url.static_url")>
