@@ -53,7 +53,7 @@
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>com.toney.mvc.web.Listener.StartupListener</listener-class>
+		<listener-class>com.toney.publish.Listener.StartupListener</listener-class>
 	</listener>
 
 	<!-- Processes application requests -->

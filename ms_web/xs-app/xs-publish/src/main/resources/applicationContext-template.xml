@@ -21,6 +21,24 @@
 	<bean id="art_list" class="com.toney.mvc.tpl.tag.ArticleListTag" />
 	<bean id="global_param" class="com.toney.mvc.tpl.tag.SiteGlobalTag" />
 
+
+	<!-- freemarker user defined -->
+	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+	<bean id="beansWrapper" class="freemarker.ext.beans.BeansWrapper">
+		<property name="exposureLevel" value="#{T(freemarker.ext.beans.BeansWrapper).EXPOSE_SAFE}" />
+	</bean>
+
+	<bean id="appconfigModel" class="com.toney.mvc.web.ext.freemarker.ApacheCommonConfigurationModel">
+		<constructor-arg type="freemarker.ext.beans.BeansWrapper" ref="beansWrapper" />
+		<constructor-arg type="org.apache.commons.configuration.Configuration" ref="databaseConfiguration" />
+	</bean>
+	<bean id="staticModel" factory-bean="beansWrapper" factory-method="getStaticModels" />
+
+	<bean id="userAuthInfoHolderModel" factory-bean="staticModel" factory-method="get">
+		<constructor-arg type="java.lang.String" value="com.toney.mvc.web.utils.UserAuthInfoHolder" />
+	</bean>
+	
+	
 	<bean id="publishPageService" class="com.toney.mvc.service.PublishPageServiceImpl">
 		<property name="tplMessageSource" ref="tplMessageSource" />
 		<property name="tplRootPath" value="${tpl.root.path}" />
@@ -31,10 +49,9 @@
 				<property name="templateLoaderPath" value="" />
 				<property name="freemarkerVariables">
 					<map>
-						<!-- 
 						<entry key="xml_escape" value-ref="fmXmlEscape" />
 						<entry key="appconfig" value-ref="appconfigModel" />
-						<entry key="userAuthInfoHolder" value-ref="userAuthInfoHolderModel" /> -->
+						<entry key="userAuthInfoHolder" value-ref="userAuthInfoHolderModel" />
 						<entry key="channel_list" value-ref="channel_list" />
 						<entry key="art_list" value-ref="art_list" />
 						<entry key="global_param" value-ref="global_param" />
