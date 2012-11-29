@@ -17,6 +17,7 @@
 		</property>
 	</bean>
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
+	<context:component-scan base-package="com.toney.pubish.validator" />
 	<context:component-scan base-package="com.toney.publish.controller" />
 	<context:component-scan base-package="com.toney.publish.servlet" />
 
@@ -30,15 +31,6 @@
 			<property name="useCacheControlHeader" value="true" />
 			<property name="useCacheControlNoStore" value="true" />
 			<property name="alwaysUseFullPath" value="true" />
-			<property name="cacheMappings">
-				<props>
-					<!-- cache for 2 hour -->
-					<prop key="/resources/**">${web.assets.expired_time}</prop>
-					<prop key="/script/constants.js">${web.dynamic.constantjs.expired_time}</prop>
-					<!-- don't set cache headers -->
-					<prop key="/**">${web.dynamic.expired_time}</prop>
-				</props>
-			</property>
 		</bean>
 		<bean id="authorizationInterceptor" class="com.toney.publish.interceptor.AuthorizationInterceptor">
 			<property name="validators">
@@ -51,23 +43,6 @@
 
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 
-
-	<bean id="annotationMethodHandlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<!-- TODO: 需确认messageConverters是否可被删除 -->
-		<property name="messageConverters">
-			<list>
-				<ref bean="mappingJacksonHttpMessageConverter" />
-			</list>
-		</property>
-		<property name="webBindingInitializer">
-			<bean id="configurableWebBindingInitializer" class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
-				<property name="validator">
-					<ref bean="validator" />
-				</property>
-			</bean>
-		</property>
-	</bean>
-
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 	<!-- TODO: 需确认restTemplate的配置是否可被删除 -->
 	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
@@ -79,5 +54,5 @@
 		</property>
 	</bean>
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
-
+	<!-- 对外开发的接口可以是REST或servlet或action的方式. -->
 </beans>

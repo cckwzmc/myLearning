@@ -14,6 +14,8 @@ import com.toney.publish.annotation.AuthRequired;
 import com.toney.publish.contants.AuthLevel;
 import com.toney.publish.contants.Constants;
 import com.toney.publish.exception.PublishException;
+import com.toney.publish.factory.PublishContext;
+import com.toney.publish.factory.PublishPageFactory;
 import com.toney.publish.service.PublishPageService;
 import com.toney.publish.tpl.SiteParameter;
 import com.toney.publish.utils.JsonPackageWrapper;
@@ -30,7 +32,9 @@ public class PublishIndexController {
 	private static final XLogger logger=XLoggerFactory.getXLogger(PublishIndexController.class);
 
 	@Autowired
-	PublishPageService publishPageService;
+	PublishPageFactory publishPageFactory;
+//	@Autowired
+//	PublishPageService publishPageService;
 	@Autowired
 	private CacheManagerFactory ehcacheManagerFactory;
 	
@@ -44,7 +48,9 @@ public class PublishIndexController {
 	public String publishIndex(Model model){
 		logger.info("...开始首页出版...");
 		try {
-			this.publishPageService.publishHomeIndex(setSiteParameter());
+			PublishContext context=new PublishContext();
+			publishPageFactory.getPublishIndexFactory().getPublishIndexManager().publishIndex(context);
+//			this.publishPageService.publishHomeIndex(setSiteParameter());
 			JsonPackageWrapper json=new JsonPackageWrapper();
 			model.addAttribute(Constants.JSON_MODEL_DATA, json);
 		} catch (PublishException e) {
@@ -52,21 +58,16 @@ public class PublishIndexController {
 			json.setSuccess(false);
 			json.setSmsg(e.getMessage());
 			model.addAttribute(Constants.JSON_MODEL_DATA, json);
-		} catch (BusinessException e) {
-			JsonPackageWrapper json=new JsonPackageWrapper();
-			json.setSuccess(false);
-			json.setSmsg(e.getMessage());
-			model.addAttribute(Constants.JSON_MODEL_DATA, json);
-		}
+		} 
 		logger.info("...首页出版完成...");
 		
 		return null;
 	}
 
-	private SiteParameter setSiteParameter() throws BusinessException {
-		SiteParameter site=new SiteParameter();
-		site.setSysConfig(ehcacheManagerFactory.getAppContextCacheManager().getApplicatonContext());
-		site.setTemplateManager(ehcacheManagerFactory.getAppContextCacheManager().getTemplageManagerData());
-		return site;
-	}
+//	private SiteParameter setSiteParameter() throws BusinessException {
+//		SiteParameter site=new SiteParameter();
+//		site.setSysConfig(ehcacheManagerFactory.getAppContextCacheManager().getApplicatonContext());
+//		site.setTemplateManager(ehcacheManagerFactory.getAppContextCacheManager().getTemplageManagerData());
+//		return site;
+//	}
 }

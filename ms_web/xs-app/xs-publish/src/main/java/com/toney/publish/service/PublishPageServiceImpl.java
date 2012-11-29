@@ -1,8 +1,8 @@
 package com.toney.publish.service;
 
-import static com.toney.publish.service.PublishConstants.TPL_SITE_INDEX;
-import static com.toney.publish.service.PublishConstants.TPL_SUFFIX;
-import static com.toney.publish.service.PublishConstants.UTF8;
+import static com.toney.publish.constants.PublishConstants.TPL_SITE_INDEX;
+import static com.toney.publish.constants.PublishConstants.TPL_SUFFIX;
+import static com.toney.publish.constants.PublishConstants.UTF8;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,7 +19,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import com.toney.core.model.SysConfigModel;
 import com.toney.publish.context.ServletContextResolver;
 import com.toney.publish.exception.PublishException;
 import com.toney.publish.tpl.SiteParameter;

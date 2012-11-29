@@ -1,4 +1,4 @@
-package com.toney.publish.service;
+package com.toney.publish.constants;
 
 /**
  * @author toney.li
@@ -54,4 +54,10 @@ public class PublishConstants {
 	 * 公用页尾中的copyright部分出版参数
 	 */
 	public static final String  FOOTER_CPR="footer_cpr";
+	
+	
+	/**
+	 * 不隶属于任何频道下的页面，如：列表页/专题/活动 等页面.
+	 */
+	public static final Integer NONE_BELONG_CHANNELID=-1;
 }

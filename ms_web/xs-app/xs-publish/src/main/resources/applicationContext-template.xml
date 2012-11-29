@@ -15,11 +15,11 @@
 	</bean>
 
 	<!-- end -->
-	<bean id="servletContextResolver" class="com.toney.mvc.web.processor.ServletContextResolverImpl" />
+	<bean id="servletContextResolver" class="com.toney.publish.context.ServletContextResolverImpl" />
 	<!--标签 -->
-	<bean id="channel_list" class="com.toney.mvc.tpl.tag.ChannelListTag" />
-	<bean id="art_list" class="com.toney.mvc.tpl.tag.ArticleListTag" />
-	<bean id="global_param" class="com.toney.mvc.tpl.tag.SiteGlobalTag" />
+	<bean id="channel_list" class="com.toney.publish.tpl.tag.ChannelListTag" />
+	<bean id="art_list" class="com.toney.publish.tpl.tag.ArticleListTag" />
+	<bean id="global_param" class="com.toney.publish.tpl.tag.SiteGlobalTag" />
 
 
 	<!-- freemarker user defined -->
@@ -28,18 +28,18 @@
 		<property name="exposureLevel" value="#{T(freemarker.ext.beans.BeansWrapper).EXPOSE_SAFE}" />
 	</bean>
 
-	<bean id="appconfigModel" class="com.toney.mvc.web.ext.freemarker.ApacheCommonConfigurationModel">
+	<bean id="appconfigModel" class="com.toney.publish.freemarker.ext.ApacheCommonConfigurationModel">
 		<constructor-arg type="freemarker.ext.beans.BeansWrapper" ref="beansWrapper" />
 		<constructor-arg type="org.apache.commons.configuration.Configuration" ref="databaseConfiguration" />
 	</bean>
 	<bean id="staticModel" factory-bean="beansWrapper" factory-method="getStaticModels" />
 
 	<bean id="userAuthInfoHolderModel" factory-bean="staticModel" factory-method="get">
-		<constructor-arg type="java.lang.String" value="com.toney.mvc.web.utils.UserAuthInfoHolder" />
+		<constructor-arg type="java.lang.String" value="com.toney.publish.utils.UserAuthInfoHolder" />
 	</bean>
 	
 	
-	<bean id="publishPageService" class="com.toney.mvc.service.PublishPageServiceImpl">
+	<bean id="publishPageService" class="com.toney.publish.service.PublishPageServiceImpl">
 		<property name="tplMessageSource" ref="tplMessageSource" />
 		<property name="tplRootPath" value="${tpl.root.path}" />
 		<property name="tplIndexPath" value="${tpl.index.path}" />
@@ -70,5 +70,5 @@
 			</bean>
 		</property>
 	</bean>
-	<context:component-scan base-package="com.toney.mvc.service" />
+	<context:component-scan base-package="com.toney.publish.service" />
 </beans>
