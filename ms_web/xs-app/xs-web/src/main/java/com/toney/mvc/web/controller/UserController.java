@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.toney.core.constants.Constants;
 import com.toney.core.exception.PortalEIBusinessException;
 import com.toney.core.model.UserAuthInfo;
-import com.toney.mvc.web.annotation.AuthRequired;
-import com.toney.mvc.web.utils.JsonPackageWrapper;
-import com.toney.mvc.web.utils.UserAuthInfoHolder;
+import com.toney.web.commons.annotation.AuthRequired;
+import com.toney.web.commons.utils.JsonPackageWrapper;
+import com.toney.web.commons.utils.UserAuthInfoHolder;
 
 /**
  * 

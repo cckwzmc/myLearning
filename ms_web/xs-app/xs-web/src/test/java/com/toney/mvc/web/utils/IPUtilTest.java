@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import com.toney.mvc.web.utils.IPUtil;
+import com.toney.web.commons.utils.IPUtil;
 
 /**
  *************************************************************** 

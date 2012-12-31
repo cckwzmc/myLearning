@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.toney.core.model.User;
-import com.toney.mvc.web.utils.JsonPackageWrapper;
+import com.toney.web.commons.utils.JsonPackageWrapper;
 
 /*
  * please refer: 

@@ -113,6 +113,24 @@
 
   </bean>
   
+  <!-- freemarker user defined -->
+	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+	<bean id="beansWrapper" class="freemarker.ext.beans.BeansWrapper">
+		<property name="exposureLevel" value="#{T(freemarker.ext.beans.BeansWrapper).EXPOSE_SAFE}" />
+	</bean>
+
+	<bean id="appconfigModel" class="com.toney.mvc.web.ext.freemarker.ApacheCommonConfigurationModel">
+		<constructor-arg type="freemarker.ext.beans.BeansWrapper" ref="beansWrapper" />
+		<constructor-arg type="org.apache.commons.configuration.Configuration" ref="databaseConfiguration" />
+	</bean>
+	
+	<bean id="staticModel" factory-bean="beansWrapper" factory-method="getStaticModels" />
+
+	<bean id="userAuthInfoHolderModel" factory-bean="staticModel" factory-method="get">
+		<constructor-arg type="java.lang.String" value="com.toney.mvc.web.utils.UserAuthInfoHolder" />
+	</bean>
+	
+  
   <!-- FreeMarker Configurer and View Resolver -->
   <bean id="freemarkerConfig" class="com.toney.mvc.web.ext.freemarker.FreeMarkerConfigurerExt">
     <property name="templateLoaderPath" value="/WEB-INF/views/" />
