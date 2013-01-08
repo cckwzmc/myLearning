@@ -78,10 +78,9 @@
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
-			<!-- war插件 <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
-				<version>2.1</version> <configuration> <warName>${project.artifactId}</warName> 
-				<packagingExcludes>WEB-INF/lib/*h*.jar,WEB-INF/lib/*1*.jar,WEB-INF/lib/*2*.jar,WEB-INF/lib/*p*.jar,WEB-INF/lib/*g*.jar,WEB-INF/lib/spring*.jar 
-				</packagingExcludes> </configuration> </plugin> -->
+			<!-- war插件 <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> <version>2.1</version> <configuration> <warName>${project.artifactId}</warName> 
+				<packagingExcludes>WEB-INF/lib/*h*.jar,WEB-INF/lib/*1*.jar,WEB-INF/lib/*2*.jar,WEB-INF/lib/*p*.jar,WEB-INF/lib/*g*.jar,WEB-INF/lib/spring*.jar </packagingExcludes> </configuration> 
+				</plugin> -->
 			<!-- resource插件, 设定编码 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -195,13 +194,11 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 			</plugin>
 			<!-- cobertura插件 -->
-			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>cobertura-maven-plugin</artifactId> 
-				<version>2.4</version> </plugin> -->
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>cobertura-maven-plugin</artifactId> <version>2.4</version> </plugin> -->
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -227,7 +224,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -249,10 +246,24 @@
 		<!-- <module>xs-web</module> -->
 		<module>xs-core</module>
 		<module>xs-web</module>
-    <module>xs-publish</module>
-  </modules>
+	</modules>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.toney.util</groupId>
+			<artifactId>util-tools</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.toney.dal</groupId>
+			<artifactId>Dal-commons</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.toney.dal</groupId>
+			<artifactId>Dal-service</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
@@ -325,11 +336,6 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -438,7 +444,7 @@
 		<aspectj.version>1.6.10</aspectj.version>
 
 		<log4j.version>1.2.16</log4j.version>
-		<slf4j.version>1.6.1</slf4j.version>
+		<slf4j.version>1.6.4</slf4j.version>
 
 		<!-- Testing dependency versions -->
 		<mockito.version>1.9.0</mockito.version>
