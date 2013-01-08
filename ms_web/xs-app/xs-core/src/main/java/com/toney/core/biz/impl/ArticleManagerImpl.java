@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.toney.core.biz.ArticleManager;
-import com.toney.core.dao.ArticleDao;
-import com.toney.core.dao.ArticleQueryModel;
-import com.toney.core.model.ArticleModel;
+import com.toney.dal.dao.ArticleDao;
+import com.toney.dal.model.ArticleModel;
+import com.toney.dal.model.ArticleQueryModel;
 
 /**
  * @author toney.li

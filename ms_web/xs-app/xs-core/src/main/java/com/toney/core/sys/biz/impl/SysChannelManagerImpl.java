@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.toney.core.constants.Constants;
-import com.toney.core.dao.ChannelDao;
 import com.toney.core.exception.BusinessException;
-import com.toney.core.model.ChannelDetailModel;
 import com.toney.core.sys.biz.SysChannelManager;
+import com.toney.dal.dao.ChannelDao;
+import com.toney.dal.model.ChannelDetailModel;
 
 /**
  * @author toney.li

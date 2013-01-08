@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.toney.core.biz.ArticleTinyManager;
-import com.toney.core.model.ArticleTinyModel;
+import com.toney.dal.model.ArticleTinyModel;
 
 @Service("articleTinyManager")
 public class ArticleTinyManagerImpl implements ArticleTinyManager {

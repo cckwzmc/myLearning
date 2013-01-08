@@ -8,22 +8,22 @@ package com.toney.core.exception;
  * </p>
  **************************************************************** 
  */
-public class PortalEIRuntimeException extends PortalBaseException {
+public class XsAppEIRuntimeException extends XsAppBaseException {
     
     private static final long serialVersionUID = -7900639249596835684L;
 
     private String extErrCode;
     private String extMessage;
     
-    public PortalEIRuntimeException(String message, String code) {
+    public XsAppEIRuntimeException(String message, String code) {
         super(message, code);
     }
     
-    public PortalEIRuntimeException(String message, String code, Throwable cause) {
+    public XsAppEIRuntimeException(String message, String code, Throwable cause) {
         super(message, code, cause);
     }    
     
-    public PortalEIRuntimeException(String message, String code, String extCode, String extMessage) {
+    public XsAppEIRuntimeException(String message, String code, String extCode, String extMessage) {
         super(message, code);
         this.extErrCode = extCode;
         this.extMessage = extMessage;

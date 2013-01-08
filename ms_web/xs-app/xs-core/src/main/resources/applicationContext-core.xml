@@ -9,5 +9,7 @@
 	<context:annotation-config />
 	<import resource="applicationContext-dao.xml"/>
 	<import resource="applicationContext-service.xml"/>
+	<import resource="applicationContext-dal-dao.xml"/>
+	<import resource="applicationContext-dal-service.xml"/>
 	<import resource="applicationContext-cache.xml"/>
 </beans>

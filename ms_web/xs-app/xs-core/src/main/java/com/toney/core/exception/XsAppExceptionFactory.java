@@ -17,13 +17,13 @@ import org.slf4j.LoggerFactory;
  * </p>
  **************************************************************** 
  */
-public final class PortalExceptionFactory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PortalExceptionFactory.class);
+public final class XsAppExceptionFactory {
+    private static final Logger LOGGER = LoggerFactory.getLogger(XsAppExceptionFactory.class);
     
     private static Properties props = new Properties();
     
     static {
-        InputStream is = PortalExceptionFactory.class.getResourceAsStream("/errorMessages_zh.properties");
+        InputStream is = XsAppExceptionFactory.class.getResourceAsStream("/errorMessages_zh.properties");
         if(is != null){ 
             try {
                 props.load(is);
@@ -33,39 +33,39 @@ public final class PortalExceptionFactory {
         }
     }
     
-    public static PortalEIRuntimeException buildPortalEIRuntimeException(String code, Throwable cause, String... params) {
+    public static XsAppEIRuntimeException buildPortalEIRuntimeException(String code, Throwable cause, String... params) {
         String message = formatMessage(code, params);
         if (message == null) {
             //TODO: 在constants中统一定义
             message = "未知错误";
         }
         
-        return new PortalEIRuntimeException(message, code, cause);
+        return new XsAppEIRuntimeException(message, code, cause);
     }
    
-    public static PortalEIRuntimeException buildPortalEIRuntimeException(String code, String extCode, String extMsg, String... params) {
+    public static XsAppEIRuntimeException buildPortalEIRuntimeException(String code, String extCode, String extMsg, String... params) {
         String message = formatMessage(code, params);
         if (message == null) {
             message = extMsg;
         }
-        return new PortalEIRuntimeException(message, code, extCode, extMsg);
+        return new XsAppEIRuntimeException(message, code, extCode, extMsg);
     }
     
-    public static PortalEIBusinessException buildPortalEIBusinessException(String code, String extCode, String extMsg, String... params) {
+    public static XsAppEIBusinessException buildPortalEIBusinessException(String code, String extCode, String extMsg, String... params) {
         String message = formatMessage(code, params);
         if (message == null) {
             message = extMsg;
         }
-        return new PortalEIBusinessException(message, code, extCode, extMsg);   
+        return new XsAppEIBusinessException(message, code, extCode, extMsg);   
     }
     
-    public static PortalBusinessException buildPortalBusinessException(String code, String... params) {
+    public static XsAppBusinessException buildPortalBusinessException(String code, String... params) {
         String message = formatMessage(code, params);
         if (message == null) {
             //TODO: 在constants中统一定义
             message = "未知错误";
         }
-        return new PortalBusinessException(message, code);   
+        return new XsAppBusinessException(message, code);   
     }
     
     

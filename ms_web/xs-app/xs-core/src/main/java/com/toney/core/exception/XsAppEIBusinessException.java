@@ -8,13 +8,13 @@ package com.toney.core.exception;
  * </p>
  **************************************************************** 
  */
-public class PortalEIBusinessException extends PortalBusinessException {
+public class XsAppEIBusinessException extends XsAppBusinessException {
 
     private static final long serialVersionUID = 3665325278700219286L;
     private String extErrCode;
     private String extMessage;
     
-    public PortalEIBusinessException(String message, String code, String extCode, String extMessage) {
+    public XsAppEIBusinessException(String message, String code, String extCode, String extMessage) {
         super(message, code);
         this.extErrCode = extCode;
         this.extMessage = extMessage;

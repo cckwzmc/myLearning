@@ -8,15 +8,15 @@ package com.toney.core.exception;
  * </p>
  **************************************************************** 
  */
-public class PortalBusinessException extends PortalBaseException {
+public class XsAppBusinessException extends XsAppBaseException {
 
     private static final long serialVersionUID = -8073709528775688532L;
 
-    public PortalBusinessException(String message, String code) {
+    public XsAppBusinessException(String message, String code) {
         super(message, code);
     }
     
-    public PortalBusinessException(String message, String code, Throwable cause) {
+    public XsAppBusinessException(String message, String code, Throwable cause) {
         super(message, code, cause);
     } 
 }

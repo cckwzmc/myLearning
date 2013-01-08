@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-import com.toney.core.utils.ConvertUtil;
+import com.toney.bean.util.ConvertUtil;
 
 /**
  * Test classes can extend this manager based on a spring context. This test class can be moved to the test tree.

@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toney.core.dao.AreaDao;
-import com.toney.core.model.AreaModel;
 import com.toney.core.service.AreaService;
+import com.toney.dal.dao.AreaDao;
+import com.toney.dal.model.AreaModel;
 
 @Service("areaService")
 public class AreaServiceImpl implements AreaService {

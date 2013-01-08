@@ -2,7 +2,7 @@ package com.toney.core.service;
 
 import java.util.List;
 
-import com.toney.core.model.AreaModel;
+import com.toney.dal.model.AreaModel;
 
 /**
  * @author toney.li

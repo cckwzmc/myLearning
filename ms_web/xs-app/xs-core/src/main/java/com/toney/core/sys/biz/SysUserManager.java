@@ -1,7 +1,7 @@
 package com.toney.core.sys.biz;
 
 import com.toney.core.exception.BusinessException;
-import com.toney.core.model.AdministratorModel;
+import com.toney.dal.model.AdministratorModel;
 
 /**
  * @author toney.li

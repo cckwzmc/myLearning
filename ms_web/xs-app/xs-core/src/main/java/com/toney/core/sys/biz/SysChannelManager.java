@@ -3,7 +3,7 @@ package com.toney.core.sys.biz;
 import java.util.List;
 
 import com.toney.core.exception.BusinessException;
-import com.toney.core.model.ChannelDetailModel;
+import com.toney.dal.model.ChannelDetailModel;
 
 /**
  * @author toney.li

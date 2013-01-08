@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
  * </p>
  **************************************************************** 
  */
-public class PortalBaseException extends RuntimeException {
+public class XsAppBaseException extends RuntimeException {
     private static final long serialVersionUID = -7530520773050834373L;
     
     private String errCode;
@@ -20,12 +20,12 @@ public class PortalBaseException extends RuntimeException {
         return errCode;
     }
     
-    public PortalBaseException(String message, String code) {
+    public XsAppBaseException(String message, String code) {
         super(message);
         errCode = code;
     }
     
-    public PortalBaseException(String message, String code, Throwable cause) {
+    public XsAppBaseException(String message, String code, Throwable cause) {
         super(message, cause);
         errCode = code;
     } 

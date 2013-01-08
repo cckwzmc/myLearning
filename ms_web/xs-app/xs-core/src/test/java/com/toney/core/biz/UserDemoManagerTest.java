@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.toney.core.biz.impl.UserDemoManagerImpl;
-import com.toney.core.dao.UserDao;
 import com.toney.core.model.User;
 public class UserDemoManagerTest extends BaseManagerTestCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDemoManagerTest.class);
@@ -23,40 +22,40 @@ public class UserDemoManagerTest extends BaseManagerTestCase {
     private UserDemoManager mgr;
 
     private User user;
-    
-    @Mock 
-    UserDao userDao;
-    
-    @Before
-    public void setUp() {
-    	userDao=mock(UserDao.class);
-    	user=new User();
-    	user.setUsername("user");
-		user.setId(123456L);
-		when(userDao.getUserByUsername("user")).thenReturn(user);;
-		assertNotNull(user.getId());
-    }
-    
-	@Test
-    public void testGetUser() throws Exception {
-		UserDemoManagerImpl userManagerImpl=new UserDemoManagerImpl();
-		ReflectionTestUtils.setField(userManagerImpl, "userDao", userDao);   
-        user = userManagerImpl.getUserByUsername("user");
-        assertNotNull(user);
-    }
-
-    @Test
-    public void testSaveUser() throws Exception {
-		UserDemoManagerImpl userManagerImpl=new UserDemoManagerImpl();
-		ReflectionTestUtils.setField(userManagerImpl, "userDao", userDao);   
-        user = userManagerImpl.getUserByUsername("user");
-        user.setPhoneNumber("303-555-1212");
-
-        LOGGER.debug("saving user with updated phone number: " + user);
-
-        user = mgr.saveUser(user);
-        assertEquals("303-555-1212", user.getPhoneNumber());
-    }
+//    
+//    @Mock 
+//    UserDao userDao;
+//    
+//    @Before
+//    public void setUp() {
+//    	userDao=mock(UserDao.class);
+//    	user=new User();
+//    	user.setUsername("user");
+//		user.setId(123456L);
+//		when(userDao.getUserByUsername("user")).thenReturn(user);;
+//		assertNotNull(user.getId());
+//    }
+//    
+//	@Test
+//    public void testGetUser() throws Exception {
+//		UserDemoManagerImpl userManagerImpl=new UserDemoManagerImpl();
+//		ReflectionTestUtils.setField(userManagerImpl, "userDao", userDao);   
+//        user = userManagerImpl.getUserByUsername("user");
+//        assertNotNull(user);
+//    }
+//
+//    @Test
+//    public void testSaveUser() throws Exception {
+//		UserDemoManagerImpl userManagerImpl=new UserDemoManagerImpl();
+//		ReflectionTestUtils.setField(userManagerImpl, "userDao", userDao);   
+//        user = userManagerImpl.getUserByUsername("user");
+//        user.setPhoneNumber("303-555-1212");
+//
+//        LOGGER.debug("saving user with updated phone number: " + user);
+//
+//        user = mgr.saveUser(user);
+//        assertEquals("303-555-1212", user.getPhoneNumber());
+//    }
 
     @Test
     public void testAddAndRemoveUser() throws Exception {

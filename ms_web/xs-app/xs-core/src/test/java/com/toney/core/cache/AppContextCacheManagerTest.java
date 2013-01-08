@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.toney.core.biz.BaseManagerTestCase;
 import com.toney.core.exception.BusinessException;
-import com.toney.core.model.SysConfigModel;
+import com.toney.dal.model.SysConfigModel;
 
 public class AppContextCacheManagerTest extends BaseManagerTestCase {
 
@@ -20,9 +20,9 @@ public class AppContextCacheManagerTest extends BaseManagerTestCase {
 	@Test
 	public void testInitApplicatonContext() {
 		try {
-			Map<String, SysConfigModel> map = this.ehcacheManagerFactory.getAppContextCacheManager().initApplicationContext( );
+			Map<String, SysConfigModel> map = this.ehcacheManagerFactory.getAppContextCacheManager().putGlobalModelConfiguration( );
 			Assert.assertEquals(
-					this.ehcacheManagerFactory.getAppContextCacheManager().getApplicatonContext()
+					this.ehcacheManagerFactory.getAppContextCacheManager().getGlobalConfiguration()
 							.get("cfg_basehost").getCfgValue(), "http://dd.toney.com");
 			Assert.assertNotNull(map);
 		} catch (BusinessException e) {
@@ -34,8 +34,8 @@ public class AppContextCacheManagerTest extends BaseManagerTestCase {
 	@Test
 	public void testRefreshApplicatonContext() {
 		try {
-			this.ehcacheManagerFactory.getAppContextCacheManager().refresh(CacheConstants.KEY_APPCONTEXT_CACHE);
-			Map<String, SysConfigModel> map = this.ehcacheManagerFactory.getAppContextCacheManager().getApplicatonContext(
+			this.ehcacheManagerFactory.getAppContextCacheManager().refreshGlobalConfiguration(CacheConstants.KEY_APPCONTEXT_CACHE);
+			Map<String, SysConfigModel> map = this.ehcacheManagerFactory.getAppContextCacheManager().getGlobalConfiguration(
 					);
 			Assert.assertEquals(map.get("cfg_basehost").getCfgValue(), "http://dd.toney.com");
 			Assert.assertNotNull(map);
@@ -49,7 +49,7 @@ public class AppContextCacheManagerTest extends BaseManagerTestCase {
 	@Test
 	public void testGetApplicatonContext() {
 		try {
-			Map<String, SysConfigModel> map = this.ehcacheManagerFactory.getAppContextCacheManager().getApplicatonContext(
+			Map<String, SysConfigModel> map = this.ehcacheManagerFactory.getAppContextCacheManager().getGlobalConfiguration(
 					);
 			Assert.assertEquals(map.get("cfg_basehost").getCfgValue(), "http://dd.toney.com");
 			Assert.assertNotNull(map);

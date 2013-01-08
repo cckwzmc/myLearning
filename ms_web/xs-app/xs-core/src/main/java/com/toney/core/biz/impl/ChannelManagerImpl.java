@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.toney.core.biz.ChannelManager;
 import com.toney.core.constants.Constants;
-import com.toney.core.dao.ChannelDao;
-import com.toney.core.model.ChannelDetailModel;
+import com.toney.dal.dao.ChannelDao;
+import com.toney.dal.model.ChannelDetailModel;
 
 /**
  * @author toney.li

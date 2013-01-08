@@ -2,7 +2,7 @@ package com.toney.core.biz;
 
 import java.util.List;
 
-import com.toney.core.model.ChannelDetailModel;
+import com.toney.dal.model.ChannelDetailModel;
 
 /**
  * @author toney.li

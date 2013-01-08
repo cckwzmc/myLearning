@@ -2,7 +2,7 @@ package com.toney.core.biz;
 
 import java.util.List;
 
-import com.toney.core.model.ArticleTinyModel;
+import com.toney.dal.model.ArticleTinyModel;
 
 /**
  * @author toney.li

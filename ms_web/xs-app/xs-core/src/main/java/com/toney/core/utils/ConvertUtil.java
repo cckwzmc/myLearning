@@ -12,7 +12,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.toney.core.model.LabelValue;
+import com.toney.bean.util.LabelValue;
 
 /**
  * Utility class to convert one object to another.
