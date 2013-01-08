@@ -10,11 +10,11 @@ import org.apache.commons.configuration.Configuration;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapper;
+import freemarker.ext.util.ModelFactory;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
-import freemarker.ext.util.ModelFactory;
 
 /**
  *************************************************************** 
@@ -41,7 +41,8 @@ public class ApacheCommonConfigurationModel extends BeanModel implements Templat
     /**
      * Overridden to invoke the getObject method of the resource bundle.
      */
-    protected TemplateModel invokeGenericGet(Map keyMap, Class clazz, String key) throws TemplateModelException {
+    @SuppressWarnings("rawtypes")
+	protected TemplateModel invokeGenericGet(Map keyMap, Class clazz, String key) throws TemplateModelException {
         try {
             return wrap(((Configuration) object).getString(key));
         } catch (MissingResourceException e) {
@@ -60,7 +61,8 @@ public class ApacheCommonConfigurationModel extends BeanModel implements Templat
         return keySet().size();
     }
 
-    protected Set keySet() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Set keySet() {
         Set set = super.keySet();
         Iterator e = ((Configuration) object).getKeys();
         while (e.hasNext()) {
@@ -74,7 +76,8 @@ public class ApacheCommonConfigurationModel extends BeanModel implements Templat
      * MessageFormat.format on the string with the rest of the arguments. The created MessageFormats are cached for
      * later reuse.
      */
-    public Object exec(List arguments) throws TemplateModelException {
+    @SuppressWarnings("rawtypes")
+	public Object exec(List arguments) throws TemplateModelException {
         // Must have at least one argument - the key
         if (arguments.size() < 1) {
             throw new TemplateModelException("No properties key was specified");

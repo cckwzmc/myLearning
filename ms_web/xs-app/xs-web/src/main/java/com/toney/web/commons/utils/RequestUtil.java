@@ -1,7 +1,6 @@
 package com.toney.web.commons.utils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 

@@ -5,6 +5,5 @@
 	
 	<import resource="applicationContext-resources.xml"/>
 	<import resource="applicationContext-remote.xml"/>
-	<import resource="applicationContext-publish.xml"/>
 	<!-- <import resource="applicationContext-security.xml"/> -->	
 </beans>

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.toney.core.model.AdministratorModel;
 import com.toney.core.sys.biz.SysUserManager;
+import com.toney.dal.model.AdministratorModel;
 import com.toney.web.commons.utils.CookieStoreUtil;
 
 /**

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.toney.core.biz.ServiceStartInitManager;
+import com.toney.core.biz.AppBootStrappedManager;
 import com.toney.core.exception.BusinessException;
 
 public class StartupListener implements ServletContextListener {
@@ -25,13 +25,13 @@ public class StartupListener implements ServletContextListener {
         for (String bean : beans) {
         	logger.info(bean);
         }
-		ServiceStartInitManager initmgr= (ServiceStartInitManager) ctx.getBean("serviceStartInitManager");
-		try {
-			initmgr.initApplicationData();
-		} catch (BusinessException e) {
-			logger.info("~~~~~~~~~~~~~~~失败加载初始化数据~~~~~~~~~~~~~~~~~~~~~~~~");
-			throw new RuntimeException("失败加载初始化数据");
-		}
+//		ServiceStartInitManager initmgr= (ServiceStartInitManager) ctx.getBean("serviceStartInitManager");
+//		try {
+//			initmgr.initApplicationData();
+//		} catch (BusinessException e) {
+//			logger.info("~~~~~~~~~~~~~~~失败加载初始化数据~~~~~~~~~~~~~~~~~~~~~~~~");
+//			throw new RuntimeException("失败加载初始化数据");
+		// }
 		logger.info("~~~~~~~~~~~~~~~成功加载初始化数据~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 

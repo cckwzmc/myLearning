@@ -1,1 +1,1 @@
-<#assign staticUrl=appconfig("url.static_url")>
+<#assign staticUrl=global_param("url.static_url")>

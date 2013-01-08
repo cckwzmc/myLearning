@@ -10,9 +10,9 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
-import com.toney.core.model.AdministratorModel;
 import com.toney.core.model.UserAuthInfo;
 import com.toney.core.utils.SpringResourceLocator;
+import com.toney.dal.model.AdministratorModel;
 
 /**
  *************************************************************** 

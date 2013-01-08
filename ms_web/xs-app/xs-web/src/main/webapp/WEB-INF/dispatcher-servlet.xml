@@ -18,8 +18,9 @@
 		</property>
 	</bean>
   <!-- Scans the classpath of this application for @Components to deploy as beans -->
-  <context:component-scan base-package="com.toney.mvc.web" />
-  <context:component-scan base-package="com.toney.mvc.web.sys" />
+  <context:component-scan base-package="com.toney.web.backgrp" />
+  <context:component-scan base-package="com.toney.web.foregrp" />
+  <context:component-scan base-package="com.toney.web.commons" />
 
   <!-- Enables the Spring MVC @Controller programming model -->
   <mvc:annotation-driven validator="validator" />
@@ -55,7 +56,7 @@
         </props>
       </property>
     </bean>
-    <bean id="authorizationInterceptor" class="com.toney.mvc.web.interceptor.AuthorizationInterceptor">
+    <bean id="authorizationInterceptor" class="com.toney.web.commons.interceptor.AuthorizationInterceptor">
       <property name="validators">
         <list>
           <ref bean="dummyValidator" />
@@ -65,10 +66,10 @@
   </mvc:interceptors>
 
   <bean id="exceptionResolver"
-      class="com.toney.mvc.web.exception.resolver.SimplePortalMappingExceptionResolver">
+      class="com.toney.web.commons.handler.SimpleWebMappingExceptionResolver">
       <property name="exceptionMappings">
          <props>
-                <prop key="com.xiu.portal.exception.PortalBaseException">error/exception</prop>
+                <prop key="com.toney.core.exception.XsAppBaseException">error/exception</prop>
             </props>
         </property>
          <property name="statusCodes">    
@@ -104,7 +105,7 @@
           <property name="modelKey" value="data" />
           <property name="extractValueFromSingleKeyModel" value="true" />
         </bean>
-        <bean class="com.toney.mvc.web.view.MappingJacksonJsonpView">
+        <bean class="com.toney.web.commons.view.MappingJacksonJsonpView">
           <property name="modelKey" value="data" />
           <property name="extractValueFromSingleKeyModel" value="true" />
         </bean>
@@ -118,21 +119,21 @@
 	<bean id="beansWrapper" class="freemarker.ext.beans.BeansWrapper">
 		<property name="exposureLevel" value="#{T(freemarker.ext.beans.BeansWrapper).EXPOSE_SAFE}" />
 	</bean>
-
+<!-- 
 	<bean id="appconfigModel" class="com.toney.mvc.web.ext.freemarker.ApacheCommonConfigurationModel">
 		<constructor-arg type="freemarker.ext.beans.BeansWrapper" ref="beansWrapper" />
 		<constructor-arg type="org.apache.commons.configuration.Configuration" ref="databaseConfiguration" />
 	</bean>
-	
+ -->	
 	<bean id="staticModel" factory-bean="beansWrapper" factory-method="getStaticModels" />
 
 	<bean id="userAuthInfoHolderModel" factory-bean="staticModel" factory-method="get">
-		<constructor-arg type="java.lang.String" value="com.toney.mvc.web.utils.UserAuthInfoHolder" />
+		<constructor-arg type="java.lang.String" value="com.toney.web.commons.utils.UserAuthInfoHolder" />
 	</bean>
 	
-  
+  	<bean id="global_param" class="com.toney.web.commons.freemarker.SiteGlobalTag" />
   <!-- FreeMarker Configurer and View Resolver -->
-  <bean id="freemarkerConfig" class="com.toney.mvc.web.ext.freemarker.FreeMarkerConfigurerExt">
+  <bean id="freemarkerConfig" class="com.toney.web.commons.freemarker.FreeMarkerConfigurerExt">
     <property name="templateLoaderPath" value="/WEB-INF/views/" />
     <property name="freemarkerSettings">
       <props>
@@ -147,11 +148,10 @@
     <property name="freemarkerVariables">
       <map>
         <entry key="xml_escape" value-ref="fmXmlEscape" />
-        <entry key="appconfig"  value-ref="appconfigModel" />
         <entry key="userAuthInfoHolder"  value-ref="userAuthInfoHolderModel" />
-        <entry key="channel_list"  value-ref="channel_list" />
-        <entry key="art_list"  value-ref="art_list" />
-        <entry key="global_param" value-ref="global_param" />
+        <!-- <entry key="channel_list"  value-ref="channel_list" />
+        <entry key="art_list"  value-ref="art_list" />-->
+        <entry key="global_param" value-ref="global_param" /> 
       </map>
     </property>
   </bean>

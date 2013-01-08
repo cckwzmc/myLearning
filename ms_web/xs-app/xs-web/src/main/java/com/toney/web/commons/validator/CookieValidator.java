@@ -1,13 +1,10 @@
 package com.toney.web.commons.validator;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.toney.core.model.UserAuthInfo;
