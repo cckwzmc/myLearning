@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.istyle.dao.PlatformDao">
+	<resultMap id="BaseResultMap" type="platformModule">
+		<id column="ID" property="id" jdbcType="SMALLINT" />
+		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
+		<result column="PLATFORM_NAME" property="platformName" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="OFFICE_WEBSITE" property="officeWebsite" jdbcType="VARCHAR" />
+		<result column="ENABLED" property="enabled" jdbcType="SMALLINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PLATFORM_CODE, PLATFORM_NAME, CREATE_DATE, OFFICE_WEBSITE, ENABLED
+	</sql>
+	<select id="selectAll" resultType="java.util.List" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from T_PLATFORM
+	</select>
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Interger">
+		select
+		<include refid="Base_Column_List" />
+		from T_PLATFORM
+		where ID = #{id,jdbcType=SMALLINT}
+	</select>
+	<select id="selectByPfCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from T_PLATFORM
+		where PLATFORM_CODE=#{platformCode}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Interger">
+		delete from T_PLATFORM
+		where ID = #{id,jdbcType=SMALLINT}
+	</delete>
+	<delete id="deleteByPfCode" parameterType="java.lang.String">
+		delete from T_PLATFORM where PLATFORM_CODE=#{platformCode}
+	</delete>
+
+	<insert id="insert" parameterType="com.toney.istyle.model.IstylePlatformModule">
+		insert into T_PLATFORM ( PLATFORM_CODE, PLATFORM_NAME,
+		CREATE_DATE, OFFICE_WEBSITE, ENABLED
+		)
+		values (
+		#{platformCode,jdbcType=VARCHAR}, #{platformName,jdbcType=VARCHAR},
+		#{createDate,jdbcType=TIMESTAMP}, #{officeWebsite,jdbcType=VARCHAR}, #{enabled,jdbcType=SMALLINT}
+		)
+	</insert>
+</mapper>

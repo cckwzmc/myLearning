@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.istyle.dao.generator.IstyleUserMapper">
+	<resultMap id="BaseResultMap" type="com.toney.istyle.model.generator.IstyleUser">
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="NICK_NAME" property="nickName" jdbcType="BIGINT" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="STATUS" property="status" jdbcType="SMALLINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, USER_NAME, PASSWORD, NICK_NAME, MOBILE, CREATE_DATE, STATUS
+	</sql>
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from T_USER
+		where ID = #{id,jdbcType=BIGINT}
+	</select>
+	<select id="selectLikeUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from T_USER
+		where USER_NAME  like  %#{userName,jdbcType=VARCHAR}%
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from T_USER
+		where ID = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.toney.istyle.model.generator.IstyleUser">
+		insert into T_USER ( USER_NAME, PASSWORD,
+		NICK_NAME, MOBILE, CREATE_DATE,
+		STATUS)
+		values (
+		#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+		#{nickName,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+		#{status,jdbcType=SMALLINT})
+	</insert>
+</mapper>

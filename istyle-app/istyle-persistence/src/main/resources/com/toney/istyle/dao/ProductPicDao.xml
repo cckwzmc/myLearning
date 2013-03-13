@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.istyle.dao.IstylePrdPictureMapper">
+	<resultMap id="BaseResultMap" type="istylePrdPictureModule">
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<id column="PARENT_ID" property="parentId" jdbcType="BIGINT" />
+		<result column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="WIDTH" property="width" jdbcType="SMALLINT" />
+		<result column="HEIGHT" property="height" jdbcType="SMALLINT" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="PIC_TYPE" property="picType" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PID, WIDTH, HEIGHT, URL, CREATE_DATE, PIC_TYPE,PARENT_ID
+	</sql>
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from T_PRD_PICTURE
+		where ID = #{id,jdbcType=BIGINT}
+	</select>
+	<select id="selectByPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from T_PRD_PICTURE
+		where PID = #{pid,jdbcType=BIGINT} or ID=#{pid,jdbcType=BIGIINT}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from T_PRD_PICTURE
+		where ID = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<delete id="deleteByPid" parameterType="java.lang.Long">
+		delete from T_PRD_PICTURE
+		where PID = #{pid,jdbcType=BIGINT}
+	</delete>
+	
+	<delete id="deleteByIds" parameterType="java.lang.List" >
+		delete from T_PRD_PICTURE
+		where ID in
+		<foreach collection="idList" item="item" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByPids" parameterType="java.lang.List">
+		delete from T_PRD_PICTURE
+		where PID in
+		<foreach collection="pidList" item="item" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="com.toney.istyle.model.IstylePrdPictureModule">
+		insert into T_PRD_PICTURE ( PID, WIDTH,
+		HEIGHT, URL, CREATE_DATE,
+		PIC_TYPE,PARENT_ID)
+		values (
+		#{pid,jdbcType=VARCHAR}, #{width,jdbcType=SMALLINT},
+		#{height,jdbcType=SMALLINT}, #{url,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+		#{picType,jdbcType=VARCHAR},#{parentId,jdbcType=BIGINT})
+	</insert>
+	
+</mapper>
