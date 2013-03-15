@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.toney.istyle.biz.ProductManager;
 import com.toney.istyle.commons.Page;
+import com.toney.istyle.form.ProductForm;
 
 /**
  *************************************************************** 
@@ -24,5 +25,17 @@ public class ProductManagerImpl implements ProductManager {
 
 	private static final XLogger logger=XLoggerFactory.getXLogger(ProductManagerImpl.class);
 
-	public Page<ProductForm> get
+	@Override
+	public Page<ProductForm> getProductInfoByCatCode(Integer page,Integer pageSize,String catCode){
+		Page<ProductForm> pageForm=new Page<ProductForm>();
+		
+		return pageForm;
+	}
+	
+	@Override
+	public ProductForm getProductInfoById(Long id){
+		ProductForm form =new ProductForm();
+		return form;
+	}
+	
 }
