@@ -2,7 +2,9 @@ package com.toney.istyle.module;
 
 import java.util.Date;
 
-public class UserLoginModule extends BaseModule {
+import com.toney.istyle.commons.BaseObject;
+
+public class UserLoginModule extends BaseObject {
 	/**
 	 * 
 	 */

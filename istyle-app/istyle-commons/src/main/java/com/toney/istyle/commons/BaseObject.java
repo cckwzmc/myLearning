@@ -1,9 +1,9 @@
-package com.toney.istyle.module;
+package com.toney.istyle.commons;
 
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public abstract class BaseModule implements Serializable {
+public abstract class BaseObject implements Serializable {
 
 	@Override
 	public abstract String toString();

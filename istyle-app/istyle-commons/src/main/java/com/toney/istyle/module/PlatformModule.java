@@ -2,6 +2,8 @@ package com.toney.istyle.module;
 
 import java.util.Date;
 
+import com.toney.istyle.commons.BaseObject;
+
 /**
  * 
  *************************************************************** 
@@ -15,7 +17,7 @@ import java.util.Date;
  *       </p>
  **************************************************************** 
  */
-public class PlatformModule extends BaseModule {
+public class PlatformModule extends BaseObject {
 	/**
 	 * 
 	 */

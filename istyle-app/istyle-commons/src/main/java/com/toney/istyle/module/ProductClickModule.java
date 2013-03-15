@@ -1,6 +1,8 @@
 package com.toney.istyle.module;
 
-public class ProductClickModule extends BaseModule {
+import com.toney.istyle.commons.BaseObject;
+
+public class ProductClickModule extends BaseObject {
 
 	/**
 	 * 

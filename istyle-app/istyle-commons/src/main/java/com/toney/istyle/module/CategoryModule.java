@@ -2,7 +2,9 @@ package com.toney.istyle.module;
 
 import java.util.Date;
 
-public class CategoryModule extends BaseModule {
+import com.toney.istyle.commons.BaseObject;
+
+public class CategoryModule extends BaseObject {
 
 	/**
 	 * 
