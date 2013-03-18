@@ -32,4 +32,10 @@ public interface ProductDao {
 	ProductModule selectById(Long id);
 	ProductModule selectByIds(List<Long> id);
 
+	/**
+	 * 根据条件查询商品数量
+	 * @param object
+	 */
+	Integer  countByCondiction(ProductModule module);
+
 }

@@ -18,6 +18,20 @@
 		ID, PRODUCE_CODE, PLATFORM_CODE, PRODUCT_NAME, ONSALE, UPLOAD_UID, LAST_UPDATE, CREATE_DATE,
 		STATUS,PRODUCT_URL,CAT_CODE
 	</sql>
+	<select id="countByCondiction" resultMap="java.lang.Integer" parameterType="com.toney.istyle.model.ProductModule">
+		select
+		count(1)
+		from T_PRODUCT
+		<if test="module!=null">
+			where 1=1
+			<if test="module.productName!=null and module.productName!=null">
+				PRODUCT_NAME like %#{module.productName}%
+			</if>
+			<if test="module.catCode!=null and module.catCode!=null">
+				CAT_CODE=#{catCode}
+			</if>
+		</if>
+	</select>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />

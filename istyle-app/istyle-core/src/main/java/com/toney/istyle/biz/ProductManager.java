@@ -3,17 +3,17 @@ package com.toney.istyle.biz;
 import com.toney.istyle.commons.Page;
 import com.toney.istyle.form.ProductForm;
 
-/**
- *************************************************************** 
- * <p>
- * @CLASS :ProductManager
- * @DESCRIPTION :商品管理
- * @AUTHOR :toney.li
- * @VERSION :v1.0
- * @DATE :Mar 10, 2013
- *       </p>
- **************************************************************** 
- */
+	/**
+	 *************************************************************** 
+	 * <p>
+	 * @CLASS :ProductManager
+	 * @DESCRIPTION :商品管理
+	 * @AUTHOR :toney.li
+	 * @VERSION :v1.0
+	 * @DATE :Mar 10, 2013
+	 *       </p>
+	 ****************************************************************
+	 */
 public interface ProductManager {
 
 	/**

@@ -3,7 +3,7 @@
 	<groupId>com.toney.istyle</groupId>
 	<artifactId>istyle-resources</artifactId>
 	<version>1.0</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 
 

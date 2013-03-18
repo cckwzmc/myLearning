@@ -35,10 +35,7 @@
 						<configuration>
 							<autocommit>true</autocommit>
 							<srcFiles>
-								<srcFile>src/test/resources/schema.sql</srcFile>
-								<srcFile>src/test/resources/xarrNotice.sql</srcFile>
-								<srcFile>src/test/resources/sms.sql</srcFile>
-								<srcFile>src/test/resources/email.sql</srcFile>
+								<!-- <srcFile>src/test/resources/schema.sql</srcFile> <srcFile>src/test/resources/xarrNotice.sql</srcFile> <srcFile>src/test/resources/sms.sql</srcFile> <srcFile>src/test/resources/email.sql</srcFile> -->
 							</srcFiles>
 						</configuration>
 					</execution>
@@ -167,6 +164,11 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>${commons.beanutils.version}</version>
@@ -253,10 +255,6 @@
 			<version>${commons-digester.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.caucho</groupId>
-			<artifactId>hessian</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
@@ -274,11 +272,19 @@
 			<artifactId>spring-expression</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.disruptor</groupId>
+			<artifactId>disruptor</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
 	</dependencies>
 	<properties>
 		<hibernate-validator.version>4.0.2.GA</hibernate-validator.version>
 		<commons-digester.version>2.1</commons-digester.version>
-		<ehcache.version>2.6.0</ehcache.version>
 	</properties>
 
 </project>

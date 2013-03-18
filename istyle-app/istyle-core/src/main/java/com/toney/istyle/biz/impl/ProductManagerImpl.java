@@ -2,10 +2,12 @@ package com.toney.istyle.biz.impl;
 
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.toney.istyle.biz.ProductManager;
 import com.toney.istyle.commons.Page;
+import com.toney.istyle.dao.ProductDao;
 import com.toney.istyle.form.ProductForm;
 
 /**
@@ -24,10 +26,15 @@ import com.toney.istyle.form.ProductForm;
 public class ProductManagerImpl implements ProductManager {
 
 	private static final XLogger logger=XLoggerFactory.getXLogger(ProductManagerImpl.class);
+	
+	@Autowired
+	private ProductDao productDao;
 
 	@Override
 	public Page<ProductForm> getProductInfoByCatCode(Integer page,Integer pageSize,String catCode){
 		Page<ProductForm> pageForm=new Page<ProductForm>();
+		this.productDao.countByCondiction(null);
+		this.productDao.selectAllPage();
 		
 		return pageForm;
 	}
