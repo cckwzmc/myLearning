@@ -34,7 +34,7 @@ public class ProductManagerImpl implements ProductManager {
 	public Page<ProductForm> getProductInfoByCatCode(Integer page,Integer pageSize,String catCode){
 		Page<ProductForm> pageForm=new Page<ProductForm>();
 		this.productDao.countByCondiction(null);
-		this.productDao.selectAllPage();
+		//this.productDao.selectAllPage();
 		
 		return pageForm;
 	}
