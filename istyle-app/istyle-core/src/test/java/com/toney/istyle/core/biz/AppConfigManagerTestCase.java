@@ -12,14 +12,14 @@ import com.toney.istyle.bo.AppConfigBO;
 import com.toney.istyle.core.biz.AppConfigManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.core.service.AppConfigReadService;
+import com.toney.istyle.core.service.AppConfigQueryService;
 
 public class AppConfigManagerTestCase extends BaseManagerTestCase {
 
 	@Autowired
 	AppConfigManager appConfigManager;
 	@Autowired
-	AppConfigReadService appConfigReadService;
+	AppConfigQueryService appConfigReadService;
 	
 	@Test
 	public void testGetAppConfig() {
