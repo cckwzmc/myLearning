@@ -64,4 +64,7 @@
 		#{status},#{productUrl},#{catCode}
 		)
 	</insert>
+	<update id="updateById" parameterType="com.toney.istyle.module.ProductModule">
+		
+	</update>
 </mapper>

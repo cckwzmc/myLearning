@@ -38,4 +38,10 @@ public interface ProductDao {
 	 */
 	Integer  countByCondiction(ProductModule module);
 
+	/**
+	 * 更新
+	 * @param module
+	 */
+	void updateById(ProductModule module);
+
 }

@@ -21,6 +21,6 @@ public interface ProductClickDao {
 
 	void deleteById(Long id);
     void insert(ProductClickModule productClickModule);
-    ProductClickModule selectById(Integer id);
+    ProductClickModule selectById(Long id);
     
 }
