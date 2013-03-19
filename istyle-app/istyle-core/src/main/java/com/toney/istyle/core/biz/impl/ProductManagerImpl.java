@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.toney.istyle.commons.Page;
 import com.toney.istyle.core.biz.ProductManager;
+import com.toney.istyle.core.service.ProductQueryServcie;
+import com.toney.istyle.core.service.ProductStatQueryService;
 import com.toney.istyle.dao.ProductDao;
 import com.toney.istyle.form.ProductForm;
 
@@ -29,13 +31,17 @@ public class ProductManagerImpl implements ProductManager {
 	
 	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	private ProductQueryServcie productQueryServcie;
+	@Autowired
+	private ProductStatQueryService productStatQueryService;
+	
 
 	@Override
 	public Page<ProductForm> getProductInfoByCatCode(Integer page,Integer pageSize,String catCode){
 		Page<ProductForm> pageForm=new Page<ProductForm>();
-		this.productDao.countByCondiction(null);
-		//this.productDao.selectAllPage();
-		
+		this.productQueryServcie.getProductPage(page,pageSize,catCode);
 		return pageForm;
 	}
 	

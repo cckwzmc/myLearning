@@ -43,4 +43,12 @@ public interface ProductQueryServcie {
 	 */
 	List<ProductBO> getProductList() throws ServiceException;
 
+	/**
+	 * 按类目分页查询.
+	 * @param page
+	 * @param pageSize
+	 * @param catCode
+	 */
+	void getProductPage(Integer page, Integer pageSize, String catCode);
+
 }

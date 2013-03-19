@@ -71,4 +71,12 @@ public class ProductQueryServcieImpl implements ProductQueryServcie {
 		return resultList;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.toney.istyle.core.service.ProductQueryServcie#getProductPage(java.lang.Integer, java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public void getProductPage(Integer page, Integer pageSize, String catCode) {
+		this.productDao.selectPage((page-1)*pageSize,pageSize,catCode);
+	}
+
 }
