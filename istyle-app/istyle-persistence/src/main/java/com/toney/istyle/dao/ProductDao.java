@@ -2,6 +2,7 @@ package com.toney.istyle.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.toney.istyle.module.ProductModule;
@@ -43,5 +44,13 @@ public interface ProductDao {
 	 * @param module
 	 */
 	void updateById(ProductModule module);
+
+	/**
+	 * 按类目分页查询
+	 * @param startRecord
+	 * @param pageSize
+	 * @param catCode
+	 */
+	void selectPage(@Param("startRecord") int startRecord, @Param("pageSize")Integer pageSize, @Param("catCode")String catCode);
 
 }

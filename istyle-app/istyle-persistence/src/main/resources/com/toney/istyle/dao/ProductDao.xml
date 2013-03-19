@@ -31,6 +31,13 @@
 			</if>
 		</if>
 	</select>
+	<select id="selectPage" resultType="java.util.List" resultMap="productResult" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from T_PRODUCT
+		where
+		CAT_CODE=#{catCode} by LAST_UPDATE limit #{startRecord},#{pageSize}
+	</select>
 	<select id="selectByPrimaryKey" resultMap="productResult" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
@@ -50,7 +57,8 @@
 	</delete>
 	<insert id="insert" parameterType="com.toney.istyle.module.ProductModule">
 		insert into T_PRODUCT (PRODUCE_CODE, PLATFORM_CODE,
-		PRODUCT_NAME, ONSALE, UPLOAD_UID,
+		PRODUCT_NAME, ONSALE,
+		UPLOAD_UID,
 		LAST_UPDATE, CREATE_DATE,
 		STATUS,PRODUCT_URL,CAT_CODE
 		)
@@ -65,6 +73,6 @@
 		)
 	</insert>
 	<update id="updateById" parameterType="com.toney.istyle.module.ProductModule">
-		
+
 	</update>
 </mapper>

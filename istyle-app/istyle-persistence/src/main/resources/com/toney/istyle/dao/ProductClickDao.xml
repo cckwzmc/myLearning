@@ -31,4 +31,5 @@
 		#{likeNumber}, #{commentNumber}, #{recommendNumber}
 		)
 	</insert>
+	<update id="updateById" parameterType="com.toney.istyle.module.ProductClickModule"></update>
 </mapper>
