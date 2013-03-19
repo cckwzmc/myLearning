@@ -1,6 +1,10 @@
 package com.toney.istyle.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
+
+import com.toney.istyle.module.AppConfigModule;
 
 /**
  *************************************************************** 
@@ -16,6 +20,10 @@ import org.springframework.stereotype.Repository;
 @Repository("appConfigDao")
 public interface AppConfigDao {
 
-	public void selectAll();
+	public List<AppConfigModule> selectAll();
+
+	public void deleteById(Long id);
+
+	public void insert(AppConfigModule module);
 	
 }

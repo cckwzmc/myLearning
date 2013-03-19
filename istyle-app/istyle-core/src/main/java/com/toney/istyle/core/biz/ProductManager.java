@@ -1,4 +1,4 @@
-package com.toney.istyle.biz;
+package com.toney.istyle.core.biz;
 
 import com.toney.istyle.commons.Page;
 import com.toney.istyle.form.ProductForm;

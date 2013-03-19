@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.toney.istyle.dao.CategoryMapper">
-	<resultMap id="BaseResultMap" type="categoryModule">
-		<id column="ID" property="id" jdbcType="SMALLINT" />
-		<result column="PARENT_ID" property="parentId" jdbcType="SMALLINT" />
-		<result column="CAT_CODE" property="catCode" jdbcType="VARCHAR" />
-		<result column="CAT_NAME" property="catName" jdbcType="VARCHAR" />
-		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+<mapper namespace="com.toney.istyle.dao.CategoryDao">
+	<resultMap id="categoryResult" type="categoryModule">
+		<id column="ID" property="id" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="CAT_CODE" property="catCode" />
+		<result column="CAT_NAME" property="catName" />
+		<result column="CREATE_DATE" property="createDate" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		ID, PARENT_ID, CAT_CODE, CAT_NAME, CREATE_DATE
 	</sql>
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="selectById" resultMap="categoryResult" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from T_CATEGORY
-		where ID = #{id,jdbcType=SMALLINT}
+		where ID = #{id}
 	</select>
-	<select id="selectByCatCode" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="selectByCatCode" resultMap="categoryResult" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from T_CATEGORY
-		where CAT_CODE = #{catCode,jdbcType=SMALLINT}
+		where CAT_CODE = #{catCode}
 	</select>
-	<select id="selectAll" resultMap="BaseResultMap" resultType="java.util.List">
+	<select id="selectAll" resultMap="categoryResult" resultType="java.util.List">
 		select
 		<include refid="Base_Column_List" />
-		from T_CATEGORY 
+		from T_CATEGORY
 	</select>
 	<delete id="deleteById" parameterType="java.lang.Long">
 		delete from T_CATEGORY
-		where ID = #{id,jdbcType=SMALLINT}
+		where ID = #{id}
 	</delete>
 	<delete id="deleteByCatCode" parameterType="java.lang.String">
 		delete from T_CATEGORY
-		 where CAT_CODE=#{catCode,jdbcType=VARCHAR}
+		where CAT_CODE=#{catCode}
 	</delete>
-	<insert id="insert" parameterType="com.toney.istyle.model.Category">
+	<insert id="insert" parameterType="com.toney.istyle.module.CategoryModule">
 		insert into T_CATEGORY (ID, PARENT_ID, CAT_CODE,
 		CAT_NAME, CREATE_DATE)
-		values (#{parentId,jdbcType=SMALLINT}, #{catCode,jdbcType=VARCHAR},
-		#{catName,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP})
+		values (#{parentId}, #{catCode},
+		#{catName}, #{createDate})
 	</insert>
 </mapper>

@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.toney.istyle.dao.IstylePrdPictureMapper">
-	<resultMap id="BaseResultMap" type="istylePrdPictureModule">
-		<id column="ID" property="id" jdbcType="BIGINT" />
-		<id column="PARENT_ID" property="parentId" jdbcType="BIGINT" />
-		<result column="PID" property="pid" jdbcType="VARCHAR" />
-		<result column="WIDTH" property="width" jdbcType="SMALLINT" />
-		<result column="HEIGHT" property="height" jdbcType="SMALLINT" />
-		<result column="URL" property="url" jdbcType="VARCHAR" />
-		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
-		<result column="PIC_TYPE" property="picType" jdbcType="VARCHAR" />
+<mapper namespace="com.toney.istyle.dao.ProductPicDao">
+	<resultMap id="productPicResult" type="productPicModule">
+		<id column="ID" property="id" />
+		<id column="PARENT_ID" property="parentId" />
+		<result column="PID" property="pid" />
+		<result column="WIDTH" property="width" />
+		<result column="HEIGHT" property="height" />
+		<result column="URL" property="url" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="PIC_TYPE" property="picType" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		ID, PID, WIDTH, HEIGHT, URL, CREATE_DATE, PIC_TYPE,PARENT_ID
 	</sql>
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="selectById" resultMap="productPicResult" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from T_PRD_PICTURE
-		where ID = #{id,jdbcType=BIGINT}
+		where ID = #{id}
 	</select>
-	<select id="selectByPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="selectByPid" resultMap="productPicResult" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from T_PRD_PICTURE
-		where PID = #{pid,jdbcType=BIGINT} or ID=#{pid,jdbcType=BIGIINT}
+		where PID = #{pid} or ID=#{pid,jdbcType=BIGIINT}
 	</select>
 	<delete id="deleteById" parameterType="java.lang.Long">
 		delete from T_PRD_PICTURE
-		where ID = #{id,jdbcType=BIGINT}
+		where ID = #{id}
 	</delete>
-	
+
 	<delete id="deleteByPid" parameterType="java.lang.Long">
 		delete from T_PRD_PICTURE
-		where PID = #{pid,jdbcType=BIGINT}
+		where PID = #{pid}
 	</delete>
-	
-	<delete id="deleteByIds" parameterType="java.lang.List" >
+
+	<delete id="deleteByIds" parameterType="java.util.List">
 		delete from T_PRD_PICTURE
 		where ID in
 		<foreach collection="idList" item="item" separator="," open="(" close=")">
 			#{item}
 		</foreach>
 	</delete>
-	
-	<delete id="deleteByPids" parameterType="java.lang.List">
+
+	<delete id="deleteByPids" parameterType="java.util.List">
 		delete from T_PRD_PICTURE
 		where PID in
 		<foreach collection="pidList" item="item" separator="," open="(" close=")">
@@ -52,14 +52,15 @@
 		</foreach>
 	</delete>
 
-	<insert id="insert" parameterType="com.toney.istyle.model.IstylePrdPictureModule">
+	<insert id="insert" parameterType="com.toney.istyle.module.ProductPicModule">
 		insert into T_PRD_PICTURE ( PID, WIDTH,
 		HEIGHT, URL, CREATE_DATE,
 		PIC_TYPE,PARENT_ID)
 		values (
-		#{pid,jdbcType=VARCHAR}, #{width,jdbcType=SMALLINT},
-		#{height,jdbcType=SMALLINT}, #{url,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-		#{picType,jdbcType=VARCHAR},#{parentId,jdbcType=BIGINT})
+		#{pid}, #{width},
+		#{height}, #{url},
+		#{createDate},
+		#{picType},#{parentId})
 	</insert>
-	
+
 </mapper>

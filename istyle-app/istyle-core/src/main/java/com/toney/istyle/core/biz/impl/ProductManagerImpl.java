@@ -1,12 +1,12 @@
-package com.toney.istyle.biz.impl;
+package com.toney.istyle.core.biz.impl;
 
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.biz.ProductManager;
 import com.toney.istyle.commons.Page;
+import com.toney.istyle.core.biz.ProductManager;
 import com.toney.istyle.dao.ProductDao;
 import com.toney.istyle.form.ProductForm;
 

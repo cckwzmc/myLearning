@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.toney.istyle.dao.ProductDao">
-	<resultMap id="BaseResultMap" type="productModule">
-		<id column="ID" property="id" jdbcType="BIGINT" />
-		<result column="PRODUCE_CODE" property="produceCode" jdbcType="VARCHAR" />
-		<result column="PLATFORM_CODE" property="platformCode" jdbcType="VARCHAR" />
-		<result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
-		<result column="ONSALE" property="onsale" jdbcType="SMALLINT" />
-		<result column="UPLOAD_UID" property="uploadUid" jdbcType="BIGINT" />
-		<result column="LAST_UPDATE" property="lastUpdate" jdbcType="TIMESTAMP" />
-		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
-		<result column="STATUS" property="status" jdbcType="SMALLINT" />
-		<result column="PRODUCT_URL" property="productUrl" jdbcType="VARCHAR" />
-		<result column="CAT_CODE" property="catCode" jdbcType="VARCHAR" />
+	<resultMap id="productResult" type="productModule">
+		<id column="ID" property="id" />
+		<result column="PRODUCE_CODE" property="produceCode" />
+		<result column="PLATFORM_CODE" property="platformCode" />
+		<result column="PRODUCT_NAME" property="productName" />
+		<result column="ONSALE" property="onsale" />
+		<result column="UPLOAD_UID" property="uploadUid" />
+		<result column="LAST_UPDATE" property="lastUpdate" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="STATUS" property="status" />
+		<result column="PRODUCT_URL" property="productUrl" />
+		<result column="CAT_CODE" property="catCode" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		ID, PRODUCE_CODE, PLATFORM_CODE, PRODUCT_NAME, ONSALE, UPLOAD_UID, LAST_UPDATE, CREATE_DATE,
 		STATUS,PRODUCT_URL,CAT_CODE
 	</sql>
-	<select id="countByCondiction" resultMap="java.lang.Integer" parameterType="com.toney.istyle.model.ProductModule">
+	<select id="countByCondiction" resultType="java.lang.Integer" parameterType="com.toney.istyle.module.ProductModule">
 		select
 		count(1)
 		from T_PRODUCT
 		<if test="module!=null">
 			where 1=1
 			<if test="module.productName!=null and module.productName!=null">
-				PRODUCT_NAME like %#{module.productName}%
-			</if>
+				PRODUCT_NAME like %#{module.productName}% </if>
 			<if test="module.catCode!=null and module.catCode!=null">
 				CAT_CODE=#{catCode}
 			</if>
 		</if>
 	</select>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="selectByPrimaryKey" resultMap="productResult" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from T_PRODUCT
-		where ID = #{id,jdbcType=BIGINT}
+		where ID = #{id}
 	</select>
 	<delete id="deleteById" parameterType="java.lang.Long">
 		delete from T_PRODUCT
-		where ID = #{id,jdbcType=BIGINT}
+		where ID = #{id}
 	</delete>
 	<delete id="deleteByIds" parameterType="java.util.List">
 		delete from T_PRODUCT
@@ -49,7 +48,7 @@
 			#{item}
 		</foreach>
 	</delete>
-	<insert id="insert" parameterType="com.toney.istyle.model.ProductModule">
+	<insert id="insert" parameterType="com.toney.istyle.module.ProductModule">
 		insert into T_PRODUCT (PRODUCE_CODE, PLATFORM_CODE,
 		PRODUCT_NAME, ONSALE, UPLOAD_UID,
 		LAST_UPDATE, CREATE_DATE,
@@ -57,12 +56,12 @@
 		)
 		values
 		(
-		#{produceCode,jdbcType=VARCHAR}, #{platformCode,jdbcType=VARCHAR},
-		#{productName,jdbcType=VARCHAR},
-		#{onsale,jdbcType=SMALLINT},
-		#{uploadUid,jdbcType=BIGINT},
-		#{lastUpdate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP},
-		#{status,jdbcType=SMALLINT},#{productUrl,jdbcType=VARCHAR},#{catCode,jdbcType=VARCHAR}
+		#{produceCode}, #{platformCode},
+		#{productName},
+		#{onsale},
+		#{uploadUid},
+		#{lastUpdate}, #{createDate},
+		#{status},#{productUrl},#{catCode}
 		)
 	</insert>
 </mapper>
