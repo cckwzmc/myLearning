@@ -29,7 +29,7 @@ public class AppConfigManagerImpl implements AppConfigManager {
 	private static final XLogger LOGGER=XLoggerFactory.getXLogger(AppConfigManagerImpl.class);
 
 	@Autowired
-	private AppConfigQueryService appConfigReadService;
+	private AppConfigQueryService appConfigQueryService;
 	
 	/* (non-Javadoc)
 	 * @see com.toney.istyle.biz.AppConfigManager#initAppConfig()
@@ -37,7 +37,7 @@ public class AppConfigManagerImpl implements AppConfigManager {
 	@Override
 	public Map<String, AppConfigBO> getAppConfigs() throws ManagerException {
 		try {
-			return this.appConfigReadService.getMemMap();
+			return this.appConfigQueryService.getMemMap();
 		} catch (ServiceException e) {
 			LOGGER.error("查询系统配置失败",e);
 			throw new ManagerException(e);
