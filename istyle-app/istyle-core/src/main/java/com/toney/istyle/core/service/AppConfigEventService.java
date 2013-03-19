@@ -14,7 +14,7 @@ import com.toney.istyle.core.exception.ServiceException;
  *       </p>
  **************************************************************** 
  */
-public interface AppConfigWriterService {
+public interface AppConfigEventService {
 	
 
 	void save(AppConfigBO bo) throws ServiceException;

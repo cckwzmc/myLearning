@@ -11,7 +11,7 @@ import com.toney.istyle.bo.AppConfigBO;
 import com.toney.istyle.core.biz.AppConfigManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.core.service.AppConfigReadService;
+import com.toney.istyle.core.service.AppConfigQueryService;
 
 /**
  *************************************************************** 
@@ -29,7 +29,7 @@ public class AppConfigManagerImpl implements AppConfigManager {
 	private static final XLogger LOGGER=XLoggerFactory.getXLogger(AppConfigManagerImpl.class);
 
 	@Autowired
-	private AppConfigReadService appConfigReadService;
+	private AppConfigQueryService appConfigReadService;
 	
 	/* (non-Javadoc)
 	 * @see com.toney.istyle.biz.AppConfigManager#initAppConfig()

@@ -19,7 +19,7 @@ import com.toney.istyle.core.exception.ServiceException;
  *       </p>
  **************************************************************** 
  */
-public interface AppConfigReadService {
+public interface AppConfigQueryService {
 	
 	/**
 	 * DB的方式获取数据.

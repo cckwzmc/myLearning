@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.toney.istyle.bo.AppConfigBO;
 import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.core.service.AppConfigReadService;
+import com.toney.istyle.core.service.AppConfigQueryService;
 import com.toney.istyle.dao.AppConfigDao;
 import com.toney.istyle.module.AppConfigModule;
 
@@ -31,10 +31,10 @@ import com.toney.istyle.module.AppConfigModule;
  *       </p>
  **************************************************************** 
  */
-@Service("appConfigReadService")
-public class AppConfigReadServiceImpl implements AppConfigReadService {
+@Service("appConfigQueryService")
+public class AppConfigQueryServiceImpl implements AppConfigQueryService {
 
-	private static final XLogger LOGGER = XLoggerFactory.getXLogger(AppConfigReadServiceImpl.class);
+	private static final XLogger LOGGER = XLoggerFactory.getXLogger(AppConfigQueryServiceImpl.class);
 
 	private static Map<String, AppConfigBO> memMap = new HashMap<String, AppConfigBO>();
 

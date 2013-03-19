@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 
 import com.toney.istyle.bo.AppConfigBO;
 import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.core.service.AppConfigWriterService;
+import com.toney.istyle.core.service.AppConfigEventService;
 import com.toney.istyle.dao.AppConfigDao;
 import com.toney.istyle.module.AppConfigModule;
 
@@ -24,9 +24,9 @@ import com.toney.istyle.module.AppConfigModule;
  *       </p>
  **************************************************************** 
  */
-@Service("appConfigWriterService")
-public class AppConfigWriterServiceImpl implements AppConfigWriterService {
-	private static final XLogger LOGGER = XLoggerFactory.getXLogger(AppConfigWriterServiceImpl.class);
+@Service("appConfigEventService")
+public class AppConfigEventServiceImpl implements AppConfigEventService {
+	private static final XLogger LOGGER = XLoggerFactory.getXLogger(AppConfigEventServiceImpl.class);
 
 	@Autowired
 	private AppConfigDao appConfigDao;
