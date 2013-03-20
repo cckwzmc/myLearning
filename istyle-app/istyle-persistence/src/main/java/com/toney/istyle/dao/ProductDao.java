@@ -31,7 +31,8 @@ public interface ProductDao {
 	List<ProductModule> selectByCondiction(ProductModule module);
 
 	ProductModule selectById(Long id);
-	ProductModule selectByIds(List<Long> id);
+	
+	List<ProductModule> selectByIds(List<Long> ids);
 
 	/**
 	 * 根据条件查询商品数量
@@ -51,6 +52,15 @@ public interface ProductDao {
 	 * @param pageSize
 	 * @param catCode
 	 */
-	void selectPage(@Param("startRecord") int startRecord, @Param("pageSize")Integer pageSize, @Param("catCode")String catCode);
+	List<ProductModule> selectPage(@Param("startRecord") int startRecord, @Param("pageSize")Integer pageSize, @Param("catCode")String catCode);
+
+	/**
+	 * 按类目分页查询,只查询ID
+	 * @param startRecord
+	 * @param pageSize
+	 * @param catCode
+	 * @return
+	 */
+	List<Long> selectPageId(@Param("startRecord") int startRecord, @Param("pageSize")Integer pageSize, @Param("catCode")String catCode);
 
 }

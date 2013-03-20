@@ -31,19 +31,40 @@
 			</if>
 		</if>
 	</select>
+	
 	<select id="selectPage" resultType="java.util.List" resultMap="productResult" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from T_PRODUCT
 		where
-		CAT_CODE=#{catCode} by LAST_UPDATE limit #{startRecord},#{pageSize}
+		CAT_CODE like #{catCode} order by LAST_UPDATE desc limit #{startRecord},#{pageSize}
 	</select>
-	<select id="selectByPrimaryKey" resultMap="productResult" parameterType="java.lang.Long">
+	
+	<select id="selectPageId" resultType="java.lang.Long" parameterType="java.util.Map">
+		select
+	    ID
+		from T_PRODUCT
+		where
+		CAT_CODE like #{catCode} order by LAST_UPDATE desc limit #{startRecord},#{pageSize}
+	</select>
+	
+	<select id="selectById" resultMap="productResult" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from T_PRODUCT
 		where ID = #{id}
 	</select>
+	
+	<select id="selectByIds" resultType="java.util.List" parameterType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from T_PRODUCT
+		where ID  in
+		<foreach collection="ids" open="(" close=")" separator="," item="item">
+			#{item}
+		</foreach>
+	</select>
+	
 	<delete id="deleteById" parameterType="java.lang.Long">
 		delete from T_PRODUCT
 		where ID = #{id}
