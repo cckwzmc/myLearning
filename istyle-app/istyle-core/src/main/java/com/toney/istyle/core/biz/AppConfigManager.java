@@ -1,6 +1,5 @@
 package com.toney.istyle.core.biz;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.toney.istyle.bo.AppConfigBO;
