@@ -8,6 +8,7 @@ import com.toney.istyle.core.exception.ManagerException;
 /**
  *************************************************************** 
  * <p>
+ * 
  * @CLASS :AppConfigManager.java
  * @DESCRIPTION : 系统的配置管理
  * @AUTHOR :toney.li
@@ -17,9 +18,10 @@ import com.toney.istyle.core.exception.ManagerException;
  **************************************************************** 
  */
 public interface AppConfigManager {
-	
+
 	/**
 	 * 系统配置放入本的内存.
+	 * 
 	 * @throws ManagerException
 	 */
 

@@ -22,6 +22,6 @@
 
 	<!-- 声明cacheManager -->
 
-	<bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cacheManager-ref="ehcacheManagerFactory" lazy-init="false" />
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cacheManager-ref="ehcacheManagerFactory" lazy-init="false" />
 
 </beans>

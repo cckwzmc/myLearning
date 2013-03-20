@@ -4,14 +4,14 @@
 package com.toney.istyle.core.service.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.toney.istyle.bo.ProductBO;
@@ -38,45 +38,119 @@ public class ProductQueryServcieImpl implements ProductQueryServcie {
 
 	@Autowired
 	private ProductDao productDao;
+	@Autowired
+	private ProductRepository productRepository;
 
 	@Override
-	@Cacheable(value = "productCache", key = "productId_#id")
 	public ProductBO getProductById(Long id) throws ServiceException {
-		ProductModule productModule = this.productDao.selectById(id);
-		ProductBO bo = null;
-		if (productModule != null) {
-			bo = new ProductBO();
-			try {
-				BeanUtils.copyProperties(bo, productModule);
-			} catch (IllegalAccessException e) {
-				LOGGER.error("getProductById 查询商品信息失败 id:{}", id, e);
-				throw new ServiceException(e);
-			} catch (InvocationTargetException e) {
-				LOGGER.error("getProductById 查询商品信息失败 id:{}", id, e);
-				throw new ServiceException(e);
-			}
-		}
-		return bo;
+		return this.productRepository.getProductById(id);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.toney.istyle.core.service.ProductQueryServcie#getProductPage(java
+	 * .lang.Integer, java.lang.Integer, java.lang.String)
+	 */
 	@Override
-	@CacheEvict(value = "productCache", key = "productId_#id")
-	public void refresh(Long id) throws ServiceException {
-		this.getProductById(id);
+	public List<ProductBO> getProductPage(Integer startRecord, Integer endRecord, String catCode) throws ServiceException {
+		List<Long> idList = this.productDao.selectPageId(startRecord, endRecord, catCode);
+		return this.getProductIdList(idList);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.toney.istyle.core.service.ProductQueryServcie#getProductList()
+	 */
 	@Override
 	public List<ProductBO> getProductList() throws ServiceException {
 		List<ProductBO> resultList = null;
 		return resultList;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.toney.istyle.core.service.ProductQueryServcie#getProductPage(java.lang.Integer, java.lang.Integer, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.toney.istyle.core.service.ProductQueryServcie#getProductIdList(java
+	 * .util.List)
 	 */
 	@Override
-	public void getProductPage(Integer page, Integer pageSize, String catCode) {
-		this.productDao.selectPage((page-1)*pageSize,pageSize,catCode);
+	public List<ProductBO> getProductIdList(List<Long> ids) throws ServiceException {
+		List<ProductBO> cacheList = new ArrayList<ProductBO>();
+		List<Long> queryIds = new ArrayList<Long>();
+		// 先从缓存中查找，找不到的放queryIds中再到数据库中查询.
+		for (Long id : ids) {
+			ProductBO bo = this.getProductById(id);
+			if (bo != null) {
+				cacheList.add(bo);
+				continue;
+			}
+			queryIds.add(id);
+		}
+		// 从数据库中查询
+		List<ProductBO> queryList = null;
+		if (CollectionUtils.isNotEmpty(queryIds)) {
+			queryList = this.getProductIdListDB(queryIds);
+		}
+
+		List<ProductBO> resultList = new ArrayList<ProductBO>();
+		// 按顺序拼装数据.
+		for (Long id : ids) {
+			boolean isExist = false;
+			if (CollectionUtils.isNotEmpty(cacheList)) {
+				for (ProductBO bo : cacheList) {
+					if (id.longValue() == bo.getId().longValue()) {
+						resultList.add(bo);
+						isExist = true;
+						break;
+					}
+				}
+			}
+			if (isExist) {
+				continue;
+			}
+			if (CollectionUtils.isNotEmpty(queryList)) {
+				for (ProductBO bo : cacheList) {
+					if (id.longValue() == bo.getId().longValue()) {
+						resultList.add(bo);
+						isExist = true;
+						break;
+					}
+				}
+			}
+		}
+		return resultList;
+	}
+
+	/**
+	 * 根据ids从数据库中查询
+	 * 
+	 * @param ids
+	 * @return
+	 * @throws ServiceException
+	 */
+	private List<ProductBO> getProductIdListDB(List<Long> ids) throws ServiceException {
+		List<ProductBO> resultList = new ArrayList<ProductBO>();
+		List<ProductModule> queryList = this.productDao.selectByIds(ids);
+		if (CollectionUtils.isNotEmpty(queryList)) {
+			try {
+				for (ProductModule module : queryList) {
+					ProductBO bo = new ProductBO();
+					BeanUtils.copyProperties(bo, module);
+					resultList.add(bo);
+				}
+			} catch (IllegalAccessException e) {
+				LOGGER.error("getProductIdListDB 查询失败: ids:{}", ids.toString(), e);
+				throw new ServiceException(e);
+			} catch (InvocationTargetException e) {
+				LOGGER.error("getProductIdListDB 查询失败: ids:{}", ids.toString(), e);
+				throw new ServiceException(e);
+			}
+		}
+		return resultList;
 	}
 
 }

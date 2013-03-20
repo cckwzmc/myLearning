@@ -1,12 +1,16 @@
-package com.toney.core.istyle;
+package com.toney.istyle.core;
 
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import net.sf.ehcache.Cache;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
@@ -28,6 +32,8 @@ import com.toney.istyle.util.ConvertUtil;
 public abstract class BaseManagerTestCase extends AbstractTransactionalJUnit4SpringContextTests {
 	protected static final XLogger LOGGER = XLoggerFactory.getXLogger(BaseManagerTestCase.class);
 	protected ResourceBundle rb;
+	@Autowired
+	EhCacheCacheManager cacheManager;
 
 	public BaseManagerTestCase() {
 		String className = this.getClass().getName();
@@ -59,5 +65,18 @@ public abstract class BaseManagerTestCase extends AbstractTransactionalJUnit4Spr
 
 	protected Map<String, String> populate() throws Exception {
 		return ConvertUtil.convertBundleToMap(rb);
+	}
+
+	protected void cacheManagerInfo() {
+		Cache cache = this.cacheManager.getCacheManager().getCache("productCache");
+		// 得到缓存中的对象数
+		LOGGER.info("~~~~~~cache.getSize~~~" + cache.getSize());
+		// 得到缓存对象占用内存的大小
+		LOGGER.info("~~~~~~cache.getMemoryStoreSize()~~~" + cache.getMemoryStoreSize());
+		// 得到缓存读取的命中次数
+		LOGGER.info("~~~~~~cache.getStatistics().getCacheHits()~~~" + cache.getStatistics().getCacheHits());
+		// 得到缓存读取的错失次数
+		LOGGER.info("~~~~~~cache.getStatistics().getCacheMisses()~~~" + cache.getStatistics().getCacheMisses());
+		LOGGER.info("~~~~~~cache.getStatistics()~~~" + cache.getStatistics());
 	}
 }

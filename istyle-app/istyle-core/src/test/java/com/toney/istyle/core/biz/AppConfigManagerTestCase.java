@@ -7,8 +7,8 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.toney.core.istyle.BaseManagerTestCase;
 import com.toney.istyle.bo.AppConfigBO;
+import com.toney.istyle.core.BaseManagerTestCase;
 import com.toney.istyle.core.biz.AppConfigManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.ServiceException;

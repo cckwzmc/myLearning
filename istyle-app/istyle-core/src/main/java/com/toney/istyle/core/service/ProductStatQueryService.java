@@ -27,10 +27,4 @@ public interface ProductStatQueryService {
 	 */
 	ProductClickBo getProductClickById(Long id) throws ServiceException;
 
-	/**
-	 * @param id
-	 * @throws ServiceException
-	 */
-	void refresh(Long id) throws ServiceException;
-	
 }

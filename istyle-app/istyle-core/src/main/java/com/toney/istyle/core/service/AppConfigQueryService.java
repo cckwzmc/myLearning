@@ -20,9 +20,10 @@ import com.toney.istyle.core.exception.ServiceException;
  **************************************************************** 
  */
 public interface AppConfigQueryService {
-	
+
 	/**
 	 * DB的方式获取数据.
+	 * 
 	 * @return
 	 * @throws ServiceException
 	 */
@@ -30,6 +31,7 @@ public interface AppConfigQueryService {
 
 	/**
 	 * 从内存中查询数据.
+	 * 
 	 * @return
 	 * @throws ServiceException
 	 */
@@ -37,6 +39,7 @@ public interface AppConfigQueryService {
 
 	/**
 	 * 刷新缓存
+	 * 
 	 * @throws ServiceException
 	 */
 	void refresh() throws ServiceException;

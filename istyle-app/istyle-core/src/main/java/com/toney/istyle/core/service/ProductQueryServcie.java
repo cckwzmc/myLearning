@@ -30,14 +30,8 @@ public interface ProductQueryServcie {
 	ProductBO getProductById(Long id) throws ServiceException;
 
 	/**
-	 * 刷新缓存中商品ID 为@id 
-	 * @param id
-	 * @throws ServiceException
-	 */
-	void refresh(Long id) throws ServiceException;
-
-	/**
 	 * 按查询条件查询结果.
+	 * 
 	 * @return
 	 * @throws ServiceException
 	 */
@@ -45,10 +39,21 @@ public interface ProductQueryServcie {
 
 	/**
 	 * 按类目分页查询.
+	 * 
 	 * @param page
 	 * @param pageSize
 	 * @param catCode
+	 * @return
+	 * @throws ServiceException
 	 */
-	void getProductPage(Integer page, Integer pageSize, String catCode);
+	List<ProductBO> getProductPage(Integer page, Integer pageSize, String catCode) throws ServiceException;
+
+	/**
+	 * 多个Id查询
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 */
+	List<ProductBO> getProductIdList(List<Long> ids) throws ServiceException;
 
 }

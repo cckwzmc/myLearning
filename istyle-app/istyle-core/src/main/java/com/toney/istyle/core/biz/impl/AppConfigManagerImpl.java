@@ -16,6 +16,7 @@ import com.toney.istyle.core.service.AppConfigQueryService;
 /**
  *************************************************************** 
  * <p>
+ * 
  * @CLASS :AppConfigManagerImpl.java
  * @DESCRIPTION : 系统配置管理
  * @AUTHOR :toney.li
@@ -26,12 +27,14 @@ import com.toney.istyle.core.service.AppConfigQueryService;
  */
 @Service("appConfigManager")
 public class AppConfigManagerImpl implements AppConfigManager {
-	private static final XLogger LOGGER=XLoggerFactory.getXLogger(AppConfigManagerImpl.class);
+	private static final XLogger LOGGER = XLoggerFactory.getXLogger(AppConfigManagerImpl.class);
 
 	@Autowired
 	private AppConfigQueryService appConfigQueryService;
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.toney.istyle.biz.AppConfigManager#initAppConfig()
 	 */
 	@Override
@@ -39,10 +42,9 @@ public class AppConfigManagerImpl implements AppConfigManager {
 		try {
 			return this.appConfigQueryService.getMemMap();
 		} catch (ServiceException e) {
-			LOGGER.error("查询系统配置失败",e);
+			LOGGER.error("查询系统配置失败", e);
 			throw new ManagerException(e);
 		}
 	}
-	
 
 }

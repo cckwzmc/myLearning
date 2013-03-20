@@ -33,12 +33,6 @@ public interface ProductStatEventService {
 	void delete(Long id) throws ServiceException;
 
 	/**
-	 * @param id
-	 * @throws ServiceException
-	 */
-	void deleteCache(Long id) throws ServiceException;
-
-	/**
 	 * @param productClickBo
 	 * @throws ServiceException
 	 */

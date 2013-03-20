@@ -24,20 +24,23 @@ public interface ProductEventService {
 
 	/**
 	 * 保存商品信息.
+	 * 
 	 * @param productModule
 	 * @throws ServiceException
 	 */
 	void save(ProductBO productBo) throws ServiceException;
-	
+
 	/**
 	 * 删除商品信息.
+	 * 
 	 * @param id
 	 * @throws ServiceException
 	 */
 	void delete(Long id) throws ServiceException;
-	
+
 	/**
 	 * 更新商品信息,这时需要更新缓存.
+	 * 
 	 * @param productBo
 	 * @throws ServiceException
 	 */
@@ -45,6 +48,7 @@ public interface ProductEventService {
 
 	/**
 	 * 批量删除商品信息.
+	 * 
 	 * @param ids
 	 * @throws ServiceException
 	 */

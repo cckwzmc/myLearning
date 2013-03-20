@@ -10,13 +10,12 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import com.toney.istyle.bo.ProductBO;
 import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.core.service.ProductQueryServcie;
 import com.toney.istyle.core.service.ProductEventService;
+import com.toney.istyle.core.service.ProductQueryServcie;
 import com.toney.istyle.dao.ProductDao;
 import com.toney.istyle.module.ProductModule;
 
@@ -40,65 +39,83 @@ public class ProductEventServiceImpl implements ProductEventService {
 
 	@Autowired
 	ProductQueryServcie productQueryServcie;
-	/* (non-Javadoc)
-	 * @see com.toney.istyle.core.service.ProductWriterService#save(com.toney.istyle.bo.ProductBO)
+
+	@Autowired
+	private ProductRepository productRepository;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.toney.istyle.core.service.ProductWriterService#save(com.toney.istyle
+	 * .bo.ProductBO)
 	 */
 	@Override
-	public void save(ProductBO productBo) throws ServiceException{
-		ProductModule module=new ProductModule();
+	public void save(ProductBO productBo) throws ServiceException {
+		ProductModule module = new ProductModule();
 		try {
 			BeanUtils.copyProperties(module, productBo);
 		} catch (IllegalAccessException e) {
-			LOGGER.error("保存商品信息失败 productBo :{}", productBo.toString(),e);
+			LOGGER.error("保存商品信息失败 productBo :{}", productBo.toString(), e);
 			throw new ServiceException(e);
 		} catch (InvocationTargetException e) {
-			LOGGER.error("保存商品信息失败 productBo :{}", productBo.toString(),e);
+			LOGGER.error("保存商品信息失败 productBo :{}", productBo.toString(), e);
 			throw new ServiceException(e);
 		}
 		this.productDao.insert(module);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.toney.istyle.core.service.ProductWriterService#delete(java.lang.Long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.toney.istyle.core.service.ProductWriterService#delete(java.lang.Long)
 	 */
 	@Override
-	@CacheEvict(value="productCache",key="productId_#id")
 	public void delete(Long id) throws ServiceException {
 		this.productDao.deleteById(id);
+		this.productRepository.deleteCache(id);
 	}
-	
+
 	@Override
-	public void delete(List<Long> ids) throws ServiceException{
+	public void delete(List<Long> ids) throws ServiceException {
 		this.productDao.deleteByIds(ids);
-		for(Long id:ids){
-			this.deleteCache(id);
+		for (Long id : ids) {
+			productRepository.deleteCache(id);
 		}
 	}
 
-	/**
-	 * @param id
-	 */
-	@CacheEvict(value="productCache",key="productId_#id")
-	private void deleteCache(Long id) {
-		LOGGER.info("Delete product id:{} cache",id);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.toney.istyle.core.service.ProductWriterService#update(com.toney.istyle.bo.ProductBO)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.toney.istyle.core.service.ProductWriterService#update(com.toney.istyle
+	 * .bo.ProductBO)
 	 */
 	@Override
 	public void update(ProductBO productBo) throws ServiceException {
-		ProductModule module=new ProductModule();
+		ProductModule module = new ProductModule();
 		try {
 			BeanUtils.copyProperties(module, productBo);
 		} catch (IllegalAccessException e) {
-			LOGGER.error("保存商品信息失败 productBo :{}", productBo.toString(),e);
+			LOGGER.error("保存商品信息失败 productBo :{}", productBo.toString(), e);
 			throw new ServiceException(e);
 		} catch (InvocationTargetException e) {
-			LOGGER.error("保存商品信息失败 productBo :{}", productBo.toString(),e);
+			LOGGER.error("保存商品信息失败 productBo :{}", productBo.toString(), e);
 			throw new ServiceException(e);
 		}
 		this.productDao.updateById(module);
-		this.productQueryServcie.refresh(productBo.getId());
+		this.refresh(productBo.getId());
+	}
+
+	/**
+	 * 更新数据一定要刷新缓存
+	 * 
+	 * @param id
+	 * @throws ServiceException
+	 */
+	private void refresh(Long id) throws ServiceException {
+		this.productRepository.deleteCache(id);
+		this.productRepository.getProductById(id);
 	}
 }

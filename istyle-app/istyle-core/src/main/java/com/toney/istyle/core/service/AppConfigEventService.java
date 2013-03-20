@@ -6,6 +6,7 @@ import com.toney.istyle.core.exception.ServiceException;
 /**
  *************************************************************** 
  * <p>
+ * 
  * @CLASS :AppConfigWriterService.java
  * @DESCRIPTION : AppConfig写操作
  * @AUTHOR :toney.li
@@ -15,7 +16,6 @@ import com.toney.istyle.core.exception.ServiceException;
  **************************************************************** 
  */
 public interface AppConfigEventService {
-	
 
 	void save(AppConfigBO bo) throws ServiceException;
 
