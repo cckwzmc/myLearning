@@ -14,6 +14,7 @@ import com.toney.istyle.form.ProductForm;
 /**
  *************************************************************** 
  * <p>
+ * 
  * @CLASS :ProductManagerTestCase.java
  * @DESCRIPTION : 商品测试.
  * @AUTHOR :toney.li
@@ -23,36 +24,36 @@ import com.toney.istyle.form.ProductForm;
  **************************************************************** 
  */
 public class ProductManagerTestCase extends BaseManagerTestCase {
-	
+
 	private static final XLogger LOGGER = XLoggerFactory.getXLogger(ProductManagerTestCase.class);
 	@Autowired
 	ProductManager productManager;
-	
+
 	@Test
-	public void testGetProductById(){
+	public void testGetProductById() {
 		ProductForm bo = null;
 		try {
-			long start=System.currentTimeMillis();
-			Long a=1L;
-			for(int i=0;i<10000;i++){
+			long start = System.currentTimeMillis();
+			Long a = 1L;
+			for (int i = 0; i < 10000; i++) {
 				bo = this.productManager.getProductInfoById(a);
 			}
 			super.cacheManagerInfo();
-			System.out.println("~~~~~~~~~~~~"+(System.currentTimeMillis()-start)+"~~~~~~~~~~~~~");
+			System.out.println("~~~~~~~~~~~~" + (System.currentTimeMillis() - start) + "~~~~~~~~~~~~~");
 		} catch (ManagerException e) {
-			LOGGER.error("",e);
+			LOGGER.error("", e);
 		}
 		Assert.assertNotNull(bo);
 	}
-	
+
 	@Test
-	public void testGetProductInfoByCatCode(){
-		Page<ProductForm> page=null;
+	public void testGetProductInfoByCatCode() {
+		Page<ProductForm> page = null;
 		try {
-			for(int i=0;i<10000;i++){
+			for (int i = 0; i < 10000; i++) {
 				page = this.productManager.getProductInfoByCatCode(1, 15, "01");
 			}
-			
+
 		} catch (ManagerException e) {
 			LOGGER.error("查询失败", e);
 		}

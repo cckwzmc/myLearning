@@ -10,7 +10,7 @@ import com.toney.istyle.commons.LabelValue;
  * <p>
  * 
  * @CLASS :SortForm.java
- * @DESCRIPTION : 排序查询,label/value  id/desc,id/asc, etc.
+ * @DESCRIPTION : 排序查询,label/value id/desc,id/asc, etc.
  * @AUTHOR :toney.li
  * @VERSION :v1.0
  * @DATE :Mar 20, 2013

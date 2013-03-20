@@ -1,6 +1,5 @@
 package com.toney.istyle.core.biz;
 
-import com.toney.istyle.bo.ProductBO;
 import com.toney.istyle.commons.Page;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.form.ProductForm;

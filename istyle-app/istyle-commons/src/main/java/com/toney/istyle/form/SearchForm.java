@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  *************************************************************** 
  * <p>
+ * 
  * @CLASS :SearchForm.java
  * @DESCRIPTION : 搜索Form
  * @AUTHOR :toney.li
@@ -19,6 +20,5 @@ public class SearchForm implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7090549675636380160L;
-	
 
 }

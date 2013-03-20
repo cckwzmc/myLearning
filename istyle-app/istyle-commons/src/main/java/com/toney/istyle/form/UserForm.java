@@ -7,6 +7,7 @@ import com.toney.istyle.commons.BaseObject;
 /**
  *************************************************************** 
  * <p>
+ * 
  * @CLASS :UserForm
  * @DESCRIPTION :用户Form
  * @AUTHOR :toney.li
@@ -25,7 +26,6 @@ public class UserForm extends BaseObject {
 
 	private String userName;
 
-
 	private Long nickName;
 
 	private String mobile;
@@ -33,8 +33,7 @@ public class UserForm extends BaseObject {
 	private Date createDate;
 
 	private Short status;
-	
-	
+
 	public Long getId() {
 		return id;
 	}

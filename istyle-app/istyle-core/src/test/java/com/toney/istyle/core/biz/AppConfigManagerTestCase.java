@@ -2,14 +2,11 @@ package com.toney.istyle.core.biz;
 
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.toney.istyle.bo.AppConfigBO;
 import com.toney.istyle.core.BaseManagerTestCase;
-import com.toney.istyle.core.biz.AppConfigManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.ServiceException;
 import com.toney.istyle.core.service.AppConfigQueryService;
@@ -20,7 +17,7 @@ public class AppConfigManagerTestCase extends BaseManagerTestCase {
 	AppConfigManager appConfigManager;
 	@Autowired
 	AppConfigQueryService appConfigReadService;
-	
+
 	@Test
 	public void testGetAppConfig() {
 		Map<String, AppConfigBO> map = null;
@@ -35,9 +32,9 @@ public class AppConfigManagerTestCase extends BaseManagerTestCase {
 		org.junit.Assert.assertNotNull(map);
 		org.junit.Assert.assertTrue(map.keySet().size() > 0);
 	}
-	
+
 	@Test
-	public void testRefresh(){
+	public void testRefresh() {
 		try {
 			this.appConfigReadService.refresh();
 		} catch (ServiceException e) {
