@@ -113,7 +113,6 @@
 		<dependency>
 			<artifactId>guava</artifactId>
 			<groupId>com.google.guava</groupId>
-			<version>14.0-rc1</version>
 		</dependency>
 		<!-- <dependency> <groupId>com.opera</groupId> <artifactId>operadriver</artifactId> <version>0.10</version> <exclusions> <exclusion> <artifactId>guava</artifactId> <groupId>com.google.guava</groupId> 
 			</exclusion> </exclusions> </dependency> <dependency> <artifactId>guava</artifactId> <groupId>com.google.guava</groupId> <version>11.0.1</version> <scope>test</scope> </dependency> -->

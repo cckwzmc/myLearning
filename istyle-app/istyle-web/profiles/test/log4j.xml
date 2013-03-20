@@ -5,7 +5,7 @@
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%p [%t] %c{1}.%M(%L) | %m%n" />
+			<param name="ConversionPattern" value="%d %p [%t] %c{1}.%M(%L) | %m%n" />
 		</layout>
 	</appender>
 	
@@ -17,6 +17,16 @@
 	<!-- BoneCP Loggers, suggest let it output to a file in production env-->
 	<logger name="com.jolbox.bonecp">
 		<level value="WARN" />
+	</logger>
+	
+	<logger name="net.sf.ehcache">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="org.mybatis">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="com.toney.istyle.core">
+		<level value="DEBUG" />
 	</logger>
 
 	<!-- Spring Loggers -->
@@ -30,7 +40,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 		<appender-ref ref="console" />
 	</root>
 	
