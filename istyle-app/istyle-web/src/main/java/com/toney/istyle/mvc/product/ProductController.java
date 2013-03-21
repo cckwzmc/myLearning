@@ -39,7 +39,7 @@ public class ProductController {
 	@Autowired
 	ProductManager productManager;
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String list(Integer pageNo, String catCode, Model model){
 		JsonPackageWrapper json = new JsonPackageWrapper();
 		try {
@@ -50,7 +50,7 @@ public class ProductController {
 			map.put("pageNo", page.getPageNo());
 			json.setData(map);
 		} catch (Exception e) {
-			json.setScode(json.S_ERR);
+			json.setScode(JsonPackageWrapper.S_ERR);
 			json.setSmsg(e.getMessage());
 			json.setErrorCode(ErrConstants.GERNERAL_ERR_CODE);
 			LOGGER.error("",e);
@@ -59,7 +59,7 @@ public class ProductController {
 		return "";
 	}
 
-	@RequestMapping("search")
+	@RequestMapping(value="search",method=RequestMethod.GET)
 	public String search(Integer page, Integer pageSize, SearchForm searchFom, SortForm sortForm) throws Exception {
 		return null;
 	}
