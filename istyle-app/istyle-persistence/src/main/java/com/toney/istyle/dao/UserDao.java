@@ -32,4 +32,14 @@ public interface UserDao {
 
 	UserModule selectById(Long id);
 
+	UserModule selectByUserName(String userName);
+
+	/**
+	 * 用户/密码查询。
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	UserModule selectByUnAndPwd(String userName, String password);
+
 }
