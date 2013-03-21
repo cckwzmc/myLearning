@@ -45,11 +45,11 @@ public class ProductManagerImpl implements ProductManager {
 	private ProductStatQueryService productStatQueryService;
 
 	@Override
-	public Page<ProductForm> getProductInfoByCatCode(Integer page, Integer pageSize, String catCode) throws ManagerException {
+	public Page<ProductForm> getProductInfoByCatCode(Integer page, String catCode) throws ManagerException {
 		Page<ProductForm> pageForm = new Page<ProductForm>();
 		try {
 			pageForm.setPageNo(page);
-			List<ProductBO> list = this.productQueryServcie.getProductPage(pageForm.getFirstRecord(), pageSize, catCode + "%");
+			List<ProductBO> list = this.productQueryServcie.getProductPage(pageForm.getFirstRecord(), pageForm.getPageSize(), catCode + "%");
 			if (CollectionUtils.isNotEmpty(list)) {
 				List<ProductForm> formList = new ArrayList<ProductForm>();
 				for (ProductBO bo : list) {
@@ -59,7 +59,7 @@ public class ProductManagerImpl implements ProductManager {
 				pageForm.setResult(formList);
 			}
 		} catch (ServiceException e) {
-			LOGGER.error("分页查询数据失败:page:{} pageSize:{} catCode:{}", new Object[] { page, pageSize, catCode }, e);
+			LOGGER.error("分页查询数据失败:page:{} pageSize:{} catCode:{}", new Object[] { page, pageForm.getPageSize(), catCode }, e);
 			throw new ManagerException(e);
 		}
 		return pageForm;

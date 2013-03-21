@@ -1,24 +1,22 @@
 package com.toney.istyle.core.service.impl;
 
-import com.toney.istyle.bo.ProductClickBO;
+import com.toney.istyle.bo.ProductPicBO;
 import com.toney.istyle.core.exception.ServiceException;
 
 /**
  *************************************************************** 
  * <p>
- * 
- * @CLASS :ProductStatCacheService.java
- * @DESCRIPTION : 商品统计Repository层
+ * @CLASS :ProductPicRepository.java
+ * @DESCRIPTION : 商品图片Repository
  * @AUTHOR :toney.li
  * @VERSION :v1.0
  * @DATE :Mar 20, 2013
  *       </p>
  **************************************************************** 
  */
-interface ProductStatRepository {
+interface ProductPicRepository {
 
-	ProductClickBO getProductClickById(Long id) throws ServiceException;
+	ProductPicBO getProductPicById(Long id) throws ServiceException;
 
 	void deleteCache(Long id) throws ServiceException;
-
 }

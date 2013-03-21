@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.toney.istyle.bo.ProductClickBo;
+import com.toney.istyle.bo.ProductClickBO;
 import com.toney.istyle.core.exception.ServiceException;
 import com.toney.istyle.core.service.ProductStatEventService;
 import com.toney.istyle.dao.ProductClickDao;
@@ -48,7 +48,7 @@ public class ProductStatEventServiceImpl implements ProductStatEventService {
 	 * .istyle.bo.ProductClickBo)
 	 */
 	@Override
-	public void create(ProductClickBo productClickBo) throws ServiceException {
+	public void create(ProductClickBO productClickBo) throws ServiceException {
 		Assert.notNull(productClickBo);
 		Assert.isTrue(productClickBo.getPid() > 0);
 		ProductClickModule productClickModule = new ProductClickModule();
@@ -83,7 +83,7 @@ public class ProductStatEventServiceImpl implements ProductStatEventService {
 	 * @throws ServiceException
 	 */
 	@Override
-	public void update(ProductClickBo productClickBo) throws ServiceException {
+	public void update(ProductClickBO productClickBo) throws ServiceException {
 		Assert.notNull(productClickBo);
 		Assert.isTrue(productClickBo.getPid() > 0);
 		ProductClickModule productClickModule = new ProductClickModule();

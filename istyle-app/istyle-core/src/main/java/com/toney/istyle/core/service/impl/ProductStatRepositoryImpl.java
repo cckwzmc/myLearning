@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.bo.ProductClickBo;
+import com.toney.istyle.bo.ProductClickBO;
 import com.toney.istyle.core.exception.ServiceException;
 import com.toney.istyle.dao.ProductClickDao;
 import com.toney.istyle.module.ProductClickModule;
@@ -35,11 +35,11 @@ class ProductStatRepositoryImpl implements ProductStatRepository {
 
 	@Override
 	@Cacheable(value = "productClickCache", key = "'productClickId_'+#id.longValue()")
-	public ProductClickBo getProductClickById(Long id) throws ServiceException {
+	public ProductClickBO getProductClickById(Long id) throws ServiceException {
 		ProductClickModule module = this.productClickDao.selectById(id);
-		ProductClickBo bo = null;
+		ProductClickBO bo = null;
 		if (module != null) {
-			bo = new ProductClickBo();
+			bo = new ProductClickBO();
 			try {
 				BeanUtils.copyProperties(bo, module);
 			} catch (IllegalAccessException e) {

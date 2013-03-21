@@ -8,7 +8,7 @@ import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.bo.ProductClickBo;
+import com.toney.istyle.bo.ProductClickBO;
 import com.toney.istyle.core.exception.ServiceException;
 import com.toney.istyle.core.service.ProductStatQueryService;
 import com.toney.istyle.dao.ProductClickDao;
@@ -37,7 +37,7 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
 	private ProductStatRepository productStatRepository;
 
 	@Override
-	public ProductClickBo getProductClickById(Long id) throws ServiceException {
+	public ProductClickBO getProductClickById(Long id) throws ServiceException {
 		return this.productStatRepository.getProductClickById(id);
 	}
 

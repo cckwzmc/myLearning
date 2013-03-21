@@ -17,7 +17,7 @@ import java.io.Serializable;
  *       </p>
  **************************************************************** 
  */
-public class ProductClickBo implements Serializable {
+public class ProductClickBO implements Serializable {
 
 	/**
 	 * 
@@ -163,7 +163,7 @@ public class ProductClickBo implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProductClickBo other = (ProductClickBo) obj;
+		ProductClickBO other = (ProductClickBO) obj;
 		if (commentNumber == null) {
 			if (other.commentNumber != null)
 				return false;

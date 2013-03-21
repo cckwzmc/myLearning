@@ -51,7 +51,7 @@ public class ProductManagerTestCase extends BaseManagerTestCase {
 		Page<ProductForm> page = null;
 		try {
 			for (int i = 0; i < 10000; i++) {
-				page = this.productManager.getProductInfoByCatCode(1, 15, "01");
+				page = this.productManager.getProductInfoByCatCode(1, "01");
 			}
 
 		} catch (ManagerException e) {

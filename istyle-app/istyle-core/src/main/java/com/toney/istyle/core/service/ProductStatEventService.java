@@ -3,7 +3,7 @@
  */
 package com.toney.istyle.core.service;
 
-import com.toney.istyle.bo.ProductClickBo;
+import com.toney.istyle.bo.ProductClickBO;
 import com.toney.istyle.core.exception.ServiceException;
 
 /**
@@ -24,7 +24,7 @@ public interface ProductStatEventService {
 	 * @param productClickBo
 	 * @throws ServiceException
 	 */
-	void create(ProductClickBo productClickBo) throws ServiceException;
+	void create(ProductClickBO productClickBo) throws ServiceException;
 
 	/**
 	 * @param id
@@ -36,6 +36,6 @@ public interface ProductStatEventService {
 	 * @param productClickBo
 	 * @throws ServiceException
 	 */
-	void update(ProductClickBo productClickBo) throws ServiceException;
+	void update(ProductClickBO productClickBo) throws ServiceException;
 
 }

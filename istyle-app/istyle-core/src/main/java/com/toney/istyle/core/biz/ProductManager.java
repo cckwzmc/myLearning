@@ -23,14 +23,12 @@ public interface ProductManager {
 	 * 
 	 * @param page
 	 *            查询页数
-	 * @param pageSize
-	 *            分页大小
 	 * @param catCode
 	 *            分类编码
 	 * @return
 	 * @throws ManagerException
 	 */
-	Page<ProductForm> getProductInfoByCatCode(Integer page, Integer pageSize, String catCode) throws ManagerException;
+	Page<ProductForm> getProductInfoByCatCode(Integer page, String catCode) throws ManagerException;
 
 	/**
 	 * 根据商品ID查询商品明细.
