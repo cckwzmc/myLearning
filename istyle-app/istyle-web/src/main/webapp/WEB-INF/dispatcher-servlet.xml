@@ -17,7 +17,7 @@
 		</property>
 	</bean>
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
-	<context:component-scan base-package="com.toney.istyle.mvc.controller" />
+	<context:component-scan base-package="com.toney.istyle.mvc" />
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<mvc:annotation-driven validator="validator" />
@@ -52,7 +52,7 @@
 				</props>
 			</property>
 		</bean>
-		<bean id="authorizationInterceptor" class="com.toney.web.commons.interceptor.AuthorizationInterceptor">
+		<bean id="authorizationInterceptor" class="com.toney.istyle.mvc.interceptor.AuthorizationInterceptor">
 			<property name="validators">
 				<list>
 					<ref bean="dummyValidator" />
@@ -61,10 +61,10 @@
 		</bean>
 	</mvc:interceptors>
 
-	<bean id="exceptionResolver" class="com.toney.web.commons.handler.SimpleWebMappingExceptionResolver">
+	<bean id="exceptionResolver" class="com.toney.istyle.mvc.resolver.SimpleWebMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
-				<prop key="com.toney.core.exception.XsAppBaseException">error/exception</prop>
+				<prop key="com.toney.istyle.exception.IstyleBaseException">error/exception</prop>
 			</props>
 		</property>
 		<property name="statusCodes">
@@ -88,19 +88,29 @@
 		<property name="defaultContentType" value="text/html" />
 
 		<!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
-		<property name="mediaTypes">
-			<map>
-				<entry key="json" value="application/json" />
-				<entry key="jsonp" value="application/javascript" />
-			</map>
+		<property name="contentNegotiationManager">
+			<bean class="org.springframework.web.accept.ContentNegotiationManager">
+				<constructor-arg>
+					<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+						<constructor-arg>
+							<map>
+								<entry key="json" value="application/json" />
+								<entry key="jsonp" value="application/javascript" />
+								<entry key="xml" value="application/xml" />
+							</map>
+						</constructor-arg>
+					</bean>
+				</constructor-arg>
+			</bean>
 		</property>
+
 		<property name="defaultViews">
 			<list>
 				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
 					<property name="modelKey" value="data" />
 					<property name="extractValueFromSingleKeyModel" value="true" />
 				</bean>
-				<bean class="com.toney.web.commons.view.MappingJacksonJsonpView">
+				<bean class="com.toney.istyle.mvc.view.MappingJacksonJsonpView">
 					<property name="modelKey" value="data" />
 					<property name="extractValueFromSingleKeyModel" value="true" />
 				</bean>
@@ -117,12 +127,12 @@
 	<bean id="staticModel" factory-bean="beansWrapper" factory-method="getStaticModels" />
 
 	<bean id="userAuthInfoHolderModel" factory-bean="staticModel" factory-method="get">
-		<constructor-arg type="java.lang.String" value="com.toney.web.commons.utils.UserAuthInfoHolder" />
+		<constructor-arg type="java.lang.String" value="com.toney.istyle.mvc.util.UserAuthInfoHolder" />
 	</bean>
 
-	<bean id="global_param" class="com.toney.web.commons.freemarker.SiteGlobalTag" />
+	<!-- <bean id="global_param" class="com.toney.web.commons.freemarker.SiteGlobalTag" /> -->
 	<!-- FreeMarker Configurer and View Resolver -->
-	<bean id="freemarkerConfig" class="com.toney.web.commons.freemarker.FreeMarkerConfigurerExt">
+	<bean id="freemarkerConfig" class="com.toney.istyle.mvc.freemaker.FreeMarkerConfigurerExt">
 		<property name="templateLoaderPath" value="/WEB-INF/views/" />
 		<property name="freemarkerSettings">
 			<props>
@@ -138,7 +148,7 @@
 			<map>
 				<entry key="xml_escape" value-ref="fmXmlEscape" />
 				<entry key="userAuthInfoHolder" value-ref="userAuthInfoHolderModel" />
-				<entry key="global_param" value-ref="global_param" />
+				<!-- <entry key="global_param" value-ref="global_param" /> -->
 			</map>
 		</property>
 	</bean>
