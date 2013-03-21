@@ -329,6 +329,17 @@
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>${bonecp.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -494,6 +505,7 @@
 		<jdbc.version>5.1.6</jdbc.version>
 		<ehcache.version>2.6.5</ehcache.version>
 		<project.version>1.0.0</project.version>
+		<bonecp.version>0.7.1.RELEASE</bonecp.version>
 		<!-- mybatis settings -->
 		<mybatis.version>3.1.1</mybatis.version>
 		<mybatis-spring.version>1.1.1</mybatis-spring.version>
