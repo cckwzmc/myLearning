@@ -45,8 +45,11 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- Activates scanning of @Service -->
-	<context:component-scan base-package="com.toney.istyle.core.biz" />
-	<context:component-scan base-package="com.toney.istyle.core.service" />
+<!-- 	<context:component-scan base-package="com.toney.istyle.core.biz" />
+	<context:component-scan base-package="com.toney.istyle.core.system" />
+	<context:component-scan base-package="com.toney.istyle.core.user" />
+	<context:component-scan base-package="com.toney.istyle.core.product" /> -->
+	<context:component-scan base-package="com.toney.istyle.core" />
 
 </beans>
 

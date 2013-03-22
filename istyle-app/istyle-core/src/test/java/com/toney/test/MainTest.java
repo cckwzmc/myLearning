@@ -20,6 +20,8 @@ public class MainTest {
 		System.out.println(" a=" + test.a + " a1=" + test.a1 + " a2=" + test.a2);
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("m", "m");
+		Integer a=null;
+		System.out.println(a.intValue());
 	}
 
 }

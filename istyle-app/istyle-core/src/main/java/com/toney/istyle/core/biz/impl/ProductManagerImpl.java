@@ -4,20 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mysql.jdbc.Constants;
+import com.toney.istyle.bo.AreaBO;
 import com.toney.istyle.bo.ProductBO;
+import com.toney.istyle.bo.ProductClickBO;
+import com.toney.istyle.bo.ProductPicBO;
 import com.toney.istyle.commons.Page;
 import com.toney.istyle.core.biz.ProductManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.core.service.ProductQueryServcie;
-import com.toney.istyle.core.service.ProductStatQueryService;
+import com.toney.istyle.core.product.ProductPicQueryService;
+import com.toney.istyle.core.product.ProductQueryServcie;
+import com.toney.istyle.core.product.ProductStatQueryService;
+import com.toney.istyle.core.system.AreaQueryService;
 import com.toney.istyle.dao.ProductDao;
 import com.toney.istyle.form.ProductForm;
+import com.toney.istyle.form.ProductPicForm;
+import com.toney.istyle.form.ProductStatForm;
 
 /**
  *************************************************************** 
@@ -43,6 +53,10 @@ public class ProductManagerImpl implements ProductManager {
 	private ProductQueryServcie productQueryServcie;
 	@Autowired
 	private ProductStatQueryService productStatQueryService;
+	@Autowired
+	private ProductPicQueryService productPicQueryService;
+	@Autowired
+	AreaQueryService areaQueryService;
 
 	@Override
 	public Page<ProductForm> getProductInfoByCatCode(Integer page, String catCode) throws ManagerException {
@@ -53,7 +67,10 @@ public class ProductManagerImpl implements ProductManager {
 			if (CollectionUtils.isNotEmpty(list)) {
 				List<ProductForm> formList = new ArrayList<ProductForm>();
 				for (ProductBO bo : list) {
-					ProductForm form = wrapProductForm(bo);
+					ProductPicBO productPicBO = productPicQueryService.getProductMasterPic(bo.getId());
+					ProductClickBO statBo = productStatQueryService.getProductClickById(bo.getId());
+					AreaBO areaBO = this.areaQueryService.getAreaById(bo.getCityId());
+					ProductForm form = wrapProductListForm(bo, productPicBO, statBo, areaBO);
 					formList.add(form);
 				}
 				pageForm.setResult(formList);
@@ -80,19 +97,54 @@ public class ProductManagerImpl implements ProductManager {
 	}
 
 	/**
-	 * TODO 待完善.
+	 * TODO 单个商品的封装.
 	 * 
 	 * @param bo
+	 */
+	private void wrapProductForm(ProductBO bo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * TODO 待完善. 列表页
+	 * 
+	 * @param bo
+	 * @param productPicBO
+	 * @param statBo
+	 * @param areaBO
 	 * @return
 	 */
-	private ProductForm wrapProductForm(ProductBO bo) {
+	private ProductForm wrapProductListForm(ProductBO bo, ProductPicBO productPicBO, ProductClickBO statBo, AreaBO areaBO) {
 		ProductForm form = new ProductForm();
 		form.setId(bo.getId());
-		form.setLastUpdate(bo.getLastUpdate());
+		String lastUpdate = "";
+		try {
+			lastUpdate = DateFormatUtils.format(bo.getLastUpdate(), com.toney.istyle.constants.Constants.DATE_FORMAT_STYLE);
+		} catch (Exception e) {
+			LOGGER.error("wrapProductListForm", e);
+		}
+
+		form.setLastUpdate(lastUpdate);
 		form.setProduceCode(bo.getProduceCode());
 		form.setProductName(bo.getProductName());
 		form.setProductUrl(bo.getProductUrl());
 		form.setPlatformCode(bo.getPlatformCode());
+		form.setCityName(areaBO.getName());
+		form.setDescription(bo.getDescription());
+		List<ProductPicForm> list = new ArrayList<ProductPicForm>();
+		ProductPicForm picForm = new ProductPicForm();
+		picForm.setUrl(productPicBO.getUrl());
+		picForm.setHeight(productPicBO.getHeight());
+		picForm.setWidth(productPicBO.getWidth());
+		list.add(picForm);
+		form.setProductPicForm(list);
+		ProductStatForm clickForm = new ProductStatForm();
+		clickForm.setTotalClick(statBo.getTotalClick());
+		clickForm.setCommentNumber(statBo.getCommentNumber());
+		clickForm.setLikeNumber(statBo.getLikeNumber());
+		clickForm.setRecommendNumber(statBo.getRecommendNumber());
+		form.setProductStatForm(clickForm);
 		return form;
 	}
 
