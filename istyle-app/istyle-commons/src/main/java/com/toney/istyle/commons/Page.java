@@ -14,7 +14,7 @@ public class Page<T> {
 	public static final int DEFAULT_PAGESIZE = 25;
 
 	// 分页参数
-	protected int pageNo = 1;
+	protected Integer pageNo = 1;
 
 	protected int pageSize = DEFAULT_PAGESIZE;
 	private int totalPages = 10;
@@ -39,17 +39,18 @@ public class Page<T> {
 	/**
 	 * 获得当前页的页号,序号从1开始,默认为1.
 	 */
-	public int getPageNo() {
+	public Integer getPageNo() {
 		return pageNo;
 	}
 
 	/**
 	 * 设置当前页的页号,序号从1开始,低于1时自动调整为1.
 	 */
-	public void setPageNo(final int pageNo) {
+	public void setPageNo(final Integer pageNo) {
+		Integer pageNoTmp=pageNo;
 		this.pageNo = pageNo;
-		if (pageNo < 1) {
-			this.pageNo = 1;
+		if(pageNoTmp==null||pageNo < 1) {
+			this.pageNo=1;
 		} else if (this.pageNo >= this.totalPages) {
 			this.pageNo = pageNo;
 		}

@@ -87,6 +87,17 @@ public class UserModule extends BaseObject {
 	 * 
 	 * 
 	 */
+	
+	private Short regType;
+	
+	public Short getRegType() {
+		return regType;
+	}
+
+	public void setRegType(Short regType) {
+		this.regType = regType;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -257,7 +268,7 @@ public class UserModule extends BaseObject {
 	@Override
 	public String toString() {
 		return "UserModule [id=" + id + ", userName=" + userName + ", password=" + password + ", nickName=" + nickName + ", mobile=" + mobile + ", createDate=" + createDate
-				+ ", status=" + status + "]";
+				+ ", status=" + status + ", regType=" + regType + "]";
 	}
 
 	@Override
@@ -269,6 +280,7 @@ public class UserModule extends BaseObject {
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((regType == null) ? 0 : regType.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
@@ -307,6 +319,11 @@ public class UserModule extends BaseObject {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
+			return false;
+		if (regType == null) {
+			if (other.regType != null)
+				return false;
+		} else if (!regType.equals(other.regType))
 			return false;
 		if (status == null) {
 			if (other.status != null)

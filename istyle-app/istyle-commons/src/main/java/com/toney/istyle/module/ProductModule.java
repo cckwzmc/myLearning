@@ -105,6 +105,25 @@ public class ProductModule extends BaseObject {
 	 */
 	private Integer catCode;
 
+	private Integer cityId;
+	private String description;
+
+	public Integer getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Integer getCatCode() {
 		return catCode;
 	}

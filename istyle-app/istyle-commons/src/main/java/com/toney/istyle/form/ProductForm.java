@@ -1,6 +1,7 @@
 package com.toney.istyle.form;
 
 import java.util.Date;
+import java.util.List;
 
 import com.toney.istyle.commons.BaseObject;
 
@@ -37,11 +38,11 @@ public class ProductForm extends BaseObject {
 
 	private String userName;
 
-	private Date lastUpdate;
-
+	private String lastUpdate;
+	private String description;
 	private Short status;
-
-	private ProductPicForm productPicForm;
+	private String cityName;
+	private List<ProductPicForm> productPicForm;
 	private ProductStatForm productStatForm;
 
 	/**
@@ -56,6 +57,22 @@ public class ProductForm extends BaseObject {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
 	}
 
 	public void setId(Long id) {
@@ -110,11 +127,11 @@ public class ProductForm extends BaseObject {
 		this.userName = userName;
 	}
 
-	public Date getLastUpdate() {
+	public String getLastUpdate() {
 		return lastUpdate;
 	}
 
-	public void setLastUpdate(Date lastUpdate) {
+	public void setLastUpdate(String lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
 
@@ -142,11 +159,11 @@ public class ProductForm extends BaseObject {
 		this.categoryForm = categoryForm;
 	}
 
-	public ProductPicForm getProductPicForm() {
+	public List<ProductPicForm> getProductPicForm() {
 		return productPicForm;
 	}
 
-	public void setProductPicForm(ProductPicForm productPicForm) {
+	public void setProductPicForm(List<ProductPicForm> productPicForm) {
 		this.productPicForm = productPicForm;
 	}
 
@@ -163,6 +180,8 @@ public class ProductForm extends BaseObject {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((categoryForm == null) ? 0 : categoryForm.hashCode());
+		result = prime * result + ((cityName == null) ? 0 : cityName.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastUpdate == null) ? 0 : lastUpdate.hashCode());
 		result = prime * result + ((onsale == null) ? 0 : onsale.hashCode());
@@ -191,6 +210,16 @@ public class ProductForm extends BaseObject {
 			if (other.categoryForm != null)
 				return false;
 		} else if (!categoryForm.equals(other.categoryForm))
+			return false;
+		if (cityName == null) {
+			if (other.cityName != null)
+				return false;
+		} else if (!cityName.equals(other.cityName))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -258,8 +287,8 @@ public class ProductForm extends BaseObject {
 	@Override
 	public String toString() {
 		return "ProductForm [id=" + id + ", produceCode=" + produceCode + ", platformCode=" + platformCode + ", platformName=" + platformName + ", productName=" + productName
-				+ ", onsale=" + onsale + ", userName=" + userName + ", lastUpdate=" + lastUpdate + ", status=" + status + ", productPicForm=" + productPicForm
-				+ ", productStatForm=" + productStatForm + ", productUrl=" + productUrl + ", categoryForm=" + categoryForm + "]";
+				+ ", onsale=" + onsale + ", userName=" + userName + ", lastUpdate=" + lastUpdate + ", description=" + description + ", status=" + status + ", cityName=" + cityName
+				+ ", productPicForm=" + productPicForm + ", productStatForm=" + productStatForm + ", productUrl=" + productUrl + ", categoryForm=" + categoryForm + "]";
 	}
 
 }

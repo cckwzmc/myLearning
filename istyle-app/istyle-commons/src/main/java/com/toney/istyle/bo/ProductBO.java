@@ -42,6 +42,9 @@ public class ProductBO implements Serializable {
 
 	private Short status;
 
+	private String description;
+	private Integer cityId;
+
 	/**
 	 * 商品的URL
 	 */
@@ -51,6 +54,23 @@ public class ProductBO implements Serializable {
 	 * 类目
 	 */
 	private Integer catCode;
+	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
 
 	/**
 	 * @return the id
@@ -217,28 +237,21 @@ public class ProductBO implements Serializable {
 		this.catCode = catCode;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "ProductBO [id=" + id + ", produceCode=" + produceCode + ", platformCode=" + platformCode + ", productName=" + productName + ", onsale=" + onsale + ", uploadUid="
-				+ uploadUid + ", lastUpdate=" + lastUpdate + ", createDate=" + createDate + ", status=" + status + ", productUrl=" + productUrl + ", catCode=" + catCode + "]";
+				+ uploadUid + ", lastUpdate=" + lastUpdate + ", createDate=" + createDate + ", status=" + status + ", description=" + description + ", cityId=" + cityId
+				+ ", productUrl=" + productUrl + ", catCode=" + catCode + "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((catCode == null) ? 0 : catCode.hashCode());
+		result = prime * result + ((cityId == null) ? 0 : cityId.hashCode());
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastUpdate == null) ? 0 : lastUpdate.hashCode());
 		result = prime * result + ((onsale == null) ? 0 : onsale.hashCode());
@@ -251,11 +264,6 @@ public class ProductBO implements Serializable {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -270,10 +278,20 @@ public class ProductBO implements Serializable {
 				return false;
 		} else if (!catCode.equals(other.catCode))
 			return false;
+		if (cityId == null) {
+			if (other.cityId != null)
+				return false;
+		} else if (!cityId.equals(other.cityId))
+			return false;
 		if (createDate == null) {
 			if (other.createDate != null)
 				return false;
 		} else if (!createDate.equals(other.createDate))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
 			return false;
 		if (id == null) {
 			if (other.id != null)

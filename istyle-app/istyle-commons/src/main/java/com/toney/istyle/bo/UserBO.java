@@ -6,6 +6,7 @@ import java.util.Date;
 /**
  *************************************************************** 
  * <p>
+ * 
  * @CLASS :UserBo.java
  * @DESCRIPTION : 用户业务层实体
  * @AUTHOR :toney.li
@@ -32,6 +33,16 @@ public class UserBO implements Serializable {
 	private Date createDate;
 
 	private Short status;
+
+	private Short regType;
+
+	public Short getRegType() {
+		return regType;
+	}
+
+	public void setRegType(Short regType) {
+		this.regType = regType;
+	}
 
 	public Long getId() {
 		return id;
@@ -83,7 +94,8 @@ public class UserBO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserBo [id=" + id + ", userName=" + userName + ", nickName=" + nickName + ", mobile=" + mobile + ", createDate=" + createDate + ", status=" + status + "]";
+		return "UserBO [id=" + id + ", userName=" + userName + ", nickName=" + nickName + ", mobile=" + mobile + ", createDate=" + createDate + ", status=" + status + ", regType="
+				+ regType + "]";
 	}
 
 	@Override
@@ -94,6 +106,7 @@ public class UserBO implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
+		result = prime * result + ((regType == null) ? 0 : regType.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
@@ -127,6 +140,11 @@ public class UserBO implements Serializable {
 			if (other.nickName != null)
 				return false;
 		} else if (!nickName.equals(other.nickName))
+			return false;
+		if (regType == null) {
+			if (other.regType != null)
+				return false;
+		} else if (!regType.equals(other.regType))
 			return false;
 		if (status == null) {
 			if (other.status != null)
