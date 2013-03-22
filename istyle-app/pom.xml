@@ -480,7 +480,7 @@
 		<!-- Application settings -->
 		<java.version>1.6</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>3.2.0.RELEASE</spring.version>
+		<spring.version>3.1.2.RELEASE</spring.version>
 
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.configuration.version>1.8</commons.configuration.version>
