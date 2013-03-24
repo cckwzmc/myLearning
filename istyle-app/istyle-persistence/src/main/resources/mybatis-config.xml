@@ -18,6 +18,7 @@
 		<typeAlias alias="productClickModule" type="com.toney.istyle.module.ProductClickModule" />
 		<typeAlias alias="categoryModule" type="com.toney.istyle.module.CategoryModule" />
 		<typeAlias alias="appConfigModule" type="com.toney.istyle.module.AppConfigModule" />
+		<typeAlias alias="areaModule" type="com.toney.istyle.module.AreaModule" />
 	</typeAliases>
 	<!-- <mappers> <mapper resource="sqlmaps/UserSQL.xml" /> </mappers> -->
 </configuration>

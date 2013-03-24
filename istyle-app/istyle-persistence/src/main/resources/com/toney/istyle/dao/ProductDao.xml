@@ -13,10 +13,12 @@
 		<result column="STATUS" property="status" />
 		<result column="PRODUCT_URL" property="productUrl" />
 		<result column="CAT_CODE" property="catCode" />
-	</resultMap>
+		<result column="DESCRIPTION" property="description" />
+		<result column="CITY_ID" property="cityId" />
+	</resultMap>		
 	<sql id="Base_Column_List">
 		ID, PRODUCE_CODE, PLATFORM_CODE, PRODUCT_NAME, ONSALE, UPLOAD_UID, LAST_UPDATE, CREATE_DATE,
-		STATUS,PRODUCT_URL,CAT_CODE
+		STATUS,PRODUCT_URL,CAT_CODE,DESCRIPTION,CITY_ID
 	</sql>
 	<select id="countByCondiction" resultType="java.lang.Integer" parameterType="com.toney.istyle.module.ProductModule">
 		select
@@ -81,7 +83,7 @@
 		PRODUCT_NAME, ONSALE,
 		UPLOAD_UID,
 		LAST_UPDATE, CREATE_DATE,
-		STATUS,PRODUCT_URL,CAT_CODE
+		STATUS,PRODUCT_URL,CAT_CODE,DESCRIPTION,CITY_ID
 		)
 		values
 		(
@@ -90,7 +92,7 @@
 		#{onsale},
 		#{uploadUid},
 		#{lastUpdate}, #{createDate},
-		#{status},#{productUrl},#{catCode}
+		#{status},#{productUrl},#{catCode},#{description},#{cityId}
 		)
 	</insert>
 	<update id="updateById" parameterType="com.toney.istyle.module.ProductModule">

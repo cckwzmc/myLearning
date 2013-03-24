@@ -41,5 +41,12 @@ public interface UserDao {
 	 * @return
 	 */
 	UserModule selectByUnAndPwd(String userName, String password);
+	
+	/**
+	 * 根据注册类型查询用户.
+	 * @param regType
+	 * @return
+	 */
+	List<UserModule> selectByRegType(Short regType) ;
 
 }

@@ -9,9 +9,10 @@
 		<result column="MOBILE" property="mobile"/>
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="STATUS" property="status"/>
+		<result column="REG_TYPE" property="regType"/>
 	</resultMap>
 	<sql id="Base_Column_List">
-		ID, USER_NAME, PASSWORD, NICK_NAME, MOBILE, CREATE_DATE, STATUS
+		ID, USER_NAME, PASSWORD, NICK_NAME, MOBILE, CREATE_DATE, STATUS,REG_TYPE
 	</sql>
 	<select id="selectById" resultMap="userResult" parameterType="java.lang.Long">
 		select
@@ -31,17 +32,26 @@
 		from T_USER
 		where USER_NAME  =  #{userName}
 	</select>
+	
+	<select id="selectByRegType" resultMap="userResult" parameterType="java.lang.Short">
+		select
+		<include refid="Base_Column_List" />
+		from T_USER
+		where REG_TYPE  =  #{regType}
+	</select>
+	
 	<delete id="deleteById" parameterType="java.lang.Long">
 		delete from T_USER
 		where ID = #{id}
 	</delete>
+	
 	<insert id="insert" parameterType="com.toney.istyle.module.UserModule">
 		insert into T_USER ( USER_NAME, PASSWORD,
 		NICK_NAME, MOBILE, CREATE_DATE,
-		STATUS)
+		STATUS,REG_TYPE)
 		values (
 		#{userName}, #{password},
 		#{nickName}, #{mobile}, #{createDate},
-		#{status})
+		#{status},#{regType})
 	</insert>
 </mapper>

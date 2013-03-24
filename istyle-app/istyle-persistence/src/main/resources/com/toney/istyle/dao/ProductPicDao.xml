@@ -24,7 +24,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from T_PRD_PICTURE
-		where PID = #{pid} or ID=#{pid,jdbcType=BIGIINT}
+		where PID = #{pid} or ID=#{pid}
 	</select>
 	<delete id="deleteById" parameterType="java.lang.Long">
 		delete from T_PRD_PICTURE
