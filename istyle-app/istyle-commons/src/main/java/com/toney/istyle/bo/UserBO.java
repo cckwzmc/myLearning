@@ -26,7 +26,7 @@ public class UserBO implements Serializable {
 
 	private String userName;
 
-	private Long nickName;
+	private String nickName;
 
 	private String mobile;
 
@@ -60,11 +60,11 @@ public class UserBO implements Serializable {
 		this.userName = userName;
 	}
 
-	public Long getNickName() {
+	public String getNickName() {
 		return nickName;
 	}
 
-	public void setNickName(Long nickName) {
+	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
 

@@ -36,8 +36,7 @@ public class ProductForm extends BaseObject {
 
 	private Short onsale;
 
-	private String userName;
-
+	private String nickName;
 	private String lastUpdate;
 	private String description;
 	private Short status;
@@ -119,12 +118,12 @@ public class ProductForm extends BaseObject {
 		this.onsale = onsale;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getNickName() {
+		return nickName;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	public String getLastUpdate() {
@@ -184,6 +183,7 @@ public class ProductForm extends BaseObject {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastUpdate == null) ? 0 : lastUpdate.hashCode());
+		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
 		result = prime * result + ((onsale == null) ? 0 : onsale.hashCode());
 		result = prime * result + ((platformCode == null) ? 0 : platformCode.hashCode());
 		result = prime * result + ((platformName == null) ? 0 : platformName.hashCode());
@@ -193,7 +193,6 @@ public class ProductForm extends BaseObject {
 		result = prime * result + ((productStatForm == null) ? 0 : productStatForm.hashCode());
 		result = prime * result + ((productUrl == null) ? 0 : productUrl.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
 
@@ -230,6 +229,11 @@ public class ProductForm extends BaseObject {
 			if (other.lastUpdate != null)
 				return false;
 		} else if (!lastUpdate.equals(other.lastUpdate))
+			return false;
+		if (nickName == null) {
+			if (other.nickName != null)
+				return false;
+		} else if (!nickName.equals(other.nickName))
 			return false;
 		if (onsale == null) {
 			if (other.onsale != null)
@@ -276,18 +280,13 @@ public class ProductForm extends BaseObject {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
-		if (userName == null) {
-			if (other.userName != null)
-				return false;
-		} else if (!userName.equals(other.userName))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "ProductForm [id=" + id + ", produceCode=" + produceCode + ", platformCode=" + platformCode + ", platformName=" + platformName + ", productName=" + productName
-				+ ", onsale=" + onsale + ", userName=" + userName + ", lastUpdate=" + lastUpdate + ", description=" + description + ", status=" + status + ", cityName=" + cityName
+				+ ", onsale=" + onsale + ", nickName=" + nickName + ", lastUpdate=" + lastUpdate + ", description=" + description + ", status=" + status + ", cityName=" + cityName
 				+ ", productPicForm=" + productPicForm + ", productStatForm=" + productStatForm + ", productUrl=" + productUrl + ", categoryForm=" + categoryForm + "]";
 	}
 
