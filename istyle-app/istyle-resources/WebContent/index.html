@@ -245,11 +245,7 @@
 		<div class="img">
 			<div class="show">
 				<a class="ztag" href="http://istyle.163.com/looks/583645-531976/"><img class="ztag" onerror="this.src='http://i.bst.126.net/rsc/img/pic404_1.png';"
-					src="http://static.toney.com/istyle/673569619286450297.jpg" alt="lace :D" title="lace :D"></a><span class="shownum ztag"><a class="num"
-					onclick="g_item_click(1,531976);" href="/looks/583645-531976/" style="left: 257px; top: 240px;">1</a><a class="num" onclick="g_item_click(1,531976);"
-					href="/looks/583645-531976/" style="left: 208px; top: 403px;">2</a><a class="num" onclick="g_item_click(1,531976);" href="/looks/583645-531976/"
-					style="left: 221px; top: 342px;">3</a><a class="num" onclick="g_item_click(1,531976);" href="/looks/583645-531976/" style="left: 205px; top: 452px;">4</a></span><a
-					class="events ztag" href="#" style="display: none;">Events</a>
+					src="http://www.istyle.com/{{=it.productPicForm[0].url}}" height="320" width="320" alt="{{=it.productName}}" title="{{=it.productName}}"></a>
 			</div>
 		</div>
 		<div class="txt">
@@ -261,18 +257,20 @@
 					</div>
 					<div class="title">
 						<h2>
-							<a href="http://istyle.163.com/looks/583645-531976/" class="ztag s-fc2">lace :D</a>
+							<a href="http://istyle.163.com/looks/583645-531976/" class="ztag s-fc2">{{=it.productName}}</a>
 						</h2>
 						<p class="s-fc3">
-							<a href="http://istyle.163.com/583645/" class="ztag s-fc5 seps">赵小茜茜茜_5a</a><a href="http://istyle.163.com/search.do?city=%25E8%258B%25B1%25E5%259B%25BD"
-								class="ztag s-fc2">英国</a>&nbsp;于<span class="ztag">2013/03/07</span>发布
+							<a href="http://istyle.163.com/583645/" class="ztag s-fc5 seps">{{=it.nickName}}</a><a href="http://istyle.163.com/search.do?city=%25E8%258B%25B1%25E5%259B%25BD"
+								class="ztag s-fc2">{{=it.cityName}}</a>&nbsp;于<span class="ztag">{{=it.lastUpdate}}</span>发布
 						</p>
+						<!--
 						<p class="s-fc3">
 							<span class="m-act ztag"><a href="#" hidefocus="true" class="w-btn w-btn-2">+&nbsp;关注</a><span class="s-fc3 focus" style="display: none;">已关注</span><a
 								href="#" hidefocus="true" style="display: none">&lt;取消</a></span>
-						</p>
+						</p>-->
 					</div>
 				</div>
+				<!--
 				<div class="ztag parts">
 					<p>
 						<label><span class="num">1</span><a href="/search.do?brandid=60" class="s-fc5 seps">Topshop</a><a class="s-fc2" href="/search.do?typeid=7">针织衫</a></label>
@@ -288,22 +286,42 @@
 						<label><span class="num">4</span><a href="/search.do?brandid=99" class="s-fc5 seps">Zara</a><a class="s-fc2" href="/search.do?typeid=25">高跟鞋</a></label>
 					</p>
 				</div>
-				<div class="ztag info js-hide">
+				-->
+			   {{ if(!!it.description){ }}
+				<div class="ztag info">
 					<p>
-						<span class="qtl">&nbsp;</span><span class="ztag"></span> &nbsp;<a href="#" class="ztag s-fc5">查看详细</a>&nbsp;<span class="qtr">&nbsp;</span>
+						<span class="qtl">&nbsp;</span><span class="ztag">{{=it.description}}</span> &nbsp;<a href="#" class="ztag s-fc5">查看详细</a>&nbsp;<span class="qtr">&nbsp;</span>
 					</p>
 				</div>
+ 				{{ } }}
 			</div>
 		</div>
 	</li>
     </script>
     <script type="text/javascript">
-		    var data = {
-				title: "My title",
-				name: "My name"
-			};
-		    var pagefn = doT.template(document.getElementById('p-c-l-html').text, undefined, null);
-			$('#content-list').html(pagefn(data));
+    	$.ajax({
+    		type:"GET",
+    		url:"http://www.istyle.com:8080/istyle-web/list?format=json&catCode=01&callback?",
+    		dataType:"jsonp",
+    		jsonp:"callback",
+    		cache:true,
+    		success:function(response){
+    			if(!response){
+    				
+    			}else if(!!response.data.productList){
+    				var detail=response.data.productList;
+    				var pagefn = doT.template(document.getElementById('p-c-l-html').text, undefined, null);
+    				for(var i=0;i<detail.length;i++){
+    					var d=detail[i];
+    					$('#content-list').html(pagefn(d));
+    				}
+    			}
+    		},
+    		error:function(response){
+    			alert(response);
+    		}
+    	});
+		    
     </script>
   </body>
 </html>
