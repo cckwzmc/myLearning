@@ -7,8 +7,6 @@ import org.slf4j.ext.XLoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import com.toney.istyle.constants.Constants;
-import com.toney.istyle.form.UserAuthInfo;
 import com.toney.istyle.mvc.annotation.AuthLevel;
 
 /**

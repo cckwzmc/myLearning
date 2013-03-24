@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.toney.istyle.core.biz.AppConfigManager;
+import com.toney.istyle.core.biz.AreaManager;
 import com.toney.istyle.core.exception.ManagerException;
 
 /**
@@ -40,8 +41,10 @@ public class StartUpListener implements ServletContextListener {
 		LOGGER.info("~~~~~~~~~~~~~~~初始化缓存数据~~~~~~~~~~~~~~~~~~~~");
 		// 系统缓存
 		AppConfigManager appConfigManager = ctx.getBean("appConfigManager", AppConfigManager.class);
+		AreaManager areaManager = ctx.getBean("areaManager", AreaManager.class);
 		try {
 			appConfigManager.getAppConfigs();
+			areaManager.getAreaList();
 		} catch (ManagerException e) {
 			LOGGER.error("加载系统配置失败",e);
 			System.exit(0);

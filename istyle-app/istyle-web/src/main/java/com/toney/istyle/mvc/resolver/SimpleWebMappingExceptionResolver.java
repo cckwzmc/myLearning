@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
-import com.toney.istyle.constants.Constants;
 import com.toney.istyle.constants.ErrConstants;
 import com.toney.istyle.exception.IstyleBaseException;
+import com.toney.istyle.mvc.constants.Constants;
 import com.toney.istyle.mvc.util.RequestUtil;
 import com.toney.istyle.util.JsonPackageWrapper;
 

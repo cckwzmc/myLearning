@@ -3,11 +3,12 @@ package com.toney.istyle.mvc.freemaker;
 import java.io.File;
 import java.io.IOException;
 
-import freemarker.cache.TemplateLoader;
-import freemarker.cache.FileTemplateLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.ui.freemarker.SpringTemplateLoader;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+
+import freemarker.cache.FileTemplateLoader;
+import freemarker.cache.TemplateLoader;
 
 /**
  *************************************************************** 

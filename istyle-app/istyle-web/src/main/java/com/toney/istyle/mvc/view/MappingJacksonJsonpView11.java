@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
-public class MappingJacksonJsonpView extends MappingJacksonJsonView {
+public class MappingJacksonJsonpView11 extends MappingJacksonJsonView {
 
     /**
      * Default content type. Overridable as bean property.
@@ -38,12 +38,10 @@ public class MappingJacksonJsonpView extends MappingJacksonJsonView {
                 response.getOutputStream().write(");".getBytes());
                 response.setContentType("application/javascript");
             }
-
             else {
                 super.render(model, request, response);
             }
         }
-
         else {
             super.render(model, request, response);
         }

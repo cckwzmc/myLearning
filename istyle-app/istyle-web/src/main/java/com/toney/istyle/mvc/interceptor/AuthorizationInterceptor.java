@@ -14,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.toney.istyle.constants.Constants;
 import com.toney.istyle.core.biz.AppConfigManager;
 import com.toney.istyle.form.UserAuthInfo;
 import com.toney.istyle.mvc.annotation.AuthLevel;
 import com.toney.istyle.mvc.annotation.AuthRequired;
+import com.toney.istyle.mvc.constants.Constants;
 import com.toney.istyle.mvc.interceptor.validator.AuthorizationValidator;
 import com.toney.istyle.mvc.util.RequestUtil;
 import com.toney.istyle.mvc.util.UserAuthInfoHolder;
@@ -64,7 +64,7 @@ public class AuthorizationInterceptor extends AnnotationBasedIgnoreableIntercept
 			return true;
 		}
 
-		MDC.put(Constants.MDC_SSOUSERID_KEY, "-");
+		MDC.put(Constants.MDC_USERID_KEY, "-");
 
 		HandlerMethod method = (HandlerMethod) handler;
 		AuthLevel level = getAuthLevelFromHandler(method);
@@ -124,7 +124,7 @@ public class AuthorizationInterceptor extends AnnotationBasedIgnoreableIntercept
 	private void clearUserAuthInfo(HttpServletRequest request) {
 		// 经测试确认，Controller出异常时会调用afterCompletionInternal
 		UserAuthInfoHolder.clear();
-		MDC.remove(Constants.MDC_SSOUSERID_KEY);
+		MDC.remove(Constants.MDC_USERID_KEY);
 	}
 
 	private String composeLoginURL(HttpServletRequest request) throws Exception{

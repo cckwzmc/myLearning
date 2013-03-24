@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.toney.istyle.commons.Page;
-import com.toney.istyle.constants.Constants;
 import com.toney.istyle.constants.ErrConstants;
 import com.toney.istyle.core.biz.ProductManager;
 import com.toney.istyle.form.ProductForm;
 import com.toney.istyle.form.SearchForm;
 import com.toney.istyle.form.SortForm;
+import com.toney.istyle.mvc.constants.Constants;
 import com.toney.istyle.util.JsonPackageWrapper;
 
 /**
@@ -39,7 +39,7 @@ public class ProductController {
 	@Autowired
 	ProductManager productManager;
 
-	@RequestMapping(value = "list", method = RequestMethod.GET)
+	@RequestMapping(value = "list", method = RequestMethod.GET,produces="application/json",params="format=json")
 	public String list(Integer pageNo, String catCode, Model model){
 		JsonPackageWrapper json = new JsonPackageWrapper();
 		try {

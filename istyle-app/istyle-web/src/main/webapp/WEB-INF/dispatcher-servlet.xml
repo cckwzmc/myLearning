@@ -86,34 +86,25 @@
 
 		<!-- 在没有扩展名时即: "/user/1" 时的默认展现形式 -->
 		<property name="defaultContentType" value="text/html" />
-
+		
 		<!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
-		<property name="contentNegotiationManager">
-			<bean class="org.springframework.web.accept.ContentNegotiationManager">
-				<constructor-arg>
-					<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
-						<constructor-arg>
-							<map>
-								<entry key="json" value="application/json" />
-								<entry key="jsonp" value="application/javascript" />
-								<entry key="xml" value="application/xml" />
-							</map>
-						</constructor-arg>
-					</bean>
-				</constructor-arg>
-			</bean>
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+				<entry key="jsonp" value="application/javascript" />
+			</map>
 		</property>
-
+		
 		<property name="defaultViews">
 			<list>
-				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+				<bean class="com.toney.istyle.mvc.view.MappingJacksonJsonView">
 					<property name="modelKey" value="data" />
 					<property name="extractValueFromSingleKeyModel" value="true" />
 				</bean>
-				<bean class="com.toney.istyle.mvc.view.MappingJacksonJsonpView">
+				<!-- <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
 					<property name="modelKey" value="data" />
 					<property name="extractValueFromSingleKeyModel" value="true" />
-				</bean>
+				</bean> -->
 			</list>
 		</property>
 
@@ -130,7 +121,7 @@
 		<constructor-arg type="java.lang.String" value="com.toney.istyle.mvc.util.UserAuthInfoHolder" />
 	</bean>
 
-	<!-- <bean id="global_param" class="com.toney.web.commons.freemarker.SiteGlobalTag" /> -->
+	<bean id="appConfigs" class="com.toney.istyle.mvc.freemarker.tag.AppConfigsTag" />
 	<!-- FreeMarker Configurer and View Resolver -->
 	<bean id="freemarkerConfig" class="com.toney.istyle.mvc.freemaker.FreeMarkerConfigurerExt">
 		<property name="templateLoaderPath" value="/WEB-INF/views/" />
@@ -148,7 +139,7 @@
 			<map>
 				<entry key="xml_escape" value-ref="fmXmlEscape" />
 				<entry key="userAuthInfoHolder" value-ref="userAuthInfoHolderModel" />
-				<!-- <entry key="global_param" value-ref="global_param" /> -->
+				<entry key="appConfigs" value-ref="appConfigs" />
 			</map>
 		</property>
 	</bean>
