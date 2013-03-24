@@ -25,6 +25,7 @@ import com.toney.istyle.form.ProductForm;
  */
 public class ProductManagerTestCase extends BaseManagerTestCase {
 
+	private static final String PRODUCT_CACHE = "productCache";
 	private static final XLogger LOGGER = XLoggerFactory.getXLogger(ProductManagerTestCase.class);
 	@Autowired
 	ProductManager productManager;
@@ -38,7 +39,7 @@ public class ProductManagerTestCase extends BaseManagerTestCase {
 			for (int i = 0; i < 10000; i++) {
 				bo = this.productManager.getProductInfoById(a);
 			}
-			super.cacheManagerInfo();
+			super.cacheManagerInfo(PRODUCT_CACHE);
 			System.out.println("~~~~~~~~~~~~" + (System.currentTimeMillis() - start) + "~~~~~~~~~~~~~");
 		} catch (ManagerException e) {
 			LOGGER.error("", e);
@@ -57,7 +58,7 @@ public class ProductManagerTestCase extends BaseManagerTestCase {
 		} catch (ManagerException e) {
 			LOGGER.error("查询失败", e);
 		}
-		super.cacheManagerInfo();
+		super.cacheManagerInfo(PRODUCT_CACHE);
 		Assert.assertNotNull(page);
 	}
 }

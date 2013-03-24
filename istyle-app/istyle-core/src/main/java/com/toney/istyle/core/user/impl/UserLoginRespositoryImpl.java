@@ -11,6 +11,7 @@ import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import com.toney.istyle.bo.UserBO;
 import com.toney.istyle.bo.UserLoginedBO;
@@ -48,6 +49,7 @@ public class UserLoginRespositoryImpl implements UserLoginRespository {
 	 */
 	@Override
 	public UserBO getLoginUser(String userName, String password) throws RespositoryException {
+		password=DigestUtils.md5DigestAsHex(DigestUtils.md5DigestAsHex(password.getBytes()).getBytes());
 		UserModule module = this.userDao.selectByUnAndPwd(userName, password);
 		if (module != null) {
 			UserBO bo = new UserBO();

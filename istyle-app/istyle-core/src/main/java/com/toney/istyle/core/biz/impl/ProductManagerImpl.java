@@ -16,6 +16,7 @@ import com.toney.istyle.bo.AreaBO;
 import com.toney.istyle.bo.ProductBO;
 import com.toney.istyle.bo.ProductClickBO;
 import com.toney.istyle.bo.ProductPicBO;
+import com.toney.istyle.bo.UserBO;
 import com.toney.istyle.commons.Page;
 import com.toney.istyle.core.biz.ProductManager;
 import com.toney.istyle.core.exception.ManagerException;
@@ -24,6 +25,7 @@ import com.toney.istyle.core.product.ProductPicQueryService;
 import com.toney.istyle.core.product.ProductQueryServcie;
 import com.toney.istyle.core.product.ProductStatQueryService;
 import com.toney.istyle.core.system.AreaQueryService;
+import com.toney.istyle.core.user.UserQueryService;
 import com.toney.istyle.dao.ProductDao;
 import com.toney.istyle.form.ProductForm;
 import com.toney.istyle.form.ProductPicForm;
@@ -57,6 +59,8 @@ public class ProductManagerImpl implements ProductManager {
 	private ProductPicQueryService productPicQueryService;
 	@Autowired
 	AreaQueryService areaQueryService;
+	@Autowired
+	UserQueryService userQueryService;
 
 	@Override
 	public Page<ProductForm> getProductInfoByCatCode(Integer page, String catCode) throws ManagerException {
@@ -66,11 +70,12 @@ public class ProductManagerImpl implements ProductManager {
 			List<ProductBO> list = this.productQueryServcie.getProductPage(pageForm.getFirstRecord(), pageForm.getPageSize(), catCode + "%");
 			if (CollectionUtils.isNotEmpty(list)) {
 				List<ProductForm> formList = new ArrayList<ProductForm>();
-				for (ProductBO bo : list) {
-					ProductPicBO productPicBO = productPicQueryService.getProductMasterPic(bo.getId());
-					ProductClickBO statBo = productStatQueryService.getProductClickById(bo.getId());
-					AreaBO areaBO = this.areaQueryService.getAreaById(bo.getCityId());
-					ProductForm form = wrapProductListForm(bo, productPicBO, statBo, areaBO);
+				for (ProductBO productBO : list) {
+					ProductPicBO productPicBO = productPicQueryService.getProductMasterPic(productBO.getId());
+					ProductClickBO statBo = productStatQueryService.getProductClickById(productBO.getId());
+					AreaBO areaBO = this.areaQueryService.getAreaById(productBO.getCityId());
+					UserBO userBO=this.userQueryService.getUserById(productBO.getUploadUid());
+					ProductForm form = wrapProductListForm(productBO, productPicBO, statBo, areaBO,userBO);
 					formList.add(form);
 				}
 				pageForm.setResult(formList);
@@ -113,9 +118,10 @@ public class ProductManagerImpl implements ProductManager {
 	 * @param productPicBO
 	 * @param statBo
 	 * @param areaBO
+	 * @param userBO 
 	 * @return
 	 */
-	private ProductForm wrapProductListForm(ProductBO bo, ProductPicBO productPicBO, ProductClickBO statBo, AreaBO areaBO) {
+	private ProductForm wrapProductListForm(ProductBO bo, ProductPicBO productPicBO, ProductClickBO statBo, AreaBO areaBO, UserBO userBO) {
 		ProductForm form = new ProductForm();
 		form.setId(bo.getId());
 		String lastUpdate = "";
@@ -130,7 +136,7 @@ public class ProductManagerImpl implements ProductManager {
 		form.setProductName(bo.getProductName());
 		form.setProductUrl(bo.getProductUrl());
 		form.setPlatformCode(bo.getPlatformCode());
-		form.setCityName(areaBO.getName());
+		form.setCityName(areaBO.getName());	
 		form.setDescription(bo.getDescription());
 		List<ProductPicForm> list = new ArrayList<ProductPicForm>();
 		ProductPicForm picForm = new ProductPicForm();
@@ -145,6 +151,7 @@ public class ProductManagerImpl implements ProductManager {
 		clickForm.setLikeNumber(statBo.getLikeNumber());
 		clickForm.setRecommendNumber(statBo.getRecommendNumber());
 		form.setProductStatForm(clickForm);
+		form.setNickName(userBO.getNickName());
 		return form;
 	}
 

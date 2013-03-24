@@ -24,11 +24,15 @@ public interface UserRespository {
 	void deleteCache(String userName) throws RespositoryException;
 
 	/**
-	 * 根据用户的注册类型查询用户.
+	 * 根据用户的注册类型查询用户.直接从DB中查询，只给后台管理使用.
 	 * @param regType
 	 * @return
 	 * @throws RespositoryException
 	 */
 	List<UserBO> getUserByRegType(Short regType) throws RespositoryException;
+
+	UserBO getUserById(Long id)  throws RespositoryException;
+
+	void deleteCache(Long id) throws RespositoryException;
 
 }

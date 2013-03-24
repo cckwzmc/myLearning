@@ -67,8 +67,8 @@ public abstract class BaseManagerTestCase extends AbstractTransactionalJUnit4Spr
 		return ConvertUtil.convertBundleToMap(rb);
 	}
 
-	protected void cacheManagerInfo() {
-		Cache cache = this.cacheManager.getCacheManager().getCache("productCache");
+	protected void cacheManagerInfo(String cacheName) {
+		Cache cache = this.cacheManager.getCacheManager().getCache(cacheName);
 		// 得到缓存中的对象数
 		LOGGER.info("~~~~~~cache.getSize~~~" + cache.getSize());
 		// 得到缓存对象占用内存的大小
