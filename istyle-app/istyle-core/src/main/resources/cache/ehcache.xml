@@ -16,15 +16,15 @@
 	<cache name="productPicCache" maxElementsInMemory="10000" maxElementsOnDisk="1000" eternal="false" diskSpoolBufferSizeMB="20" timeToLiveSeconds="36000"
 		timeToIdleSeconds="1800" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" />
 	<cache name="platformCache" maxElementsInMemory="50" maxElementsOnDisk="50" eternal="false" diskSpoolBufferSizeMB="2" timeToLiveSeconds="3600000"
-		timeToIdleSeconds="1800" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" />
+		timeToIdleSeconds="1800" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" statistics="true" />
 	<cache name="categoryCache" maxElementsInMemory="500" maxElementsOnDisk="500" eternal="false" diskSpoolBufferSizeMB="5" timeToLiveSeconds="3600000"
-		timeToIdleSeconds="1800" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" />
+		timeToIdleSeconds="1800" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" statistics="true" />
 	<cache name="productClickCache" maxElementsInMemory="20000" eternal="false" timeToLiveSeconds="360000" timeToIdleSeconds="1800" overflowToDisk="false"
 		memoryStoreEvictionPolicy="LFU" />
 	<cache name="userCache" maxElementsInMemory="10000" maxElementsOnDisk="1000" eternal="false" diskSpoolBufferSizeMB="10" timeToLiveSeconds="3600000"
-		timeToIdleSeconds="1800" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" statistics="true" />
+		timeToIdleSeconds="1800" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" statistics="true" statistics="true" />
 	<!-- 用户已登录信息，用cache代理缓存,当用户闲置30分钟后销毁缓存,缓存的存活无限期. -->
 	<cache name="userLoginedCache" maxElementsInMemory="2000000" eternal="false" timeToLiveSeconds="36000000000" timeToIdleSeconds="1800"
-		overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />
-	<cache name="areaCache" maxElementsInMemory="10000" maxElementsOnDisk="10000" eternal="true" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" />
+		overflowToDisk="false" memoryStoreEvictionPolicy="LFU" statistics="true" />
+	<cache name="areaCache" maxElementsInMemory="10000" maxElementsOnDisk="10000" eternal="true" overflowToDisk="true" memoryStoreEvictionPolicy="LFU" statistics="true" />
 </ehcache>

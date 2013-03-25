@@ -1,6 +1,9 @@
 package com.toney.istyle.core.cache;
 
+import java.util.List;
+
 import com.toney.istyle.core.exception.ServiceException;
+import com.toney.istyle.module.PlatformModule;
 
 /**
  *************************************************************** 
@@ -22,4 +25,10 @@ public interface CacheService<T> {
 	String testCacheable(String test);
 
 	void cacheManagerInfo(String cacheName);
+
+	void putObj(String cacheName, String cacheKey, Object obj);
+
+	Object getObj(String cacheName, String cacheKey);
+	
+	void remove(String cacheName,String key);
 }

@@ -84,4 +84,30 @@ public class CacheServiceImpl<T> implements CacheService<T> {
 		LOGGER.info("~~~~~~cache.getStatistics().getCacheMisses()~~~" + cache.getStatistics().getCacheMisses());
 		LOGGER.info("~~~~~~cache.getStatistics()~~~" + cache.getStatistics());
 	}
+
+	@Override
+	public void putObj(String cacheName, String cacheKey, Object obj) {
+		Cache cache = this.cacheManager.getCacheManager().getCache(cacheName);
+		Element element = new Element(cacheKey, obj);
+		cache.put(element);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.toney.istyle.core.cache.CacheService#getObj(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Object getObj(String cacheName, String cacheKey) {
+		Cache cache = this.cacheManager.getCacheManager().getCache(cacheName);
+		Element element = cache.get(cacheKey);
+		if (element != null) {
+			return element.getObjectValue();
+		}
+		return null;
+	}
+
+	@Override
+	public void remove(String cacheName, String key) {
+		Cache cache = this.cacheManager.getCacheManager().getCache(cacheName);
+		cache.remove(key);
+	}
 }
