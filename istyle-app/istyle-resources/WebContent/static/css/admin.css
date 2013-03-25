@@ -1,0 +1,93 @@
+body {
+	margin: auto; /* center in viewport */
+	width: 100%;
+}
+
+html,body,div,span,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,address,big,cite,code,del,em,font,img,ins,small,strong,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend
+	{
+	margin: 0;
+	padding: 0;
+}
+
+#menu-main {
+	width: 150px;
+	margin: 10px 10px 0px 20px;
+}
+
+#main-container {
+	
+}
+
+/**左边菜单**/
+#menu-main .mc {
+	border: solid #E6E6E6;
+	border-width: 0 1px 1px;
+	overflow: hidden;
+}
+
+#menu-main dl dt {
+	position: relative;
+	margin-bottom: -1px;
+	height: 27px;
+	padding: 0 12px;
+	border: solid #E6E6E6;
+	border-width: 1px 0;
+	background: url(img/bg_jdleft.jpg) #E6E6E6 repeat-x 0 -30px;
+	font-weight: bold;
+	line-height: 27px;
+	cursor: pointer;
+}
+
+#menu-main dd {
+	padding: 4px 0 5px 15px;
+}
+
+/** left menu end**/
+
+/** product manager**/
+#prd-menu{
+	width:120px;
+	margin: 10px 10px 0px 0px;
+}
+#prd-menu .mn{
+	border: solid #7DA4CF;
+	border-width: 1px 1px 1px;
+	overflow: hidden;
+}
+
+#prd-menu dl dt {
+	position: relative;
+	margin-bottom: -1px;
+	height: 27px;
+	padding: 0 12px;
+	border: solid #E6E6E6;
+	border-width: 1px 0;
+	font-weight: bold;
+	line-height: 27px;
+	cursor: pointer;
+}
+#prd-menu dd {
+	padding: 4px 0 5px 15px;
+}
+
+/** table css**/
+.tb-void{overflow:hidden;margin-right:-1px;margin-left:-1px;margin-bottom:-1px}
+.tb-line{border-top:1px solid #E6E6E6}
+.tb-void table{border-collapse:collapse;border:solid #E6E6E6;border-width:0 1px 1px 1px;} 
+.tb-void th{background:#f7f7f7 url(i/tb-th.2011.gif) repeat-x;height:31px;color:#666666;font-weight:normal;}
+.tb-void td{border:solid #E6E6E6;border-width:1px 0 0 1px;padding:5px 4px;text-align:center}
+.tb-void-01 th{background-image:none;}
+.tb-rows th,.tb-rows td{text-align:left;padding-left:10px;}
+.tb-rows td{border-left-width:0;}
+.tb-none th,.tb-none td{height:30px;}
+
+/**tab css**/
+.tab{padding-left:5px;border-bottom:2px solid #ffccaa;z-index:2;}
+.tab li{float:left;background:url(i/tab.gif) 0 -28px;line-height:29px;margin-right:3px;text-align:center;height:27px;padding:0 10px;position:relative;overflow:hidden;}
+.tab li s,.tab li b{width:3px;height:27px;background:url(i/tab.gif);position:absolute;top:0;}
+.tab li s{left:0;}.tab li b{right:0;background-position:-7px 0;}.tab li.curr{background-position:0 -85px;}.tab li.curr s{background-position:0 -57px;}
+.tab li.curr b{background-position:-7px -57px;}
+.tab li.curr,.tab li.curr a:link,.tab li.curr a:visited{color:#ff6600;font-weight:bold;}
+.tab li a:link,.tab li a:visited{color:#333333;}
+
+
