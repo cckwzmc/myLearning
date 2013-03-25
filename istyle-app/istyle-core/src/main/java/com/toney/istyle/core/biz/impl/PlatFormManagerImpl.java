@@ -79,7 +79,6 @@ public class PlatFormManagerImpl implements PlatFormManager {
 	 */
 	@Override
 	public PlatFormForm getPlatFormById(Long id) throws ManagerException {
-		
 		try {
 			PlatFormBO	bo= this.platFormQueryService.getPlatFormById(id);
 			if(bo!=null){
