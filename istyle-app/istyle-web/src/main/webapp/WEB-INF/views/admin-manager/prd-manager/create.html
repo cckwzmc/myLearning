@@ -2,16 +2,48 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>商品管理--新增商品</title>
+<title>商品管理商品---创建商品</title>
 <#include "../commons/head.html"/>
 </head>
 <body>
-	<div>
-		<ul>
-			<li>基本信息</li>
-			<li>图片信息</li>
-			<li>统计信息</li>
-		</ul>	
+	<div class="yui3-g">
+		<div class="yui3-u" id="menu-main"><#include "../commons/admin-menu.html"></div>
+		<div class="yui3-u" id="prd-menu">
+			<#include "create-menu.html"/>
+		</div>
+		<div class="yui3-u">
+			<h2>创建商品--录入商品基本信息</h2>
+			<form id="mainForm" action="${rc.getContextPath()}/admin-manager/product/doCreateBaese" method="POST">
+				<div>
+					<ul>
+						<li>商品名称</li>
+						<li>商品平台商品:<select id="platFormCode" name="platFormCode">
+													<option value="-1">请选择商品平台商</option>
+													
+												 </select>
+						</li>
+						<li>
+							 商品类型:<select id="catCode" name="catCode">
+							 	<option value="-1">请选择商品类型</option>
+							 </select>
+						</li>
+						<li>
+							商品链接:<input size="200" type="text"/>
+						</li>
+						<li>	
+							商品上传用户:<select id="uploadUid" name="uploadUid">
+												 	<option value="-1">请选择上传用户</option>
+											    </select>
+						</li>
+						<li>商品所在城市:<select id="cityId" name="cityId">
+												 	<option value="-1">请选择商品所在城市</option>
+											    </select>
+						</li>
+						<li></li>
+					</ul>
+				</div>
+			</form>
+		</div>
 	</div>
 </body>
 </html>
