@@ -3,8 +3,8 @@ package com.toney.istyle.core.system.impl;
 import java.util.List;
 import java.util.Map;
 
-import com.toney.istyle.bo.AreaBO;
 import com.toney.istyle.core.exception.RespositoryException;
+import com.toney.istyle.module.AreaModule;
 
 /**
  *************************************************************** 
@@ -17,12 +17,10 @@ import com.toney.istyle.core.exception.RespositoryException;
  *       </p>
  **************************************************************** 
  */
-interface AreaRespository {
+public interface AreaRespository {
 
-	Map<Integer, AreaBO> getAreaMapAll() throws RespositoryException;
+	Map<Integer, AreaModule> getAreaMapAll() throws RespositoryException;
 
-	List<AreaBO> getAreaListAll() throws RespositoryException;
-
-	void refresh() throws RespositoryException;
+	List<AreaModule> getAreaListAll() throws RespositoryException;
 
 }

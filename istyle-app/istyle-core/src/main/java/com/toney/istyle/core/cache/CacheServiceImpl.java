@@ -10,8 +10,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.core.exception.ServiceException;
-
 /**
  *************************************************************** 
  * <p>

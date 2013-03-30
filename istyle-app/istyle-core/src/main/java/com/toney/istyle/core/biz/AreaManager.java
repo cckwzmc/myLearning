@@ -3,8 +3,8 @@ package com.toney.istyle.core.biz;
 import java.util.List;
 import java.util.Map;
 
-import com.toney.istyle.bo.AreaBO;
 import com.toney.istyle.core.exception.ManagerException;
+import com.toney.istyle.module.AreaModule;
 
 /**
  *************************************************************** 
@@ -19,8 +19,14 @@ import com.toney.istyle.core.exception.ManagerException;
  */
 public interface AreaManager {
 
-	List<AreaBO> getAreaList() throws ManagerException;
+	List<AreaModule> getAreaList() throws ManagerException;
 
-	Map<Integer, AreaBO> getAreaMap() throws ManagerException;
+	Map<Integer, AreaModule> getAreaMap() throws ManagerException;
+
+	List<AreaModule> getTopArea() throws ManagerException;
+
+	AreaModule getAreaById(Integer cityId) throws ManagerException;
+
+	List<AreaModule> getChildrenArea(Integer id) throws ManagerException;
 
 }

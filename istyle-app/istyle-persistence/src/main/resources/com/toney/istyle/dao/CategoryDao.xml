@@ -26,7 +26,7 @@
 	<select id="selectAll" resultMap="categoryResult" resultType="java.util.List">
 		select
 		<include refid="Base_Column_List" />
-		from T_CATEGORY
+		from T_CATEGORY order by id desc;
 	</select>
 	<delete id="deleteById" parameterType="java.lang.Long">
 		delete from T_CATEGORY

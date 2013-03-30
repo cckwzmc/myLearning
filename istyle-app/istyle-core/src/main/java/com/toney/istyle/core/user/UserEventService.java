@@ -1,7 +1,7 @@
 package com.toney.istyle.core.user;
 
-import com.toney.istyle.bo.UserBO;
 import com.toney.istyle.core.exception.ServiceException;
+import com.toney.istyle.module.UserModule;
 
 /**
  *************************************************************** 
@@ -24,6 +24,6 @@ public interface UserEventService {
 	 * @param password
 	 * @throws ServiceException
 	 */
-	void create(UserBO userBO, String password) throws ServiceException;
+	void create(UserModule module, String password) throws ServiceException;
 	
 }

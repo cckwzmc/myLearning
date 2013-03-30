@@ -70,6 +70,33 @@ html,body,div,span,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,address,big,cite,
 	padding: 4px 0 5px 15px;
 }
 
+/**------------prd-main----------------***/
+#prd-main{
+}
+
+#prd-main h3{
+	background-color: orange;
+	font-weight: bold;
+	font-size: 14pt;
+}
+#prd-main ul{
+	padding:15px 0px 0px 15px;
+}
+#prd-main ul li{
+	list-style-type: none;
+	border-bottom: 1px #000305 dashed;
+	margin-bottom: 5px;
+	padding-bottom: 5px;
+	padding :4px 0px 5px 0px;
+}
+#prd-main ul li lebal.title{
+	font-size: 14px;
+	font-weight: bold;
+	text-align: right;
+	width: 90px;
+}
+
+
 /** table css**/
 .tb-void{overflow:hidden;margin-right:-1px;margin-left:-1px;margin-bottom:-1px}
 .tb-line{border-top:1px solid #E6E6E6}

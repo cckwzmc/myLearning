@@ -52,7 +52,7 @@ public class ProductController {
 		} catch (Exception e) {
 			json.setScode(JsonPackageWrapper.S_ERR);
 			json.setSmsg(e.getMessage());
-			json.setErrorCode(ErrConstants.GERNERAL_ERR_CODE);
+			json.setErrorCode(ErrConstants.GENERAL_ERR_CODE);
 			LOGGER.error("",e);
 		}
 		model.addAttribute(Constants.JSON_MODEL_DATA, json);

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.toney.istyle.commons.BaseObject;
+import com.toney.istyle.module.CategoryModule;
 
 /**
  *************************************************************** 
@@ -52,7 +53,7 @@ public class ProductForm extends BaseObject {
 	/**
 	 * 类目
 	 */
-	private CategoryForm categoryForm;
+	private CategoryModule categoryForm;
 
 	public Long getId() {
 		return id;
@@ -150,11 +151,11 @@ public class ProductForm extends BaseObject {
 		this.productUrl = productUrl;
 	}
 
-	public CategoryForm getCategoryForm() {
+	public CategoryModule getCategoryForm() {
 		return categoryForm;
 	}
 
-	public void setCategoryForm(CategoryForm categoryForm) {
+	public void setCategoryForm(CategoryModule categoryForm) {
 		this.categoryForm = categoryForm;
 	}
 

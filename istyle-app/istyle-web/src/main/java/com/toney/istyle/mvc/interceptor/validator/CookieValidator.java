@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.toney.istyle.bo.UserLoginedBO;
 import com.toney.istyle.core.biz.UserLoginManager;
-import com.toney.istyle.core.biz.UserRegisterManager;
 import com.toney.istyle.form.UserAuthInfo;
-import com.toney.istyle.mvc.admin.UserManagerController;
 import com.toney.istyle.mvc.annotation.AuthLevel;
 import com.toney.istyle.mvc.constants.Constants;
 
@@ -78,7 +76,7 @@ public class CookieValidator implements AuthorizationValidator {
 		try {
 			UserLoginedBO userLoginedBo = this.userLoginManager.checkLoginedState(user.getTokenId(), user.getUserId(), user.getUserName());
 			if (userLoginedBo != null && userLoginedBo.getUserBo().getId() != null && userLoginedBo.getUserBo().getId().longValue() == user.getUserId().longValue()
-					&& userLoginedBo.getUserBo().getRegType() == UserRegisterManager.REG_TYPE_1) {
+					&& userLoginedBo.getUserBo().getRegType() == com.toney.istyle.core.constants.Constants.REG_TYPE_1) {
 				return true;
 			}
 		} catch (Exception e) {

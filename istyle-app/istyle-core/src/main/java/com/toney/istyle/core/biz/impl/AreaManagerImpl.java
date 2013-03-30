@@ -1,5 +1,6 @@
 package com.toney.istyle.core.biz.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +9,11 @@ import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.bo.AreaBO;
 import com.toney.istyle.core.biz.AreaManager;
 import com.toney.istyle.core.exception.ManagerException;
-import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.core.system.AreaQueryService;
+import com.toney.istyle.core.exception.RespositoryException;
+import com.toney.istyle.core.system.impl.AreaRespository;
+import com.toney.istyle.module.AreaModule;
 
 /**
  *************************************************************** 
@@ -31,24 +32,82 @@ public class AreaManagerImpl implements AreaManager {
 	private static final XLogger LOGGER = XLoggerFactory.getXLogger(AreaManagerImpl.class);
 
 	@Autowired
-	private AreaQueryService areaQueryService;
+	AreaRespository areaRespository;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.toney.istyle.core.biz.AreaManager#getAreaList()
+	 */
 	@Override
-	public List<AreaBO> getAreaList() throws ManagerException {
+	public List<AreaModule> getAreaList() throws ManagerException {
 		try {
-			return this.areaQueryService.getAreaListAll();
-		} catch (ServiceException e) {
+			List<AreaModule> boList = this.areaRespository.getAreaListAll();
+			return boList;
+		} catch (RespositoryException e) {
 			LOGGER.error("查询地市信息失败", e);
 			throw new ManagerException(e);
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.toney.istyle.core.biz.AreaManager#getAreaMap()
+	 */
 	@Override
-	public Map<Integer,AreaBO> getAreaMap() throws ManagerException {
+	public Map<Integer, AreaModule> getAreaMap() throws ManagerException {
 		try {
-			return this.areaQueryService.getAreaMapAll();
-		} catch (ServiceException e) {
+			Map<Integer, AreaModule> boMap = this.areaRespository.getAreaMapAll();
+			return boMap;
+		} catch (RespositoryException e) {
 			LOGGER.error("查询地市信息失败", e);
 			throw new ManagerException(e);
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.toney.istyle.core.biz.AreaManager#getTopArea()
+	 */
+	@Override
+	public List<AreaModule> getTopArea() throws ManagerException {
+		List<AreaModule> moduleList = this.getAreaList();
+		List<AreaModule> topList = new ArrayList<AreaModule>();
+		for (AreaModule module : moduleList) {
+			if (module.getParentId() == null || module.getParentId() == 0) {
+				topList.add(module);
+			}
+		}
+		return topList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.toney.istyle.core.biz.AreaManager#getAreaById(java.lang.Integer)
+	 */
+	@Override
+	public AreaModule getAreaById(Integer cityId) throws ManagerException {
+		org.springframework.util.Assert.notNull(cityId);
+		return this.getAreaMap().get(cityId);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.toney.istyle.core.biz.AreaManager#getChildrenArea(java.lang.Integer)
+	 */
+	@Override
+	public List<AreaModule> getChildrenArea(Integer id) throws ManagerException {
+		org.springframework.util.Assert.notNull(id);
+		List<AreaModule> moduleList = this.getAreaList();
+		List<AreaModule> topList = new ArrayList<AreaModule>();
+		for (AreaModule module : moduleList) {
+			if (module.getParentId() != null && module.getParentId() == id.intValue()) {
+				topList.add(module);
+			}
+		}
+		return topList;
+	}
+
 }

@@ -20,7 +20,7 @@ public class ErrConstants {
 	/**
 	 * 一般性错误
 	 */
-	public static final String GERNERAL_ERR_CODE = "-9999";
+	public static final String GENERAL_ERR_CODE = "-9999";
 
 	public final static String GENERAL_UNKNOWN_ERR_MSG = "未知错误";
 

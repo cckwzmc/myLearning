@@ -7,9 +7,9 @@ import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.bo.PlatFormBO;
 import com.toney.istyle.core.exception.RespositoryException;
 import com.toney.istyle.core.exception.ServiceException;
+import com.toney.istyle.module.PlatformModule;
 
 /**
  *************************************************************** 
@@ -36,7 +36,7 @@ public class PlatFormQueryServiceImpl implements PlatFormQueryService {
 	 * @see com.toney.istyle.core.platform.PlatFormQueryService#getPlatFormAll()
 	 */
 	@Override
-	public List<PlatFormBO> getPlatFormAll() throws ServiceException {
+	public List<PlatformModule> getPlatFormAll() throws ServiceException {
 		try {
 			return this.platFormRespository.getPlatFormAll();
 		} catch (RespositoryException e) {
@@ -53,7 +53,7 @@ public class PlatFormQueryServiceImpl implements PlatFormQueryService {
 	 * .lang.Long)
 	 */
 	@Override
-	public PlatFormBO getPlatFormById(Long id) throws ServiceException {
+	public PlatformModule getPlatFormById(Long id) throws ServiceException {
 		try {
 			return this.platFormRespository.getPlatFormById(id);
 		} catch (RespositoryException e) {

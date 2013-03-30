@@ -13,6 +13,7 @@ import com.toney.istyle.core.biz.UserRegisterManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.mvc.annotation.AuthLevel;
 import com.toney.istyle.mvc.annotation.AuthRequired;
+import com.toney.istyle.util.JsonPackageWrapper;
 
 /**
  *************************************************************** 
@@ -34,6 +35,7 @@ public class UserManagerController {
 	
 	@Autowired
 	UserRegisterManager userRegisterManager;
+	@Autowired
 	
 	@RequestMapping(value="doRegister",method=RequestMethod.POST)
 	public String adminAddUser(String userName, String password, String regType, String nickName, Model model) throws Exception {
@@ -53,8 +55,16 @@ public class UserManagerController {
 		model.addAttribute("url", "/admin-manager/user/proxyRegister");
 		return "admin-manager/commons/success-direct";
 	} 
+	
 	@RequestMapping(value="proxyRegister",method=RequestMethod.GET)
 	public String adminProxyRegister(){
 			return "admin-manager/user-manager/register";
 	} 
+	
+	@RequestMapping(value="retain",method=RequestMethod.GET,produces="application/json",params="format=json")
+	public String retainUser(Model model){
+		JsonPackageWrapper json=new JsonPackageWrapper();
+		userRegisterManager.getRetainUserAll();
+		return "";
+	}
 }

@@ -2,8 +2,8 @@ package com.toney.istyle.core.platform;
 
 import java.util.List;
 
-import com.toney.istyle.bo.PlatFormBO;
 import com.toney.istyle.core.exception.ServiceException;
+import com.toney.istyle.module.PlatformModule;
 
 /**
  *************************************************************** 
@@ -18,7 +18,7 @@ import com.toney.istyle.core.exception.ServiceException;
  */
 public interface PlatFormQueryService {
 
-	List<PlatFormBO> getPlatFormAll() throws ServiceException;
+	List<PlatformModule> getPlatFormAll() throws ServiceException;
 	
-	PlatFormBO getPlatFormById(Long id) throws ServiceException;
+	PlatformModule getPlatFormById(Long id) throws ServiceException;
 }

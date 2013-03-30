@@ -3,7 +3,7 @@ package com.toney.istyle.core.biz;
 import java.util.List;
 
 import com.toney.istyle.core.exception.ManagerException;
-import com.toney.istyle.form.PlatFormForm;
+import com.toney.istyle.module.PlatformModule;
 
 /**
  *************************************************************** 
@@ -18,8 +18,8 @@ import com.toney.istyle.form.PlatFormForm;
  */
 public interface PlatFormManager {
 
-	List<PlatFormForm> getPlatFormAll() throws ManagerException;
+	List<PlatformModule> getPlatFormAll() throws ManagerException;
 	
-	PlatFormForm getPlatFormById(Long id) throws ManagerException;
+	PlatformModule getPlatFormById(Long id) throws ManagerException;
 	
 }

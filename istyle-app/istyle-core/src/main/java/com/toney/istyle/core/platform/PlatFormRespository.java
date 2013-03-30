@@ -2,8 +2,8 @@ package com.toney.istyle.core.platform;
 
 import java.util.List;
 
-import com.toney.istyle.bo.PlatFormBO;
 import com.toney.istyle.core.exception.RespositoryException;
+import com.toney.istyle.module.PlatformModule;
 
 /**
  *************************************************************** 
@@ -18,8 +18,8 @@ import com.toney.istyle.core.exception.RespositoryException;
  */
 public interface PlatFormRespository {
 
-	List<PlatFormBO> getPlatFormAll() throws RespositoryException;
+	List<PlatformModule> getPlatFormAll() throws RespositoryException;
 
-	PlatFormBO getPlatFormById(Long id) throws RespositoryException;
+	PlatformModule getPlatFormById(Long id) throws RespositoryException;
 
 }

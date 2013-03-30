@@ -2,8 +2,6 @@ package com.toney.istyle.core.product.impl;
 
 import java.util.List;
 
-import net.sf.cglib.core.CollectionUtils;
-
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

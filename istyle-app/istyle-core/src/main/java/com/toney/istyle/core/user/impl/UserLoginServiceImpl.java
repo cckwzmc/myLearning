@@ -5,7 +5,6 @@ import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.bo.UserBO;
 import com.toney.istyle.bo.UserLoginedBO;
 import com.toney.istyle.core.exception.RespositoryException;
 import com.toney.istyle.core.exception.ServiceException;

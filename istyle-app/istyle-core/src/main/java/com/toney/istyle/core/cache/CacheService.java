@@ -1,9 +1,5 @@
 package com.toney.istyle.core.cache;
 
-import java.util.List;
-
-import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.module.PlatformModule;
 
 /**
  *************************************************************** 

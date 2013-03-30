@@ -1,17 +1,17 @@
 package com.toney.istyle.core.biz.impl;
 
-import java.util.Date;
-
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.bo.UserBO;
 import com.toney.istyle.core.biz.UserRegisterManager;
+import com.toney.istyle.core.constants.Constants;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.ServiceException;
 import com.toney.istyle.core.user.UserEventService;
+import com.toney.istyle.core.user.UserQueryService;
+import com.toney.istyle.module.UserModule;
 
 /**
  *************************************************************** 
@@ -33,6 +33,8 @@ public class UserRegisterManagerImp implements UserRegisterManager {
 	
 	@Autowired
 	UserEventService userEventService;
+	@Autowired
+	UserQueryService userQueryService;
 	
 	/* (non-Javadoc)
 	 * @see com.toney.istyle.core.biz.UserRegisterManager#registerUser(java.lang.String, java.lang.String, java.lang.String)
@@ -47,18 +49,25 @@ public class UserRegisterManagerImp implements UserRegisterManager {
 	 */
 	@Override
 	public void registerUser(String userName, String password, String nickName, Short regType) throws ManagerException {
-		UserBO bo=new UserBO();
-		bo.setUserName(userName);
-		bo.setNickName(nickName);
-		bo.setRegType(regType);
-		if(regType==null||(regType!=REG_TYPE_0&&regType!=REG_TYPE_1)){
-			bo.setRegType(REG_TYPE_2);
+		UserModule module=new UserModule();
+		module.setUserName(userName);
+		module.setNickName(nickName);
+		module.setRegType(regType);
+		if(regType==null||(regType!=Constants.REG_TYPE_0&&regType!=Constants.REG_TYPE_1)){
+			module.setRegType(Constants.REG_TYPE_2);
 		}
 		try {
-			this.userEventService.create(bo, password);
+			this.userEventService.create(module, password);
 		} catch (ServiceException e) {
 			LOGGER.error("注册新用户失败,,userName={},nickName={},regType={}",new Object[]{userName,nickName,regType}, e);
 			throw new ManagerException(e);
 		}
 	}
+
+	@Override
+	public void getRetainUserAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -1,25 +1,15 @@
 package com.toney.istyle.core.user.impl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
-import com.toney.istyle.bo.UserBO;
 import com.toney.istyle.core.cache.CacheService;
 import com.toney.istyle.core.exception.RespositoryException;
-import com.toney.istyle.core.exception.ServiceException;
 import com.toney.istyle.dao.UserDao;
 import com.toney.istyle.module.UserModule;
 
@@ -46,29 +36,19 @@ public class UserRespositoryImpl implements UserRespository {
 	UserDao userDao;
 
 	@Autowired
-	CacheService<UserBO> cacheService;
+	CacheService<UserModule> cacheService;
 
 	@Override
-	public UserBO getUserByUserName(String userName) throws RespositoryException {
-		try {
-			UserBO cacheBo = cacheService.get(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + userName);
-			if (cacheBo != null) {
-				return cacheBo;
-			}
-			UserModule module = this.userDao.selectByUserName(userName);
-			if (module != null) {
-				UserBO bo = new UserBO();
-				BeanUtils.copyProperties(bo, module);
-				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + userName, bo);
-				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_Id + bo.getId(), bo);
-				return bo;
-			}
-		} catch (IllegalAccessException e) {
-			LOGGER.error("根据用户名查询用户信息失败 userName:{}", userName, e);
-			throw new RespositoryException(e);
-		} catch (InvocationTargetException e) {
-			LOGGER.error("根据用户名查询用户信息失败 userName:{}", userName, e);
-			throw new RespositoryException(e);
+	public UserModule getUserByUserName(String userName) throws RespositoryException {
+		UserModule cacheModule = cacheService.get(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + userName);
+		if (cacheModule != null) {
+			return cacheModule;
+		}
+		UserModule module = this.userDao.selectByUserName(userName);
+		if (module != null) {
+			cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + userName, module);
+			cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_Id + module.getId(), module);
+			return module;
 		}
 		return null;
 	}
@@ -93,51 +73,19 @@ public class UserRespositoryImpl implements UserRespository {
 	 * .lang.Short)
 	 */
 	@Override
-	public List<UserBO> getUserByRegType(Short regType) throws RespositoryException {
+	public List<UserModule> getUserByRegType(Short regType) throws RespositoryException {
 		List<UserModule> mList = this.userDao.selectByRegType(regType);
-		if (CollectionUtils.isNotEmpty(mList)) {
-			List<UserBO> boList = new ArrayList<UserBO>();
-			try {
-				for (UserModule m : mList) {
-					UserBO bo = new UserBO();
-					BeanUtils.copyProperties(bo, m);
-					boList.add(bo);
-				}
-			} catch (IllegalAccessException e) {
-				LOGGER.error("根据用户注册类型查询用户信息失败 regType:{}", regType, e);
-				throw new RespositoryException(e);
-			} catch (InvocationTargetException e) {
-				LOGGER.error("根据用户注册类型查询用户信息失败 regType:{}", regType, e);
-				throw new RespositoryException(e);
-			}
-			return boList;
-		}
-		return null;
+		return mList;
 	}
 
 	@Override
-	public UserBO getUserById(Long id) throws RespositoryException {
-		UserBO cacheBo = cacheService.get(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + id);
+	public UserModule getUserById(Long id) throws RespositoryException {
+		UserModule cacheBo = cacheService.get(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + id);
 		if (cacheBo != null) {
 			return cacheBo;
 		}
 		UserModule module = this.userDao.selectById(id);
-		if (module != null) {
-			UserBO bo = new UserBO();
-			try {
-				BeanUtils.copyProperties(bo, module);
-				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + bo.getUserName(), bo);
-				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_Id + bo.getId(), bo);
-				return bo;
-			} catch (IllegalAccessException e) {
-				LOGGER.error("根据用户ID查询用户信息失败 id:{}", id, e);
-				throw new RespositoryException(e);
-			} catch (InvocationTargetException e) {
-				LOGGER.error("根据用户ID查询用户信息失败 id:{}", id, e);
-				throw new RespositoryException(e);
-			}
-		}
-		return null;
+		return module;
 	}
 
 }

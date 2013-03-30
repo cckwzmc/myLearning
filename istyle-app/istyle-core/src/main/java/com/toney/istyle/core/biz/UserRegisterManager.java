@@ -16,19 +16,6 @@ import com.toney.istyle.core.exception.ManagerException;
  */
 public interface UserRegisterManager {
 
-	/**
-	 * 注册类型：0:系统保留用户，1：系统用户 2：普通用户.
-	 */
-	public static final short REG_TYPE_0 = 0;
-	/**
-	 * 注册类型：0:系统保留用户，1：系统用户 2：普通用户.
-	 */
-	public static final short REG_TYPE_1 = 1;
-	/**
-	 * 注册类型：0:系统保留用户，1：系统用户 2：普通用户.
-	 */
-	public static final short REG_TYPE_2 = 2;
-
 	void registerUser(String userName, String password, String nickName) throws ManagerException;
 
 	/**
@@ -41,5 +28,10 @@ public interface UserRegisterManager {
 	 * @throws ManagerException
 	 */
 	void registerUser(String userName, String password, String nickName, Short regType) throws ManagerException;
+
+	/**
+	 * TODO 未实现
+	 */
+	void getRetainUserAll();
 
 }

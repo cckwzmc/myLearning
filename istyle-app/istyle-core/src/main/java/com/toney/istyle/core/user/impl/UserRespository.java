@@ -2,8 +2,8 @@ package com.toney.istyle.core.user.impl;
 
 import java.util.List;
 
-import com.toney.istyle.bo.UserBO;
 import com.toney.istyle.core.exception.RespositoryException;
+import com.toney.istyle.module.UserModule;
 
 /**
  *************************************************************** 
@@ -19,7 +19,7 @@ import com.toney.istyle.core.exception.RespositoryException;
  */
 public interface UserRespository {
 
-	UserBO getUserByUserName(String userName) throws RespositoryException;
+	UserModule getUserByUserName(String userName) throws RespositoryException;
 
 	void deleteCache(String userName) throws RespositoryException;
 
@@ -29,9 +29,9 @@ public interface UserRespository {
 	 * @return
 	 * @throws RespositoryException
 	 */
-	List<UserBO> getUserByRegType(Short regType) throws RespositoryException;
+	List<UserModule> getUserByRegType(Short regType) throws RespositoryException;
 
-	UserBO getUserById(Long id)  throws RespositoryException;
+	UserModule getUserById(Long id)  throws RespositoryException;
 
 	void deleteCache(Long id) throws RespositoryException;
 

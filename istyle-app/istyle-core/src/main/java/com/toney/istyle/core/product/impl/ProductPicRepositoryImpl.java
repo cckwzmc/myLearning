@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.toney.istyle.bo.ProductPicBO;
 import com.toney.istyle.core.exception.ServiceException;
 import com.toney.istyle.dao.ProductPicDao;
-import com.toney.istyle.module.ProductModule;
 import com.toney.istyle.module.ProductPicModule;
 
 /**
