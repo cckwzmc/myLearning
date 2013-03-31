@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/sso-admin-facade/sso-admin-facade.iml" filepath="$PROJECT_DIR$/sso-admin-facade/sso-admin-facade.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sso-app.iml" filepath="$PROJECT_DIR$/sso-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sso-commons/sso-commons.iml" filepath="$PROJECT_DIR$/sso-commons/sso-commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sso-core/sso-core.iml" filepath="$PROJECT_DIR$/sso-core/sso-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sso-facade/sso-facade.iml" filepath="$PROJECT_DIR$/sso-facade/sso-facade.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sso-web/sso-web.iml" filepath="$PROJECT_DIR$/sso-web/sso-web.iml" />
+    </modules>
+  </component>
+</project>
+

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: SSO
+Implementation-Version: 1.0
+Implementation-Vendor-Id: com.toney.sso
+Build-Jdk: 1.6.0_37
+Built-By: toney.li
+Created-By: Maven Integration for Eclipse
+Specification-Title: SSO
+Specification-Version: 1.0
+
