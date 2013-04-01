@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.toney.istyle.dao.UserDao">
+<mapper namespace="com.toney.sso.dao.UserDao">
 	<resultMap id="userResult" type="userModule">
 		<id column="ID" property="id"/>
 		<result column="USER_NAME" property="userName"/>
@@ -45,7 +45,7 @@
 		where ID = #{id}
 	</delete>
 	
-	<insert id="insert" parameterType="com.toney.istyle.module.UserModule">
+	<insert id="insert" parameterType="com.toney.sso.module.UserModule">
 		insert into T_USER ( USER_NAME, PASSWORD,
 		NICK_NAME, MOBILE, CREATE_DATE,
 		STATUS,REG_TYPE)

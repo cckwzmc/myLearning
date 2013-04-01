@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.sso.dao.AppConfigDao">
+	<resultMap id="appConfigResult" type="appConfigModule">
+		<result column="ID" property="id"/>
+		<result column="GROUP_CODE" property="groupCode"/>
+		<result column="ENABLED" property="enabled" />
+		<result column="CFG_KEY" property="cfgKey"/>
+		<result column="CFG_VALUES" property="cfgValues"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="CFG_DESCRIPTION" property="cfgDescription"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, GROUP_CODE, ENABLED, CFG_KEY, CFG_VALUES,CREATE_DATE,CFG_DESCRIPTION
+	</sql>
+	<select id="selectAll" resultMap="appConfigResult" resultType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from T_APPCONFIGS
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from T_APPCONFIGS
+		where ID = #{id}
+	</delete>
+	<insert id="insert" parameterType="com.toney.sso.module.AppConfigModule">
+		insert into T_APPCONFIGS (GROUP_CODE, ENABLED, CFG_KEY, CFG_VALUES,CREATE_DATE,CFG_DESCRIPTION)
+		values (#{groupCode}, #{enabled},#{cfgKey}, #{cfgValues},#{createDate},#{cfgDescription})
+	</insert>
+</mapper>

@@ -7,11 +7,12 @@
 		<!-- changes from the defaults -->
 		<setting name="lazyLoadingEnabled" value="false" />
 		<!-- JdbcType enumeration. Most common are: NULL, VARCHAR and OTHER -->
-		<setting name="jdbcTypeForNull" value="NULL" />	
+		<setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
 	<typeAliases>
 		<typeAlias alias="userLoginModule" type="com.toney.sso.module.UserLoginModule" />
 		<typeAlias alias="userModule" type="com.toney.sso.module.UserModule" />
+		<typeAlias alias="appConfigModule" type="com.toney.sso.module.AppConfigModule" />
 	</typeAliases>
 	<!-- <mappers> <mapper resource="sqlmaps/UserSQL.xml" /> </mappers> -->
 </configuration>

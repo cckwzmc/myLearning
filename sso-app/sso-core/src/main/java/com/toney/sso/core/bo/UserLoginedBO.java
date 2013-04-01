@@ -26,14 +26,14 @@ public class UserLoginedBO implements Serializable {
 	private String ip;
 	private Long userId;
 	private long loginDate;
-	private Short userType;
+	private Integer userType;
 	private long lastSessionDate;
 
-	public Short getUserType() {
+	public Integer getUserType() {
 		return userType;
 	}
 
-	public void setUserType(Short userType) {
+	public void setUserType(Integer userType) {
 		this.userType = userType;
 	}
 
