@@ -50,10 +50,20 @@ public class RegisterDTO implements Serializable {
 	 * 注册类型，手机注册还是邮箱注册.
 	 */
 	private String regType;
-	
+
 	private String ip;
-	
-	
+
+	private Integer userType;
+
+
+	public Integer getUserType() {
+		return userType;
+	}
+
+	public void setUserType(Integer userType) {
+		this.userType = userType;
+	}
+
 	/**
 	 * @return the ip
 	 */
@@ -62,7 +72,8 @@ public class RegisterDTO implements Serializable {
 	}
 
 	/**
-	 * @param ip the ip to set
+	 * @param ip
+	 *            the ip to set
 	 */
 	public void setIp(String ip) {
 		this.ip = ip;
@@ -145,8 +156,7 @@ public class RegisterDTO implements Serializable {
 
 	/**
 	 * @return the regType
-	 * @see SSOConstants 
-	 * 注册类型，手机注册还是邮箱注册.
+	 * @see SSOConstants 注册类型，手机注册还是邮箱注册.
 	 */
 	public String getRegType() {
 		return regType;
@@ -154,9 +164,8 @@ public class RegisterDTO implements Serializable {
 
 	/**
 	 * @param regType
-	 *            the regType to set
-	 *            注册类型，手机注册还是邮箱注册.
-	 * @see SSOConstants           
+	 *            the regType to set 注册类型，手机注册还是邮箱注册.
+	 * @see SSOConstants
 	 */
 	public void setRegType(String regType) {
 		this.regType = regType;

@@ -90,7 +90,7 @@ public class UserModule extends BaseObject {
 
 	private String channelCode;
 
-	private String userType;
+	private Integer userType;
 
 	/**
 	 * @return the channelCode
@@ -107,18 +107,11 @@ public class UserModule extends BaseObject {
 		this.channelCode = channelCode;
 	}
 
-	/**
-	 * @return the userType
-	 */
-	public String getUserType() {
+	public Integer getUserType() {
 		return userType;
 	}
 
-	/**
-	 * @param userType
-	 *            the userType to set
-	 */
-	public void setUserType(String userType) {
+	public void setUserType(Integer userType) {
 		this.userType = userType;
 	}
 

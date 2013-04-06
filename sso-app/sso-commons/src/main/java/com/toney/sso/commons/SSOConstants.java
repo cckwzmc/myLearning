@@ -36,4 +36,6 @@ public class SSOConstants {
 	 */
 	public static final String EMAIL_LOGIN = "M";
 	
+	public static final String ISTYLE_CHANNEL="01";
+	
 }

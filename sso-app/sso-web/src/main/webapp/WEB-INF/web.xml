@@ -53,12 +53,12 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+			<param-value>/WEB-INF/dispatcher-servlet.xml,/WEB-INF/applicationContext-remote.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
-	<servlet>
+	<!-- <servlet>
 		<servlet-name>applicationContext-remote</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
@@ -72,7 +72,7 @@
 		<servlet-name>applicationContext-remote</servlet-name>
 		<url-pattern>/remote/*</url-pattern>
 	</servlet-mapping>
-	
+	 -->
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>

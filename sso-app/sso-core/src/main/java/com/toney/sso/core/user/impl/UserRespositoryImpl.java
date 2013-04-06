@@ -36,7 +36,7 @@ public class UserRespositoryImpl implements UserRespository {
 
 	private static final String CACHE_MANAGER_NAME = "userCache";
 	private static final String CACHE_KEY_USERNAME = "byUserName_";
-	private static final String CACHE_KEY_Id = "byUserId_";
+	private static final String CACHE_KEY_ID = "byUserId_";
 	@Autowired
 	UserDao userDao;
 
@@ -55,7 +55,7 @@ public class UserRespositoryImpl implements UserRespository {
 				UserBO bo = new UserBO();
 				BeanUtils.copyProperties(bo, module);
 				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + userName, bo);
-				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_Id + bo.getId(), bo);
+				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_ID + bo.getId(), bo);
 				return bo;
 			}
 		} catch (IllegalAccessException e) {
@@ -112,7 +112,7 @@ public class UserRespositoryImpl implements UserRespository {
 
 	@Override
 	public UserBO getUserById(Long id) throws RespositoryException {
-		UserBO cacheBo = cacheService.get(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + id);
+		UserBO cacheBo = cacheService.get(CACHE_MANAGER_NAME, CACHE_KEY_ID + id);
 		if (cacheBo != null) {
 			return cacheBo;
 		}
@@ -122,7 +122,7 @@ public class UserRespositoryImpl implements UserRespository {
 			try {
 				BeanUtils.copyProperties(bo, module);
 				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_USERNAME + bo.getUserName(), bo);
-				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_Id + bo.getId(), bo);
+				cacheService.put(CACHE_MANAGER_NAME, CACHE_KEY_ID + bo.getId(), bo);
 				return bo;
 			} catch (IllegalAccessException e) {
 				LOGGER.error("根据用户ID查询用户信息失败 id:{}", id, e);

@@ -27,4 +27,13 @@ public class Constants {
 	 * 注册类型：0:系统保留用户，1：系统用户 2：普通用户.
 	 */
 	public static final int USER_TYPE_2 = 2;
+
+	/**
+	 * 正常用户
+	 */
+	public static final Short Normal_STATUS = 0;
+	/**
+	 * 异常用户
+	 */
+	public static final Short EXCEPTION_STATUS = 1;
 }

@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="uucHessianService" class="com.toney.sso.core.einteface.UucServiceImpl"/>
 	<bean id="ssoHessianService" class="com.toney.sso.core.einteface.SsoServiceImpl"/>
 	<bean id="uucAdminHessianService" class="com.toney.sso.core.einteface.UucAdminServiceImpl"/>
-	<bean name="/ssoService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+	
+	<bean name="/remote/ssoService" class="org.springframework.remoting.caucho.HessianServiceExporter">
 		<property name="service" ref="ssoHessianService"></property>
 		<property name="serviceInterface" value="com.toney.sso.core.service.SsoService"></property>
 	</bean>
-	<bean name="/uucAdminService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+	
+	<bean name="/remote/uucAdminService" class="org.springframework.remoting.caucho.HessianServiceExporter">
 		<property name="service" ref="uucAdminHessianService"></property>
 		<property name="serviceInterface" value="com.toney.sso.core.adminservice.UucAdminService"></property>
+	</bean>
+	
+	<bean name="/remote/uucService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="uucHessianService"></property>
+		<property name="serviceInterface" value="com.toney.sso.core.service.UucService"></property>
 	</bean>
 </beans>

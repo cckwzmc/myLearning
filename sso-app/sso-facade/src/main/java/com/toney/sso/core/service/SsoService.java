@@ -25,10 +25,6 @@ public interface SsoService {
 
 	public Result<UserDTO> logout(UserDTO userDTO);
 
-	public Result<UserDTO> queryUserInfo(UserDTO userDTO);
-
-	public Result<UserDTO> queryUserById(UserDTO userDTO);
-
 	public Result<UserDTO> register(RegisterDTO registerDTO);
 
 	public Result<UserDTO> login(LoginDTO loginDTO);

@@ -70,18 +70,7 @@ public class SsoServiceImpl implements SsoService {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.toney.sso.core.service.SsoService#queryUserInfo(com.toney.sso.dto
-	 * .UserDTO)
-	 */
-	@Override
-	public Result<UserDTO> queryUserInfo(UserDTO userDTO) {
-		Result<UserDTO> result=validateQueryUser(userDTO);
-		return null;
-	}
+
 
 	private Result<UserDTO> validateQueryUser(UserDTO userDTO) {
 		Result<UserDTO> result=new Result<UserDTO>();
@@ -158,12 +147,6 @@ public class SsoServiceImpl implements SsoService {
 		}
 		result.setIsSuccess(true);
 		return result;
-	}
-
-	@Override
-	public Result<UserDTO> queryUserById(UserDTO userDTO) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

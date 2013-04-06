@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.toney.sso.commons.SSOConstants;
+import com.toney.sso.core.constants.Constants;
 import com.toney.sso.core.event.UserEventService;
 import com.toney.sso.core.exception.ServiceException;
 import com.toney.sso.core.util.SSOUtil;
@@ -50,6 +51,8 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 		module.setNickName(dto.getNickName());
 		module.setPassword(SSOUtil.encodePassword(dto.getPassword()));
 		module.setRegType(dto.getRegType());
+		module.setStatus(Constants.Normal_STATUS);
+		module.setUserType(dto.getUserType());
 		return module;
 	}
 }

@@ -10,6 +10,7 @@
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="STATUS" property="status"/>
 		<result column="REG_TYPE" property="regType"/>
+		<result column="USER_TYPE" property="userType"/>
 	</resultMap>
 	<sql id="Base_Column_List">
 		ID, USER_NAME, PASSWORD, NICK_NAME, MOBILE, CREATE_DATE, STATUS,REG_TYPE
@@ -48,10 +49,10 @@
 	<insert id="insert" parameterType="com.toney.sso.module.UserModule">
 		insert into T_USER ( USER_NAME, PASSWORD,
 		NICK_NAME, MOBILE, CREATE_DATE,
-		STATUS,REG_TYPE)
+		STATUS,REG_TYPE,USER_TYPE)
 		values (
 		#{userName}, #{password},
 		#{nickName}, #{mobile}, #{createDate},
-		#{status},#{regType})
+		#{status},#{regType},#{userType})
 	</insert>
 </mapper>

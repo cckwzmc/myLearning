@@ -29,7 +29,6 @@ import com.toney.sso.dto.UserDTO;
  *       </p>
  **************************************************************** 
  */
-@Service("uucAdminService")
 public class UucAdminServiceImpl implements UucAdminService {
 	private static final XLogger LOGGER = XLoggerFactory.getXLogger(UucAdminServiceImpl.class);
 
