@@ -41,7 +41,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 	 * 对应 applicationContext-cache.xml 中的ehcache配置。
 	 */
 	@Autowired
-	private EhCacheCacheManager cacheManager;
+	private EhCacheCacheManager ehcacheManager;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -62,7 +62,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Map<String, SysConfigModel> getGlobalModelConfiguration() throws BusinessException {
-		Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+		Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 		ValueWrapper wrapper = cache.get(CacheConstants.KEY_WEBAPPMODELCONFIGURATION_CACHE);
 		if (wrapper == null) {
 			return putGlobalModelConfiguration();
@@ -82,7 +82,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Map<String, String> getGlobalMapConfiguration() throws BusinessException {
-		Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+		Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 		ValueWrapper wrapper = cache.get(CacheConstants.KEY_WEBAPPMAPCONFIGURATION_CACHE);
 		if (wrapper == null) {
 			return putGlobalMapConfiguration();
@@ -101,7 +101,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 	 * @throws BusinessException
 	 */
 	private void refresh(String key) throws BusinessException {
-		Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+		Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 		cache.evict(key);
 	}
 
@@ -119,7 +119,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 				map.put(model.getCfgName(), model);
 			}
 		}
-		Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+		Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 		cache.put(CacheConstants.KEY_WEBAPPMODELCONFIGURATION_CACHE, map);
 		return map;
 	}
@@ -138,7 +138,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 				map.put(model.getCfgName(), model.getCfgValue());
 			}
 		}
-		Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+		Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 		cache.put(CacheConstants.KEY_WEBAPPMAPCONFIGURATION_CACHE, map);
 		return map;
 	}
@@ -151,7 +151,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 	private List<ChannelDetailModel> putChannelData() throws BusinessException {
 		List<ChannelDetailModel> rs = this.dalMybatisManagerFactory.getChannelManagerFactory().getChannelDao().getAllChannelType();
 		if (CollectionUtils.isNotEmpty(rs)) {
-			Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+			Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 			cache.put(CacheConstants.KEY_APPCHANNEL_CACHE, rs);
 		}
 		return rs;
@@ -160,7 +160,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 	private List<ChannelTypeModel> putAppArtType() throws BusinessException {
 		List<ChannelTypeModel> rs =this.dalMybatisManagerFactory.getChannelManagerFactory().getChannelTypeDao().getAllChannelType();
 		if (CollectionUtils.isNotEmpty(rs)) {
-			Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+			Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 			cache.put(CacheConstants.KEY_ARTTYPE_CACHE, rs);
 		}
 		return rs;
@@ -172,7 +172,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ChannelDetailModel> getChannelListData() throws BusinessException {
-		Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+		Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 		ValueWrapper wrapper = cache.get(CacheConstants.KEY_APPCHANNEL_CACHE);
 		if (wrapper == null) {
 			return putChannelData();
@@ -190,7 +190,7 @@ public class AppCacheManagerImpl implements AppCacheManager {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ChannelTypeModel> getAppArtType() throws BusinessException {
-		Cache cache = cacheManager.getCache(CacheConstants.CACHE_NAME);
+		Cache cache = ehcacheManager.getCache(CacheConstants.CACHE_NAME);
 		ValueWrapper wrapper = cache.get(CacheConstants.KEY_ARTTYPE_CACHE);
 		if (wrapper == null) {
 			return putAppArtType();

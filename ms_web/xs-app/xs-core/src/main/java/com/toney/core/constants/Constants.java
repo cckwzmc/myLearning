@@ -2,8 +2,10 @@ package com.toney.core.constants;
 
 public class Constants {
 
-	public static final Integer CHANNEL_TOP_TYPE=1;
-	public static final Integer CHANNEL_CHILDRENS_TYPE=1;
+	public static final Integer CHANNEL_TOP_TYPE=0;
+	public static final Integer CHANNEL_SECOND_TYPE=1;
+	public static final Integer CHANNEL_THIRD_TYPE=2;
+	public static final Integer CHANNEL_FOURTH_TYPE=3;
 	/**
 	 * 收货地址类型编码
 	 */
@@ -23,7 +25,7 @@ public class Constants {
 	/**
 	 * json 数据
 	 */
-	public static final String JSON_MODEL__DATA = "data";
+	public static final String JSON_MODEL_DATA = "data";
 
 	/**
 	 * 渠道ID 11：官网 12：无线 13：秀团
