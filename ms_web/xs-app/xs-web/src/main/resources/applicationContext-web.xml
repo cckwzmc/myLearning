@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
 	<import resource="applicationContext-resources.xml"/>
-	<import resource="applicationContext-remote.xml"/>
+	<import resource="applicationContext-core.xml"/>
+	<import resource="applicationContext-remoting.xml"/>
 	<!-- <import resource="applicationContext-security.xml"/> -->	
 </beans>

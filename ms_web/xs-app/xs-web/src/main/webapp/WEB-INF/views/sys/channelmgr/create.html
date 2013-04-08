@@ -219,11 +219,9 @@ function CheckCross()
             <td class='bline'>
                 
            <select name="channeltype" id="channeltype" style="width:200px" onChange="ParTemplet(this)">
-                <option value='-8'>分类信息|infos</option>
-    <option value='1' selected>普通文章|article</option>
-    <option value='2'>图片集|image</option>
-    <option value='3'>软件|soft</option>
-    <option value='6'>商品|shop</option>
+           		<#list typeList as item>
+	                <option value='${item.id}' ${(item.nid=='article')?string('selected','')}>${item.typeName}|${item.nid}</option>
+			    </#list>
               </select>
             </td>
           </tr>
@@ -241,19 +239,19 @@ function CheckCross()
             <td class='bline'>
                 <select name="corank" id="corank" style="width:100px">
                 <option value='0' selected>开放浏览</option>
-<option value='10'>注册会员</option>
-<option value='50'>中级会员</option>
-<option value='100'>高级会员</option>
-<option value='20'>低级会员</option>
-<option value='150'>给力会员</option>
-<option value='180'>超能会员</option>
+				<option value='10'>注册会员</option>
+				<option value='50'>中级会员</option>
+				<option value='100'>高级会员</option>
+				<option value='20'>低级会员</option>
+				<option value='150'>给力会员</option>
+				<option value='180'>超能会员</option>
               </select>
               (仅限制栏目里的文档浏览权限) </td>
           </tr>
           <tr>
             <td class='bline' height="26" style="padding-left:10px;">上级目录：</td>
             <td class='bline'>
-                {cmspath}/a              <input name="nextdir" type="hidden" id="nextdir" value="{cmspath}/a" />
+                {cmspath}/a<input name="nextdir" type="hidden" id="nextdir" value="{cmspath}/a" />
             </td>
           </tr>
           <tr>

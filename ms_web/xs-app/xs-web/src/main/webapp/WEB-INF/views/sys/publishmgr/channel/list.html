@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>频道页出版</title> <#include "../../common/sys_head.ftl">
+<script type="text/javascript" src="${staticUrl}/js/publish/publish.js"></script>
+</head>
+<body>
+	<div class="w">
+		<div class="breadcrumb">
+			<strong><a href="http://home.360buy.com/">首页</a></strong><span>&nbsp;&gt;&nbsp;频道/活动页出版<span></span></span>
+		</div>
+	</div>
+	<div class="w main">
+		<div class="right">
+			<div class="o-mt">
+				<h2>我的意见建议</h2>
+				<div class="extra"></div>
+			</div>
+			<div class="m m5" id="compl06">
+				<div class="mc">&nbsp;说明:</div>
+			</div>
+			<div class="m m5" id="compl07">
+				<div class="mt">
+					<div class="tab">
+						<ul>
+							<li class="curr"><s></s><b></b>频道出版</li>
+							<li><s></s><b></b><a
+								href="http://myjd.360buy.com/opinion/list.action">活动出版</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="mc">
+					<div class="form search-01">
+						<div class="item">
+							<div class="fl fore">
+								<select name="queryMonthOrder" id="queryMonthOrder" class="sele"
+									onchange="queryOrderByMonth('http://myjd.360buy.com/')">
+									<option value="nearly-month" selected="selected">近一个月订单</option>
+									<option value="ago-month">一个月前订单</option>
+
+								</select>
+							</div>
+							<div class="fr">
+								<input name="searchKey" id="searchKey" type="text" class="text"
+									style="color: rgb(153, 153, 153);" value="商品名称、商品编号、订单编号"
+									onblur="if (this.value=='') this.value=this.defaultValue"
+									onfocus="if (this.value==this.defaultValue)this.value=''">
+								<input type="button" value="查询" class="bti"
+									onclick="orderSearch('http://myjd.360buy.com/opinion/orderSearchList.action')">
+							</div>
+							<div class="clr"></div>
+						</div>
+					</div>
+					<div class="tb-void tb-line">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0">
+							<tbody>
+								<tr>
+									<th width="140">订单编号</th>
+									<th>订单商品</th>
+									<th width="140">下单时间</th>
+									<th width="110">操作</th>
+								</tr>
+								<tr>
+									<td><a
+										href="http://jd2008.360buy.com/jdhome/orderinfo.aspx?orderid=471472047&amp;PassKey=7BDB1C598A60230412C80BFD6A62C3C5">471472047</a>
+									</td>
+									<td>
+										<div class="img-list">
+											<a target="_blank"
+												href="http://www.360buy.com/product/217570.html"> <img
+												title="世家魔法精灵胶棉拖把21077送拖头"
+												src="http://img12.360buyimg.com/n5/3731/bd18bf90-be0a-4c96-8ae4-512eea941860.jpg">
+											</a>
+										</div>
+									</td>
+									<td><span class="ftx-03">2013-02-21 <br>
+											10:49:00
+									</span></td>
+									<td><a
+										href="http://myjd.360buy.com/opinion/toAddOpinion.action?orderId=471472047"
+										class="btn btn-8"><s></s>我要投诉</a></td>
+								</tr>
+								<tr>
+									<td><a
+										href="http://jd2008.360buy.com/jdhome/orderinfo.aspx?orderid=460808910&amp;PassKey=4B1E8BE84C3CCB5A022076C2A1F2279B">460808910</a>
+									</td>
+									<td>
+										<div class="img-list">
+											<a target="_blank"
+												href="http://www.360buy.com/product/779158.html"> <img
+												title="美的(midea) W12PCS505E 电压力锅 5L多功能电脑版"
+												src="http://img12.360buyimg.com/n5/g9/M01/10/10/rBEHalDHAEkIAAAAAAFgAlQyInAAADOfgMtg20AAWAa243.jpg">
+											</a>
+										</div>
+									</td>
+									<td><span class="ftx-03">2013-02-03 <br>
+											21:10:00
+									</span></td>
+									<td><a
+										href="http://myjd.360buy.com/opinion/toAddOpinion.action?orderId=460808910"
+										class="btn btn-8"><s></s>我要投诉</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="left"></div>
+		<div class="clr"></div>
+	</div>
+</body>
+</html>

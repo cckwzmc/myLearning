@@ -12,10 +12,10 @@
     	<strong>网站栏目管理 </strong>
    </div>
    <div style="float:right;padding-right:6px;">
-   	<a href='catalog_add.php?listtype=all' class='np coolbg'>增加顶级栏目</a>
-    <a href='catalog_add.php?dopost=quick' class='np coolbg'>批量增加栏目</a>
-   	<a href="catalog_do.php?dopost=upcatcache" class='np coolbg'>更新栏目缓存</a>
-   	<a href="makehtml_list.php" class='np coolbg'>更新栏目HTML</a>
+   	<a href='${rc.getContextPath()}/sys/channel/addTopChannel' class='np coolbg'>增加顶级栏目</a>
+    <a href='${rc.getContextPath()}/sys/channel/batchAddChannel' class='np coolbg'>批量增加栏目</a>
+   	<a href="${rc.getContextPath()}/sys/channel/refreshChannelCache'" class='np coolbg'>更新栏目缓存</a>
+   	<!-- <a href="makehtml_list.php" class='np coolbg'>更新栏目HTML</a> -->
    </a>
    </td>
 </tr>
@@ -23,7 +23,7 @@
     <td height="28" bgcolor="#ffffff">
     	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="51%">提示：可使用右键菜单进行操作。</td>
+          <td width="51%"><!-- 提示：可使用右键菜单进行操作。 --></td>
           <td width="49%" align="right">
           	<a href='catalog_main.php?exallct=all'>[展开全部]</a>
           </td>
@@ -34,18 +34,27 @@
 <form name='form1' method='post' action='catalog_do.php?dopost=upRankAll'>
 <tr>
 <td height="120" bgcolor="#FFFFFF" valign="top">
-<table width='100%' border='0' cellspacing='0' cellpadding='2'>
-  <tr>
-  <td style='background-color:#FBFCE2;' width='2%' class='bline'><img style='cursor:pointer' id='img1' onClick="LoadSuns('suns1',1);" src='${staticUrl}/img/dedeexplode.gif' width='11' height='11'></td>
-  <td style='background-color:#FBFCE2;' class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='1'><a href='catalog_do.php?cid=1&dopost=listArchives' oncontextmenu="CommonMenu(event,this,1,'%E6%B5%8B%E8%AF%951')">测试1[ID:1]</a>(文档：1)  <a onclick="AlertMsg('快捷编辑窗口','1');" href="javascript:;"><img src='${staticUrl}/img/write2.gif'/></a>    </td><td align='right'><a href='/plus/list.php?tid=1' target='_blank'>预览</a>|<a href='catalog_do.php?cid=1&dopost=listArchives'>内容</a>|<a href='catalog_add.php?id=1'>增加子类</a>|<a href='catalog_edit.php?id=1'>更改</a>|<a href='catalog_do.php?dopost=moveCatalog&typeid=1'>移动</a>|<a href='catalog_del.php?id=1&typeoldname=%E6%B5%8B%E8%AF%951'>删除</a>&nbsp; <input type='text' name='sortrank1' value='50' style='width:25px;height:20px'></td></tr></table></td></tr>
-  <tr><td colspan='2' id='suns1'></td></tr>
-</table>
-<table width='100%' border='0' cellspacing='0' cellpadding='2'>
-  <tr>
-  <td style='background-color:#FBFCE2;' width='2%' class='bline'><img style='cursor:pointer' id='img4' onClick="LoadSuns('suns4',4);" src='${staticUrl}/img/dedeexplode.gif' width='11' height='11'></td>
-  <td style='background-color:#FBFCE2;' class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='4'><a href='catalog_do.php?cid=4&dopost=listArchives' oncontextmenu="CommonMenu(event,this,4,'a2')">a2[ID:4]</a>(文档：0)  <a onclick="AlertMsg('快捷编辑窗口','4');" href="javascript:;"><img src='${staticUrl}/img/write2.gif'/></a>    </td><td align='right'><a href='/plus/list.php?tid=4' target='_blank'>预览</a>|<a href='catalog_do.php?cid=4&dopost=listArchives'>内容</a>|<a href='catalog_add.php?id=4'>增加子类</a>|<a href='catalog_edit.php?id=4'>更改</a>|<a href='catalog_do.php?dopost=moveCatalog&typeid=4'>移动</a>|<a href='catalog_del.php?id=4&typeoldname=a2'>删除</a>&nbsp; <input type='text' name='sortrank4' value='50' style='width:25px;height:20px'></td></tr></table></td></tr>
-  <tr><td colspan='2' id='suns4'></td></tr>
-</table>
+	<#if channelList?? && (channelList?size>0)>
+		<#list channelList as item>
+			<table width='100%' border='0' cellspacing='0' cellpadding='2'>
+			  <tr>
+				  <td style='background-color:#FBFCE2;' width='2%' class='bline'><img style='cursor:pointer' id='img' onClick="loadChildrens(this,'childrens${item.id}',${item.id},${item.topId});" src='${staticUrl}/img/dedeexplode.gif' width='11' height='11'></td>
+				  <td style='background-color:#FBFCE2;' class='bline'>
+				  	<table width='98%' border='0' cellspacing='0' cellpadding='0'>
+					  <tr>
+					  	<td width='50%'>
+						  	<input class='np' type='checkbox' name='tids[]' value='1'>
+					  		<a href='catalog_do.php?cid=1&dopost=listArchives' oncontextmenu="CommonMenu(event,this,1,'%E6%B5%8B%E8%AF%951')">${item.typeName}[ID:${item.id}]</a>(文档：1)  <a onclick="AlertMsg('快捷编辑窗口','1');" href="javascript:;"><img src='${staticUrl}/img/write2.gif'/></a>    </td><td align='right'><a href='/plus/list.php?tid=1' target='_blank'>预览</a>|<a href='catalog_do.php?cid=1&dopost=listArchives'>内容</a>|<a href='catalog_add.php?id=1'>增加子类</a>|<a href='catalog_edit.php?id=1'>更改</a>|<a href='catalog_do.php?dopost=moveCatalog&typeid=1'>移动</a>|<a href='catalog_del.php?id=1&typeoldname=%E6%B5%8B%E8%AF%951'>删除</a>&nbsp; 
+					  		<input type='text' name='sortrank1' value='50' style='width:25px;height:20px'>
+				  		</td>
+			  			</tr>
+			  		</table>
+				  	</td>
+			  	</tr>
+			  <tr><td colspan='2' id='childrens${item.id}'></td></tr>
+			</table>
+		</#list>
+	</#if>
 <br/>
 </td>
 </tr>
@@ -65,6 +74,37 @@
  </td>
 </tr>
 </table>
+<script>
+function loadChildrens(obj,childrenId,parentId,level){
+	if($("#"+childrenId).find(">table").length>0){
+		$("#"+childrenId).show();
+	}else{
+		$.get('${rc.getContextPath()}/sys/channel/getChildrens?format=json',{parentId:parentId,level:level},function(data){
+			if(!!data&&!!data.data){
+				var html="";
+				$(data.data).each(function(){
+					html+="<table width='100%' border='0' cellspacing='0' style='padding:2px 2px 2px "+(12*(level+2))+"px'>"
+						  +"<tr>"
+					  	  +"<td style='background-color:#FBFCE2;' width='2%' class='bline'><img style='cursor:pointer' id='img4' onClick=\"loadChildrens(this,'childrens"+this.id+"',"+this.id+","+this.topId+");\" src='${staticUrl}/img/dedeexplode.gif' width='11' height='11'></td>"
+					  	  +"<td style='background-color:#FBFCE2;' class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='4'><a href='catalog_do.php?cid=4&dopost=listArchives' oncontextmenu=\"CommonMenu(event,this,4,'a2')\">"+this.typeName+"[ID:"+this.id+"]</a>(文档：0)  <a onclick=\"AlertMsg('快捷编辑窗口','4');\" href=\"javascript:;\"><img src='${staticUrl}/img/write2.gif'/></a>    </td>"
+					  	  +"<td align='right'><a href='/plus/list.php?tid=4' target='_blank'>预览</a>|<a href='catalog_do.php?cid=4&dopost=listArchives'>内容</a>|<a href='catalog_add.php?id=4'>增加子类</a>|<a href='catalog_edit.php?id=4'>更改</a>|<a href='catalog_do.php?dopost=moveCatalog&typeid=4'>移动</a>|<a href='catalog_del.php?id=4&typeoldname=a2'>删除</a>&nbsp; <input type='text' name='sortrank4' value='50' style='width:25px;height:20px'></td></tr></table></td></tr>"
+					  	  +"<tr><td colspan='2' id='childrens"+this.id+"'></td></tr>"
+						  +"</table>"
+				});
+				$("#"+childrenId).html(html);
+			}
+		})
+	}
+	$(obj).attr("onClick","hideChildrens(this,'"+childrenId+"',"+parentId+","+level+")");
+	$(obj).attr("src",$(obj).attr("src").replace("dedeexplode.gif","dedecontract.gif"))
+}
+
+function hideChildrens(obj,childrenId,parentId,level){
+	$("#"+childrenId).hide();
+	$(obj).attr("onClick","loadChildrens(this,'"+childrenId+"',"+parentId+","+level+")");
+	$(obj).attr("src",$(obj).attr("src").replace("dedecontract.gif","dedeexplode.gif"))
+}
+</script>
 </body>
 </html>
 
