@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Class-Path: portal-core.jar spring-aop-3.1.0.RELEASE.jar aopalliance-1
+ .0.jar spring-asm-3.1.0.RELEASE.jar spring-beans-3.1.0.RELEASE.jar sp
+ ring-core-3.1.0.RELEASE.jar commons-logging-1.0.4.jar spring-orm-3.1.
+ 0.RELEASE.jar spring-jdbc-3.1.0.RELEASE.jar spring-tx-3.1.0.RELEASE.j
+ ar spring-context-3.1.0.RELEASE.jar spring-expression-3.1.0.RELEASE.j
+ ar spring-aspects-3.1.0.RELEASE.jar spring-context-support-3.1.0.RELE
+ ASE.jar spring-test-3.1.0.RELEASE.jar spring-modules-jakarta-commons-
+ 0.8.jar log4j-1.2.16.jar commons-lang-2.6.jar commons-validator-1.1.4
+ .jar commons-configuration-1.8.jar commons-beanutils-1.8.3.jar common
+ s-chain-1.1.jar portlet-api-1.0.jar myfaces-api-1.1.0.jar commons-el-
+ 1.0.jar commons-fileupload-1.0.jar oro-2.0.8.jar jstl-1.2.jar spring-
+ support-2.0.3.jar spring-web-3.1.0.RELEASE.jar spring-webmvc-3.1.0.RE
+ LEASE.jar ibatis-sqlmap-2.3.4.726.jar ojdbc14-10.2.0.4.0.jar aspectjw
+ eaver-1.6.10.jar aspectjrt-1.6.10.jar mockito-core-1.9.0.jar hamcrest
+ -core-1.1.jar objenesis-1.0.jar slf4j-api-1.6.1.jar jcl-over-slf4j-1.
+ 6.1.jar slf4j-log4j12-1.6.1.jar bonecp-0.7.1.RELEASE.jar guava-r08.ja
+ r javax.inject-1.jar jmock-2.5.1.jar hamcrest-library-1.1.jar jmock-j
+ unit4-2.5.1.jar junit-dep-4.4.jar
+

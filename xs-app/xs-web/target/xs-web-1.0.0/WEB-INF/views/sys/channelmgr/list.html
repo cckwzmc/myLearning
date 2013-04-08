@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Toney Administrator's login</title>
+<#include "../common/sys_head.ftl">
+</head>
+<body background='${staticUrl}/img/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" align="center">
+<tr>
+   <td height="28" background='${staticUrl}/img/tbg.gif' style="padding-left:10px;">
+   <div style="float:left">
+    	<strong>网站栏目管理 </strong>
+   </div>
+   <div style="float:right;padding-right:6px;">
+   	<a href='catalog_add.php?listtype=all' class='np coolbg'>增加顶级栏目</a>
+    <a href='catalog_add.php?dopost=quick' class='np coolbg'>批量增加栏目</a>
+   	<a href="catalog_do.php?dopost=upcatcache" class='np coolbg'>更新栏目缓存</a>
+   	<a href="makehtml_list.php" class='np coolbg'>更新栏目HTML</a>
+   </a>
+   </td>
+</tr>
+<tr>
+    <td height="28" bgcolor="#ffffff">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="51%">提示：可使用右键菜单进行操作。</td>
+          <td width="49%" align="right">
+          	<a href='catalog_main.php?exallct=all'>[展开全部]</a>
+          </td>
+        </tr>
+      </table>
+   </td>
+</tr>
+<form name='form1' method='post' action='catalog_do.php?dopost=upRankAll'>
+<tr>
+<td height="120" bgcolor="#FFFFFF" valign="top">
+<table width='100%' border='0' cellspacing='0' cellpadding='2'>
+  <tr>
+  <td style='background-color:#FBFCE2;' width='2%' class='bline'><img style='cursor:pointer' id='img1' onClick="LoadSuns('suns1',1);" src='${staticUrl}/img/dedeexplode.gif' width='11' height='11'></td>
+  <td style='background-color:#FBFCE2;' class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='1'><a href='catalog_do.php?cid=1&dopost=listArchives' oncontextmenu="CommonMenu(event,this,1,'%E6%B5%8B%E8%AF%951')">测试1[ID:1]</a>(文档：1)  <a onclick="AlertMsg('快捷编辑窗口','1');" href="javascript:;"><img src='${staticUrl}/img/write2.gif'/></a>    </td><td align='right'><a href='/plus/list.php?tid=1' target='_blank'>预览</a>|<a href='catalog_do.php?cid=1&dopost=listArchives'>内容</a>|<a href='catalog_add.php?id=1'>增加子类</a>|<a href='catalog_edit.php?id=1'>更改</a>|<a href='catalog_do.php?dopost=moveCatalog&typeid=1'>移动</a>|<a href='catalog_del.php?id=1&typeoldname=%E6%B5%8B%E8%AF%951'>删除</a>&nbsp; <input type='text' name='sortrank1' value='50' style='width:25px;height:20px'></td></tr></table></td></tr>
+  <tr><td colspan='2' id='suns1'></td></tr>
+</table>
+<table width='100%' border='0' cellspacing='0' cellpadding='2'>
+  <tr>
+  <td style='background-color:#FBFCE2;' width='2%' class='bline'><img style='cursor:pointer' id='img4' onClick="LoadSuns('suns4',4);" src='${staticUrl}/img/dedeexplode.gif' width='11' height='11'></td>
+  <td style='background-color:#FBFCE2;' class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='4'><a href='catalog_do.php?cid=4&dopost=listArchives' oncontextmenu="CommonMenu(event,this,4,'a2')">a2[ID:4]</a>(文档：0)  <a onclick="AlertMsg('快捷编辑窗口','4');" href="javascript:;"><img src='${staticUrl}/img/write2.gif'/></a>    </td><td align='right'><a href='/plus/list.php?tid=4' target='_blank'>预览</a>|<a href='catalog_do.php?cid=4&dopost=listArchives'>内容</a>|<a href='catalog_add.php?id=4'>增加子类</a>|<a href='catalog_edit.php?id=4'>更改</a>|<a href='catalog_do.php?dopost=moveCatalog&typeid=4'>移动</a>|<a href='catalog_del.php?id=4&typeoldname=a2'>删除</a>&nbsp; <input type='text' name='sortrank4' value='50' style='width:25px;height:20px'></td></tr></table></td></tr>
+  <tr><td colspan='2' id='suns4'></td></tr>
+</table>
+<br/>
+</td>
+</tr>
+</form>
+<tr>
+ <td height="36" bgcolor="#FFFFFF" align="center">
+ <table width="98%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+    <td align="right">
+		  <input type="button" name="sb1" value="更新排序" style="width:70px" class="coolbt" onClick="document.form1.submit();" /> 
+      <input type="button" name="sb4" value="获取JS" style="width:70px" class="coolbt" onClick="location='makehtml_js.php';" />
+		  <input type="button" name="sb2" value="更新栏目HTML" style="width:90px" class="coolbt" onClick="location='makehtml_list.php';" /> 
+      <input type="button" name="sb3" value="更新文档HTML" style="width:90px" class="coolbt" onClick="location='makehtml_archives.php';" />
+		  </td>
+    </tr>
+   </table>
+ </td>
+</tr>
+</table>
+</body>
+</html>
+
+

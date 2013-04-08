@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>公共页出版</title>
+		<#include "../common/sys_head.ftl">
+		<script type="text/javascript" src="${staticUrl}/js/publish/publish.js"></script>
+	</head>
+	<body>
+		<div>
+			说明：该部分内容会出版到域名的public目录下.
+		</div>
+		<div align="center">
+		<form id="mainForm" method="POST" action="${rc.getContextPath()}/sys/publish/public/list">
+			<#if page.result??&&page.result?size gt 0>
+				<table border="1">
+					<tr>
+						<th>Selected</th>
+						<th>Id</th>
+						<th>Head or Footer</th>
+						<th>Is Enabled</th>
+						<th>Last modify date</th>
+						<th>Description</th>
+						<th>Action</th>
+					<tr>	
+						<#list page.result as item>
+						<tr>
+							<td><input type="checkbox" name="check-action" value="${item.id}"/></td>
+							<td>${item.id}</td>
+							<td>${(item.headFooter==1)?string('页头','页尾')}</td>
+							<td>${(item.isEnabled==1)?string('可用','不可用')}</td>
+							<td>
+								<#if item.lastModifyDate??>
+								${item.lastModifyDate?string('yyyy-MM-dd HH:mm:ss')}
+								</#if>
+							</td>
+							<td>${item.description}</td>
+							<td>
+								<input name="publicId" value="${item.id}" type="hidden"/>
+								<input name="isEnabled" value="${item.isEnabled}" type="hidden"/>
+								<a href="javascript:;" data-action="disable">${(item.isEnabled==1)?string('Disable','Enabled')}</a>
+								<a href="${rc.getContextPath()}/sys/templatemgr/public/${item.id}" data-action="tpl-manager">模版管理</a>
+								<a href="javascript:;" data-action="publish">发布</a>
+							</td>
+						</tr>
+						</#list>
+				</table>
+			<#else>
+				<div>没有找到任何记录！</div>
+			</#if>
+		</form>
+			<div>
+				批量操作：<input id="batch-enabled" type="button" value="批量启用"/><input id="batch-disabled" type="button"  value="批量禁用"/><input id="batch-publish" type="button"  value="批量发布"/>
+			</div>	
+		</div>
+	<script>
+		$(function(){
+			$("a[data-action=disable]").bind("click",function(){
+				var url = sysGlobal.constants.SYS_CONTEXTPATH+'/sys/publish/public/public_enabled?format=json';
+				var publicId=$(this).parent().find('input[name=publicId]').val();
+				var isEnabled=$(this).parent().find('input[name=isEnabled]').val();
+				var postData={'publicId':publicId,'isEnabled':isEnabled};
+				$.ajax({
+					url:url,
+					type:'POST',
+					data:postData,
+					dataType:'JSON',
+					success:function(data){
+						
+					},
+					error:function(e){
+						alert("操作失败，请稍后重试！");
+					}
+				});
+			});
+			$("a[data-action=publish]").bind("click",function(){
+				var url =sysGlobal.constants.SYS_CONTEXTPATH+'/sys/publish/public/publish_publicId?format=json';
+				var publicId=$(this).parent().find('input[name=publicId]').val();
+				var postData={'publicId':publicId};
+				$.ajax({
+					url:url,
+					type:'POST',
+					data:postData,
+					dataType:'JSON',
+					success:function(data){
+						
+					},
+					error:function(e){
+						alert("操作失败，请稍后重试！");
+					}
+				});
+			});
+			$("#batch-enabled").bind("click",function(){
+				$("#mainForm").attr("action","${rc.getContextPath()}/sys/publish/public/batch_enabled");
+				$("#mainForm").submit();
+			});
+			$("#batch-disabled").bind("click",function(){
+				$("#mainForm").attr("action","${rc.getContextPath()}/sys/publish/public/batch_disabled");
+				$("#mainForm").submit();
+			});
+			$("#batch-publish").bind("click",function(){
+				$("#mainForm").attr("action","${rc.getContextPath()}/sys/publish/public/batch_publish");
+				$("#mainForm").submit();
+				});
+		});
+	</script>
+</body>
+</html>

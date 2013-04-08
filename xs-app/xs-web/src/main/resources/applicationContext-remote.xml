@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-lazy-init="true">
+	   <!-- 
+       用户中心
+    <bean id="userManageFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.uuc.user}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.uuc.facade.UserManageFacade" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+     用户中心  收货地址管理
+	<bean id="addressManageFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+		<property name="serviceUrl">
+			<value>${hessian.serviceUrl.uuc}</value>
+		</property>
+		<property name="serviceInterface" value="com.xiu.uuc.facade.AddressManageFacade" />
+		<property name="overloadEnabled" value="true"></property>
+	</bean>
+	
+    用户中心  虚拟账户账目信息管理
+    <bean id="acctItemFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.uuc.acctItem}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.uuc.facade.AcctItemFacade" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+    用户中心 虚拟账户账目变更信息管理
+    <bean id="acctChangeFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.uuc.acctChange}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.uuc.facade.AcctChangeFacade" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+    用户中心 用户虚拟账户银行卡管理
+    <bean name="bankAcctFacade" class="org.springframework.remoting.caucho.HessianProxyFactoryBean"> 
+         <property name="serviceUrl">
+            <value>${hessian.serviceUrl.uuc.bankAcct}</value>
+         </property>
+         <property name="serviceInterface" value="com.xiu.uuc.facade.BankAcctFacade"/>
+         <property name="overloadEnabled" value="true"></property> 
+    </bean>
+    
+    用户中心 提现申请信息管理
+    <bean name="drawApplyFacade" class="org.springframework.remoting.caucho.HessianProxyFactoryBean"> 
+         <property name="serviceUrl">
+            <value>${hessian.serviceUrl.puc.drawApply}</value>
+         </property>
+         <property name="serviceInterface" value="com.xiu.puc.biz.facade.DrawApplyFacade"/> 
+         <property name="overloadEnabled" value="true"></property> 
+    </bean>
+    
+    用户中心 充值卡信息管理
+    <bean id="rechargeFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.rm.recharge}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.rm.facade.RechargeFacade" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+    用户中心 充值卡信息充值功能是否激活校验
+    <bean id="pwdErrorFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.rm.pwdError}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.rm.facade.PwdErrorFacade" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+	
+     系统参数
+	<bean id="sysParamFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+		<property name="serviceUrl">
+			<value>${hessian.serviceUrl.csp}</value>
+		</property>
+		<property name="serviceInterface" value="com.xiu.csp.facade.SysParamFacade" />
+		<property name="overloadEnabled" value="true"></property>
+	</bean>
+	<bean id="eiSsoServerManager" class="com.xiu.portal.ei.impl.EISsoServerManagerImpl">
+		<property name="ssoURLName" value="${hessian.serviceUrl.sso}"/>
+		<property name="uucURLName" value="${hessian.serviceUrl.uuc.user}"/>
+	</bean>
+	<bean id="giftCardManageFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.giftCard}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.rm.facade.GiftFacade" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+    TRADE 订单管理
+     <bean id="bizOrderQueryServive"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.trade.order}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.tc.orders.dointerface.BizOrderQueryServive" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+    TRADE cancel order
+    <bean id="bizOrderWriterService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.trade.cancelOrder}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.tc.orders.dointerface.BizOrderWriterService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+    TRADE 购买过的商品
+     <bean id="orderDetailQueryService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.trade.boughtGoods}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.tc.orders.dointerface.OrderDetailQueryService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+    TRADE 退换货
+    <bean id="refundItemFlowService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.trade.refundList}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.tc.orders.dointerface.RefundItemFlowService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    trade在线退款
+    <bean id="refundQueryService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.trade.refundMoney}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.tc.orders.dointerface.RefundQueryService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    uuc 站内信
+    <bean id="stationLettersFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.uuc.stationLetter}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.uuc.facade.StationLettersFacade" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+    用户反馈
+    <bean id="feedbackService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.comment}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.feedback.hessianService.IFeedbackHessianService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+     <bean id="iEmailHessianService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.email}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.email.hessian.IEmailHessianService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    
+   Email
+    <bean id="eiEmailManager" class="com.xiu.portal.ei.impl.EIEmailManagerImpl">
+        <property name="serviceUrl" value="${hessian.serviceUrl.email}"/>
+    </bean>
+    
+    SMS
+    <bean id="iSMSHessianService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.sms}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.sms.hessian.ISMSHessianService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    Product hession
+    <bean id="productHessianService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.product}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.commerce.hessian.server.GoodsCenterService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    积分系统
+    <bean id="pointFacade"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.point}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.point.facade.PointFacade" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean>
+    XOP  
+   <bean id="queryTrackingInfoService"  class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${hessian.serviceUrl.xop}</value>
+        </property>
+        <property name="serviceInterface" value="com.xiu.open.service.common.logistics.tracking.QueryTrackingInfoService" />
+        <property name="overloadEnabled" value="true"></property>
+    </bean> -->
+    
+</beans>

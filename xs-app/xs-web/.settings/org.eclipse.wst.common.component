@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="xs-web">
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="publish-commons-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/publish-commons/publish-commons">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="publish-facade-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/publish-facade/publish-facade">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xs-core-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/xs-core/xs-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="Dal-service-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Dal-service/Dal-service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="util-tools-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/util-tools/util-tools">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="Dal-commons-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Dal-commons/Dal-commons">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/xs-web/target/classes"/>
+        <property name="context-root" value="xs-web"/>
+    </wb-module>
+</project-modules>
