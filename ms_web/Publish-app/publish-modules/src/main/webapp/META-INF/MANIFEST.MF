@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Class-Path: aopalliance-1.0.jar aspectjrt-1.6.10.jar aspectjweaver-1.6
+ .10.jar bonecp-0.7.1.RELEASE.jar cal10n-api-0.7.4.jar commons-collect
+ ions-3.2.1.jar commons-fileupload-1.2.2.jar commons-io-2.2.jar common
+ s-lang-2.6.jar commons-logging-1.1.1.jar ehcache-core-2.6.2.jar freem
+ arker-2.3.19.jar guava-r08.jar jackson-core-asl-1.8.2.jar jackson-map
+ per-asl-1.8.2.jar javax.inject-1.jar jcl-over-slf4j-1.6.4.jar jstl-1.
+ 2.jar log4j-1.2.16.jar slf4j-api-1.6.4.jar slf4j-ext-1.6.4.jar slf4j-
+ log4j12-1.6.4.jar spring-aop-3.1.2.RELEASE.jar spring-asm-3.1.2.RELEA
+ SE.jar spring-beans-3.1.2.RELEASE.jar spring-context-3.1.2.RELEASE.ja
+ r spring-context-support-3.1.2.RELEASE.jar spring-core-3.1.2.RELEASE.
+ jar spring-expression-3.1.2.RELEASE.jar spring-test-3.1.2.RELEASE.jar
+  spring-web-3.1.2.RELEASE.jar spring-webmvc-3.1.2.RELEASE.jar xs-core
+ .jar
+

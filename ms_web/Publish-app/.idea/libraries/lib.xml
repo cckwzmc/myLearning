@@ -1,0 +1,58 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/uuc-biz-facade-2.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/slf4j-api-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-beans-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/ehcache-core-2.6.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-security-core-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/aspectjweaver-1.6.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/jackson-core-asl-1.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/commons-beanutils-1.8.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/log4j-1.2.16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/cal10n-api-0.7.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/mybatis-ehcache-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/publish-core-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/aspectjrt-1.6.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/freemarker-2.3.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/mybatis-3.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/slf4j-log4j12-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/asm-3.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/jackson-mapper-asl-1.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-web-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-core-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/mybatis-ehcache-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/guava-r08.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/bonecp-0.7.1.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-jdbc-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/mybatis-spring-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/publish-commons-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/commons-lang-2.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/jstl-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-webmvc-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-test-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/commons-logging-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-asm-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-context-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-expression-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/mysql-connector-java-5.1.22.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/Dal-service-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/mybatis-generator-core-1.3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-context-support-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/util-tools-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/hessian-4.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/commons-configuration-1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/cglib-2.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-aop-3.1.2.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/aopalliance-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/commons-fileupload-1.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/commons-io-2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/Dal-commons-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/slf4j-ext-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/spring-tx-3.1.1.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/publish-modules/target/publish-modules-1.0.0/WEB-INF/lib/commons-collections-3.2.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

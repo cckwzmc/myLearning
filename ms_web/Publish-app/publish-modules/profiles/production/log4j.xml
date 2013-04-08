@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>  <!-- Log4J Configuration for production -->
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- Appenders -->
+	
+    <appender name="appAppender" class="org.apache.log4j.DailyRollingFileAppender">
+       <param name="File" value="/www/logs/portal/portal2.5.log" />
+       <param name="Encoding" value="UTF-8"/>
+       <param name="Append" value="true" />
+       <param name="DatePattern" value="'.'yyyy-MM-dd" />
+       <param name="BufferedIO" value="true" /> 
+       <param name="BufferSize" value="8192" />
+       <layout class="org.apache.log4j.PatternLayout">
+           <param name="ConversionPattern" value="%d %p [%t] %c{1} |%X{ssoUserId}| %m%n" />
+       </layout>
+     </appender>
+	<appender name="eiAppender" class="org.apache.log4j.DailyRollingFileAppender">
+       <param name="File" value="/www/logs/portal/portal2.5_ei.log" />
+       <param name="Encoding" value="UTF-8"/>
+       <param name="Append" value="true" />
+       <param name="DatePattern" value="'.'yyyy-MM-dd" />
+       <param name="BufferedIO" value="true" /> 
+       <param name="BufferSize" value="8192" />
+       <layout class="org.apache.log4j.PatternLayout">
+           <param name="ConversionPattern" value="%d %p [%t] %c{1} |%X{ssoUserId}| %m%n" />
+       </layout>
+     </appender>
+	<appender name="errorAppender" class="org.apache.log4j.DailyRollingFileAppender">
+       <param name="File" value="/www/logs/portal/portal2.5_error.log" />
+       <param name="Encoding" value="UTF-8"/>
+       <param name="Append" value="true" />
+       <param name="DatePattern" value="'.'yyyy-MM-dd" />
+       <param name="BufferedIO" value="true" /> 
+       <param name="BufferSize" value="8192" />
+       <layout class="org.apache.log4j.PatternLayout">
+           <param name="ConversionPattern" value="%d %p [%t] %c{1} |%X{ssoUserId}| %m%n" />
+       </layout>
+     </appender>
+	
+	<!-- Application ERROR Loggers -->
+	<logger name="com.toney">
+		<level value="ERROR" />
+		<appender-ref ref="errorAppender" />
+	</logger>
+	
+	<logger name="com.jolbox">
+		<level value="ERROR" />
+		<appender-ref ref="errorAppender" />
+	</logger>
+	
+	
+	<!-- Application Loggers -->
+	<logger name="com.toney">
+		<level value="INFO" />
+		<appender-ref ref="appAppender" />
+	</logger>
+	
+	<!-- BoneCP Loggers, suggest let it output to a file in production env-->
+	<logger name="com.jolbox.bonecp">
+		<level value="WARN" />
+		<appender-ref ref="appAppender" />
+	</logger>
+	
+	<!-- Spring Loggers -->
+    <logger name="org.springframework">
+        <level value="WARN"/>
+        <appender-ref ref="appAppender" />
+    </logger>
+
+	<logger name="org.springframework.web">
+		<level value="WARN" />
+		<appender-ref ref="appAppender" />
+	</logger>
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="DEBUG" />
+		<appender-ref ref="appAppender" />
+		<appender-ref ref="eiAppender" />
+	</root>
+	
+</log4j:configuration>
