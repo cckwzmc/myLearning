@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- changes from the defaults -->
+		<setting name="lazyLoadingEnabled" value="false" />
+		<!-- JdbcType enumeration. Most common are: NULL, VARCHAR and OTHER -->
+		<setting name="jdbcTypeForNull" value="NULL" />	
+	</settings>
+	<typeAliases>
+		<typeAlias alias="channelType" type="com.toney.dal.model.ChannelTypeModel" />
+		<typeAlias alias="channel" type="com.toney.dal.model.ChannelDetailModel" />
+		<typeAlias alias="article" type="com.toney.dal.model.ArticleModel" />
+		<typeAlias alias="articleBase" type="com.toney.dal.model.ArticleBaseModel" />
+		<typeAlias alias="articleExtend" type="com.toney.dal.model.ArticleExtendModel" />
+		<typeAlias alias="articleTiny" type="com.toney.dal.model.ArticleTinyModel" />
+		<typeAlias alias="articleSysTag" type="com.toney.dal.model.ArticleSysTagModel" />
+		<typeAlias alias="area" type="com.toney.dal.model.AreaModel" />
+		<typeAlias alias="administrator" type="com.toney.dal.model.AdministratorModel" />
+		<typeAlias alias="sysConfig" type="com.toney.dal.model.SysConfigModel" />
+		<typeAlias alias="templateManager" type="com.toney.dal.model.TemplateManagerModel" />
+		<typeAlias alias="templateMappingModel" type="com.toney.dal.model.TemplateMappingModel" />
+		<typeAlias alias="templatePageTypeModel" type="com.toney.dal.model.TemplatePageTypeModel" />
+		<typeAlias alias="tplPublicMappingModel" type="com.toney.dal.model.TplPublicMappingModel" />
+	</typeAliases>
+	<!-- <mappers> <mapper resource="sqlmaps/UserSQL.xml" /> </mappers> -->
+</configuration>

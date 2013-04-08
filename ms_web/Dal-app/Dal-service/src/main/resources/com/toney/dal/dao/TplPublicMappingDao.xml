@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.dao.TplPublicMappingDao">
+	<resultMap id="tplPublicMappingResult" type="tplPublicMappingModel">
+		<id column="id" property="id" />
+		<result column="head_footer" property="headFooter" />
+		<result column="tpl_path" property="tplPath" />
+		<result column="create_date" property="createDate" />
+		<result column="last_modify_date" property="lastModifyDate" />
+		<result column="is_enabled" property="isEnabled" />
+		<result column="output_filename" property="outputFilename" />
+		<result column="description" property="description" />
+		<result column="tpl_prefix" property="tplPrefix" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, head_footer, tpl_path, create_date, last_modify_date, is_enabled, output_filename,description,tpl_prefix
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="tplPublicMappingResult" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from dede_tpl_publicmapping
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="getAll" resultMap="tplPublicMappingResult" resultType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from dede_tpl_publicmapping
+	</select>
+	<select id="selectByAll" resultMap="tplPublicMappingResult" resultType="java.util.List" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from dede_tpl_publicmapping
+		<if test="orderBy!=null and orderBy.size() gt 0">
+			<foreach  separator=","   collection="orderBy" item="item" open=" order by ">
+				${item.label} ${item.value}
+ 			</foreach>
+		</if>
+		<if test="currentRecord!=null and pageSize!=null">
+			limit #{currentRecord},#{pageSize}
+		</if>
+	</select>
+	<select id="selectBySearch" resultMap="tplPublicMappingResult" resultType="java.util.List"  parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from dede_tpl_publicmapping
+		<if test="publicSearch!=null">
+			where 
+			<if test="publicSearch.description!=null and publicSearch.description!=''">
+				description like CONCAT('%',#{publicSearch.description},'%')
+			</if>
+			<if test="publicSearch.isEnabled!=null">
+				is_enabled = #{publicSearch.isEnabled}
+			</if>
+			<if test="publicSearch.templateName!=null and publicSearch.templateName!=''">
+				tpl_path like  CONCAT('%',#{publicSearch.templateName},'%')
+			</if>
+			<if test="publicSearch.headFooter!=null">
+				head_footer = #{publicSearch.headFooter}
+			</if>
+		</if>
+		<if test="orderBy!=null and orderBy.size() gt 0">
+			<foreach  separator=","   collection="orderBy" item="item" open=" order by ">
+				${item.label} ${item.value}
+			</foreach>
+		</if>
+		<if test="currentRecord!=null and pageSize!=null">
+			limit #{currentRecord},#{pageSize}
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from dede_tpl_publicmapping
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.toney.dal.model.TplPublicMappingModel">
+		insert into dede_tpl_publicmapping (id, head_footer, tpl_path,
+		create_date, last_modify_date, is_enabled,
+		output_filename,description,tpl_prefix)
+		values
+		(#{id,jdbcType=INTEGER}, #{headFooter,jdbcType=INTEGER}, #{tplPath,jdbcType=VARCHAR},
+		#{createDate,jdbcType=TIMESTAMP}, #{lastModifyDate,jdbcType=TIMESTAMP},
+		#{isEnabled,jdbcType=INTEGER},
+		#{outputFilename,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{tplPrefix,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.toney.dal.model.TplPublicMappingModel">
+		insert into dede_tpl_publicmapping
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="headFooter != null">
+				head_footer,
+			</if>
+			<if test="tplPath != null">
+				tpl_path,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="lastModifyDate != null">
+				last_modify_date,
+			</if>
+			<if test="isEnabled != null">
+				is_enabled,
+			</if>
+			<if test="outputFilename != null">
+				output_filename,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="tplPrefix != null">
+				tpl_prefix
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="headFooter != null">
+				#{headFooter,jdbcType=INTEGER},
+			</if>
+			<if test="tplPath != null">
+				#{tplPath,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifyDate != null">
+				#{lastModifyDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isEnabled != null">
+				#{isEnabled,jdbcType=INTEGER},
+			</if>
+			<if test="outputFilename != null">
+				#{outputFilename,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="tplPrefix != null">
+				#{tplPrefix,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>

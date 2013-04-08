@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <classPathEntry location="/home/toney.li/works-tools/maven/m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar"/>
+  <context id="context1" >
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/dedecms?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true" userId="root" password="123456" />
+    <javaModelGenerator targetPackage="com.toney.dal.model.generator" targetProject="Dal-service" />
+    <sqlMapGenerator targetPackage="com.toney.dal.dao.generator" targetProject="Dal-service" />
+    <javaClientGenerator targetPackage="com.toney.dal.dao.generator" targetProject="Dal-service" type="XMLMAPPER" />
+    <table schema="dedecms" tableName="dede_tpl_publicmapping" domainObjectName="TplPublicMapping">
+    </table>
+  </context>
+</generatorConfiguration>

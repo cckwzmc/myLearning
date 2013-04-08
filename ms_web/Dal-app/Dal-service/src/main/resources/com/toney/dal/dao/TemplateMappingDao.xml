@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.dal.dao.TemplateMappingDao">
+	<resultMap id="templateMappingModelResult" type="templateMappingModel">
+		<result property="id" column="id" />
+		<result property="channelId" column="channelId" />
+		<result property="pageTypeCode" column="page_type_code" />
+		<result property="isDetailPage" column="is_detail_page" />
+		<result property="headId" column="head_id" />
+		<result property="createDate" column="create_date" />
+		<result property="lastModifyDate" column="last_modify_date" />
+		<result property="footerId" column="footer_id" />
+		<result property="tplPath" column="tpl_path" />
+		<result property="isEnabled" column="is_enabled" />
+		<result property="outputFilename" column="output_filename"/>
+		<result property="description" column="description"/>
+		<result property="tplPrefix" column="tpl_prefix"/>
+	</resultMap>
+	<sql id="Base_Column_sql">
+		id,channelId,page_type_code,is_detail_page,head_id,create_date,last_modify_date,footer_id,tpl_path,is_enabled,output_filename,tpl_prefix,description
+	</sql>
+	<select id="getAll" resultMap="templateMappingModelResult" resultType="java.util.List">
+		select  
+		<include refid="Base_Column_sql"/>
+		<![CDATA[ from dede_tpl_mapping t]]>
+	</select>
+
+</mapper>

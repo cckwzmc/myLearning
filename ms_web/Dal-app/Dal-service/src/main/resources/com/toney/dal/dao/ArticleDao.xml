@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.dal.dao.ArticleDao">
+	
+	<resultMap type="article" id="articleResult">
+		<result property="id" column="id" />
+		<result property="typeId" column="typeid" />
+		<result property="typeId2" column="typeid2" />
+		<result property="sortRank" column="sortrank" />
+		<result property="flag" column="flag" />
+		<result property="ismake" column="ismake" />
+		<result property="channel" column="channel" />
+		<result property="arcRank" column="arcrank" />
+		<result property="payMoney" column="paymoney" />
+		<result property="title" column="title" />
+		<result property="shorttitle" column="shorttitle" />
+		<result property="color" column="color" />
+		<result property="author" column="author" />
+		<result property="source" column="source" />
+		<result property="litpic" column="litpic" />
+		<result property="pubDate" column="pubdate" />
+		<result property="createDate" column="senddate" />
+		<result property="mid" column="mid" />
+		<result property="keywords" column="keywords" />
+		<result property="description" column="description" />
+		<result property="filename" column="filename" />
+		<result property="dutyadmin" column="dutyadmin" />
+		<result property="tackid" column="tackid" />
+		<result property="mtype" column="mtype" />
+		<result property="weight" column="weight" />
+		<result property="lastPost" column="lastpost" />
+		<result property="goodPostTotal" column="goodpost" />
+		<result property="badPostTotal" column="badpost" />
+		<result property="notPostTotal" column="notpost" />
+		<result property="voteId" column="voteid" />
+		<result property="clickTotal" column="click" />
+	</resultMap>
+	<select id="getAllArea" resultMap="articleResult" resultType="java.util.List">
+		<![CDATA[ select id,name,reid,disorder from dede_area t order by id ,reid,disorder]]>
+	</select>
+	
+	<select id="getArticleBaseModelList" parameterType="com.toney.dal.model.ArticleQueryModel" resultMap="articleResult" resultType="java.util.List">
+		<![CDATA[ select t.litpic,t.id,t.typeid,t.typeid2,t.flag,t.title,t.description,t.click,t.channel,t.ismake,t.scores,t.senddate from dede_archives t where 1=1
+		]]>
+		<if test="arctag!=null and arctag!=''">
+			and flag =#{arctag}
+		</if>
+		<if test="channelIds">
+			and	in 
+			<foreach collection="channelIds" open="(" close=")" index="index" item="channelId" separator=",">
+				#{channelId}
+			</foreach>
+		</if>
+		<if test="orderBy!=null and orderBy!=''">
+			<if test="orderBy=='click'">
+				order by t.click desc,pubdate desc 
+			</if>
+		</if>
+		<if test="row!=null and row>0">
+			limit 0,#{row}
+		</if>
+	</select>
+</mapper>

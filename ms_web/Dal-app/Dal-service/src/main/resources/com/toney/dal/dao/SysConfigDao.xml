@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.toney.dal.dao.SysConfigDao">
+
+	<resultMap id="sysConfigResult" type="sysConfig">
+		<result property="id" column="aid" />
+		<result property="cfgName" column="varname" />
+		<result property="info" column="info" />
+		<result property="groupId" column="groupid" />
+		<result property="objType" column="type" />
+		<result property="cfgValue" column="value" />
+	</resultMap>
+	<select id="getAll" resultMap="sysConfigResult" resultType="java.util.List">
+		<![CDATA[select t.aid,t.varname,t.info,t.groupid,t.type,t.value from dede_sysconfig	t order by aid ]]>
+	</select>
+
+</mapper>
