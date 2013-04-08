@@ -20,8 +20,9 @@ publish.publish_index=function(obj){
 			$(obj).attr("disabled",false);
 			$(obj).attr("value","出版首页");
 		}
-	})
-}
+	});
+};
+
 publish.publish_public=function(obj){
 	$(obj).attr("disabled",true);
 	var btnValue=$(obj).attr("value");
@@ -45,5 +46,5 @@ publish.publish_public=function(obj){
 			$(obj).attr("disabled",false);
 			$(obj).attr("value",btnValue);
 		}
-	})
-}
+	});
+};
