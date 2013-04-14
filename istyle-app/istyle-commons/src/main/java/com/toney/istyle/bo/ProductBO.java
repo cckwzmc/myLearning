@@ -53,7 +53,7 @@ public class ProductBO implements Serializable {
 	/**
 	 * 类目
 	 */
-	private Integer catCode;
+	private String catCode;
 	
 
 	public String getDescription() {
@@ -222,18 +222,12 @@ public class ProductBO implements Serializable {
 		this.productUrl = productUrl;
 	}
 
-	/**
-	 * @return the catCode
-	 */
-	public Integer getCatCode() {
+
+	public String getCatCode() {
 		return catCode;
 	}
 
-	/**
-	 * @param catCode
-	 *            the catCode to set
-	 */
-	public void setCatCode(Integer catCode) {
+	public void setCatCode(String catCode) {
 		this.catCode = catCode;
 	}
 
