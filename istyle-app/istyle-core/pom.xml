@@ -35,7 +35,8 @@
 						<configuration>
 							<autocommit>true</autocommit>
 							<srcFiles>
-								<!-- <srcFile>src/test/resources/schema.sql</srcFile> <srcFile>src/test/resources/xarrNotice.sql</srcFile> <srcFile>src/test/resources/sms.sql</srcFile> <srcFile>src/test/resources/email.sql</srcFile> -->
+								<!-- <srcFile>src/test/resources/schema.sql</srcFile> <srcFile>src/test/resources/xarrNotice.sql</srcFile> <srcFile>src/test/resources/sms.sql</srcFile> 
+									<srcFile>src/test/resources/email.sql</srcFile> -->
 							</srcFiles>
 						</configuration>
 					</execution>
@@ -138,6 +139,23 @@
 		</pluginManagement>
 	</build>
 	<dependencies>
+		<!-- sso -->
+		<dependency>
+			<groupId>com.toney.sso</groupId>
+			<artifactId>sso-admin-facade</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.toney.sso</groupId>
+			<artifactId>sso-commons</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.toney.sso</groupId>
+			<artifactId>sso-facade</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.toney.istyle</groupId>
 			<artifactId>istyle-commons</artifactId>
@@ -148,6 +166,12 @@
 			<artifactId>istyle-persistence</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<!-- hessian -->
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+		</dependency>
+		<!-- spring setting -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
@@ -192,17 +216,6 @@
 			<version>${jdbc.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate-validator.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-ext</artifactId>
@@ -251,6 +264,7 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+
 		<dependency>
 			<groupId>com.googlecode.disruptor</groupId>
 			<artifactId>disruptor</artifactId>
@@ -272,7 +286,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 		</dependency>
-	<dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 		</dependency>
@@ -283,7 +297,6 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<hibernate-validator.version>4.0.2.GA</hibernate-validator.version>
 		<commons-digester.version>2.1</commons-digester.version>
 	</properties>
 

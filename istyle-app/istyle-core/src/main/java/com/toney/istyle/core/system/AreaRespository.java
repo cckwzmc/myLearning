@@ -1,4 +1,4 @@
-package com.toney.istyle.core.system.impl;
+package com.toney.istyle.core.system;
 
 import java.util.List;
 import java.util.Map;

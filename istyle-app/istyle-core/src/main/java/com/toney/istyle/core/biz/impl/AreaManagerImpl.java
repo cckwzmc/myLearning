@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.toney.istyle.core.biz.AreaManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.RespositoryException;
-import com.toney.istyle.core.system.impl.AreaRespository;
+import com.toney.istyle.core.system.AreaRespository;
 import com.toney.istyle.module.AreaModule;
 
 /**

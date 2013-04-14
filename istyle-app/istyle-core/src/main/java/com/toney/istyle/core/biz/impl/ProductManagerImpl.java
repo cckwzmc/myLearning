@@ -18,16 +18,16 @@ import com.toney.istyle.core.biz.AreaManager;
 import com.toney.istyle.core.biz.ProductManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.ServiceException;
+import com.toney.istyle.core.hessian.UucQueryService;
 import com.toney.istyle.core.product.ProductPicQueryService;
 import com.toney.istyle.core.product.ProductQueryServcie;
 import com.toney.istyle.core.product.ProductStatQueryService;
-import com.toney.istyle.core.user.UserQueryService;
 import com.toney.istyle.dao.ProductDao;
 import com.toney.istyle.form.ProductForm;
 import com.toney.istyle.form.ProductPicForm;
 import com.toney.istyle.form.ProductStatForm;
 import com.toney.istyle.module.AreaModule;
-import com.toney.istyle.module.UserModule;
+import com.toney.sso.dto.UserDTO;
 
 /**
  *************************************************************** 
@@ -58,7 +58,7 @@ public class ProductManagerImpl implements ProductManager {
 	@Autowired
 	AreaManager areaManager;
 	@Autowired
-	UserQueryService userQueryService;
+	UucQueryService uucQueryService;
 
 	@Override
 	public Page<ProductForm> getProductInfoByCatCode(Integer page, String catCode) throws ManagerException {
@@ -72,8 +72,8 @@ public class ProductManagerImpl implements ProductManager {
 					ProductPicBO productPicBO = productPicQueryService.getProductMasterPic(productBO.getId());
 					ProductClickBO statBo = productStatQueryService.getProductClickById(productBO.getId());
 					AreaModule areaModule = this.areaManager.getAreaById(productBO.getCityId());
-					UserModule userModule=this.userQueryService.getUserById(productBO.getUploadUid());
-					ProductForm form = wrapProductListForm(productBO, productPicBO, statBo, areaModule,userModule);
+					UserDTO userDTO=this.uucQueryService.getUserDTOById(productBO.getUploadUid());
+					ProductForm form = wrapProductListForm(productBO, productPicBO, statBo, areaModule,userDTO);
 					formList.add(form);
 				}
 				pageForm.setResult(formList);
@@ -116,10 +116,10 @@ public class ProductManagerImpl implements ProductManager {
 	 * @param productPicBO
 	 * @param statBo
 	 * @param areaBO
-	 * @param userModule 
+	 * @param userDTO 
 	 * @return
 	 */
-	private ProductForm wrapProductListForm(ProductBO bo, ProductPicBO productPicBO, ProductClickBO statBo, AreaModule areaModule, UserModule userModule) {
+	private ProductForm wrapProductListForm(ProductBO bo, ProductPicBO productPicBO, ProductClickBO statBo, AreaModule areaModule, UserDTO userDTO) {
 		ProductForm form = new ProductForm();
 		form.setId(bo.getId());
 		String lastUpdate = "";
@@ -128,7 +128,6 @@ public class ProductManagerImpl implements ProductManager {
 		} catch (Exception e) {
 			LOGGER.error("wrapProductListForm", e);
 		}
-
 		form.setLastUpdate(lastUpdate);
 		form.setProduceCode(bo.getProduceCode());
 		form.setProductName(bo.getProductName());
@@ -136,6 +135,7 @@ public class ProductManagerImpl implements ProductManager {
 		form.setPlatformCode(bo.getPlatformCode());
 		form.setCityName(areaModule.getName());	
 		form.setDescription(bo.getDescription());
+		form.setOnsale(bo.getOnsale());
 		List<ProductPicForm> list = new ArrayList<ProductPicForm>();
 		ProductPicForm picForm = new ProductPicForm();
 		picForm.setUrl(productPicBO.getUrl());
@@ -149,7 +149,7 @@ public class ProductManagerImpl implements ProductManager {
 		clickForm.setLikeNumber(statBo.getLikeNumber());
 		clickForm.setRecommendNumber(statBo.getRecommendNumber());
 		form.setProductStatForm(clickForm);
-		form.setNickName(userModule.getNickName());
+		form.setNickName(userDTO.getNickName());
 		return form;
 	}
 

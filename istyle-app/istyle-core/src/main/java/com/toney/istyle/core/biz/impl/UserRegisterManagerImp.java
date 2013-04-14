@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.toney.istyle.core.biz.UserRegisterManager;
-import com.toney.istyle.core.constants.Constants;
 import com.toney.istyle.core.exception.ManagerException;
-import com.toney.istyle.core.exception.ServiceException;
-import com.toney.istyle.core.user.UserEventService;
-import com.toney.istyle.core.user.UserQueryService;
-import com.toney.istyle.module.UserModule;
+import com.toney.istyle.core.hessian.SsoClientService;
+import com.toney.istyle.core.hessian.system.UucAdminQueryService;
+import com.toney.sso.commons.SSOConstants;
+import com.toney.sso.core.adminservice.UucAdminService;
+import com.toney.sso.dto.RegisterDTO;
+import com.toney.sso.dto.UserDTO;
 
 /**
  *************************************************************** 
@@ -30,44 +31,37 @@ public class UserRegisterManagerImp implements UserRegisterManager {
 
 	private static final XLogger LOGGER = XLoggerFactory.getXLogger(UserRegisterManagerImp.class);
 
-	
 	@Autowired
-	UserEventService userEventService;
-	@Autowired
-	UserQueryService userQueryService;
-	
-	/* (non-Javadoc)
-	 * @see com.toney.istyle.core.biz.UserRegisterManager#registerUser(java.lang.String, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void registerUser(String userName,String password,String nickName) throws ManagerException{
-		this.registerUser(userName, password, nickName,null);
-	}
+	SsoClientService ssoClientService;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.toney.istyle.core.biz.UserRegisterManager#registerUser(java.lang.String, java.lang.String, java.lang.String, java.lang.Short)
 	 */
 	@Override
-	public void registerUser(String userName, String password, String nickName, Short regType) throws ManagerException {
-		UserModule module=new UserModule();
-		module.setUserName(userName);
-		module.setNickName(nickName);
-		module.setRegType(regType);
-		if(regType==null||(regType!=Constants.REG_TYPE_0&&regType!=Constants.REG_TYPE_1)){
-			module.setRegType(Constants.REG_TYPE_2);
+	public UserDTO registerUser(String userName, String password, String nickName, String regType, Integer userType, String mobile) throws ManagerException {
+		RegisterDTO regDTO = new RegisterDTO();
+		regDTO.setUserName(userName);
+		regDTO.setNickName(nickName);
+		regDTO.setUserType(userType);
+		regDTO.setChannelCode(SSOConstants.ISTYLE_CHANNEL);
+		if (regType == null || !SSOConstants.MOBILE_LOGIN.equals(regType)) {
+			regDTO.setRegType(SSOConstants.EMAIL_REGISTER);
 		}
-		try {
-			this.userEventService.create(module, password);
-		} catch (ServiceException e) {
-			LOGGER.error("注册新用户失败,,userName={},nickName={},regType={}",new Object[]{userName,nickName,regType}, e);
-			throw new ManagerException(e);
-		}
+		regDTO.setPassword(password);
+		regDTO.setMobile(mobile);
+		return ssoClientService.register(regDTO);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.toney.istyle.core.biz.UserRegisterManager#registerUser(java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
 	@Override
-	public void getRetainUserAll() {
-		// TODO Auto-generated method stub
-		
+	public UserDTO registerUser(String userName, String password, String nickName, Integer userType, String mobile) throws ManagerException {
+		return this.registerUser(userName, password, nickName, SSOConstants.EMAIL_REGISTER, userType, mobile);
 	}
 
 }

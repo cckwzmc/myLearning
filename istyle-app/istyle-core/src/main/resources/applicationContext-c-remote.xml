@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-lazy-init="true">
+
+	<!-- 用户中心 -->
+	<bean id="uucAdminFacade" class="com.toney.istyle.core.util.HessianProxyFactoryBean">
+		<property name="serviceUrl" value="${hessian.serviceUrl.uuc.admin}" />
+		<property name="serviceInterface" value="com.toney.sso.core.adminservice.UucAdminService" />
+		<property name="overloadEnabled" value="true" />
+		<property name="readTimeout" value="${hessian.readTimeout}" />
+	</bean>
+	<bean id="uucFacadeService" class="com.toney.istyle.core.util.HessianProxyFactoryBean">
+		<property name="serviceUrl" value="${hessian.serviceUrl.uuc}" />
+		<property name="serviceInterface" value="com.toney.sso.core.service.UucService" />
+		<property name="overloadEnabled" value="true" />
+		<property name="readTimeout" value="${hessian.readTimeout}" />
+	</bean>
+	<bean id="ssoFacadeService" class="com.toney.istyle.core.util.HessianProxyFactoryBean">
+		<property name="serviceUrl" value="${hessian.serviceUrl.sso}" />
+		<property name="serviceInterface" value="com.toney.sso.core.service.SsoService" />
+		<property name="overloadEnabled" value="true" />
+		<property name="readTimeout" value="${hessian.readTimeout}" />
+	</bean>
+</beans>

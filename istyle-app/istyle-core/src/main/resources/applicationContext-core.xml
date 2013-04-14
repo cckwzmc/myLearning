@@ -9,4 +9,5 @@
 	<import resource="applicationContext-c-service.xml" />
 	<import resource="applicationContext-p-dao.xml" />
 	<import resource="applicationContext-c-cache.xml" />
+	<import resource="applicationContext-c-remote.xml" />
 </beans>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +40,7 @@ public class CategoryRespositoryImpl implements CategoryRespository {
 	}
 
 	@Override
-	@Cacheable(value = "categoryCache", key = "'getCategoryAll_list'")
+	@CacheEvict(value = "categoryCache", key = "'getCategoryAll_list'")
 	public void deleteCahce() throws RespositoryException {
-
 	}
 }

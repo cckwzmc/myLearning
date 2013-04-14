@@ -15,6 +15,7 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
 import com.toney.istyle.core.exception.RespositoryException;
+import com.toney.istyle.core.system.AreaRespository;
 import com.toney.istyle.dao.AreaDao;
 import com.toney.istyle.module.AreaModule;
 
