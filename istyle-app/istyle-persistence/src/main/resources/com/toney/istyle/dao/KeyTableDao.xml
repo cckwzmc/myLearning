@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.istyle.dao.KeyTableDao">
+	<resultMap id="keyTableResult" type="keyTableModule">
+		<result column="KEY_NAME" property="keyName"/>
+		<result column="KEY_VALUE" property="keyValue"/>
+		<result column="KEY_DESCRIPTION" property="keyDecription" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		KEY_NAME, KEY_VALUE, KEY_DESCRIPTION
+	</sql>
+	<select id="getKeyValue" resultType="java.lang.Long" parameterType="java.lang.String">
+		SELECT KEY_VALUE
+		FROM T_KEY_TABLE T WHERE T.KEY_NAME=#{keyName}
+	</select>
+	<delete id="updateKeyValue" parameterType="java.util.Map">
+		UPDATE KEY_VALUE=#{keyValue}
+		FROM T_KEY_TABLE T WHERE T.KEY_NAME=#{keyName}
+	</delete>
+</mapper>

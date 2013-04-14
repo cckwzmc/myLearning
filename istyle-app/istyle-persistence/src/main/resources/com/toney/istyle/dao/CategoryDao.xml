@@ -37,7 +37,7 @@
 		where CAT_CODE=#{catCode}
 	</delete>
 	<insert id="insert" parameterType="com.toney.istyle.module.CategoryModule">
-		insert into T_CATEGORY (ID, PARENT_ID, CAT_CODE,
+		insert into T_CATEGORY (PARENT_ID, CAT_CODE,
 		CAT_NAME, CREATE_DATE)
 		values (#{parentId}, #{catCode},
 		#{catName}, #{createDate})
