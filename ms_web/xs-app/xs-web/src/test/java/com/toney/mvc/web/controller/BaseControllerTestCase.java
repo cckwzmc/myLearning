@@ -2,9 +2,6 @@ package com.toney.mvc.web.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 @ContextConfiguration(locations = { "classpath:/applicationContext-core.xml", "classpath:/applicationContext-web.xml",
         "/WEB-INF/dispatcher-servlet.xml" })
