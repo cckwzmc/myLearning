@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.toney.dal.model.Page;
+import com.toney.commons.lang.Page;
 
 public class DalHibernateManagerFactoryImpl<T,PK  extends  Serializable> implements DalHibernateManagerFactory<T, PK> {
 
