@@ -1,5 +1,7 @@
 package com.toney.dal.model;
 
+import com.toney.dal.base.BaseObject;
+
 /**
  * @author toney.li 模版管理配置.<br/>
  *         对应表dede_templage_manager

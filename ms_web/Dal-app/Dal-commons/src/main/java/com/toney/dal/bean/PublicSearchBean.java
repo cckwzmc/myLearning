@@ -1,6 +1,6 @@
 package com.toney.dal.bean;
 
-import com.toney.dal.model.BaseObject;
+import com.toney.dal.base.BaseObject;
 
 /**
  * 

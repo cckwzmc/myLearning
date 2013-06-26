@@ -1,4 +1,4 @@
-package com.toney.dal.model;
+package com.toney.dal.base;
 
 import java.io.Serializable;
 

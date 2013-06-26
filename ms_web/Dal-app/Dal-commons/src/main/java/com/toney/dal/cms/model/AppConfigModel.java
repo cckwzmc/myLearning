@@ -1,4 +1,4 @@
-package com.toney.dal.model;
+package com.toney.dal.cms.model;
 
 import com.toney.dal.base.BaseObject;
 
@@ -6,7 +6,7 @@ import com.toney.dal.base.BaseObject;
  * @author toney.li
  * 系统配置参数。
  */
-public class SysConfigModel extends BaseObject {
+public class AppConfigModel extends BaseObject {
 
 	/**
 	 * 
@@ -88,7 +88,7 @@ public class SysConfigModel extends BaseObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SysConfigModel other = (SysConfigModel) obj;
+		AppConfigModel other = (AppConfigModel) obj;
 		if (cfgName == null) {
 			if (other.cfgName != null)
 				return false;

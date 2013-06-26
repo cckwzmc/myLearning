@@ -2,6 +2,8 @@ package com.toney.dal.model;
 
 import java.util.Date;
 
+import com.toney.dal.base.BaseObject;
+
 /**
  * 
  *************************************************************** 

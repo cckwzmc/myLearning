@@ -1,5 +1,7 @@
 package com.toney.dal.model;
 
+import com.toney.dal.base.BaseObject;
+
 public class AdministratorModel extends BaseObject {
 
 	/**

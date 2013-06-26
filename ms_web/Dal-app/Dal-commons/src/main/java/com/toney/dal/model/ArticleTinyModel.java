@@ -1,5 +1,7 @@
 package com.toney.dal.model;
 
+import com.toney.dal.base.BaseObject;
+
 /**
  * @author toney.li
  * 文章简表

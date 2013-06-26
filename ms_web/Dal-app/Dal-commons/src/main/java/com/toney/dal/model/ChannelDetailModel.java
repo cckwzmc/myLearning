@@ -2,6 +2,8 @@ package com.toney.dal.model;
 
 import java.util.List;
 
+import com.toney.dal.base.BaseObject;
+
 /**
  * @author toney.li 频道明细信息。
  */

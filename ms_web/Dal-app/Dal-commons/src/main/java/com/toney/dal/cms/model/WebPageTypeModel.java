@@ -1,25 +1,25 @@
-package com.toney.dal.model;
+package com.toney.dal.cms.model;
 
 import com.toney.dal.base.BaseObject;
 
-public class TemplatePageTypeModel extends BaseObject {
+public class WebPageTypeModel extends BaseObject {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6449471415089310745L;
+	private static final long serialVersionUID = 6447771984238427614L;
 
 	private Integer id;
 	private String typeCode;
 	private String pageDesc;
-	private Integer isEnabled;
+	private Integer enabled;
 
-	public Integer getIsEnabled() {
-		return isEnabled;
+	public Integer getEnabled() {
+		return enabled;
 	}
 
-	public void setIsEnabled(Integer isEnabled) {
-		this.isEnabled = isEnabled;
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
 
 	public Integer getId() {
@@ -50,8 +50,8 @@ public class TemplatePageTypeModel extends BaseObject {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((isEnabled == null) ? 0 : isEnabled.hashCode());
 		result = prime * result + ((pageDesc == null) ? 0 : pageDesc.hashCode());
 		result = prime * result + ((typeCode == null) ? 0 : typeCode.hashCode());
 		return result;
@@ -65,16 +65,16 @@ public class TemplatePageTypeModel extends BaseObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TemplatePageTypeModel other = (TemplatePageTypeModel) obj;
+		WebPageTypeModel other = (WebPageTypeModel) obj;
+		if (enabled == null) {
+			if (other.enabled != null)
+				return false;
+		} else if (!enabled.equals(other.enabled))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
-		if (isEnabled == null) {
-			if (other.isEnabled != null)
-				return false;
-		} else if (!isEnabled.equals(other.isEnabled))
 			return false;
 		if (pageDesc == null) {
 			if (other.pageDesc != null)
@@ -91,7 +91,7 @@ public class TemplatePageTypeModel extends BaseObject {
 
 	@Override
 	public String toString() {
-		return "TemplatePageTypeModel [id=" + id + ", typeCode=" + typeCode + ", pageDesc=" + pageDesc + ", isEnabled=" + isEnabled + "]";
+		return "WebPageTypeModel [id=" + id + ", typeCode=" + typeCode + ", pageDesc=" + pageDesc + ", enabled=" + enabled + "]";
 	}
 
 }

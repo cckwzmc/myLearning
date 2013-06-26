@@ -1,5 +1,7 @@
 package com.toney.dal.model;
 
+import com.toney.dal.base.BaseObject;
+
 
 /**
  * @author toney.li 频道类型，如：文章、图片、商店、

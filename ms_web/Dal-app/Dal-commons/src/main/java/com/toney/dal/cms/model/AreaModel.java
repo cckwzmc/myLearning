@@ -1,4 +1,4 @@
-package com.toney.dal.model;
+package com.toney.dal.cms.model;
 
 import java.util.List;
 
