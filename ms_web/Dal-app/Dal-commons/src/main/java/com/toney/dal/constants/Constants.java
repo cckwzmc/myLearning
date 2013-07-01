@@ -1,6 +1,5 @@
 package com.toney.dal.constants;
 
-import java.io.File;
 
 public class Constants {
 	/**
