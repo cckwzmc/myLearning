@@ -8,6 +8,7 @@ import com.toney.dal.base.BaseObject;
  * 
  *************************************************************** 
  * <p>
+ * 
  * @CLASS :AreaModel
  * @DESCRIPTION :Area Model
  * @AUTHOR :toney.li
@@ -29,11 +30,11 @@ public class AreaModel extends BaseObject {
 	/**
 	 * 第一排序
 	 */
-	private Integer reId;
+	private Integer parentId;
 	/**
 	 * 第二排序
 	 */
-	private Integer disOrder;
+	private Integer seqence;
 
 	public List<AreaModel> getChildrens() {
 		return childrens;
@@ -59,20 +60,20 @@ public class AreaModel extends BaseObject {
 		this.name = name;
 	}
 
-	public Integer getReId() {
-		return reId;
+	public Integer getParentId() {
+		return parentId;
 	}
 
-	public void setReId(Integer reId) {
-		this.reId = reId;
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 
-	public Integer getDisOrder() {
-		return disOrder;
+	public Integer getSeqence() {
+		return seqence;
 	}
 
-	public void setDisOrder(Integer disOrder) {
-		this.disOrder = disOrder;
+	public void setSeqence(Integer seqence) {
+		this.seqence = seqence;
 	}
 
 	@Override
@@ -80,10 +81,10 @@ public class AreaModel extends BaseObject {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((childrens == null) ? 0 : childrens.hashCode());
-		result = prime * result + ((disOrder == null) ? 0 : disOrder.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((reId == null) ? 0 : reId.hashCode());
+		result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
+		result = prime * result + ((seqence == null) ? 0 : seqence.hashCode());
 		return result;
 	}
 
@@ -101,11 +102,6 @@ public class AreaModel extends BaseObject {
 				return false;
 		} else if (!childrens.equals(other.childrens))
 			return false;
-		if (disOrder == null) {
-			if (other.disOrder != null)
-				return false;
-		} else if (!disOrder.equals(other.disOrder))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -116,16 +112,21 @@ public class AreaModel extends BaseObject {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (reId == null) {
-			if (other.reId != null)
+		if (parentId == null) {
+			if (other.parentId != null)
 				return false;
-		} else if (!reId.equals(other.reId))
+		} else if (!parentId.equals(other.parentId))
+			return false;
+		if (seqence == null) {
+			if (other.seqence != null)
+				return false;
+		} else if (!seqence.equals(other.seqence))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "AreaModel [childrens=" + childrens + ", id=" + id + ", name=" + name + ", reId=" + reId + ", disOrder=" + disOrder + "]";
+		return "AreaModel [childrens=" + childrens + ", id=" + id + ", name=" + name + ", parentId=" + parentId + ", seqence=" + seqence + "]";
 	}
 }

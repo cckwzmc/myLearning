@@ -54,7 +54,7 @@
 		</set>
 		WHERE ID = #{id,jdbcType=SMALLINT}
 	</update>
-	<select id="getBySearch" resultMap="advertiseSpaceResultMap" resultType="java.util.List" parameterType="">
+	<select id="getBySearch" resultMap="advertiseSpaceResultMap" resultType="java.util.List" parameterType="java.util.Map">
 		SELECT <include refid="Base_Column_List" />
 		FROM T_ADVERTISE_SPACE
 	</select>

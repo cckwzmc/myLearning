@@ -7,7 +7,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.toney.dal.model.AreaModel;
 
 /**
  * @author toney.li

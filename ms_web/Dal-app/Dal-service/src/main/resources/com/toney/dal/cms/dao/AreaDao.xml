@@ -11,8 +11,8 @@
 		ID, PARENT_ID, NAME, SEQENCE
 	</sql>
 	<select id="getAllArea" resultMap="areaResult" resultType="java.util.List">
-		select
+		SELECT
 		<include refid="Base_Column_List" />
-		from t_area order by id ,reid,disorder
+		FROM T_AREA ORDER BY ID ,PARENT_ID,SEQENCE
 	</select>
 </mapper>
