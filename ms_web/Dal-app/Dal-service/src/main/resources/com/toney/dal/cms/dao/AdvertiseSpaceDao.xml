@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.AdvertiseSpaceDao">
+	<resultMap id="advertiseSpaceResultMap" type="advertiseSpace">
+		<id column="ID" property="id" jdbcType="SMALLINT" />
+		<result column="A_ID" property="aid" jdbcType="BIGINT" />
+		<result column="SPACE_NAME" property="spaceName" jdbcType="VARCHAR" />
+		<result column="ENABLED" property="enabled" jdbcType="BIT" />
+		<result column="AD_TYPE" property="adType" jdbcType="BIT" />
+		<result column="AD_DIR" property="adDir" jdbcType="VARCHAR" />
+		<result column="CREATER_ID" property="createrId" jdbcType="BIGINT" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="INTEGER" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="INTEGER" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="TEMPLATE_CONTENT" property="templateContent" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, A_ID, SPACE_NAME, ENABLED, AD_TYPE, AD_DIR, CREATER_ID, CREATE_DATE, LAST_UPDATE_DATE,
+		DESCRIPTION,TEMPLATE_CONTENT
+	</sql>
+	<update id="updateById" parameterType="com.toney.dal.cms.model.AdvertiseSpaceModel">
+		UPDATE T_ADVERTISE_SPACE
+		<set>
+			<if test="aid != null">
+				A_ID = #{aid,jdbcType=BIGINT},
+			</if>
+			<if test="spaceName != null">
+				SPACE_NAME = #{spaceName,jdbcType=VARCHAR},
+			</if>
+			<if test="enabled != null">
+				ENABLED = #{enabled,jdbcType=BIT},
+			</if>
+			<if test="adType != null">
+				AD_TYPE = #{adType,jdbcType=BIT},
+			</if>
+			<if test="adDir != null">
+				AD_DIR = #{adDir,jdbcType=VARCHAR},
+			</if>
+			<if test="createrId != null">
+				CREATER_ID = #{createrId,jdbcType=BIGINT},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=INTEGER},
+			</if>
+			<if test="lastUpdateDate != null">
+				LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=INTEGER},
+			</if>
+			<if test="description != null">
+				DESCRIPTION = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="templateContent != null">
+				TEMPLATE_CONTENT = #{templateContent,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=SMALLINT}
+	</update>
+	<select id="getBySearch" resultMap="advertiseSpaceResultMap" resultType="java.util.List" parameterType="">
+		SELECT <include refid="Base_Column_List" />
+		FROM T_ADVERTISE_SPACE
+	</select>
+	<select id="getById" resultMap="advertiseSpaceResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_ADVERTISE_SPACE
+		WHERE ID = #{id,jdbcType=SMALLINT}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM T_ADVERTISE_SPACE
+		WHERE ID = #{id,jdbcType=SMALLINT}
+	</delete>
+	<insert id="insert" parameterType="com.toney.dal.cms.model.AdvertiseSpaceModel">
+		insert into t_advertise_space
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="aid != null">
+				A_ID,
+			</if>
+			<if test="spaceName != null">
+				SPACE_NAME,
+			</if>
+			<if test="enabled != null">
+				ENABLED,
+			</if>
+			<if test="adType != null">
+				AD_TYPE,
+			</if>
+			<if test="adDir != null">
+				AD_DIR,
+			</if>
+			<if test="createrId != null">
+				CREATER_ID,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+			<if test="lastUpdateDate != null">
+				LAST_UPDATE_DATE,
+			</if>
+			<if test="description != null">
+				DESCRIPTION,
+			</if>
+			<if test="templateContent != null">
+				TEMPLATE_CONTENT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=SMALLINT},
+			</if>
+			<if test="aid != null">
+				#{aid,jdbcType=BIGINT},
+			</if>
+			<if test="spaceName != null">
+				#{spaceName,jdbcType=VARCHAR},
+			</if>
+			<if test="enabled != null">
+				#{enabled,jdbcType=BIT},
+			</if>
+			<if test="adType != null">
+				#{adType,jdbcType=BIT},
+			</if>
+			<if test="adDir != null">
+				#{adDir,jdbcType=VARCHAR},
+			</if>
+			<if test="createrId != null">
+				#{createrId,jdbcType=BIGINT},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=INTEGER},
+			</if>
+			<if test="lastUpdateDate != null">
+				#{lastUpdateDate,jdbcType=INTEGER},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="templateContent != null">
+				#{templateContent,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

@@ -9,7 +9,7 @@
 		<!-- JdbcType enumeration. Most common are: NULL, VARCHAR and OTHER -->
 		<setting name="jdbcTypeForNull" value="NULL" />	
 	</settings>
-	<typeAliases>
+	<!-- <typeAliases>
 		<typeAlias alias="channelType" type="com.toney.dal.model.ChannelTypeModel" />
 		<typeAlias alias="channel" type="com.toney.dal.model.ChannelDetailModel" />
 		<typeAlias alias="article" type="com.toney.dal.model.ArticleModel" />
@@ -24,6 +24,18 @@
 		<typeAlias alias="templateMappingModel" type="com.toney.dal.model.TemplateMappingModel" />
 		<typeAlias alias="templatePageTypeModel" type="com.toney.dal.model.TemplatePageTypeModel" />
 		<typeAlias alias="tplPublicMappingModel" type="com.toney.dal.model.TplPublicMappingModel" />
+	</typeAliases> -->
+	<typeAliases>
+		<typeAlias alias="webPageType" type="com.toney.dal.cms.model.WebPageTypeModel" />
+		<typeAlias alias="channelType" type="com.toney.dal.cms.model.ChannelTypeModel" />
+		<typeAlias alias="channelBase" type="com.toney.dal.cms.model.ChannelBaseModel" />
+		<typeAlias alias="archivesStat" type="com.toney.dal.cms.model.ArchivesStatModel" />
+		<typeAlias alias="archivesBase" type="com.toney.dal.cms.dao.ArchivesBaseDao" />
+		<typeAlias alias="archivesArticle" type="com.toney.dal.cms.model.ArchivesArticleModel" />
+		<typeAlias alias="appConfig" type="com.toney.dal.cms.model.AppConfigModel" />
+		<typeAlias alias="area" type="com.toney.dal.cms.model.AreaModel" />
+		<typeAlias alias="advertiseSpace" type="com.toney.dal.cms.model.AdvertiseSpaceModel" />
+		<typeAlias alias="advertiseDetail" type="com.toney.dal.cms.model.AdvertiseDetailModel" />
 	</typeAliases>
 	<!-- <mappers> <mapper resource="sqlmaps/UserSQL.xml" /> </mappers> -->
 </configuration>

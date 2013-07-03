@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.AreaDao">
+	<resultMap type="area" id="areaResult">
+		<id column="ID" property="id" jdbcType="SMALLINT" />
+		<result column="PARENT_ID" property="parentId" jdbcType="SMALLINT" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="SEQENCE" property="seqence" jdbcType="SMALLINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PARENT_ID, NAME, SEQENCE
+	</sql>
+	<select id="getAllArea" resultMap="areaResult" resultType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from t_area order by id ,reid,disorder
+	</select>
+</mapper>

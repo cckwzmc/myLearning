@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.ArchivesBaseDao">
+	<resultMap id="archivesBaseResultMap" type="archivesBase">
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<result column="CHANNEL_TYPEID" property="channelTypeid" jdbcType="SMALLINT" />
+		<result column="CHANNEL_ID" property="channelId" jdbcType="SMALLINT" />
+		<result column="TITLE" property="title" jdbcType="VARCHAR" />
+		<result column="TITLE_STYLE" property="titleStyle" jdbcType="VARCHAR" />
+		<result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+		<result column="LABEL" property="label" jdbcType="VARCHAR" />
+		<result column="ISMAKE" property="ismake" jdbcType="SMALLINT" />
+		<result column="ISHIDE" property="ishide" jdbcType="SMALLINT" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="INTEGER" />
+		<result column="LAST_MODIFY_TIME" property="lastModifyTime" jdbcType="INTEGER" />
+		<result column="SEQUNCE" property="sequnce" jdbcType="INTEGER" />
+		<result column="AUTHOR" property="author" jdbcType="VARCHAR" />
+		<result column="SOURCE" property="source" jdbcType="VARCHAR" />
+		<result column="LITPIC" property="litpic" jdbcType="VARCHAR" />
+		<result column="PUBLISH_DATE" property="publishDate" jdbcType="INTEGER" />
+		<result column="PUBLISHER_ID" property="publisherId" jdbcType="BIGINT" />
+		<result column="KEYWORDS" property="keywords" jdbcType="VARCHAR" />
+		<result column="WEIGHT" property="weight" jdbcType="SMALLINT" />
+		<result column="REDIRECT_URL" property="redirectUrl" jdbcType="VARCHAR" />
+		<result column="MORE_URL" property="moreUrl" jdbcType="VARCHAR" />
+		<result column="URL_1" property="url1" jdbcType="VARCHAR" />
+		<result column="URL_2" property="url2" jdbcType="VARCHAR" />
+		<result column="PIC_1" property="pic1" jdbcType="VARCHAR" />
+		<result column="PIC_2" property="pic2" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, CHANNEL_TYPEID, CHANNEL_ID, TITLE, TITLE_STYLE, SUMMARY, LABEL, ISMAKE, ISHIDE,
+		CREATE_TIME, LAST_MODIFY_TIME, SEQUNCE, AUTHOR, SOURCE, LITPIC,
+		PUBLISH_DATE, PUBLISHER_ID,
+		KEYWORDS, WEIGHT, REDIRECT_URL, MORE_URL, URL_1, URL_2, PIC_1, PIC_2
+	</sql>
+	<select id="getById" resultMap="archivesBaseResultMap" parameterType="java.lang.Long">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_ARCHIVES_BASE
+		WHERE ID = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Long">
+		DELETE FROM T_ARCHIVES_BASE
+		WHERE ID = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.toney.dal.cms.model.ArchivesBaseModel">
+		insert into t_archives_base
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="channelTypeid != null">
+				CHANNEL_TYPEID,
+			</if>
+			<if test="channelId != null">
+				CHANNEL_ID,
+			</if>
+			<if test="title != null">
+				TITLE,
+			</if>
+			<if test="titleStyle != null">
+				TITLE_STYLE,
+			</if>
+			<if test="summary != null">
+				SUMMARY,
+			</if>
+			<if test="label != null">
+				LABEL,
+			</if>
+			<if test="ismake != null">
+				ISMAKE,
+			</if>
+			<if test="ishide != null">
+				ISHIDE,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="lastModifyTime != null">
+				LAST_MODIFY_TIME,
+			</if>
+			<if test="sequnce != null">
+				SEQUNCE,
+			</if>
+			<if test="author != null">
+				AUTHOR,
+			</if>
+			<if test="source != null">
+				SOURCE,
+			</if>
+			<if test="litpic != null">
+				LITPIC,
+			</if>
+			<if test="publishDate != null">
+				PUBLISH_DATE,
+			</if>
+			<if test="publisherId != null">
+				PUBLISHER_ID,
+			</if>
+			<if test="keywords != null">
+				KEYWORDS,
+			</if>
+			<if test="weight != null">
+				WEIGHT,
+			</if>
+			<if test="redirectUrl != null">
+				REDIRECT_URL,
+			</if>
+			<if test="moreUrl != null">
+				MORE_URL,
+			</if>
+			<if test="url1 != null">
+				URL_1,
+			</if>
+			<if test="url2 != null">
+				URL_2,
+			</if>
+			<if test="pic1 != null">
+				PIC_1,
+			</if>
+			<if test="pic2 != null">
+				PIC_2,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="channelTypeid != null">
+				#{channelTypeid,jdbcType=SMALLINT},
+			</if>
+			<if test="channelId != null">
+				#{channelId,jdbcType=SMALLINT},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="titleStyle != null">
+				#{titleStyle,jdbcType=VARCHAR},
+			</if>
+			<if test="summary != null">
+				#{summary,jdbcType=VARCHAR},
+			</if>
+			<if test="label != null">
+				#{label,jdbcType=VARCHAR},
+			</if>
+			<if test="ismake != null">
+				#{ismake,jdbcType=SMALLINT},
+			</if>
+			<if test="ishide != null">
+				#{ishide,jdbcType=SMALLINT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=INTEGER},
+			</if>
+			<if test="lastModifyTime != null">
+				#{lastModifyTime,jdbcType=INTEGER},
+			</if>
+			<if test="sequnce != null">
+				#{sequnce,jdbcType=INTEGER},
+			</if>
+			<if test="author != null">
+				#{author,jdbcType=VARCHAR},
+			</if>
+			<if test="source != null">
+				#{source,jdbcType=VARCHAR},
+			</if>
+			<if test="litpic != null">
+				#{litpic,jdbcType=VARCHAR},
+			</if>
+			<if test="publishDate != null">
+				#{publishDate,jdbcType=INTEGER},
+			</if>
+			<if test="publisherId != null">
+				#{publisherId,jdbcType=BIGINT},
+			</if>
+			<if test="keywords != null">
+				#{keywords,jdbcType=VARCHAR},
+			</if>
+			<if test="weight != null">
+				#{weight,jdbcType=SMALLINT},
+			</if>
+			<if test="redirectUrl != null">
+				#{redirectUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="moreUrl != null">
+				#{moreUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="url1 != null">
+				#{url1,jdbcType=VARCHAR},
+			</if>
+			<if test="url2 != null">
+				#{url2,jdbcType=VARCHAR},
+			</if>
+			<if test="pic1 != null">
+				#{pic1,jdbcType=VARCHAR},
+			</if>
+			<if test="pic2 != null">
+				#{pic2,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateById" parameterType="com.toney.dal.cms.model.ArchivesBaseModel">
+		update t_archives_base
+		<set>
+			<if test="channelTypeid != null">
+				CHANNEL_TYPEID = #{channelTypeid,jdbcType=SMALLINT},
+			</if>
+			<if test="channelId != null">
+				CHANNEL_ID = #{channelId,jdbcType=SMALLINT},
+			</if>
+			<if test="title != null">
+				TITLE = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="titleStyle != null">
+				TITLE_STYLE = #{titleStyle,jdbcType=VARCHAR},
+			</if>
+			<if test="summary != null">
+				SUMMARY = #{summary,jdbcType=VARCHAR},
+			</if>
+			<if test="label != null">
+				LABEL = #{label,jdbcType=VARCHAR},
+			</if>
+			<if test="ismake != null">
+				ISMAKE = #{ismake,jdbcType=SMALLINT},
+			</if>
+			<if test="ishide != null">
+				ISHIDE = #{ishide,jdbcType=SMALLINT},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=INTEGER},
+			</if>
+			<if test="lastModifyTime != null">
+				LAST_MODIFY_TIME = #{lastModifyTime,jdbcType=INTEGER},
+			</if>
+			<if test="sequnce != null">
+				SEQUNCE = #{sequnce,jdbcType=INTEGER},
+			</if>
+			<if test="author != null">
+				AUTHOR = #{author,jdbcType=VARCHAR},
+			</if>
+			<if test="source != null">
+				SOURCE = #{source,jdbcType=VARCHAR},
+			</if>
+			<if test="litpic != null">
+				LITPIC = #{litpic,jdbcType=VARCHAR},
+			</if>
+			<if test="publishDate != null">
+				PUBLISH_DATE = #{publishDate,jdbcType=INTEGER},
+			</if>
+			<if test="publisherId != null">
+				PUBLISHER_ID = #{publisherId,jdbcType=BIGINT},
+			</if>
+			<if test="keywords != null">
+				KEYWORDS = #{keywords,jdbcType=VARCHAR},
+			</if>
+			<if test="weight != null">
+				WEIGHT = #{weight,jdbcType=SMALLINT},
+			</if>
+			<if test="redirectUrl != null">
+				REDIRECT_URL = #{redirectUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="moreUrl != null">
+				MORE_URL = #{moreUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="url1 != null">
+				URL_1 = #{url1,jdbcType=VARCHAR},
+			</if>
+			<if test="url2 != null">
+				URL_2 = #{url2,jdbcType=VARCHAR},
+			</if>
+			<if test="pic1 != null">
+				PIC_1 = #{pic1,jdbcType=VARCHAR},
+			</if>
+			<if test="pic2 != null">
+				PIC_2 = #{pic2,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=BIGINT}
+	</update>
+</mapper>

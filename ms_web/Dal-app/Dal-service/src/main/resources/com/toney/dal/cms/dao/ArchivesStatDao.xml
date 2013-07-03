@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.ArchivesStatDao">
+	<resultMap id="archivesStatResultMap" type="archivesStat">
+		<id column="A_ID" property="aid" jdbcType="BIGINT" />
+		<result column="CLICK" property="click" jdbcType="INTEGER" />
+		<result column="SCORES" property="scores" jdbcType="INTEGER" />
+		<result column="GOODPOST" property="goodpost" jdbcType="INTEGER" />
+		<result column="BADPOST" property="badpost" jdbcType="INTEGER" />
+		<result column="LAST_POSTER" property="lastPoster" jdbcType="BIGINT" />
+		<result column="LAST_POST_DATE" property="lastPostDate" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		A_ID, CLICK, SCORES, GOODPOST, BADPOST, LAST_POSTER, LAST_POST_DATE
+	</sql>
+	<select id="getById" resultMap="archivesStatResultMap" parameterType="java.lang.Long">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_ARCHIVES_STAT
+		WHERE A_ID = #{aid,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Long">
+		DELETE FROM T_ARCHIVES_STAT
+		WHERE A_ID = #{aid,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.toney.dal.cms.model.ArchivesStatModel">
+		INSERT INTO T_ARCHIVES_STAT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="aid != null">
+				A_ID,
+			</if>
+			<if test="click != null">
+				CLICK,
+			</if>
+			<if test="scores != null">
+				SCORES,
+			</if>
+			<if test="goodpost != null">
+				GOODPOST,
+			</if>
+			<if test="badpost != null">
+				BADPOST,
+			</if>
+			<if test="lastPoster != null">
+				LAST_POSTER,
+			</if>
+			<if test="lastPostDate != null">
+				LAST_POST_DATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="aid != null">
+				#{aid,jdbcType=BIGINT},
+			</if>
+			<if test="click != null">
+				#{click,jdbcType=INTEGER},
+			</if>
+			<if test="scores != null">
+				#{scores,jdbcType=INTEGER},
+			</if>
+			<if test="goodpost != null">
+				#{goodpost,jdbcType=INTEGER},
+			</if>
+			<if test="badpost != null">
+				#{badpost,jdbcType=INTEGER},
+			</if>
+			<if test="lastPoster != null">
+				#{lastPoster,jdbcType=BIGINT},
+			</if>
+			<if test="lastPostDate != null">
+				#{lastPostDate,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateById" parameterType="com.toney.dal.cms.model.ArchivesStatModel">
+		update t_archives_stat
+		<set>
+			<if test="click != null">
+				CLICK = #{click,jdbcType=INTEGER},
+			</if>
+			<if test="scores != null">
+				SCORES = #{scores,jdbcType=INTEGER},
+			</if>
+			<if test="goodpost != null">
+				GOODPOST = #{goodpost,jdbcType=INTEGER},
+			</if>
+			<if test="badpost != null">
+				BADPOST = #{badpost,jdbcType=INTEGER},
+			</if>
+			<if test="lastPoster != null">
+				LAST_POSTER = #{lastPoster,jdbcType=BIGINT},
+			</if>
+			<if test="lastPostDate != null">
+				LAST_POST_DATE = #{lastPostDate,jdbcType=INTEGER},
+			</if>
+		</set>
+		where A_ID = #{aid,jdbcType=BIGINT}
+	</update>
+</mapper>

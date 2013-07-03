@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.WebpageTypeDao">
+	<resultMap id="webPageTypeResultMap" type="webPageType">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="ENABLED" property="enabled" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, TYPE_CODE, DESCRIPTION, ENABLED
+	</sql>
+	<select id="getAllWeaPageType" resultMap="webPageTypeResultMap"
+		resultType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from t_webpage_type
+	</select>
+</mapper>

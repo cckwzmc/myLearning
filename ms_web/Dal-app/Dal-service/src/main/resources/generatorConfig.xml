@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration >
-  <classPathEntry location="/home/toney.li/works-tools/maven/m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar"/>
+  <!-- <classPathEntry location="/home/toney.li/works-tools/maven/m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar"/> -->
+  <classPathEntry location="D:/dev_tools/maven/m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar"/>
   <context id="context1" >
-    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/dedecms?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true" userId="root" password="123456" />
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/DB_CMS?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true" userId="root" password="123456" />
     <javaModelGenerator targetPackage="com.toney.dal.model.generator" targetProject="Dal-service" />
     <sqlMapGenerator targetPackage="com.toney.dal.dao.generator" targetProject="Dal-service" />
     <javaClientGenerator targetPackage="com.toney.dal.dao.generator" targetProject="Dal-service" type="XMLMAPPER" />
-    <table schema="dedecms" tableName="dede_tpl_publicmapping" domainObjectName="TplPublicMapping">
+    <table schema="DB_CMS" tableName="t_admin" domainObjectName="AdminMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_admin_auth" domainObjectName="AdminAuthMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_admin_auth_detail" domainObjectName="AdminAuthDetailMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_admin_group" domainObjectName="AdminGroupMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_admingrp_auth" domainObjectName="AdminGrpAuthMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_advertise_detail" domainObjectName="AdvertiseDetailMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_appconfigs" domainObjectName="AppconfigsMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_advertise_space" domainObjectName="AdvertiseSpaceMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_archives_article" domainObjectName="ArchivesArticleMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_archives_base" domainObjectName="ArchivesBaseMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_archives_stat" domainObjectName="ArchivesStatMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_area" domainObjectName="AreaMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_channel_base" domainObjectName="ChannelBaseMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_webpage_type" domainObjectName="WebpageTypeMapping">
+    </table>
+    <table schema="DB_CMS" tableName="t_channeltype" domainObjectName="ChannelTypeMapping">
     </table>
   </context>
 </generatorConfiguration>

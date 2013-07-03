@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.ChannelBaseDao">
+	<resultMap id="channelBaseResultMap" type="channelBase">
+		<id column="ID" property="id" jdbcType="SMALLINT" />
+		<result column="PARENT_ID" property="parentId" jdbcType="SMALLINT" />
+		<result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+		<result column="IS_HIDE" property="isHide" jdbcType="BIT" />
+		<result column="CHANNEL_TYPEID" property="channelTypeid" jdbcType="SMALLINT" />
+		<result column="CHANNEL_DIR" property="channelDir" jdbcType="VARCHAR" />
+		<result column="SEQ_SORT" property="seqSort" jdbcType="SMALLINT" />
+		<result column="MAX_PAGE" property="maxPage" jdbcType="SMALLINT" />
+		<result column="PUBLISH_INDEX" property="publishIndex" jdbcType="VARCHAR" />
+		<result column="PUBLISH_LIST" property="publishList" jdbcType="VARCHAR" />
+		<result column="PUBLISH_ARTICLE" property="publishArticle" jdbcType="VARCHAR" />
+		<result column="REDIRECT_URL" property="redirectUrl" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PARENT_ID, CHANNEL_NAME, IS_HIDE, CHANNEL_TYPEID, CHANNEL_DIR, SEQ_SORT, MAX_PAGE,
+		PUBLISH_INDEX, PUBLISH_LIST, PUBLISH_ARTICLE, REDIRECT_URL
+	</sql>
+	<select id="getAllChannelBase" resultMap="channelBaseResultMap" resultType="java.util.List">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_CHANNEL_BASE ORDER BY ID
+	</select>
+
+	<select id="getById" resultMap="channelBaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_CHANNEL_BASE
+		WHERE ID = #{id,jdbcType=SMALLINT}
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.Short">
+		DELETE FROM T_CHANNEL_BASE
+		WHERE ID = #{id,jdbcType=SMALLINT}
+	</delete>
+	
+	<insert id="insert" parameterType="com.toney.dal.cms.model.ChannelBaseModel">
+		INSERT INTO T_CHANNEL_BASE (ID, PARENT_ID, CHANNEL_NAME,
+		IS_HIDE, CHANNEL_TYPEID, CHANNEL_DIR,
+		SEQ_SORT, MAX_PAGE, PUBLISH_INDEX,
+		PUBLISH_LIST, PUBLISH_ARTICLE, REDIRECT_URL
+		)
+		VALUES (#{id,jdbcType=SMALLINT}, #{parentId}, #{channelName,jdbcType=VARCHAR},
+		#{isHide,jdbcType=BIT},
+		#{channelTypeid,jdbcType=SMALLINT},
+		#{channelDir,jdbcType=VARCHAR},
+		#{seqSort,jdbcType=SMALLINT}, #{maxPage,jdbcType=SMALLINT}, #{publishIndex,jdbcType=VARCHAR},
+		#{publishList,jdbcType=VARCHAR},
+		#{publishArticle,jdbcType=VARCHAR}, #{redirectUrl,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateById" parameterType="com.toney.dal.cms.model.ChannelBaseModel">
+		UPDATE T_CHANNEL_BASE
+		<set>
+			<if test="parentId != null">
+				PARENT_ID = #{parentId,jdbcType=SMALLINT},
+			</if>
+			<if test="channelName != null">
+				CHANNEL_NAME = #{channelName,jdbcType=VARCHAR},
+			</if>
+			<if test="isHide != null">
+				IS_HIDE = #{isHide,jdbcType=BIT},
+			</if>
+			<if test="channelTypeid != null">
+				CHANNEL_TYPEID = #{channelTypeid,jdbcType=SMALLINT},
+			</if>
+			<if test="channelDir != null">
+				CHANNEL_DIR = #{channelDir,jdbcType=VARCHAR},
+			</if>
+			<if test="seqSort != null">
+				SEQ_SORT = #{seqSort,jdbcType=SMALLINT},
+			</if>
+			<if test="maxPage != null">
+				MAX_PAGE = #{maxPage,jdbcType=SMALLINT},
+			</if>
+			<if test="publishIndex != null">
+				PUBLISH_INDEX = #{publishIndex,jdbcType=VARCHAR},
+			</if>
+			<if test="publishList != null">
+				PUBLISH_LIST = #{publishList,jdbcType=VARCHAR},
+			</if>
+			<if test="publishArticle != null">
+				PUBLISH_ARTICLE = #{publishArticle,jdbcType=VARCHAR},
+			</if>
+			<if test="redirectUrl != null">
+				REDIRECT_URL = #{redirectUrl,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=SMALLINT}
+	</update>
+</mapper>

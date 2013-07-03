@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.AdvertiseDetailDao">
+	<resultMap id="advertiseDetailResultMap" type="advertiseDetail">
+		<id column="ID" property="id" jdbcType="SMALLINT" />
+		<result column="AD_ID" property="adId" jdbcType="BIGINT" />
+		<result column="TITLE" property="title" jdbcType="VARCHAR" />
+		<result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
+		<result column="DETAIL_DESC" property="detailDesc" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="INTEGER" />
+		<result column="START_DATE" property="startDate" jdbcType="INTEGER" />
+		<result column="END_DATE" property="endDate" jdbcType="INTEGER" />
+		<result column="IS_HIDE" property="isHide" jdbcType="BIT" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="PIC_PATH" property="picPath" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="BIT" />
+		<result column="CREATER_ID" property="createrId" jdbcType="BIGINT" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="INTEGER" />
+		<result column="TEMPLATE_CONTENT" property="templateContent" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, AD_ID, TITLE, SUMMARY, DETAIL_DESC, CREATE_DATE, START_DATE, END_DATE, IS_HIDE,
+		URL, PIC_PATH, STATUS, CREATER_ID, LAST_UPDATE_DATE,TEMPLATE_CONTENT
+	</sql>
+	<select id="getBySearch" resultMap="advertiseDetailResultMap" parameterType="java.util.Map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_ADVERTISE_DETAIL
+	</select>
+	<select id="getById" resultMap="advertiseDetailResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_ADVERTISE_DETAIL
+		WHERE ID = #{id,jdbcType=SMALLINT}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM T_ADVERTISE_DETAIL
+		WHERE ID = #{id,jdbcType=SMALLINT}
+	</delete>
+	<insert id="insert" parameterType="com.toney.dal.cms.model.AdvertiseDetailModel">
+		INSERT INTO T_ADVERTISE_DETAIL
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="adId != null">
+				AD_ID,
+			</if>
+			<if test="title != null">
+				TITLE,
+			</if>
+			<if test="summary != null">
+				SUMMARY,
+			</if>
+			<if test="detailDesc != null">
+				DETAIL_DESC,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+			<if test="startDate != null">
+				START_DATE,
+			</if>
+			<if test="endDate != null">
+				END_DATE,
+			</if>
+			<if test="isHide != null">
+				IS_HIDE,
+			</if>
+			<if test="url != null">
+				URL,
+			</if>
+			<if test="picPath != null">
+				PIC_PATH,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="createrId != null">
+				CREATER_ID,
+			</if>
+			<if test="lastUpdateDate != null">
+				LAST_UPDATE_DATE,
+			</if>
+			<if test="templateContent != null">
+				TEMPLATE_CONTENT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=SMALLINT},
+			</if>
+			<if test="adId != null">
+				#{adId,jdbcType=BIGINT},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="summary != null">
+				#{summary,jdbcType=VARCHAR},
+			</if>
+			<if test="detailDesc != null">
+				#{detailDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=INTEGER},
+			</if>
+			<if test="startDate != null">
+				#{startDate,jdbcType=INTEGER},
+			</if>
+			<if test="endDate != null">
+				#{endDate,jdbcType=INTEGER},
+			</if>
+			<if test="isHide != null">
+				#{isHide,jdbcType=BIT},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="picPath != null">
+				#{picPath,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=BIT},
+			</if>
+			<if test="createrId != null">
+				#{createrId,jdbcType=BIGINT},
+			</if>
+			<if test="lastUpdateDate != null">
+				#{lastUpdateDate,jdbcType=INTEGER},
+			</if>
+			<if test="templateContent != null">
+				#{templateContent,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.ChannelTypeDao">
+	<resultMap id="channelTypeResultMap" type="channelType">
+		<id column="ID" property="id" jdbcType="SMALLINT" />
+		<result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+		<result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+		<result column="MAIN_TABLE" property="mainTable" jdbcType="VARCHAR" />
+		<result column="DETAIL_TABLE" property="detailTable" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, TYPE_CODE, TYPE_NAME, MAIN_TABLE, DETAIL_TABLE, CREATE_DATE
+	</sql>
+	<select id="getAllChannelType" resultMap="channelTypeResultMap" resultType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from t_channeltype
+	</select>
+</mapper>

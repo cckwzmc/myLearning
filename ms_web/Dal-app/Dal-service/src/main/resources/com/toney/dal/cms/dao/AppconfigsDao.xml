@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toney.dal.cms.dao.AppconfigsDao">
+	<resultMap id="appConfigResultMap" type="appConfig">
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<result column="GROUP_CODE" property="groupCode" jdbcType="VARCHAR" />
+		<result column="ENABLED" property="enabled" jdbcType="SMALLINT" />
+		<result column="CFG_KEY" property="cfgKey" jdbcType="VARCHAR" />
+		<result column="CFG_VALUES" property="cfgValues" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="CFG_DESCRIPTION" property="cfgDescription" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, GROUP_CODE, ENABLED, CFG_KEY, CFG_VALUES, CREATE_DATE, CFG_DESCRIPTION
+	</sql>
+	<select id="getAllAppconfigs" resultMap="appConfigResultMap" resultType="java.util.List">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM T_APPCONFIGS
+	</select>
+	<insert id="insert" parameterType="com.toney.dal.cms.model.AppConfigModel">
+		insert into t_appconfigs
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="groupCode != null">
+				GROUP_CODE,
+			</if>
+			<if test="enabled != null">
+				ENABLED,
+			</if>
+			<if test="cfgKey != null">
+				CFG_KEY,
+			</if>
+			<if test="cfgValues != null">
+				CFG_VALUES,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+			<if test="cfgDescription != null">
+				CFG_DESCRIPTION,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="groupCode != null">
+				#{groupCode,jdbcType=VARCHAR},
+			</if>
+			<if test="enabled != null">
+				#{enabled,jdbcType=SMALLINT},
+			</if>
+			<if test="cfgKey != null">
+				#{cfgKey,jdbcType=VARCHAR},
+			</if>
+			<if test="cfgValues != null">
+				#{cfgValues,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="cfgDescription != null">
+				#{cfgDescription,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateById" parameterType="com.toney.dal.cms.model.AppConfigModel">
+		update t_appconfigs
+		<set>
+			<if test="groupCode != null">
+				GROUP_CODE = #{groupCode,jdbcType=VARCHAR},
+			</if>
+			<if test="enabled != null">
+				ENABLED = #{enabled,jdbcType=SMALLINT},
+			</if>
+			<if test="cfgKey != null">
+				CFG_KEY = #{cfgKey,jdbcType=VARCHAR},
+			</if>
+			<if test="cfgValues != null">
+				CFG_VALUES = #{cfgValues,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="cfgDescription != null">
+				CFG_DESCRIPTION = #{cfgDescription,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=BIGINT}
+	</update>
+
+</mapper>
