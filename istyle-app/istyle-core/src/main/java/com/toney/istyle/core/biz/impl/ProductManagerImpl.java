@@ -72,8 +72,11 @@ public class ProductManagerImpl implements ProductManager {
 					ProductPicBO productPicBO = productPicQueryService.getProductMasterPic(productBO.getId());
 					ProductClickBO statBo = productStatQueryService.getProductClickById(productBO.getId());
 					AreaModule areaModule = this.areaManager.getAreaById(productBO.getCityId());
-					UserDTO userDTO=this.uucQueryService.getUserDTOById(productBO.getUploadUid());
-					ProductForm form = wrapProductListForm(productBO, productPicBO, statBo, areaModule,userDTO);
+					UserDTO userDTO = null;
+					if (productBO.getUploadUid() != null) {
+						userDTO = this.uucQueryService.getUserDTOById(productBO.getUploadUid());
+					}
+					ProductForm form = wrapProductListForm(productBO, productPicBO, statBo, areaModule, userDTO);
 					formList.add(form);
 				}
 				pageForm.setResult(formList);
@@ -116,7 +119,7 @@ public class ProductManagerImpl implements ProductManager {
 	 * @param productPicBO
 	 * @param statBo
 	 * @param areaBO
-	 * @param userDTO 
+	 * @param userDTO
 	 * @return
 	 */
 	private ProductForm wrapProductListForm(ProductBO bo, ProductPicBO productPicBO, ProductClickBO statBo, AreaModule areaModule, UserDTO userDTO) {
@@ -133,7 +136,7 @@ public class ProductManagerImpl implements ProductManager {
 		form.setProductName(bo.getProductName());
 		form.setProductUrl(bo.getProductUrl());
 		form.setPlatformCode(bo.getPlatformCode());
-		form.setCityName(areaModule.getName());	
+		form.setCityName(areaModule.getName());
 		form.setDescription(bo.getDescription());
 		form.setOnsale(bo.getOnsale());
 		List<ProductPicForm> list = new ArrayList<ProductPicForm>();
@@ -149,7 +152,9 @@ public class ProductManagerImpl implements ProductManager {
 		clickForm.setLikeNumber(statBo.getLikeNumber());
 		clickForm.setRecommendNumber(statBo.getRecommendNumber());
 		form.setProductStatForm(clickForm);
-		form.setNickName(userDTO.getNickName());
+		if (userDTO != null){
+			form.setNickName(userDTO.getNickName());
+		}
 		return form;
 	}
 
