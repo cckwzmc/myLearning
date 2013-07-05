@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.toney.istyle.core.biz.UserQueryManager;
 import com.toney.istyle.core.biz.UserRegisterManager;
 import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.mvc.annotation.AuthLevel;
@@ -36,15 +37,16 @@ public class UserManagerController {
 	@Autowired
 	UserRegisterManager userRegisterManager;
 	@Autowired
+	UserQueryManager userQueryManager;
 	
 	@RequestMapping(value="doRegister",method=RequestMethod.POST)
-	public String adminAddUser(String userName, String password, String regType, String nickName, Model model) throws Exception {
+	public String adminAddUser(String userName, String password, Integer userType, String nickName, String mobile,Model model) throws Exception {
 		Assert.notNull(nickName);
 		Assert.notNull(userName);
 		Assert.notNull(password);
 		
 		try {
-			this.userRegisterManager.registerUser(userName, password, nickName, Short.valueOf(regType));
+			this.userRegisterManager.registerUser(userName, password, nickName, userType,mobile);
 		} catch (NumberFormatException e) {
 			LOGGER.error("代理注册用户失败", e);
 			throw new Exception(e);
@@ -64,7 +66,7 @@ public class UserManagerController {
 	@RequestMapping(value="retain",method=RequestMethod.GET,produces="application/json",params="format=json")
 	public String retainUser(Model model){
 		JsonPackageWrapper json=new JsonPackageWrapper();
-		userRegisterManager.getRetainUserAll();
+		this.userQueryManager.getUserDTORepertoire();
 		return "";
 	}
 }

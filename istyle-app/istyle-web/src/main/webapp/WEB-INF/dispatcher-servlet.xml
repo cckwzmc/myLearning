@@ -16,6 +16,8 @@
 			</list>
 		</property>
 	</bean>
+	
+
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
 	<context:component-scan base-package="com.toney.istyle.mvc" />
 
@@ -86,7 +88,7 @@
 
 		<!-- 在没有扩展名时即: "/user/1" 时的默认展现形式 -->
 		<property name="defaultContentType" value="text/html" />
-		
+
 		<!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
 		<property name="mediaTypes">
 			<map>
@@ -94,17 +96,15 @@
 				<entry key="jsonp" value="application/javascript" />
 			</map>
 		</property>
-		
+
 		<property name="defaultViews">
 			<list>
 				<bean class="com.toney.istyle.mvc.view.MappingJacksonJsonView">
 					<property name="modelKey" value="data" />
 					<property name="extractValueFromSingleKeyModel" value="true" />
 				</bean>
-				<!-- <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
-					<property name="modelKey" value="data" />
-					<property name="extractValueFromSingleKeyModel" value="true" />
-				</bean> -->
+				<!-- <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"> <property name="modelKey" value="data" /> <property name="extractValueFromSingleKeyModel" 
+					value="true" /> </bean> -->
 			</list>
 		</property>
 
@@ -147,8 +147,8 @@
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 		<property name="order" value="2" />
 		<property name="exposeRequestAttributes" value="true" />
-		<property name="exposeSpringMacroHelpers" value="true" />
 		<property name="requestContextAttribute" value="rc" />
+		<property name="exposeSpringMacroHelpers" value="true" />
 		<property name="prefix" value="" />
 		<property name="suffix" value=".html" />
 		<property name="contentType" value="text/html; charset=utf-8" />

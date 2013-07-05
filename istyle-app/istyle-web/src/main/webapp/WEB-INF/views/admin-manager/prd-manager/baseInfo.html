@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>商品管理商品---创建商品</title>
+<#include "../commons/head.html"/>
+
+</head>
+<body>
+	<div class="yui3-g">
+		<div class="yui3-u-1-6"  id="menu-main">
+			<#include "../commons/admin-menu.html">
+		</div>
+		<div class="yui3-u-5-6" id="prd-main">
+			<h2>创建商品--录入商品基本信息</h2>
+			<div>
+				<#include "create-menu.html">
+			</div>
+			<form id="mainForm" action="${rc.getContextPath()}/admin-manager/product/doBaseInfo" method="POST">
+				<input type="hidden" name="catCode" id="catCode" value=""/>
+				<input type="hidden" name="cityId" id="cityId" value=""/>
+				<ul>
+					<li><lebal class="title">商品名称:</lebal> 
+						<@spring.bind "productBaseForm.productName" />
+						<input type="text" class="field-text" name="${spring.status.expression}" id="productName" value="${spring.status.value!}"/>
+						${spring.status.errorMessage!}
+						<@spring.showErrors ",", "errors"/>
+					</li>
+					 
+					<li><lebal class="title">商品平台商品:</lebal> 
+											<select id="platFormCode" name="platFormCode">
+												<option value="-1">请选择商品平台商</option>
+												<#list platFormList as platForm>
+												<option value="${platForm.platformCode}">${platForm.platformName}</option>
+												</#list>	
+											 </select>
+					</li>
+					<li>
+						<lebal class="title"> 商品类型:</lebal><span id="category"></span>
+					</li>
+					<li>
+						<lebal class="title">商品链接:</lebal><input size="120" class="field-text" name="urlDetail" type="text" id="url_detail"/>&nbsp;&nbsp;
+						<input type="button" name="preview_url" id="preview_url" value=" 游 览 " style="width: 50px;height: 25px;"/>
+					</li>
+					<li>	
+						<lebal class="title">商品上传用户:</lebal><select id="uploadUid" name="uploadUid">
+											 	<option value="-1">请选择上传用户</option>
+											 	<#list userList as user>
+											 	<option value="${user.id}">${user.nickName}</option>
+											 	</#list>
+										    </select>
+					</li>
+					<li><lebal class="title">商品所在城市:</lebal><span id="area"></span>
+					</li>
+					<li>
+						<lebal class="title"></lebal>
+						<input type="submit" id="submit" name="submit" value="  提  交  " style="width: 70px;height: 35px;"/>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" src="${appConfigs("static_site_url").cfgValues}/static/js/area.js"></script>
+	<script type="text/javascript" src="${appConfigs("static_site_url").cfgValues}/static/js/cat.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			Iarea.setup("area");	
+			Icat.setup("category");
+			$("#preview_url").bind("click",function(){
+				if($.trim($("#url_detail").val())==''){
+					alert("请输入商品链接！");
+					return false;
+				}
+				window.open($("#url_detail").val());
+			});
+			
+			$("#mainForm").submit(function(){
+				if($.trim($("#productName").val())==''){
+					alert("请输入商品名称！");
+					return false;
+				}
+				if($.trim($("#uploadUid").val())==''){
+					alert("请选择商品上传用户！");
+					return false;
+				}
+				if($.trim($("#platFormCode").val())==''){
+					alert("请输入商品平台商品！");
+					return false;
+				}
+				if($.trim($("#url_detail").val())==''){
+					alert("请输入商品链接！");
+					return false;
+				}
+				var catCode =Icat.selectedCat();
+				if(catCode==''){
+					alert("请选择商品分类！");
+					return false;
+				}
+				$("#catCode").val(catCode);
+				var areaId =Iarea.selectedArea();
+				if(areaId==''){
+					alert("请选择商品所在城市！");
+					return false;
+				}
+				$("#cityId").val(areaId);
+			});
+		})
+	</script>
+</body>
+</html>

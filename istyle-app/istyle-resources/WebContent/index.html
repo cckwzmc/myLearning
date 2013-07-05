@@ -63,7 +63,7 @@
 
 					</ul>
 				</div>
-				<div class="ztag m-load"><em><em><em>列表载入中</em></em></em></div>
+				<div  class="ztag m-load"><em><em><em>列表载入中</em></em></em></div>
                 <div class="ztag m-load js-hide"><em><em><em class="txtol">没有更多搭配了哦！</em></em></em></div>
             </div>            
         </div>
@@ -307,8 +307,10 @@
     		cache:true,
     		success:function(response){
     			if(!response){
-    				
+    				$($(".m-load")[0]).hide();
+    				$($(".m-load")[1]).show();
     			}else if(!!response.data.productList){
+    				$($(".m-load")[0]).hide();
     				var detail=response.data.productList;
     				var pagefn = doT.template(document.getElementById('p-c-l-html').text, undefined, null);
     				for(var i=0;i<detail.length;i++){

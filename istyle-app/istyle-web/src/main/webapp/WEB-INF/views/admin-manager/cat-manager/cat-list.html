@@ -1,4 +1,111 @@
-
-
-
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<#include "../commons/head.html"/>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>商品管理列表</title>
+</head>
+<body>
+	<div class="yui3-g">
+		<div class="yui3-u-1-6" id="menu-main"><#include "../commons/admin-menu.html"></div>
+		<div class="yui3-u-5-6" id="prd-main" width="100%">
+			<h3>类目列表</h3>
+			<div class="error-msg">
+				<#if errorMessage??>
+					<ul class="ul">
+						<#list errorMessage?keys as key>
+							<li>
+								<span class="error-detail" style="color: red">${errorMessage[key]}</span>
+							</li>
+						</#list>
+					</ul>
+				</#if>
+			</div>
+			<form action="${rc.getContextPath()}/admin-manager/category/list" method="GET" id="searchForm">
+				<input type="hidden" name="catCode" id="catCode" value=""/>	
+				<div class="search-filter">
+					<div>
+						<lebal class="title">分类:</lebal>
+						<span id="category"></span><br/>
+					</div>
+					<div><input type="submit" value=" 查 询 "/></div>	
+				</div>
+			</form>
+			<div style="background-color: #F0F0F0;">
+			<table width="100%" class="med-table">
+				<thead>
+					<tr class="th-extra">
+						<th colspan="6" align="left"><input type="checkbox" id="selectAll" name="selectAll" />&nbsp;&nbsp;全选&nbsp;
+						 <input type="button" id="addCategory" name="addCategory" value=" 新增分类 " /> 
+						 <input type="button" id="delCategory" name="delCategory" value=" 批量删除 " /></th>
+					</tr>
+					<tr>
+						<th width="15"></th>
+						<th width="55">ID</th>
+						<th>分类名称</th>
+						<th width="85">分类编码</th>
+						<th width="85">状态</th>
+						<th width="85">操作</th>
+					</tr>
+				</thead>
+			</table>
+			<table width="100%" class="med-table " style="background-color: #FFFFFF;">
+				<tbody>
+					<#if catList??>
+						<#list catList as item>
+						    <#assign first=""/>
+							<#if item_index==0>
+								<#assign first>style="background-color: #58AFCA;"</#assign>
+							</#if>
+							<tr>
+								<td width="15" align="center" ${first} ><input type="checkbox" id="selectOne" name="selectOne" value="${item.id}"/></td>
+								<td width="55" ${first}>${item.id}</td>
+								<td align="left" ${first}>
+										<a>${item.catName}</a>
+								</td>
+								<td width="85" ${first}>${(item.catCode)!}</td>
+								<td width="85" ${first}></td>
+								<td width="85" ${first}>
+									<p>删除</p>
+									<p>编辑</p>
+								</td>
+							</tr> 
+						</#list>
+					</#if>
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="${appConfigs("static_site_url").cfgValues}/static/js/area.js"></script>
+	<script type="text/javascript" src="${appConfigs("static_site_url").cfgValues}/static/js/cat.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			Iarea.setup("area");
+			Icat.setup("category");
+			
+			$("#addCategory").bind("click",function(){
+				var catCode=Icat.selectedCat("category");
+				var confirm=true;
+				if(catCode==''){
+					confirm=window.confirm("不选择分类将添加的是顶级分类!!");
+				}
+				if(confirm)
+					location.href="${rc.getContextPath()}/admin-manager/category/create?parentCatCode="+catCode;	
+			});
+			$("#searchForm").submit(function(){
+				$(".error-msg").hide();
+				$(".error-detail").each(function(){
+					$(this).text("");
+				})
+				var catCode=Icat.selectedCat("category");
+				if(catCode==''){
+					alert("请先选择分类");
+					return false;
+				}
+				$("#catCode").val(catCode);
+			});
+		})
+	</script>
+</body>
+</html>

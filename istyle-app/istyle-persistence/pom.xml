@@ -6,6 +6,20 @@
 		<artifactId>istyle-app</artifactId>
 		<version>1.0</version>
 	</parent>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.conf</include>
+					<include>**/*.properites</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>com.toney.istyle</groupId>

@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<#include "../commons/head.html"/>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>新增分类</title>
+</head>
+<body>
+	<div class="yui3-g">
+		<div class="yui3-u-1-6" id="menu-main"><#include "../commons/admin-menu.html"></div>
+		<div class="yui3-u-5-6" id="prd-main" width="100%">
+			<h3>新增分类</h3>
+			<div class="error-msg">
+				<#if errorMessage??>
+				<ul class="ul">
+					<#list errorMessage?keys as key>
+					<li><span class="error-detail" style="color: red">${errorMessage[key]}</span></li> </#list>
+				</ul>
+				</#if>
+			</div>
+			<div>
+				<form id="mainForm" action="${rc.getContextPath()}/admin-manager/category/doCreate" method="POST">
+					<input type="hidden" id="parentCatCode" name="parentCatCode" value="${parentCatCode!}"/>
+					<ul>
+						<li>
+							<div class="input-li">
+								<lebal class="title">上一级分类:</lebal> 
+								<#if pathList??>
+									<#list pathList as item>
+										${item.catName} ->
+									</#list>
+								<#else>
+									添加顶级分类
+								</#if>
+							</div>
+						</li>
+						<li>
+							<div class="input-li">
+								<lebal class="title">分类名称:</lebal> 
+								<input type="text" name="catName" id="catName" style="width: 540px; height: 25px;" />
+							</div>
+						</li>
+						<li><input type="submit" id="submit" name="submit" value="  提  交  " /></li>
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

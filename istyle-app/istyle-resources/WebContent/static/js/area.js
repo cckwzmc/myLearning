@@ -96,3 +96,16 @@ Iarea.selectArea=function(thisObject){
 		}
 	})
 }
+
+Iarea.selectedArea=function(){
+	var areaId="";
+	$("#"+Iarea.areaId).find("select").each(function(){
+		if($(this).val().length>areaId.length){
+			areaId=$(this).val();
+		}
+	});
+	if(!areaId||areaId==''||areaId=='-1'){
+		areaId="";
+	}
+	return areaId;
+}

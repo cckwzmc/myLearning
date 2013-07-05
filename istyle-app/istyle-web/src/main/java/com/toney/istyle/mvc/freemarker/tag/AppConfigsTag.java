@@ -34,9 +34,11 @@ import freemarker.template.TemplateModelException;
 public class AppConfigsTag extends BeanModel implements TemplateMethodModelEx {
 
 	private static final XLogger LOGGER = XLoggerFactory.getXLogger(AppConfigsTag.class);
-	public AppConfigsTag(){
+
+	public AppConfigsTag() {
 		super(new Object(), new BeansWrapper());
 	}
+
 	public AppConfigsTag(Object object, BeansWrapper wrapper) {
 		super(object, wrapper);
 	}
@@ -44,6 +46,7 @@ public class AppConfigsTag extends BeanModel implements TemplateMethodModelEx {
 	@Autowired
 	AppConfigManager appConfigManager;
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object exec(List arguments) throws TemplateModelException {
 		if (CollectionUtils.isEmpty(arguments)) {
@@ -53,7 +56,7 @@ public class AppConfigsTag extends BeanModel implements TemplateMethodModelEx {
 		String key = unwrap((TemplateModel) it.next()).toString();
 		try {
 			Map<String, AppConfigBO> map = this.appConfigManager.getAppConfigs();
-			return map.get(key)==null?map.get(key):wrap(map.get(key));
+			return map.get(key) == null ? map.get(key) : wrap(map.get(key));
 		} catch (ManagerException e) {
 			LOGGER.error("NOT FOUND KEY={} OBJECT", key, e);
 			throw new TemplateModelException();

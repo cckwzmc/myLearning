@@ -28,7 +28,7 @@ Icat.loadTopCategory=function(data){
 	html+='<select id="topCat" name="topCat" level="1">'+
  		'<option value="-1">请选择</option>';
 	for(var i=0;i<data.length;i++){
-		html+='<option value="'+data[i].id+'">'+data[i].catName+'</option>';
+		html+='<option value="'+data[i].catCode+'">'+data[i].catName+'</option>';
 	}
 	html+='</select>';
 	$("#"+Icat.catId).html(html);
@@ -52,12 +52,12 @@ Icat.loadChildrenCategory=function(data,thisObj){
 	var level=parseInt(l);
 	Icat.clearLevel(level);
 	var html='';
-	html+='<select id="cat_'+(level+1)+'" name="cat_'+(level+1)+'" level="'+(level+1)+'">'+
+	html+='<span style="margin:0px 0px 0px 5px;"><select id="cat_'+(level+1)+'" name="cat_'+(level+1)+'" level="'+(level+1)+'">'+
  		'<option value="-1">请选择</option>';
 	for(var i=0;i<data.length;i++){
-		html+='<option value="'+data[i].id+'">'+data[i].catName+'</option>';
+		html+='<option value="'+data[i].catCode+'">'+data[i].catName+'</option>';
 	}
-	html+='</select>';
+	html+='</select></span>';
 	$(html).insertAfter(thisObj);
 	$("#cat_"+(level+1)).bind("change",function(){
 		var v=$("#cat_"+(level+1)).val();
@@ -87,7 +87,7 @@ Icat.clearLevel=function(level){
 Icat.selectCat=function(thisObj){
 	$.ajax({
 		type : "GET",
-		url :IcatUrl+"/category/childrenCategory?format=json&id="+$(thisObj).val()+"&callback?",
+		url :IcatUrl+"/category/childrenCategory?format=json&catCode="+$(thisObj).val()+"&callback?",
 		dataType:"jsonp",
 		jsonp:"callback",
 		cache:true,
@@ -100,4 +100,16 @@ Icat.selectCat=function(thisObj){
 			
 		}
 	})
+}
+Icat.selectedCat=function(){
+	var catCode="";
+	$("#"+Icat.catId).find("select").each(function(){
+		if($(this).val().length>catCode.length){
+			catCode=$(this).val();
+		}
+	});
+	if(!catCode||catCode==''||catCode=='-1'){
+		catCode="";
+	}
+	return catCode;
 }

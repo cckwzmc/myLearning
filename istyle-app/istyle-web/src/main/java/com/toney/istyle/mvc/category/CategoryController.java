@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.toney.istyle.constants.ErrConstants;
 import com.toney.istyle.core.biz.CategoryManager;
+import com.toney.istyle.core.exception.ManagerException;
 import com.toney.istyle.core.exception.ServiceException;
 import com.toney.istyle.module.CategoryModule;
 import com.toney.istyle.mvc.annotation.AuthLevel;
@@ -46,7 +47,7 @@ public class CategoryController {
 		try {
 			List<CategoryModule> catList = categoryManager.getTopCatgoryAll();
 			json.setData(catList);
-		} catch (ServiceException e) {
+		} catch (ManagerException e) {
 			json.setScode(JsonPackageWrapper.S_ERR);
 			json.setSmsg(e.getMessage());
 		} catch (Exception e) {
@@ -59,12 +60,12 @@ public class CategoryController {
 	}
 
 	@RequestMapping(value = "childrenCategory", method = RequestMethod.GET, produces = "application/json", params = "format=json")
-	public String getChildrenCategory(Integer id, Model model) {
+	public String getChildrenCategory(String catCode, Model model) {
 		JsonPackageWrapper json = new JsonPackageWrapper();
 		try {
-			List<CategoryModule> catList = categoryManager.getChildrensCatgoryById(id);
+			List<CategoryModule> catList = categoryManager.getChildrensCatgoryByCatCode(catCode);
 			json.setData(catList);
-		} catch (ServiceException e) {
+		} catch (ManagerException e) {
 			json.setScode(JsonPackageWrapper.S_ERR);
 			json.setSmsg(e.getMessage());
 		} catch (Exception e) {

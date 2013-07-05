@@ -44,7 +44,7 @@
      </appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.toney">
+	<logger name="com.toney.istyle">
 		<level value="INFO" />
 	</logger>
 	
